@@ -1,6 +1,5 @@
 import towelMain from "@/assets/towel_main.jpg.asset.json";
 import kettle from "@/assets/kettle.jpg.asset.json";
-import storeLogo from "@/assets/store_logo.jpg.asset.json";
 import v0 from "@/assets/var0.jpg.asset.json";
 import v1 from "@/assets/var1.jpg.asset.json";
 import v2 from "@/assets/var2.jpg.asset.json";
@@ -14,7 +13,7 @@ import v4 from "@/assets/var4.jpg.asset.json";
 export const store = {
   name: "MULTI ACHADINHOS",
   brandName: "Multi Achadinhos",
-  logo: storeLogo.url,
+  logo: "/logo%20loja.png",
   followers: "+21 mil seguidores",
   bio: "Multi Achadinhos | Variedade para o seu dia a dia! Eletrônicos, casa, utilidades e muito mais. Explore nossa vitrine e encontre seu próximo achado! 💙",
   legal: {
