@@ -3,6 +3,7 @@ import { Share2, Ticket, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { TopBar, SiteFooter, Verified } from "@/components/shop/chrome";
 import { products, store, brl, discountPct } from "@/lib/catalog";
+import { useCheckout } from "@/lib/checkout";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,6 +21,12 @@ export const Route = createFileRoute("/")({
 
 function StorePage() {
   const [following, setFollowing] = useState(false);
+  const { state, update } = useCheckout();
+  const normalizedQuery = state.searchTerm.trim().toLocaleLowerCase("pt-BR");
+  const visibleProducts = products.filter((product) =>
+    [product.title, product.cardTitle, product.category]
+      .some((value) => value.toLocaleLowerCase("pt-BR").includes(normalizedQuery)),
+  );
   return (
     <div className="app-frame bg-surface">
       <TopBar />
@@ -55,10 +62,12 @@ function StorePage() {
 
       <div className="flex items-baseline justify-between px-3.5 pb-3 pt-7">
         <h2 className="text-[21px] font-extrabold">Produtos da loja</h2>
-        <span className="text-[14px] text-muted-foreground">{products.length} produtos</span>
+        <span className="text-[14px] text-muted-foreground">
+          {visibleProducts.length} {visibleProducts.length === 1 ? "produto" : "produtos"}
+        </span>
       </div>
       <div className="grid grid-cols-2 gap-3 px-3.5 pb-9">
-        {products.map((p) => (
+        {visibleProducts.map((p) => (
           <Link key={p.id} to="/produto/$id" params={{ id: p.id }} className="flex flex-col rounded-lg bg-card p-2.5 pb-4">
             <img src={p.image} alt={p.title} className="aspect-square w-full object-contain" />
             <h3 className="mt-3 line-clamp-2 text-[15px] leading-snug">{p.cardTitle}</h3>
@@ -73,6 +82,24 @@ function StorePage() {
             <ShoppingCart className="mx-auto mt-3 h-5 w-5" />
           </Link>
         ))}
+        {visibleProducts.length === 0 && (
+          <div className="col-span-2 rounded-xl border border-dashed border-border bg-card px-5 py-10 text-center">
+            <h3 className="text-[16px] font-bold">Nenhum produto encontrado</h3>
+            <p className="mt-2 text-[14px] text-muted-foreground">
+              Tente buscar por outro nome ou categoria.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                // The shared search field is controlled by the checkout context.
+                update({ searchTerm: "" });
+              }}
+              className="mt-4 text-[14px] font-semibold text-primary"
+            >
+              Limpar busca
+            </button>
+          </div>
+        )}
       </div>
       <SiteFooter />
     </div>
