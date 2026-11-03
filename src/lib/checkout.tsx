@@ -13,7 +13,12 @@ export type Address = {
   isDefault: boolean;
 };
 
+export type CartItem = { key: string; productId: string; variantId: string | null; qty: number };
+
 export type CheckoutState = {
+  cart: CartItem[];
+  favorites: string[];
+  cartOpen: boolean;
   productId: string | null;
   variantId: string | null;
   qty: number;
@@ -23,6 +28,9 @@ export type CheckoutState = {
 };
 
 const empty: CheckoutState = {
+  cart: [],
+  favorites: [],
+  cartOpen: false,
   productId: null,
   variantId: null,
   qty: 1,
@@ -41,7 +49,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(KEY);
-      if (raw) setState({ ...empty, ...JSON.parse(raw) });
+      if (raw) setState({ ...empty, ...JSON.parse(raw), cartOpen: false });
     } catch {
       /* ignore */
     }
@@ -83,4 +91,15 @@ export function useOfferEnd() {
       update({ offerEndsAt: Date.now() + 32 * 60 * 1000 });
   }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
   return useCountdown(state.offerEndsAt);
+}
+
+/** Cart helpers: add merges same product+variant; qty 0 removes. */
+export function addToCart(cart: CartItem[], productId: string, variantId: string | null, qty: number): CartItem[] {
+  const key = `${productId}:${variantId ?? "-"}`;
+  const hit = cart.find((i) => i.key === key);
+  if (hit) return cart.map((i) => (i.key === key ? { ...i, qty: i.qty + qty } : i));
+  return [...cart, { key, productId, variantId, qty }];
+}
+export function setCartQty(cart: CartItem[], key: string, qty: number): CartItem[] {
+  return qty <= 0 ? cart.filter((i) => i.key !== key) : cart.map((i) => (i.key === key ? { ...i, qty } : i));
 }
