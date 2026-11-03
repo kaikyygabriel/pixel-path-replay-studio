@@ -30,19 +30,19 @@ function StorePage() {
         <div className="flex items-start gap-3">
           <img src={store.logo} alt={store.brandName} className="h-[58px] w-[58px] shrink-0 rounded-lg" />
           <div className="min-w-0 flex-1">
-            <h1 className="flex items-center gap-1.5 text-[18px] font-extrabold leading-tight">
+            <h1 className="flex items-center gap-1.5 text-[20px] font-extrabold leading-tight">
               <span className="truncate">{store.name}</span> <Verified />
             </h1>
             <div className="mt-2 flex items-center justify-between gap-2">
-              <span className="text-[13px] text-muted-foreground">{store.followers}</span>
+              <span className="text-[14px] text-muted-foreground">{store.followers}</span>
               <div className="flex gap-1.5">
                 <button
                   onClick={() => setFollowing(!following)}
-                  className={`h-9 rounded-lg px-4 text-[13px] font-bold ${following ? "bg-secondary text-foreground" : "bg-link text-primary-foreground"}`}
+                  className={`h-10 rounded-lg px-5 text-[15px] font-bold ${following ? "bg-secondary text-foreground" : "bg-link text-primary-foreground"}`}
                 >
                   {following ? "Seguindo" : "Seguir"}
                 </button>
-                <button aria-label="Compartilhar" className="grid h-9 w-9 place-items-center rounded-lg bg-secondary text-link">
+                <button aria-label="Compartilhar" className="grid h-10 w-10 place-items-center rounded-lg bg-secondary text-link">
                   <Share2 className="h-4 w-4" />
                 </button>
               </div>
@@ -50,27 +50,27 @@ function StorePage() {
           </div>
         </div>
         <hr className="my-3 border-t-2" />
-        <p className="text-[12.5px] leading-snug text-muted-foreground">{store.bio}</p>
+        <p className="text-[14px] leading-snug text-muted-foreground">{store.bio}</p>
       </section>
 
       <div className="flex items-baseline justify-between px-3.5 pb-3 pt-7">
-        <h2 className="text-[19px] font-extrabold">Produtos da loja</h2>
-        <span className="text-[12px] text-muted-foreground">{products.length} produtos</span>
+        <h2 className="text-[21px] font-extrabold">Produtos da loja</h2>
+        <span className="text-[14px] text-muted-foreground">{products.length} produtos</span>
       </div>
       <div className="grid grid-cols-2 gap-3 px-3.5 pb-9">
         {products.map((p) => (
           <Link key={p.id} to="/produto/$id" params={{ id: p.id }} className="flex flex-col rounded-lg bg-card p-2.5 pb-4">
             <img src={p.image} alt={p.title} className="aspect-square w-full object-contain" />
-            <h3 className="mt-3 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3>
+            <h3 className="mt-3 line-clamp-2 text-[15px] leading-snug">{p.cardTitle}</h3>
             <div className="mt-3 flex items-baseline gap-1.5">
-              <span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span>
-              <span className="text-[10px] text-muted-foreground line-through">{brl(p.original)}</span>
+              <span className="text-[21px] font-bold"><span className="text-[14px]">R$ </span>{brl(p.price).slice(3)}</span>
+              <span className="text-[12px] text-muted-foreground line-through">{brl(p.original)}</span>
             </div>
-            <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px]">
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[12.5px]">
               <span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span>
               <span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span>
             </div>
-            <ShoppingCart className="mx-auto mt-3 h-4 w-4" />
+            <ShoppingCart className="mx-auto mt-3 h-5 w-5" />
           </Link>
         ))}
       </div>
