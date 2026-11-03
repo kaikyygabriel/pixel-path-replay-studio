@@ -220,7 +220,7 @@ function ProductPage() {
             </button>
             <div className="rounded-t-2xl bg-background px-3 pb-safe pt-3">
               <div className="flex gap-2.5">
-                <img src={(variant ?? p.variants[0]).image} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
+                <img src={(variant ?? p.variants[0])?.image} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
                 <div className="min-w-0 flex-1">
                   <div className="text-[11px] font-bold leading-snug">
                     Karsten {variant ? `${variant.line} · ${variant.color}` : "Bosco · Azul Serena/Azul Naval"} · 4 toalhas

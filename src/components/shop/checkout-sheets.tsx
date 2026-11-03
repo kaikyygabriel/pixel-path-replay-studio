@@ -87,7 +87,7 @@ const emptyAddr: Address = { cep: "", street: "", number: "", complement: "", di
 export function AddressSheet({ onClose, onBack, onDone }: { onClose: () => void; onBack: () => void; onDone: () => void }) {
   const { state, update } = useCheckout();
   const [a, setA] = useState<Address>(state.address ?? emptyAddr);
-  const [err, setErr] = useState<Record<string, string>>({});
+  const [err, setErr] = useState<Partial<Record<keyof Address, string>>>({});
   const [cepNote, setCepNote] = useState<string | null>(null);
 
   async function lookup(cep: string) {
@@ -103,7 +103,7 @@ export function AddressSheet({ onClose, onBack, onDone }: { onClose: () => void;
     }
   }
   function submit() {
-    const e: Record<string, string> = {};
+    const e: Partial<Record<keyof Address, string>> = {};
     if (digits(a.cep).length !== 8) e.cep = "CEP inválido";
     if (!a.street.trim()) e.street = "Obrigatório";
     if (!a.number.trim()) e.number = "Obrigatório";
@@ -116,7 +116,7 @@ export function AddressSheet({ onClose, onBack, onDone }: { onClose: () => void;
     update({ address: a });
     onDone();
   }
-  const bad = (k: string) => (err[k] ? "ring-2 ring-primary" : "");
+  const bad = (k: keyof Address) => (err[k] ? "ring-2 ring-primary" : "");
   return (
     <Shell title="Endereço de entrega" onClose={onClose} onBack={onBack}>
       <Steps step={2} />
