@@ -12,11 +12,11 @@ import v4 from "@/assets/var4.jpg.asset.json";
  * supplied yet — the UI shows them as pending instead of inventing values.
  */
 export const store = {
-  name: "LOJA SANTA EFIGÊNIA",
-  brandName: "Loja Santa Efigênia",
+  name: "MULTI ACHADINHOS",
+  brandName: "Multi Achadinhos",
   logo: storeLogo.url,
   followers: "+21 mil seguidores",
-  bio: "Lojas Santa Ifigênia | Variedade para o seu dia a dia! Eletrônicos, casa, utilidades e muito mais. Explore nossa vitrine e encontre seu próximo achado! 💙",
+  bio: "Multi Achadinhos | Variedade para o seu dia a dia! Eletrônicos, casa, utilidades e muito mais. Explore nossa vitrine e encontre seu próximo achado! 💙",
   legal: {
     razaoSocial: null as string | null,
     cnpj: null as string | null,
