@@ -48,6 +48,10 @@ export type Product = {
   image: string;
   gallery: string[];
   variants: Variant[];
+  /** Real store metrics only; null = not shown. */
+  rating: number | null;
+  reviews: number | null;
+  sold: string | null;
 };
 
 const towelVariants: Variant[] = [
@@ -71,6 +75,7 @@ export const products: Product[] = [
     image: towelMain.url,
     gallery: [towelMain.url, v0.url, v1.url, v2.url],
     variants: towelVariants,
+    rating: null, reviews: null, sold: null,
   },
   {
     id: "chaleira-unitermi-atacama",
@@ -84,6 +89,7 @@ export const products: Product[] = [
     image: kettle.url,
     gallery: [kettle.url],
     variants: [],
+    rating: null, reviews: null, sold: null,
   },
 ];
 
