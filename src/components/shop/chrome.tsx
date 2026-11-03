@@ -2,7 +2,7 @@ import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   ChevronLeft, Search, User, Truck, Package, ShieldCheck, CreditCard, Lock, Headphones,
-  Plus, Minus, Instagram, Facebook, Youtube, Mail, BadgeCheck, ShoppingBag,
+  Plus, Minus, Instagram, Facebook, Youtube, Mail, BadgeCheck, ShoppingBag, Music2, ExternalLink,
   ShoppingCart, Bookmark, Store as StoreIcon, Scale, LogOut, X, Trash2,
 } from "lucide-react";
 import { store, getProduct, brl } from "@/lib/catalog";
@@ -185,13 +185,29 @@ const features = [
 
 function Accordion({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
+  const content = title === "Comece a comprar" ? (
+    <ul className="space-y-2 px-4 pb-4 text-[14px] leading-relaxed text-muted-foreground">
+      <li><strong className="text-foreground">1.</strong> Explore a vitrine e escolha seu achadinho.</li>
+      <li><strong className="text-foreground">2.</strong> Confira fotos, detalhes e opções do produto.</li>
+      <li><strong className="text-foreground">3.</strong> Adicione ao carrinho e finalize seu pedido com segurança.</li>
+    </ul>
+  ) : title === "Suporte ao cliente" ? (
+    <div className="px-4 pb-4 text-[14px] leading-relaxed text-muted-foreground">
+      <p>Precisa de ajuda com um pedido ou produto? Fale com nosso atendimento por e-mail.</p>
+      <a href="mailto:sac@multiachadinhos.tiktokshop" className="mt-2 inline-flex items-center gap-2 font-semibold text-primary">
+        <Mail className="h-4 w-4" /> sac@multiachadinhos.tiktokshop
+      </a>
+    </div>
+  ) : (
+    <p className="px-4 pb-4 text-[14px] text-muted-foreground">As políticas e os termos da loja serão publicados aqui em breve.</p>
+  );
   return (
     <div className="border-b border-border">
-      <button onClick={() => setOpen(!open)} className="flex w-full items-center justify-between px-4 py-4 text-[16px] font-semibold">
+      <button aria-expanded={open} onClick={() => setOpen(!open)} className="flex w-full items-center justify-between px-4 py-4 text-[16px] font-semibold">
         {title}
         {open ? <Minus className="h-3.5 w-3.5 text-muted-foreground" /> : <Plus className="h-3.5 w-3.5 text-muted-foreground" />}
       </button>
-      {open && <p className="px-4 pb-4 text-[15px] text-muted-foreground">Conteúdo em breve.</p>}
+      {open && content}
     </div>
   );
 }
@@ -230,12 +246,23 @@ export function SiteFooter() {
         <Accordion title="Política e termos" />
       </div>
       <div className="border-b border-border px-4 py-5">
-        <div className="mb-3 text-[10px] font-semibold tracking-wide text-muted-foreground">SIGA A GENTE</div>
+        <div className="mb-1 text-[10px] font-semibold tracking-wide text-muted-foreground">ACOMPANHE O TIKTOK</div>
+        <p className="mb-3 text-[13px] text-muted-foreground">Siga os canais oficiais do TikTok Brasil e descubra novidades, tendências e oportunidades do TikTok Shop.</p>
         <div className="flex gap-3">
-          {[Instagram, Facebook, Youtube, Mail].map((I, i) => (
-            <span key={i} className="grid h-9 w-9 place-items-center rounded-full border border-border"><I className="h-4 w-4" /></span>
+          {[
+            { Icon: Music2, label: "TikTok", href: "https://linktr.ee/tiktokbrasil" },
+            { Icon: Instagram, label: "Instagram", href: "https://linktr.ee/tiktokbrasil" },
+            { Icon: Facebook, label: "Facebook", href: "https://linktr.ee/tiktokbrasil" },
+            { Icon: Youtube, label: "YouTube", href: "https://linktr.ee/tiktokbrasil" },
+          ].map(({ Icon, label, href }) => (
+            <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Canais oficiais TikTok Brasil — ${label}`} title={`Canais oficiais TikTok Brasil — ${label}`} className="grid h-9 w-9 place-items-center rounded-full border border-border transition-colors hover:bg-secondary">
+              <Icon className="h-4 w-4" />
+            </a>
           ))}
         </div>
+        <a href="https://linktr.ee/tiktokbrasil" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-primary">
+          Ver todos os canais oficiais <ExternalLink className="h-3 w-3" />
+        </a>
       </div>
       <div className="p-4">
         <div className="overflow-hidden rounded-xl border border-border">
