@@ -19,6 +19,7 @@ export type CheckoutState = {
   cart: CartItem[];
   favorites: string[];
   cartOpen: boolean;
+  searchTerm: string;
   productId: string | null;
   variantId: string | null;
   qty: number;
@@ -31,6 +32,7 @@ const empty: CheckoutState = {
   cart: [],
   favorites: [],
   cartOpen: false,
+  searchTerm: "",
   productId: null,
   variantId: null,
   qty: 1,
@@ -51,12 +53,17 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       const raw = sessionStorage.getItem(KEY);
       if (raw) setState({ ...empty, ...JSON.parse(raw), cartOpen: false });
     } catch {
-      /* ignore */
+      /* ignore invalid or unavailable session storage */
     }
     setReady(true);
   }, []);
   useEffect(() => {
-    if (ready) sessionStorage.setItem(KEY, JSON.stringify(state));
+    if (!ready) return;
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify(state));
+    } catch {
+      /* Storage may be unavailable or full; checkout remains usable in memory. */
+    }
   }, [state, ready]);
   const update = (p: Partial<CheckoutState>) => setState((s) => ({ ...s, ...p }));
   return <CheckoutCtx.Provider value={{ state, update, ready }}>{children}</CheckoutCtx.Provider>;
