@@ -58,8 +58,24 @@ export function TopBar({ back = false }: { back?: boolean }) {
         <Link to="/" aria-label={store.brandName}><img src={store.logo} alt={store.brandName} className="h-9 w-9 rounded-lg object-cover" /></Link>
         <label className="flex h-10 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
           <Search className="h-5 w-5 shrink-0 text-primary" />
-          <input aria-label="Procurar" className="w-full min-w-0 bg-transparent text-[15px] outline-none" />
-          <span className="shrink-0 text-[14.5px] font-semibold text-primary">Procurar</span>
+          <input
+            aria-label="Buscar produtos"
+            type="search"
+            value={state.searchTerm}
+            onChange={(event) => update({ searchTerm: event.target.value })}
+            placeholder="Buscar produtos"
+            className="w-full min-w-0 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground"
+          />
+          {state.searchTerm && (
+            <button
+              type="button"
+              aria-label="Limpar busca"
+              onClick={() => update({ searchTerm: "" })}
+              className="shrink-0 rounded-md px-2 py-1 text-[13px] font-semibold text-primary"
+            >
+              Limpar
+            </button>
+          )}
         </label>
         <div ref={ref} className="relative">
           <button aria-label="Menu da conta" aria-expanded={menu} onClick={() => setMenu(!menu)} className="relative grid h-10 w-10 place-items-center rounded-full bg-secondary">
