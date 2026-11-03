@@ -214,7 +214,7 @@ function ProductPage() {
       <SiteFooter />
 
       {added && (
-        <div className="fixed bottom-[104px] left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-5 py-3 text-[15px] font-semibold text-ink-foreground shadow-lg">
+        <div className="fixed bottom-[104px] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-full bg-ink px-5 py-3 text-[15px] font-semibold text-ink-foreground shadow-lg">
           Adicionado ao carrinho
         </div>
       )}
