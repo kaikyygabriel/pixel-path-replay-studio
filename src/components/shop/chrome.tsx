@@ -55,7 +55,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
             <ChevronLeft className="h-7 w-7" />
           </button>
         )}
-        <Link to="/" aria-label="TikTok Shopping"><img src="/Design%20sem%20nome%20(11).png" alt="TikTok Shopping" className="h-12 w-12 shrink-0 object-contain" /></Link>
+        <Link to="/" aria-label="TikTok Shopping" className="flex h-10 w-14 shrink-0 items-center justify-center overflow-visible"><img src="/Design%20sem%20nome%20(11).png" alt="TikTok Shopping" className="h-12 w-[68px] max-w-none shrink-0 object-contain" /></Link>
         <label className="flex h-10 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
           <Search className="h-5 w-5 shrink-0 text-primary" />
           <input
