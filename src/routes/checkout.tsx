@@ -35,9 +35,20 @@ function Checkout() {
   return (
     <div className="app-frame bg-surface pb-[150px]">
       <PageHeader title="Produto selecionado" />
-      <Section className="mt-2 flex items-center justify-between px-3.5 py-4">
-        <span className="flex items-center gap-2 text-[17px] font-bold"><MapPin className="h-5 w-5" />Endereço de envio</span>
-        <button onClick={() => setStep(state.customer ? 2 : 1)} className="text-[14px] text-primary">+ Adicionar endereço</button>
+      <Section className="mt-2 px-4 py-4">
+        <div className="flex items-center justify-between gap-3">
+          <span className="flex items-center gap-2 text-[18px] font-bold"><MapPin className="h-6 w-6" />Endereço de envio</span>
+          <button onClick={() => setStep(state.customer ? 2 : 1)} className="h-10 shrink-0 text-[15px] font-semibold text-primary">
+            {state.address ? "Editar" : "+ Adicionar endereço"}
+          </button>
+        </div>
+        {state.address && (
+          <button onClick={() => setStep(1)} className="mt-2 w-full rounded-xl bg-surface p-3 text-left text-[15px] leading-snug">
+            <b>{state.customer?.name}</b> · {state.customer?.phone}<br />
+            {state.address.street}, {state.address.number}{state.address.complement ? ` – ${state.address.complement}` : ""}<br />
+            {state.address.district} · {state.address.city}/{state.address.uf} · {state.address.cep}
+          </button>
+        )}
       </Section>
       <ItemCard
         order={order}
@@ -77,7 +88,7 @@ function Checkout() {
         </div>
       </Section>
       <Protections collapsible />
-      <BottomBar order={order} label="Adicionar endereço de envio" onClick={() => setStep(state.customer ? 2 : 1)} />
+      <BottomBar order={order} label={state.address ? "Continuar" : "Adicionar endereço de envio"} onClick={() => (state.address && state.customer ? navigate({ to: "/resumo" }) : setStep(state.customer ? 2 : 1))} />
       {step === 1 && <CustomerSheet onClose={() => setStep(0)} onNext={() => setStep(2)} />}
       {step === 2 && (
         <AddressSheet onClose={() => setStep(0)} onBack={() => setStep(1)} onDone={() => navigate({ to: "/resumo" })} />
