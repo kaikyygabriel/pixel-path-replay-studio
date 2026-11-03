@@ -31,10 +31,11 @@ function StorePage() {
     <div className="app-frame bg-surface">
       <TopBar />
       <div className="relative h-[116px] overflow-hidden bg-ink">
-        <div className="absolute -right-10 top-10 h-[260px] w-[340px] rounded-[50%] bg-gold" />
+        <img src="/banner%20loja.png" alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
       </div>
       <section className="relative mx-3.5 -mt-[34px] rounded-2xl bg-card p-4 shadow-[0_2px_12px_oklch(0_0_0/0.08)]">
-        <div className="flex items-start">
+        <div className="flex items-start gap-3">
+          <img src={store.logo} alt={store.brandName} className="h-[58px] w-[58px] shrink-0 rounded-lg object-cover" />
           <div className="min-w-0 flex-1">
             <h1 className="flex items-center gap-1.5 text-[20px] font-extrabold leading-tight">
               <span className="truncate">{store.name}</span> <Verified />
