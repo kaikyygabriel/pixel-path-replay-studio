@@ -2,9 +2,9 @@ import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-ro
 import { useState } from "react";
 import {
   ChevronLeft, ChevronRight, ChevronDown, Bookmark, Zap, Truck, ShieldCheck, Check, Store,
-  ShoppingCart, X, Plus, Minus,
+  ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Lock, Clock,
 } from "lucide-react";
-import { TopBar, SiteFooter, Verified } from "@/components/shop/chrome";
+import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
 import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
 
@@ -50,6 +50,7 @@ function ProductPage() {
   const [qty, setQty] = useState(1);
   const [opened, setOpened] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
+  const [protect, setProtect] = useState(false);
   const variant = p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
   const unitCount = variant ? variant.pieces : 1;
@@ -77,7 +78,7 @@ function ProductPage() {
   }
 
   return (
-    <div className="app-frame pb-[96px]">
+    <div className="app-frame pb-[84px]">
       <TopBar back />
       <div className="overflow-hidden bg-ink py-2.5 text-[13px] font-bold tracking-[0.12em] text-ink-foreground">
         <div className="marquee flex w-max gap-6 whitespace-nowrap">
@@ -106,15 +107,15 @@ function ProductPage() {
         </span>
       </div>
 
-      <div className="bg-flash grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3.5 text-primary-foreground">
+      <div className="bg-flash grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 text-primary-foreground">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="shrink-0 rounded-md bg-background/25 px-2 py-0.5 text-[14px] font-bold">-{discountPct(shownPrice, shownOriginal)}%</span>
-            <span className="truncate text-[28px] font-extrabold leading-none">{brl(shownPrice)}</span>
+            <span className="truncate text-[24px] font-extrabold leading-none">{brl(shownPrice)}</span>
           </div>
           <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
         </div>
-        <div className="text-right text-[14px] leading-tight">
+        <div className="text-right text-[12.5px] leading-tight">
           <div className="flex items-center justify-end gap-1 font-bold"><Zap className="h-4 w-4 fill-current" />Oferta Relâmpago</div>
           <div className="mt-1">Termina em <b className="tabular-nums">{offer.hms}</b></div>
         </div>
@@ -123,18 +124,24 @@ function ProductPage() {
       <div className="px-4 pt-4">
         <div className="text-[15px] font-semibold text-success">{brl(shownPrice)} no PIX</div>
         <div className="mt-1.5 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
-          <h1 className="text-[20px] font-bold leading-snug">{p.title}</h1>
+          <h1 className="text-[17px] font-bold leading-snug">{p.title}</h1>
           <button aria-label={fav ? "Remover dos favoritos" : "Salvar nos favoritos"} onClick={() => update({ favorites: fav ? state.favorites.filter((x) => x !== p.id) : [...state.favorites, p.id] })} className="-mr-1 grid h-10 w-10 place-items-center">
             <Bookmark className={`h-7 w-7 ${fav ? "fill-primary text-primary" : ""}`} />
           </button>
         </div>
-        <div className="mt-1 text-[14px] text-muted-foreground">{p.category}</div>
+        <div className="mt-1 text-[13px] text-muted-foreground">{p.category}</div>
+        {(p.rating != null || p.sold) && (
+          <div className="mt-1.5 flex items-center gap-1.5 text-[13px]">
+            {p.rating != null && (<><span className="flex">{[1,2,3,4,5].map((n) => <Star key={n} className={`h-3.5 w-3.5 ${n <= Math.round(p.rating!) ? "fill-gold text-gold" : "text-border"}`} />)}</span><b>{p.rating.toFixed(1)}</b>{p.reviews != null && <span className="text-muted-foreground">({p.reviews})</span>}</>)}
+            {p.sold && <span className="text-muted-foreground">· {p.sold} vendidos</span>}
+          </div>
+        )}
       </div>
 
       {hasVariants && (
         <>
           <div className="mt-6 flex items-center justify-between gap-3 px-4">
-            <h2 className="text-[18px] font-bold">Selecionar modelo e cor</h2>
+            <h2 className="text-[16px] font-bold">Selecionar modelo e cor</h2>
             <span className="truncate text-[13px] text-muted-foreground">{variant ? `${variant.line} · ${variant.color}` : `${p.variants.length} opções`}</span>
           </div>
           <div className="space-y-2.5 px-4 pt-3">
@@ -142,18 +149,18 @@ function ProductPage() {
               <button
                 key={v.id}
                 onClick={() => setPicked(v.id)}
-                className={`grid w-full grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border-2 bg-card p-3 text-left transition-colors ${picked === v.id ? "border-primary bg-primary-soft" : "border-border"}`}
+                className={`grid w-full grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-xl border-2 bg-card p-2.5 text-left transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}
               >
-                <img src={v.image} alt="" className="h-[72px] w-[72px] rounded-lg object-cover" />
+                <img src={v.image} alt="" className="h-[60px] w-[60px] rounded-lg object-cover" />
                 <div className="min-w-0">
-                  <div className="text-[15px] font-bold leading-tight">{v.line} · {v.color}</div>
-                  <div className="mt-0.5 line-clamp-2 text-[12.5px] leading-snug text-muted-foreground">2 de banho e 2 de rosto</div>
+                  <div className="truncate text-[14px] font-bold leading-tight">{v.line} · {v.color}</div>
+                  <div className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-muted-foreground">2 de banho e 2 de rosto</div>
                   <span className="mt-1.5 inline-block rounded-md bg-success-soft px-1.5 py-0.5 text-[12px] font-semibold text-success">
                     Economize {brl(v.original - v.price)}
                   </span>
                 </div>
                 <div className="text-right">
-                  <div className="text-[17px] font-extrabold">{brl(v.price)}</div>
+                  <div className="whitespace-nowrap text-[15px] font-extrabold">{brl(v.price)}</div>
                   <div className="text-[12px] text-muted-foreground line-through">{brl(v.original)}</div>
                   <div className="text-[11.5px] text-muted-foreground">{brl(unitPrice(v))}/un.</div>
                   <span className={`ml-auto mt-1.5 block h-5 w-5 rounded-full border-2 ${picked === v.id ? "border-[6px] border-primary" : "border-border"}`} />
@@ -164,29 +171,29 @@ function ProductPage() {
         </>
       )}
 
-      <div className="mt-6 flex items-center justify-between border-y border-border px-4 py-4">
+      <div className="mt-5 flex items-center justify-between border-y border-border px-4 py-3">
         <div>
-          <div className="flex items-center gap-2 text-[14px]">
-            <Truck className="h-6 w-6" />
+          <div className="flex items-center gap-2 text-[13px]">
+            <Truck className="h-5 w-5" />
             <span className="rounded-md bg-teal-soft px-2 py-0.5 font-semibold text-teal-ink">Frete grátis</span>
             <span className="text-muted-foreground line-through">R$ 26,20</span>
           </div>
-          <div className="mt-1.5 text-[16px] font-bold">Receba até 4 – 5 de nov.</div>
+          <div className="mt-1 text-[14.5px] font-bold">Receba até 4 – 5 de nov.</div>
         </div>
         <ChevronRight className="h-5 w-5 text-muted-foreground" />
       </div>
 
-      <div className="mx-4 mt-4 rounded-2xl border border-border p-4">
-        <div className="flex items-center justify-between text-[17px] font-bold">
-          <span className="flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-gold" />Proteção do cliente</span>
+      <button onClick={() => setProtect(true)} className="mx-4 mt-4 block w-[calc(100%-2rem)] rounded-2xl border border-border p-3.5 text-left">
+        <div className="flex items-center justify-between text-[15.5px] font-bold">
+          <span className="flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-gold" />Proteção do cliente</span>
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-x-2 gap-y-2 text-[14px]">
+        <div className="mt-2.5 grid grid-cols-2 gap-x-2 gap-y-1.5 text-[13px]">
           {["Devolução gratuita", "Proteção e reembolso", "Pagamento seguro", "Garantia de pontualidade"].map((t) => (
             <span key={t} className="flex items-start gap-1.5"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold" />{t}</span>
           ))}
         </div>
-      </div>
+      </button>
 
       <div className="mt-5 border-t-8 border-surface p-4">
         <div className="grid grid-cols-[52px_minmax(0,1fr)_auto] items-center gap-3">
@@ -213,24 +220,42 @@ function ProductPage() {
       <div className="h-10 bg-surface" />
       <SiteFooter />
 
+      {protect && (
+        <Sheet title="Proteção do cliente" onClose={() => setProtect(false)}>
+          <div className="space-y-4 py-4">
+            {[
+              { I: RotateCcw, t: "Devolução gratuita", d: "Devolução sem custo em até 7 dias após o recebimento, conforme o Código de Defesa do Consumidor." },
+              { I: Wallet, t: "Proteção e reembolso", d: "Se o pedido não chegar ou vier diferente do anunciado, você recebe o valor de volta." },
+              { I: Lock, t: "Pagamento seguro", d: "Pagamento via PIX com dados protegidos por criptografia." },
+              { I: Clock, t: "Garantia de pontualidade", d: "Acompanhe seu pedido do envio até a entrega no prazo informado." },
+            ].map(({ I, t, d }) => (
+              <div key={t} className="flex gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-secondary"><I className="h-4.5 w-4.5 text-gold" /></span>
+                <div><div className="text-[15px] font-bold">{t}</div><p className="text-[13.5px] leading-snug text-muted-foreground">{d}</p></div>
+              </div>
+            ))}
+          </div>
+        </Sheet>
+      )}
+
       {added && (
         <div className="fixed bottom-[104px] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-full bg-ink px-5 py-3 text-[15px] font-semibold text-ink-foreground shadow-lg">
           Adicionado ao carrinho
         </div>
       )}
 
-      <div className="fixed bottom-0 left-1/2 z-40 grid w-full max-w-[480px] -translate-x-1/2 grid-cols-[auto_auto_56px_minmax(0,1fr)] items-center gap-3 border-t border-border bg-background px-3 pt-2.5 pb-safe">
+      <div className="fixed bottom-0 left-1/2 z-40 grid w-full max-w-[480px] -translate-x-1/2 grid-cols-[auto_auto_48px_minmax(0,1fr)] items-center gap-3 border-t border-border bg-background px-3 pt-2.5 pb-safe">
         <Link to="/" className="flex flex-col items-center gap-0.5 text-[12px]"><Store className="h-6 w-6" />Loja</Link>
         <button onClick={() => update({ cartOpen: true })} className="relative flex flex-col items-center gap-0.5 text-[12px]">
           <ShoppingCart className="h-6 w-6" />Carrinho
           {cartCount(state.cart) > 0 && <span className="absolute -right-2 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[11px] font-bold text-primary-foreground">{cartCount(state.cart)}</span>}
         </button>
-        <button aria-label="Adicionar ao carrinho" onClick={startCart} className="grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
+        <button aria-label="Adicionar ao carrinho" onClick={startCart} className="grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary">
           <ShoppingCart className="h-6 w-6" /><Plus className="-mt-3 h-3.5 w-3.5" />
         </button>
-        <button onClick={startBuy} className="h-14 rounded-full bg-primary text-primary-foreground shadow-[0_6px_18px_color-mix(in_oklab,var(--primary)_35%,transparent)]">
-          <div className="text-[18px] font-extrabold leading-tight">Comprar agora</div>
-          <div className="text-[13px] leading-tight opacity-90">{brl(shownPrice)} | Frete grátis</div>
+        <button onClick={startBuy} className="h-12 rounded-full bg-primary text-primary-foreground shadow-[0_6px_18px_color-mix(in_oklab,var(--primary)_35%,transparent)]">
+          <div className="text-[16px] font-extrabold leading-tight">Comprar agora</div>
+          <div className="text-[12px] leading-tight opacity-90">{brl(shownPrice)} | Frete grátis</div>
         </button>
       </div>
 
@@ -244,7 +269,7 @@ function ProductPage() {
               <div className="flex gap-2.5">
                 <img src={(variant ?? p.variants[0])?.image} alt="" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
                 <div className="min-w-0 flex-1">
-                  <div className="text-[15px] font-bold leading-snug">
+                  <div className="text-[14px] font-bold leading-snug">
                     Karsten {variant ? `${variant.line} · ${variant.color}` : "Bosco · Azul Serena/Azul Naval"} · 4 toalhas
                   </div>
                   <div className="mt-1.5 flex items-center gap-1.5 text-[12px]">
@@ -275,12 +300,12 @@ function ProductPage() {
                 <span>Receba até 4 – 5 de nov.</span>
                 <span><s className="text-muted-foreground">R$ 26,20</s> <b className="text-teal-ink">Grátis</b></span>
               </div>
-              <div className="mt-4 text-[16px] font-bold">Karsten · Escolha modelo e cor ({p.variants.length})</div>
+              <div className="mt-4 text-[14.5px] font-bold">Karsten · Escolha modelo e cor ({p.variants.length})</div>
               <div className="mt-2.5 grid grid-cols-3 gap-2.5">
                 {p.variants.map((v: Variant) => (
-                  <button key={v.id} onClick={() => setPicked(v.id)} className={`rounded-xl border-2 p-1.5 text-center ${picked === v.id ? "border-primary" : "border-border"}`}>
+                  <button key={v.id} onClick={() => setPicked(v.id)} className={`min-w-0 rounded-xl border-2 bg-card p-1.5 text-center transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}>
                     <img src={v.image} alt="" className="aspect-[4/3] w-full rounded object-cover" />
-                    <div className="mt-1.5 text-[12.5px] font-semibold leading-tight">{v.line} · {v.color}</div>
+                    <div className="mt-1 text-[11.5px] font-semibold leading-tight">{v.line}</div><div className="line-clamp-2 break-words text-[11px] leading-tight text-muted-foreground">{v.color}</div>
                   </button>
                 ))}
               </div>
@@ -292,7 +317,7 @@ function ProductPage() {
               <button
                 disabled={!variant}
                 onClick={sheet === "cart" ? putInCart : go}
-                className="mb-2 mt-2 h-14 w-full rounded-full bg-primary text-[18px] font-extrabold text-primary-foreground disabled:opacity-40"
+                className="mb-2 mt-2 h-12 w-full rounded-full bg-primary text-[16px] font-extrabold text-primary-foreground disabled:opacity-40"
               >
                 {sheet === "cart" ? "Adicionar ao carrinho" : "Comprar agora"}
               </button>

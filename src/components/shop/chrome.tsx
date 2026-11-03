@@ -49,20 +49,20 @@ export function TopBar({ back = false }: { back?: boolean }) {
   ];
   return (
     <>
-      <header className={`sticky top-0 z-30 grid ${back ? "grid-cols-[auto_auto_minmax(0,1fr)_auto]" : "grid-cols-[auto_minmax(0,1fr)_auto]"} items-center gap-2.5 bg-background px-3 py-3`}>
+      <header className={`sticky top-0 z-30 grid ${back ? "grid-cols-[auto_auto_minmax(0,1fr)_auto]" : "grid-cols-[auto_minmax(0,1fr)_auto]"} items-center gap-2 bg-background px-3 py-2`}>
         {back && (
           <button aria-label="Voltar" onClick={() => (window.history.length > 1 ? router.history.back() : navigate({ to: "/" }))} className="-ml-1 grid h-10 w-8 place-items-center">
             <ChevronLeft className="h-7 w-7" />
           </button>
         )}
-        <Link to="/" aria-label={store.brandName}><img src={store.logo} alt={store.brandName} className="h-10 w-10 rounded-lg object-cover" /></Link>
-        <label className="flex h-11 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
+        <Link to="/" aria-label={store.brandName}><img src={store.logo} alt={store.brandName} className="h-9 w-9 rounded-lg object-cover" /></Link>
+        <label className="flex h-10 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
           <Search className="h-5 w-5 shrink-0 text-primary" />
-          <input aria-label="Procurar" className="w-full min-w-0 bg-transparent text-[16px] outline-none" />
-          <span className="shrink-0 text-[16px] text-primary">Procurar</span>
+          <input aria-label="Procurar" className="w-full min-w-0 bg-transparent text-[15px] outline-none" />
+          <span className="shrink-0 text-[14.5px] font-semibold text-primary">Procurar</span>
         </label>
         <div ref={ref} className="relative">
-          <button aria-label="Menu da conta" aria-expanded={menu} onClick={() => setMenu(!menu)} className="relative grid h-11 w-11 place-items-center rounded-full bg-secondary">
+          <button aria-label="Menu da conta" aria-expanded={menu} onClick={() => setMenu(!menu)} className="relative grid h-10 w-10 place-items-center rounded-full bg-secondary">
             <User className="h-6 w-6" />
             {count > 0 && <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[11px] font-bold text-primary-foreground">{count}</span>}
           </button>
@@ -96,7 +96,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
 export function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-overlay" onClick={onClose}>
-      <div className="max-h-[85dvh] w-full max-w-[480px] overflow-y-auto rounded-t-3xl bg-background pb-safe" onClick={(e) => e.stopPropagation()}>
+      <div className="max-h-[85dvh] w-full max-w-[480px] overflow-y-auto rounded-t-3xl bg-background pb-safe animate-in slide-in-from-bottom duration-300" onClick={(e) => e.stopPropagation()}>
         <div className="sticky top-0 flex items-center justify-between border-b border-border bg-background px-4 py-3.5">
           <h2 className="text-[19px] font-bold">{title}</h2>
           <button aria-label="Fechar" onClick={onClose} className="grid h-10 w-10 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
