@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ProdutoIdRouteImport } from './routes/produto.$id'
+import { Route as ApiPublicWebhooksTribopayRouteImport } from './routes/api/public/webhooks.tribopay'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,51 @@ const ProdutoIdRoute = ProdutoIdRouteImport.update({
   path: '/produto/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicWebhooksTribopayRoute =
+  ApiPublicWebhooksTribopayRouteImport.update({
+    id: '/api/public/webhooks/tribopay',
+    path: '/api/public/webhooks/tribopay',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/produto/$id': typeof ProdutoIdRoute
+  '/api/public/webhooks/tribopay': typeof ApiPublicWebhooksTribopayRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/produto/$id': typeof ProdutoIdRoute
+  '/api/public/webhooks/tribopay': typeof ApiPublicWebhooksTribopayRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/produto/$id': typeof ProdutoIdRoute
+  '/api/public/webhooks/tribopay': typeof ApiPublicWebhooksTribopayRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/checkout' | '/produto/$id'
+  fullPaths:
+    '/' | '/checkout' | '/produto/$id' | '/api/public/webhooks/tribopay'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/checkout' | '/produto/$id'
-  id: '__root__' | '/' | '/checkout' | '/produto/$id'
+  to: '/' | '/checkout' | '/produto/$id' | '/api/public/webhooks/tribopay'
+  id:
+    | '__root__'
+    | '/'
+    | '/checkout'
+    | '/produto/$id'
+    | '/api/public/webhooks/tribopay'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CheckoutRoute: typeof CheckoutRoute
   ProdutoIdRoute: typeof ProdutoIdRoute
+  ApiPublicWebhooksTribopayRoute: typeof ApiPublicWebhooksTribopayRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +99,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdutoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/webhooks/tribopay': {
+      id: '/api/public/webhooks/tribopay'
+      path: '/api/public/webhooks/tribopay'
+      fullPath: '/api/public/webhooks/tribopay'
+      preLoaderRoute: typeof ApiPublicWebhooksTribopayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +113,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckoutRoute: CheckoutRoute,
   ProdutoIdRoute: ProdutoIdRoute,
+  ApiPublicWebhooksTribopayRoute: ApiPublicWebhooksTribopayRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
