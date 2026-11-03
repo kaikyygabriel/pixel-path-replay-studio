@@ -14,8 +14,8 @@ export const store = {
   name: "MULTI ACHADINHOS",
   brandName: "Multi Achadinhos",
   logo: "/logo%20loja.png",
-  followers: "+21 mil seguidores",
-  bio: "Multi Achadinhos | Variedade para o seu dia a dia! Eletrônicos, casa, utilidades e muito mais. Explore nossa vitrine e encontre seu próximo achado! 💙",
+  followers: "+43 mil seguidores",
+  bio: "Multi Achadinhos | Variedade para o seu dia a dia! Eletrônicos, casa, utilidades e muito mais. Explore nossa vitrine e encontre seus próximos achadinhos! ❤️",
   legal: {
     razaoSocial: null as string | null,
     cnpj: null as string | null,
