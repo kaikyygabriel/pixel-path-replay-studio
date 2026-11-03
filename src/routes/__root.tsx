@@ -28,7 +28,7 @@ function NotFoundComponent() {
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Voltar à loja
           </Link>
         </div>
       </div>
@@ -60,7 +60,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Tentar novamente
           </button>
           <a
             href="/"
@@ -79,8 +79,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Loja Santa Efigênia" },
-      { name: "description", content: "Loja Santa Efigênia: casa, utilidades e eletrônicos com pagamento via PIX." },
+      { title: "Multi Achadinhos" },
+      { name: "description", content: "Multi Achadinhos: casa, utilidades e eletrônicos com pagamento via PIX." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
