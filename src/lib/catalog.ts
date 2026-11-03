@@ -17,10 +17,10 @@ export const store = {
   followers: "+43 mil seguidores",
   bio: "Multi Achadinhos | Variedade para o seu dia a dia! Eletrônicos, casa, utilidades e muito mais. Explore nossa vitrine e encontre seus próximos achadinhos! ❤️",
   legal: {
-    razaoSocial: null as string | null,
-    cnpj: null as string | null,
-    sede: null as string | null,
-    atendimento: null as string | null,
+    razaoSocial: "MULTI ACHADINHOS LTDA" as string | null,
+    cnpj: "67.705.006/0001-35" as string | null,
+    sede: "São Paulo - SP" as string | null,
+    atendimento: "sac@multiachadinhos.tiktokshop" as string | null,
   },
 };
 
