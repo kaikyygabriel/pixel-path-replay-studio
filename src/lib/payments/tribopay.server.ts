@@ -79,6 +79,9 @@ export const tribopay: PaymentProvider = {
       })),
     };
 
+    // Única operação realizada aqui: POST /transactions. Não há chamadas para
+    // endpoints de criação/edição de produtos ou ofertas; os hashes abaixo são
+    // referências fixas de registros já existentes no painel.
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
