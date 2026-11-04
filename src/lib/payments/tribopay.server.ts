@@ -52,7 +52,7 @@ export const tribopay: PaymentProvider = {
     const configuredPostback = process.env["TRIBOPAY_POSTBACK_URL"]?.trim();
     const appUrl = process.env["APP_URL"]?.trim() || process.env["VITE_APP_URL"]?.trim();
     const postbackUrl = configuredPostback || (appUrl
-      ? `${appUrl.replace(/\\/$/, "")}/api/public/webhooks/tribopay`
+      ? `${appUrl.endsWith("/") ? appUrl.slice(0, -1) : appUrl}/api/public/webhooks/tribopay`
       : undefined);
 
     const payload = {
@@ -64,8 +64,8 @@ export const tribopay: PaymentProvider = {
       payer: {
         name: input.customer.name,
         email: input.customer.email,
-        document: input.customer.cpf.replace(/\\D/g, ""),
-        phone: { number: input.customer.phone.replace(/\\D/g, "") },
+        document: input.customer.cpf.replace(/[^0-9]/g, ""),
+        phone: { number: input.customer.phone.replace(/[^0-9]/g, "") },
       },
     };
 
