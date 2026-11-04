@@ -31,12 +31,30 @@ export function TopBar({ back = false }: { back?: boolean }) {
   const [menu, setMenu] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const profileButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!menu) return;
     const h = (e: PointerEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setMenu(false); };
     document.addEventListener("pointerdown", h);
     return () => document.removeEventListener("pointerdown", h);
   }, [menu]);
+  useEffect(() => {
+    const fly = (event: Event) => {
+      const detail = (event as CustomEvent<{ image: string; source?: { x: number; y: number; width: number; height: number } }>).detail;
+      const target = profileButton.current?.getBoundingClientRect();
+      if (!detail?.image || !target) return;
+      const start = detail.source ?? { x: window.innerWidth / 2, y: window.innerHeight - 120, width: 36, height: 36 };
+      const node = document.createElement("img"); node.src = detail.image; node.alt = "";
+      node.style.cssText = "position:fixed;z-index:100;left:" + start.x + "px;top:" + start.y + "px;width:38px;height:38px;border-radius:50%;object-fit:cover;pointer-events:none;box-shadow:0 3px 14px rgba(0,0,0,.22);";
+      document.body.appendChild(node);
+      const dx = target.left + target.width / 2 - (start.x + start.width / 2);
+      const dy = target.top + target.height / 2 - (start.y + start.height / 2);
+      const animation = node.animate([{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: "translate(" + dx * .55 + "px," + (dy * .55 - 65) + "px) scale(.82)", opacity: 1, offset: .65 }, { transform: "translate(" + dx + "px," + dy + "px) scale(.18)", opacity: .2 }], { duration: 720, easing: "cubic-bezier(.22,.75,.25,1)" });
+      animation.onfinish = () => node.remove();
+    };
+    window.addEventListener("shop-cart-flight", fly);
+    return () => window.removeEventListener("shop-cart-flight", fly);
+  }, []);
   const count = state.cart.reduce((n, i) => n + i.qty, 0);
   const items: { icon: typeof User; t: string; dot?: boolean; on: () => void }[] = [
     { icon: ShoppingBag, t: "Comprar", on: () => navigate({ to: "/" }) },
@@ -78,7 +96,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
           )}
         </label>
         <div ref={ref} className="relative">
-          <button aria-label="Menu da conta" aria-expanded={menu} onClick={() => setMenu(!menu)} className="relative grid h-10 w-10 place-items-center rounded-full bg-secondary">
+          <button ref={profileButton} aria-label="Menu da conta" aria-expanded={menu} onClick={() => setMenu(!menu)} className="relative grid h-10 w-10 place-items-center rounded-full bg-secondary">
             <User className="h-6 w-6" />
             {count > 0 && <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[11px] font-bold text-primary-foreground">{count}</span>}
           </button>
@@ -88,7 +106,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
                 <button key={t} role="menuitem" onClick={() => { setMenu(false); on(); }} className="flex w-full items-center gap-4 px-5 py-3.5 text-left text-[17px] font-semibold active:bg-secondary">
                   <I className="h-6 w-6 shrink-0" />
                   <span className="flex-1">{t}</span>
-                  {dot && <span className="grid h-7 w-7 place-items-center rounded-full bg-primary-soft"><span className="h-2.5 w-2.5 rounded-full bg-primary" /></span>}
+                  {t === "Meu carrinho" && count > 0 && <span className="grid h-7 min-w-7 place-items-center rounded-full bg-primary px-1 text-[12px] font-bold text-primary-foreground">{count}</span>}{dot && t !== "Meu carrinho" && <span className="grid h-7 w-7 place-items-center rounded-full bg-primary-soft"><span className="h-2.5 w-2.5 rounded-full bg-primary" /></span>}
                 </button>
               ))}
             </div>
