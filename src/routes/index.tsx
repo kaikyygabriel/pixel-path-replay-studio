@@ -30,7 +30,7 @@ function StorePage() {
     <div className="app-frame bg-surface">
       <TopBar />
       <div className="relative h-[116px] overflow-hidden bg-ink">
-        <img src="/banner%20loja.png" alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+        <img src="/banner%20loja.png" alt="" loading="eager" fetchPriority="high" decoding="async" width={1200} height={240} className="absolute inset-0 h-full w-full object-cover object-center" />
       </div>
       <section className="relative mx-3.5 -mt-[34px] rounded-2xl bg-card p-4 shadow-[0_2px_12px_oklch(0_0_0/0.08)]">
         <div className="flex items-start gap-3">
@@ -68,7 +68,7 @@ function StorePage() {
       <div className="grid grid-cols-2 gap-3 px-3.5 pb-9">
         {visibleProducts.map((p) => (
           <Link key={p.id} to="/produto/$id" params={{ id: p.id }} className="flex flex-col rounded-lg bg-card p-2.5 pb-4">
-            <img src={p.image} alt={p.title} className="aspect-square w-full object-contain" />
+            <img src={p.image} alt={p.title} loading={p.id === products[0].id ? "eager" : "lazy"} fetchPriority={p.id === products[0].id ? "high" : "auto"} decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />
             <h3 className="mt-3 line-clamp-2 text-[15px] leading-snug">{p.cardTitle}</h3>
             <div className="mt-3 flex items-baseline gap-1.5">
               <span className="text-[21px] font-bold"><span className="text-[14px]">R$ </span>{brl(p.price).slice(3)}</span>
