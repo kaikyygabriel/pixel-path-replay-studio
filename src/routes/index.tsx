@@ -126,9 +126,9 @@ function StorePage() {
           ))}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
-              <h3 className="text-[16px] font-bold">{activeCategory === "natal" ? "Novidades de Natal em breve" : "Nenhum produto encontrado"}</h3>
-              <p className="mt-2 text-[13px] text-muted-foreground">{activeCategory === "natal" ? "Ainda não há produtos cadastrados nesta coleção." : "Tente buscar por outro nome ou categoria."}</p>
-              <button type="button" onClick={() => { setActiveCategory("todos"); update({ searchTerm: "" }); }} className="mt-4 text-[14px] font-semibold text-primary">Ver todos os produtos</button>
+              <h3 className="text-[16px] font-bold">{activeCategory === "Natal" ? "Novidades de Natal em breve" : "Nenhum produto encontrado"}</h3>
+              <p className="mt-2 text-[13px] text-muted-foreground">{activeCategory === "Natal" ? "Ainda não há produtos cadastrados nesta coleção." : "Tente buscar por outro nome ou categoria."}</p>
+              <button type="button" onClick={() => { setActiveCategory("Todos"); update({ searchTerm: "" }); }} className="mt-4 text-[14px] font-semibold text-primary">Ver todos os produtos</button>
             </div>
           )}
         </div>
