@@ -59,7 +59,12 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
   return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 5 dias', 'há 1 semana', 'há 2 semanas', 'há 3 semanas', 'há 1 mês'][i], rating: ratings[i], text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length], media: i < Math.min(4, gallery.length * 2) ? gallery[i % gallery.length] : null }));
 }
 function formatDemoSales(productId: string) { return productId === 'jogo-toalhas-karsten' ? '7,8 mil vendidos' : '2,4 mil vendidos'; }
-function ReviewStars({ rating, size = 'h-3.5 w-3.5' }: { rating: number; size?: string }) { return <span className='inline-flex items-center' aria-label={rating + ' de 5 estrelas'}>{[1,2,3,4,5].map((n) => <Star key={n} className={size + ' ' + (n <= rating ? 'fill-ink text-ink' : 'text-border')} />)}</span>; }
+function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
+  return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
+    const fill = Math.max(0, Math.min(1, rating - (n - 1)));
+    return <span key={n} className={"relative inline-block " + size}><Star className="absolute inset-0 h-full w-full text-border" /><span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: (fill * 100) + "%" }}><Star className="h-full w-full fill-ink text-ink" /></span></span>;
+  })}</span>;
+}
 
 function ProductPage() {
   const { product: p } = Route.useLoaderData();
