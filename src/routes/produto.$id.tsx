@@ -80,6 +80,7 @@ function ProductPage() {
   const [protect, setProtect] = useState(false);
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
   const [visibleReviews, setVisibleReviews] = useState(3);
+  const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
   const demoReviews = makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = demoReviews.reduce((sum, review) => sum + review.rating, 0) / demoReviews.length;
@@ -157,7 +158,7 @@ function ProductPage() {
       <div className="px-4 pt-4">
         <div className="text-[15px] font-semibold text-success">{brl(shownPrice)} no PIX</div>
         <div className="mt-2 mb-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px]">
-          <ReviewStars rating={Math.round(reviewAverage)} /><b className="text-[13px]">{reviewAverage.toFixed(1)}</b><span className="text-muted-foreground">{demoReviews.length} avaliações</span><span className="text-muted-foreground">·</span>
+          <ReviewStars rating={Math.round(reviewAverage)} /><b className="text-[13px]">{reviewAverage.toFixed(1)}</b><span className="text-muted-foreground">·</span><span className="text-muted-foreground">{formatDemoSales(p.id)}</span>
         </div>
         <div className="mt-1.5 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
           <h1 className="text-[17px] font-bold leading-snug">{p.title}</h1>
@@ -225,18 +226,6 @@ function ProductPage() {
         </div>
       </button>
 
-      <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
-        <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
-        <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
-          <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center"><strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong><ReviewStars rating={Math.round(reviewAverage)} size="h-4 w-4" /><span className="mt-1 text-[11px] text-muted-foreground">{demoReviews.length} avaliações</span></div>
-          <div className="space-y-1.5">{[5,4,3,2,1].map((stars) => { const count = demoReviews.filter((review) => review.rating === stars).length; const percent = demoReviews.length ? (count / demoReviews.length) * 100 : 0; return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}><span className="w-3 text-[11px] text-muted-foreground">{stars}</span><Star className="h-3 w-3 fill-ink text-ink" /><span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span><span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span></button>; })}</div>
-        </div>
-        {reviewMedia.length > 0 && <div className="mt-5"><div className="mb-2 flex items-center justify-between"><h3 className="text-[15px] font-bold">Fotos e vídeos das avaliações</h3></div><div className="flex gap-2 overflow-x-auto pb-2">{reviewMedia.slice(0, 15).map((review) => <div key={review.id} className="w-[104px] shrink-0"><img src={review.media!} alt="Imagem da avaliação" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><p className="mt-1 truncate text-[11px] font-semibold">{review.name}</p><ReviewStars rating={review.rating} size="h-3 w-3" /></div>)}</div></div>}
-        <div className="mt-4 flex flex-wrap items-center gap-2"><button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>{[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}</div>
-        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">{filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="rounded-2xl border border-border bg-card p-3.5 shadow-sm"><div className="flex items-center gap-2.5"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-secondary text-[12px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span><div className="min-w-0 flex-1"><div className="text-[13px] font-semibold">{review.name}</div><div className="flex flex-wrap items-center gap-2"><ReviewStars rating={review.rating} /><span className="text-[11px] text-muted-foreground">{review.date}</span></div></div></div><p className="mt-3 text-[13.5px] leading-relaxed">{review.text}</p>{review.media && <img src={review.media} alt="Imagem associada à avaliação" loading="lazy" className="mt-3 h-24 w-24 rounded-xl bg-surface object-cover" />}</article>)}</div>
-        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">Nenhuma avaliação nesta faixa de estrelas na amostra.</p>}
-        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
-      </section>
       <div className="mt-5 border-t-8 border-surface p-4">
         <div className="grid grid-cols-[52px_minmax(0,1fr)_auto] items-center gap-3">
           <img src={store.logo} alt="" className="h-[52px] w-[52px] rounded-full" />
@@ -259,8 +248,32 @@ function ProductPage() {
           </div>
         ))}
       </div>
+      <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
+        <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
+        <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
+          <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center"><strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong><ReviewStars rating={Math.round(reviewAverage)} size="h-4 w-4" /><span className="mt-1 text-[11px] text-muted-foreground">{demoReviews.length} avaliações</span></div>
+          <div className="space-y-1.5">{[5,4,3,2,1].map((stars) => { const count = demoReviews.filter((review) => review.rating === stars).length; const percent = demoReviews.length ? (count / demoReviews.length) * 100 : 0; return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}><span className="w-3 text-[11px] text-muted-foreground">{stars}</span><Star className="h-3 w-3 fill-ink text-ink" /><span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span><span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span></button>; })}</div>
+        </div>
+        {reviewMedia.length > 0 && <div className="mt-5"><div className="mb-2 flex items-center justify-between gap-2"><h3 className="text-[15px] font-bold">Fotos e vídeos das avaliações</h3><button onClick={() => setShowAllReviewMedia(true)} className="shrink-0 text-[12px] font-bold text-primary">Ver tudo <ChevronRight className="inline h-4 w-4" /></button></div><div className="flex gap-2 overflow-x-auto pb-2">{reviewMedia.slice(0, 6).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[88px] shrink-0 text-left"><img src={review.media!} alt="Imagem da avaliação" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><p className="mt-1 truncate text-[11px] font-semibold">{review.name}</p><ReviewStars rating={review.rating} size="h-3 w-3" /></button>)}</div></div>}
+        <div className="mt-4 flex flex-wrap items-center gap-2"><button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>{[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}</div>
+        <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">{filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">{review.media && <img src={review.media} alt="Imagem associada à avaliação" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}<div className="flex flex-col p-2.5"><div className="flex items-center gap-2"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span><div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div></div><div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div><p className="mt-2 text-[12px] leading-snug">{review.text}</p></div></article>)}</div>
+        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">Nenhuma avaliação nesta faixa de estrelas na amostra.</p>}
+        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
+      </section>
       <div className="h-10 bg-surface" />
       <SiteFooter />
+
+      {showAllReviewMedia && (
+        <div className="fixed inset-0 z-[70] flex items-end justify-center bg-overlay sm:items-center" onClick={() => setShowAllReviewMedia(false)}>
+          <div role="dialog" aria-modal="true" aria-label="Fotos e vídeos das avaliações" className="relative max-h-[90dvh] w-full max-w-[560px] overflow-y-auto rounded-t-3xl bg-background p-4 sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
+              <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
+            </div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Imagem da avaliação" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><div className="mt-1.5 flex items-center justify-between gap-1"><span className="truncate text-[11px] font-semibold">{review.name}</span><ReviewStars rating={review.rating} size="h-3 w-3" /></div></div>)}</div>
+          </div>
+        </div>
+      )}
 
       {protect && (
         <Sheet title="Proteção do cliente" onClose={() => setProtect(false)}>
