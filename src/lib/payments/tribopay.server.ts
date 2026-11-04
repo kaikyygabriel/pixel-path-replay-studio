@@ -1,33 +1,125 @@
-import { ProviderNotConfiguredError, type PaymentProvider } from "./types";
+import { ProviderNotConfiguredError, type CreatePixInput, type PaymentProvider, type PixCharge } from "./types";
 
-/**
- * TriboPay adapter — PREPARATION ONLY.
- *
- * No endpoints, headers, payloads or status values are implemented here on
- * purpose: they must come from TriboPay's official documentation. Until then
- * every method throws ProviderNotConfiguredError and no request is made.
- *
- * Server-only. Credentials are read from process.env inside methods and must
- * never be exposed through VITE_ variables. Placeholder names (to be
- * reconciled with the docs): TRIBOPAY_API_BASE_URL, TRIBOPAY_API_KEY,
- * TRIBOPAY_WEBHOOK_SECRET.
- */
+const API_BASE = "https://api.tribopay.com.br/api/public/v1";
+// Código do produto-mãe no painel TriboPay: todos os itens do carrinho
+// são registrados sob este produto, mantendo título, preço e quantidade individuais.
+const PARENT_PRODUCT_HASH = "hnz0ihobyy";
+
+type JsonObject = Record<string, unknown>;
+
+function asObject(value: unknown): JsonObject | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? value as JsonObject : null;
+}
+
+function findString(source: unknown, keys: string[], depth = 0): string | null {
+  if (depth > 5) return null;
+  const obj = asObject(source);
+  if (!obj) return null;
+  for (const key of keys) {
+    const value = obj[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  for (const value of Object.values(obj)) {
+    const found = findString(value, keys, depth + 1);
+    if (found) return found;
+  }
+  return null;
+}
+
+function findDate(source: unknown, keys: string[], depth = 0): string | null {
+  const raw = findString(source, keys, depth);
+  if (!raw) return null;
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+function providerMessage(body: unknown): string {
+  return findString(body, ["message", "msg", "error", "description"]) ?? "A TriboPay não conseguiu criar a cobrança PIX.";
+}
+
 export const tribopay: PaymentProvider = {
   name: "TriboPay",
   isConfigured() {
-    // Stays false until the adapter is implemented against official docs,
-    // even if env vars are present.
-    return false;
+    return Boolean(process.env.TRIBOPAY_API_TOKEN?.trim());
   },
-  async createPixCharge() {
-    throw new ProviderNotConfiguredError(this.name);
+  async createPixCharge(input: CreatePixInput): Promise<PixCharge> {
+    const token = process.env.TRIBOPAY_API_TOKEN?.trim();
+    if (!token) throw new ProviderNotConfiguredError(this.name);
+
+    // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
+    // pois a TriboPay recebe a credencial como query param.
+    const url = new URL(`${API_BASE}/transactions`);
+    url.searchParams.set("api_token", token);
+
+    const payload = {
+      amount: input.amountCents,
+      payment_method: "pix",
+      expire_in_days: 1,
+      customer: {
+        name: input.customer.name,
+        email: input.customer.email,
+        phone_number: input.customer.phone.replace(/\D/g, ""),
+        document: input.customer.cpf.replace(/\D/g, ""),
+      },
+      cart: input.items.map((item) => ({
+        product_hash: PARENT_PRODUCT_HASH,
+        title: item.title,
+        price: item.unitPriceCents,
+        quantity: item.quantity,
+        operation_type: 1,
+        tangible: false,
+      })),
+    };
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+    });
+
+    let body: unknown;
+    try {
+      body = await response.json();
+    } catch {
+      throw new Error(`Resposta inválida da TriboPay (HTTP ${response.status}).`);
+    }
+
+    if (!response.ok) {
+      // Não incluir token nem URL na mensagem/console.
+      throw new Error(`TriboPay HTTP ${response.status}: ${providerMessage(body)}`);
+    }
+
+    const pixCode = findString(body, [
+      "pix_code", "pixCode", "pix_copy_paste", "pixCopyPaste",
+      "copy_paste", "copyPaste", "qr_code_text", "qrCodeText",
+      "brcode", "emv", "payload", "code",
+    ]);
+    const paymentId = findString(body, [
+      "transaction_hash", "transactionHash", "hash", "payment_id", "paymentId", "id",
+    ]);
+
+    if (!pixCode || !paymentId) {
+      // Resposta sem os campos necessários não deve ser apresentada como PIX válido.
+      throw new Error("A TriboPay respondeu, mas não retornou o identificador e o código PIX esperados.");
+    }
+
+    const expiresAt = findDate(body, [
+      "expires_at", "expiresAt", "expiration_date", "expirationDate", "expire_at", "valid_until",
+    ]) ?? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+    return {
+      paymentId,
+      status: "pending",
+      amountCents: input.amountCents,
+      pixCode,
+      expiresAt,
+    };
   },
   async getStatus() {
-    throw new ProviderNotConfiguredError(this.name);
+    throw new Error("Consulta de status TriboPay ainda não foi implementada.");
   },
   async parseWebhook() {
-    // TODO(docs): verify signature with TRIBOPAY_WEBHOOK_SECRET per official spec,
-    // dedupe by event id (idempotency), map provider status -> PaymentStatus.
-    throw new ProviderNotConfiguredError(this.name);
+    throw new Error("Validação de webhook TriboPay ainda não foi implementada.");
   },
 };
