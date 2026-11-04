@@ -2,7 +2,7 @@ import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   ChevronLeft, Search, User, Truck, Package, ShieldCheck, CreditCard, Lock, Headphones,
-  Plus, Minus, Instagram, Facebook, Youtube, Mail, BadgeCheck, ShoppingBag, Music2, ExternalLink,
+  Plus, Minus, Instagram, Facebook, Youtube, Mail, BadgeCheck, ShoppingBag,
   ShoppingCart, Bookmark, Store as StoreIcon, Scale, LogOut, X, Trash2,
 } from "lucide-react";
 import { store, getProduct, brl } from "@/lib/catalog";
@@ -183,6 +183,14 @@ const features = [
   { icon: Headphones, t: "Suporte 7 dias", s: "Atendimento humanizado" },
 ];
 
+function TikTokMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.9 2.9 0 0 1-2.9 2.9 2.9 2.9 0 1 1 2.9-2.9c0-.16-.01-.32-.04-.47V11.7a6.34 6.34 0 1 0 3.49 5.67V9.94a8.2 8.2 0 0 0 4.8 1.54V8.04a4.85 4.85 0 0 1-1.03-.11Z" />
+    </svg>
+  );
+}
+
 function Accordion({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
   const content = title === "Comece a comprar" ? (
@@ -250,19 +258,16 @@ export function SiteFooter() {
         <p className="mb-3 text-[13px] text-muted-foreground">Siga os canais oficiais do TikTok Brasil e descubra novidades, tendências e oportunidades do TikTok Shop.</p>
         <div className="flex gap-3">
           {[
-            { Icon: Music2, label: "TikTok", href: "https://linktr.ee/tiktokbrasil" },
-            { Icon: Instagram, label: "Instagram", href: "https://linktr.ee/tiktokbrasil" },
-            { Icon: Facebook, label: "Facebook", href: "https://linktr.ee/tiktokbrasil" },
-            { Icon: Youtube, label: "YouTube", href: "https://linktr.ee/tiktokbrasil" },
+            { Icon: TikTokMark, label: "TikTok", href: "https://www.tiktok.com/@tiktokbrasil" },
+            { Icon: Instagram, label: "Instagram", href: "https://www.instagram.com/tiktok/" },
+            { Icon: Facebook, label: "Facebook", href: "https://www.facebook.com/tiktokbrasil.official/" },
+            { Icon: Youtube, label: "YouTube", href: "https://www.youtube.com/channel/UCGCMBzXBLn8CxGw5aHj0_IA" },
           ].map(({ Icon, label, href }) => (
-            <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Canais oficiais TikTok Brasil — ${label}`} title={`Canais oficiais TikTok Brasil — ${label}`} className="grid h-9 w-9 place-items-center rounded-full border border-border transition-colors hover:bg-secondary">
-              <Icon className="h-4 w-4" />
+            <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`TikTok Brasil no ${label}`} title={`TikTok Brasil no ${label}`} className="grid h-9 w-9 place-items-center rounded-full border border-border transition-colors hover:bg-secondary">
+              <Icon />
             </a>
           ))}
         </div>
-        <a href="https://linktr.ee/tiktokbrasil" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-primary">
-          Ver todos os canais oficiais <ExternalLink className="h-3 w-3" />
-        </a>
       </div>
       <div className="p-4">
         <div className="overflow-hidden rounded-xl border border-border">
