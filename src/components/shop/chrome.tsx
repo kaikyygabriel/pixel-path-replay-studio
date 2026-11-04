@@ -98,11 +98,62 @@ export function TopBar({ back = false }: { back?: boolean }) {
       {state.cartOpen && <CartSheet />}
       {info && (
         <Sheet title={info} onClose={() => setInfo(null)}>
-          <p className="py-8 text-center text-[16px] text-muted-foreground">
-            {info === "Favoritos" && state.favorites.length > 0
-              ? state.favorites.map((id) => getProduct(id)?.title).filter(Boolean).join(" · ")
-              : info === "Favoritos" ? "Você ainda não salvou nenhum produto." : "Informações em breve. O lojista ainda vai cadastrar este conteúdo."}
-          </p>
+          {info === "Favoritos" ? (
+            (() => {
+              const favoriteProducts = state.favorites
+                .map((id) => getProduct(id))
+                .filter((product): product is NonNullable<typeof product> => Boolean(product));
+              return favoriteProducts.length > 0 ? (
+                <div className="space-y-3 py-3">
+                  {favoriteProducts.map((product) => (
+                    <div key={product.id} className="flex items-center gap-3 rounded-xl border border-border p-3">
+                      <Link
+                        to="/produto/$id"
+                        params={{ id: product.id }}
+                        onClick={() => setInfo(null)}
+                        aria-label={`Ver ${product.title}`}
+                        className="flex min-w-0 flex-1 items-center gap-3"
+                      >
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          loading="lazy"
+                          decoding="async"
+                          width={88}
+                          height={88}
+                          className="h-[88px] w-[88px] shrink-0 rounded-lg bg-secondary object-contain p-1"
+                        />
+                        <span className="min-w-0">
+                          <span className="line-clamp-2 block text-[14px] font-semibold leading-snug">{product.title}</span>
+                          <span className="mt-1 block text-[13px] text-muted-foreground">{product.category}</span>
+                          <span className="mt-2 block text-[16px] font-extrabold">{brl(product.price)}</span>
+                        </span>
+                      </Link>
+                      <button
+                        type="button"
+                        aria-label={`Remover ${product.title} dos favoritos`}
+                        onClick={() => update({ favorites: state.favorites.filter((id) => id !== product.id) })}
+                        className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary text-primary"
+                      >
+                        <Bookmark className="h-5 w-5 fill-current" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-10 text-center">
+                  <Bookmark className="mx-auto h-9 w-9 text-muted-foreground" />
+                  <p className="mt-3 text-[17px] font-bold">Você ainda não salvou nenhum produto.</p>
+                  <p className="mt-1 text-[14px] text-muted-foreground">Toque no marcador de um produto para adicioná-lo aos favoritos.</p>
+                  <button onClick={() => { setInfo(null); navigate({ to: "/" }); }} className="mt-5 h-11 rounded-full bg-primary px-6 text-[15px] font-bold text-primary-foreground">Explorar produtos</button>
+                </div>
+              );
+            })()
+          ) : (
+            <p className="py-8 text-center text-[16px] text-muted-foreground">
+              Informações em breve. O lojista ainda vai cadastrar este conteúdo.
+            </p>
+          )}
         </Sheet>
       )}
     </>
