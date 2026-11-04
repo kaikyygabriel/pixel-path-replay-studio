@@ -35,8 +35,11 @@ function Pagamento() {
     if (!order.product || !state.customer || !state.address) return;
     createPixPayment({
       data: {
-        amountCents: order.totals.total,
-        description: order.title,
+        items: order.items.map((item) => ({
+          productId: item.product.id,
+          variantId: item.variant?.id ?? null,
+          quantity: item.qty,
+        })),
         customer: { ...state.customer, cpf: state.address.cpf },
       },
     })
