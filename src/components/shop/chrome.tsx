@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   ChevronLeft, Search, User, Truck, Package, ShieldCheck, CreditCard, Lock, Headphones,
   Plus, Minus, Instagram, Facebook, Youtube, Mail, BadgeCheck, ShoppingBag,
@@ -170,14 +170,11 @@ function SupportForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
-  const [sent, setSent] = useState(false);
-
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const subject = encodeURIComponent("Solicitação de atendimento — TikTok Shop");
     const body = encodeURIComponent(`Nome: ${name}\nE-mail para retorno: ${email}\n\nDescrição da solicitação:\n${description}\n\nEnviado pelo formulário de atendimento.`);
     window.location.href = `mailto:e-commerce@tiktok.com?subject=${subject}&body=${body}`;
-    setSent(true);
   };
 
   return (
