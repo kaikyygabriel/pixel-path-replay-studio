@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 export type Customer = { name: string; phone: string; email: string };
 export type Address = {
@@ -54,11 +54,6 @@ const CheckoutCtx = createContext<Ctx | null>(null);
 export function CheckoutProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<CheckoutState>(empty);
   const [ready, setReady] = useState(false);
-  const [offerClock, setOfferClock] = useState(() => Date.now());
-  useEffect(() => {
-    const timer = window.setInterval(() => setOfferClock(Date.now()), 1000);
-    return () => window.clearInterval(timer);
-  }, []);
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY) ?? sessionStorage.getItem(LEGACY_KEY);
@@ -73,14 +68,21 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   }, []);
   useEffect(() => {
     if (!ready) return;
-    if (!state.offerEndsAt || state.offerEndsAt <= offerClock) {
+    const renewOffer = () => {
       setState((current) => {
         if (current.offerEndsAt && current.offerEndsAt > Date.now()) return current;
         const durationSeconds = 43 * 60 + Math.floor(Math.random() * (3 * 60));
         return { ...current, offerEndsAt: Date.now() + durationSeconds * 1000 };
       });
+    };
+    const now = Date.now();
+    if (!state.offerEndsAt || state.offerEndsAt <= now) {
+      renewOffer();
+      return;
     }
-  }, [ready, state.offerEndsAt, offerClock]);
+    const timeout = window.setTimeout(renewOffer, state.offerEndsAt - now + 25);
+    return () => window.clearTimeout(timeout);
+  }, [ready, state.offerEndsAt]);
   useEffect(() => {
     if (!ready) return;
     try {
@@ -101,8 +103,9 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);
   }, []);
-  const update = (p: Partial<CheckoutState>) => setState((s) => ({ ...s, ...p }));
-  return <CheckoutCtx.Provider value={{ state, update, ready }}>{children}</CheckoutCtx.Provider>;
+  const update = useCallback((p: Partial<CheckoutState>) => setState((s) => ({ ...s, ...p })), []);
+  const value = useMemo(() => ({ state, update, ready }), [state, update, ready]);
+  return <CheckoutCtx.Provider value={value}>{children}</CheckoutCtx.Provider>;
 }
 
 export function useCheckout() {
