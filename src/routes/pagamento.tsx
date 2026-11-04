@@ -222,13 +222,13 @@ function Pagamento() {
       <main className="mx-auto w-full max-w-[420px] space-y-2.5 px-2.5 py-3 sm:space-y-3 sm:px-3 sm:py-4">
         <div className="flex items-center gap-3 rounded-xl border border-primary/30 border-b-4 border-b-primary bg-primary-soft p-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            {unavailable ? <AlertTriangle className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
+            {unavailable ? <AlertTriangle className="h-4 w-4" /> : paymentStatus === "paid" ? <Check className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
           </span>
           <div className="min-w-0 flex-1">
             <div className="text-[15px] font-bold">{unavailable ? "Pagamento indisponível" : paymentStatus === "paid" ? "Pagamento confirmado" : charge ? "Pedido reservado" : "Gerando PIX…"}</div>
             <div className="text-[13px] text-muted-foreground">{unavailable ? result.message : paymentStatus === "paid" ? "Seu pedido foi identificado e está confirmado." : timer.left <= 0 && charge ? "Este PIX expirou. Gere uma nova cobrança para pagar." : "Pague o PIX antes que expire"}</div>
           </div>
-          {charge && (
+          {charge && paymentStatus !== "paid" && (
             <div className="flex items-center gap-1 text-[19px] font-extrabold">
               <span className="rounded-lg bg-ink px-2 py-1 text-ink-foreground">{timer.hms}</span>
             </div>
@@ -286,7 +286,7 @@ function Pagamento() {
             ) : (
               <span className="flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold text-primary-foreground"><Clock className="h-3 w-3" />FALTA 1 PASSO</span>
             )}
-            <span className="text-muted-foreground">{charge ? "Pedido reservado" : "Aguardando PIX"}</span>
+            <span className="text-muted-foreground">{paymentStatus === "paid" ? "Pagamento confirmado" : charge ? "Pedido reservado" : "Aguardando PIX"}</span>
           </div>
           <div className="p-3">
             <h2 className="text-[16px] font-extrabold">Copie o código PIX para finalizar</h2>
@@ -294,7 +294,7 @@ function Pagamento() {
             {!copied && <ArrowDown className="mx-auto mt-2 h-4 w-4 text-primary" />}
             <button
               onClick={copy}
-              disabled={!charge || timer.left <= 0}
+              disabled={!charge || timer.left <= 0 || paymentStatus === "paid"}
               aria-live="polite"
               className={`relative mt-2 flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl py-3 text-[15px] font-extrabold text-primary-foreground ring-4 transition-colors duration-300 ease-out active:scale-[0.985] disabled:opacity-40 ${copied ? "bg-success ring-success/25" : "bg-primary ring-primary/25"}`}
             >
