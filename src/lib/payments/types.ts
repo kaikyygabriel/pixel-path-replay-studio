@@ -4,6 +4,9 @@
 export type PaymentStatus = "pending" | "processing" | "paid" | "failed" | "cancelled" | "expired";
 
 export type PixCharge = {
+  /** ID do pedido interno que contém os produtos e quantidades comprados. */
+  orderId: string;
+  /** ID do depósito PIX na TriboPay. */
   paymentId: string;
   status: PaymentStatus;
   amountCents: number;
@@ -13,6 +16,7 @@ export type PixCharge = {
 };
 
 export type CreatePixInput = {
+  orderId: string;
   amountCents: number;
   description: string;
   customer: { name: string; email: string; phone: string; cpf: string };
@@ -34,6 +38,6 @@ export interface PaymentProvider {
 
 export class ProviderNotConfiguredError extends Error {
   constructor(provider: string) {
-    super(`${provider} integration is not configured`);
+    super(provider + " integration is not configured");
   }
 }
