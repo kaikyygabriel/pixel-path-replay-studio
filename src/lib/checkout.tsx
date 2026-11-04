@@ -14,9 +14,11 @@ export type Address = {
 };
 
 export type CartItem = { key: string; productId: string; variantId: string | null; qty: number };
+export type CheckoutItem = { productId: string; variantId: string | null; qty: number };
 
 export type CheckoutState = {
   cart: CartItem[];
+  checkoutItems: CheckoutItem[];
   favorites: string[];
   following: boolean;
   cartOpen: boolean;
@@ -31,6 +33,7 @@ export type CheckoutState = {
 
 const empty: CheckoutState = {
   cart: [],
+  checkoutItems: [],
   favorites: [],
   following: false,
   cartOpen: false,
