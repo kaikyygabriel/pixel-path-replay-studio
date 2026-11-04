@@ -20,7 +20,8 @@ export const Route = createFileRoute("/")({
 });
 
 function StorePage() {
-  const [following, setFollowing] = useState(false);
+  const { state, update } = useCheckout();
+  const following = state.following;
   const { state, update } = useCheckout();
   const normalizedQuery = state.searchTerm.trim().toLocaleLowerCase("pt-BR");
   const visibleProducts = products.filter((product) =>
@@ -44,7 +45,7 @@ function StorePage() {
               <span className="text-[14px] text-muted-foreground">{store.followers}</span>
               <div className="flex gap-1.5">
                 <button
-                  onClick={() => setFollowing(!following)}
+                  onClick={() => update({ following: !following })}
                   className={`h-10 rounded-lg px-5 text-[15px] font-bold ${following ? "bg-secondary text-foreground" : "bg-link text-primary-foreground"}`}
                 >
                   {following ? "Seguindo" : "Seguir"}
