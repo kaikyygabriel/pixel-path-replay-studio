@@ -207,7 +207,6 @@ function SupportForm() {
         <div className="space-y-2 text-[13px]">
           <a className="block font-medium text-primary underline" href="https://seller-br.tiktok.com/university/essay?knowledge_id=2583022047233809&lang=pt-BR" target="_blank" rel="noopener noreferrer">Política de Atendimento ao Cliente</a>
           <a className="block font-medium text-primary underline" href="https://seller-br.tiktok.com/university/essay?identity=1&knowledge_id=3268441302714113" target="_blank" rel="noopener noreferrer">Termos de Uso e Venda do TikTok Shop</a>
-          <a className="block font-medium text-primary underline" href="https://support.tiktok.com/pt_BR" target="_blank" rel="noopener noreferrer">Central de Ajuda</a>
         </div>
       </div>
     </div>
