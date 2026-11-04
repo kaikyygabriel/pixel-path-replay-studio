@@ -67,11 +67,11 @@ function Pagamento() {
 
   return (
     <div className="app-frame bg-surface pb-10">
-      <header className="sticky top-0 z-30 flex h-[58px] items-center gap-3 border-b border-ink-foreground/10 bg-ink px-3 text-ink-foreground shadow-sm">
-        <button aria-label="Voltar" onClick={() => router.history.back()} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-foreground/20 bg-ink-foreground/10">
-          <ArrowLeft className="h-5 w-5" />
+      <header className="sticky top-0 z-30 flex h-12 items-center justify-center border-b border-ink-foreground/10 bg-ink px-3 text-ink-foreground shadow-sm">
+        <button aria-label="Voltar" onClick={() => router.history.back()} className="absolute left-3 grid h-8 w-8 place-items-center rounded-lg border border-ink-foreground/20 bg-ink-foreground/10">
+          <ArrowLeft className="h-4 w-4" />
         </button>
-        <img src="/Design%20sem%20nome%20%2811%29.png" alt="TikTok Shop" width={92} height={46} loading="eager" decoding="async" className="h-11 w-[92px] object-contain object-left" />
+        <img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shop" width={150} height={42} loading="eager" decoding="async" className="h-8 w-[132px] object-contain brightness-0 invert" />
       </header>
 
       {toast && (
@@ -81,8 +81,8 @@ function Pagamento() {
         </div>
       )}
 
-      <main className="mx-auto w-full max-w-[520px] space-y-3 p-3 sm:space-y-4 sm:p-4">
-        <div className="flex items-center gap-3 rounded-2xl border border-primary/30 border-b-4 border-b-primary bg-primary-soft p-3.5">
+      <main className="mx-auto w-full max-w-[420px] space-y-2.5 px-2.5 py-3 sm:space-y-3 sm:px-3 sm:py-4">
+        <div className="flex items-center gap-3 rounded-xl border border-primary/30 border-b-4 border-b-primary bg-primary-soft p-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             {unavailable ? <AlertTriangle className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
           </span>
@@ -91,23 +91,23 @@ function Pagamento() {
             <div className="text-[13px] text-muted-foreground">{unavailable ? result.message : "Pague o PIX antes que expire"}</div>
           </div>
           {charge && (
-            <div className="flex items-center gap-1 text-[22px] font-extrabold">
+            <div className="flex items-center gap-1 text-[19px] font-extrabold">
               <span className="rounded-lg bg-ink px-2 py-1 text-ink-foreground">{timer.mm}</span>:
               <span className="rounded-lg bg-ink px-2 py-1 text-ink-foreground">{timer.ss}</span>
             </div>
           )}
         </div>
 
-        <div className="flex items-center justify-between rounded-2xl bg-card p-4 shadow-sm">
+        <div className="flex items-center justify-between rounded-xl bg-card p-3 shadow-sm">
           <div>
             <div className="text-[12px] font-bold tracking-wide text-muted-foreground">TOTAL A PAGAR</div>
-            <div className="text-[clamp(1.65rem,7vw,1.9rem)] font-extrabold leading-tight tabular-nums">{brl(order.totals.total)}</div>
+            <div className="text-[clamp(1.4rem,6vw,1.65rem)] font-extrabold leading-tight tabular-nums">{brl(order.totals.total)}</div>
           </div>
           <span className="rounded-full bg-primary-soft px-3 py-1 text-[13px] font-bold text-primary">PIX à vista</span>
         </div>
 
         {!copied && (
-          <div className="flex gap-3 rounded-2xl border border-primary/30 bg-primary-soft p-3.5">
+          <div className="flex gap-3 rounded-xl border border-primary/30 bg-primary-soft p-3">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><Copy className="h-4 w-4" /></span>
             <div>
               <div className="text-[15px] font-bold">Para pagar, você precisa copiar o código PIX</div>
@@ -116,10 +116,10 @@ function Pagamento() {
           </div>
         )}
 
-        <section className="rounded-2xl bg-card p-4 text-center shadow-sm sm:p-5" aria-label="QR Code PIX">
-          <div className="mx-auto flex aspect-square w-full max-w-[280px] items-center justify-center rounded-2xl border border-border bg-white p-3 sm:p-4">
+        <section className="rounded-xl bg-card p-3 text-center shadow-sm sm:p-4" aria-label="QR Code PIX">
+          <div className="mx-auto flex aspect-square w-full max-w-[220px] items-center justify-center rounded-2xl border border-border bg-white p-3 sm:p-4">
             {charge ? (
-              <QRCodeSVG value={charge.pixCode} size={256} level="M" marginSize={1} style={{ width: "100%", height: "auto", maxWidth: "256px" }} />
+              <QRCodeSVG value={charge.pixCode} size={210} level="M" marginSize={1} style={{ width: "100%", height: "auto", maxWidth: "210px" }} />
             ) : (
               <span className="px-3 text-[12px] text-muted-foreground">{unavailable ? "QR Code será disponibilizado quando a integração de pagamento estiver configurada." : "Gerando seu QR Code…"}</span>
             )}
@@ -127,7 +127,7 @@ function Pagamento() {
           <p className="mt-3 text-[13px] text-muted-foreground">Abra o aplicativo do seu banco e escaneie o código</p>
         </section>
 
-        <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
+        <div className="overflow-hidden rounded-xl bg-card shadow-sm">
           <div className="flex items-center gap-2 border-b border-border px-3.5 py-2.5 text-[13px]">
             {copied ? (
               <span className="flex items-center gap-1 rounded-full bg-success px-2.5 py-1 text-[11px] font-bold text-primary-foreground"><Check className="h-3 w-3" />Código copiado</span>
@@ -136,14 +136,14 @@ function Pagamento() {
             )}
             <span className="text-muted-foreground">{charge ? "Pedido reservado" : "Aguardando PIX"}</span>
           </div>
-          <div className="p-3.5">
-            <h2 className="text-[18px] font-extrabold">Copie o código PIX para finalizar</h2>
+          <div className="p-3">
+            <h2 className="text-[16px] font-extrabold">Copie o código PIX para finalizar</h2>
             <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">Copie o código, cole em PIX Copia e Cola no aplicativo do seu banco e confirme o pagamento. Depois, volte aqui para acompanhar a confirmação.</p>
             {!copied && <ArrowDown className="mx-auto mt-2 h-4 w-4 text-primary" />}
             <button
               onClick={copy}
               disabled={!charge}
-              className={`mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-[17px] font-extrabold text-primary-foreground ring-4 disabled:opacity-40 ${copied ? "bg-success ring-success/25" : "bg-primary ring-primary/25"}`}
+              className={`mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-[15px] font-extrabold text-primary-foreground ring-4 disabled:opacity-40 ${copied ? "bg-success ring-success/25" : "bg-primary ring-primary/25"}`}
             >
               {copied ? <><span className="grid h-7 w-7 place-items-center rounded-full bg-background/30"><Check className="h-4 w-4" /></span>Código copiado</> : <><Copy className="h-5 w-5" />Copiar código PIX</>}
             </button>
@@ -152,7 +152,7 @@ function Pagamento() {
                 <span className="tracking-wide text-muted-foreground">PIX COPIA E COLA</span>
                 <button onClick={copy} disabled={!charge} className={copied ? "text-success" : "text-primary disabled:opacity-40"}>{copied ? "Copiado" : "Copiar"}</button>
               </div>
-              <div className="mt-2 max-h-32 overflow-y-auto break-all [overflow-wrap:anywhere] rounded-lg border border-border bg-card p-2.5 text-left font-mono text-[10px] leading-relaxed sm:text-[11.5px]">
+              <div className="mt-2 max-h-24 overflow-y-auto break-all [overflow-wrap:anywhere] rounded-lg border border-border bg-card p-2.5 text-left font-mono text-[10px] leading-relaxed sm:text-[11.5px]">
                 {charge ? charge.pixCode : <span className="font-sans italic text-muted-foreground">O código PIX aparecerá aqui quando a integração de pagamento estiver ativa.</span>}
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground">Não copiou? <b className="text-foreground">Toque e segure</b> no código e escolha <b className="text-foreground">Copiar.</b></p>
