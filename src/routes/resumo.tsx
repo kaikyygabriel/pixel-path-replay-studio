@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/shop/chrome";
 import { BottomBar, ItemCard, LockNote, OrderSummary, Protections, Section, useOrder } from "@/components/shop/order";
 import { PixIcon } from "@/components/shop/pix-icon";
 import { useCheckout } from "@/lib/checkout";
+import { createPixPaymentOnce, getPixRequestKey } from "@/lib/payments/pix-client";
 
 export const Route = createFileRoute("/resumo")({
   head: () => ({
@@ -27,6 +28,22 @@ function Resumo() {
   if (!order.ready) return <div className="app-frame" />;
   if (!order.product) return <Navigate to="/" />;
   if (!state.address || !state.customer) return <Navigate to="/checkout" />;
+  const paymentData = order.product && state.customer && state.address ? {
+    items: order.items.map((item) => ({
+      productId: item.product.id,
+      variantId: item.variant?.id ?? null,
+      quantity: item.qty,
+    })),
+    customer: { ...state.customer, cpf: state.address.cpf },
+  } : null;
+  const startPayment = () => {
+    if (paymentData) {
+      void createPixPaymentOnce(getPixRequestKey(paymentData), paymentData).catch(() => {
+        // A página de pagamento apresenta a mensagem de erro e permite tentar novamente.
+      });
+    }
+    void navigate({ to: "/pagamento" });
+  };
   const a = state.address;
   return (
     <div className="app-frame bg-surface pb-[150px]">
@@ -58,7 +75,7 @@ function Resumo() {
       <OrderSummary order={order} />
       <Protections />
       <LockNote>Confirme seus dados antes de finalizar a compra.</LockNote>
-      <BottomBar order={order} label="Fazer pedido" icon={<ShieldCheck className="h-5 w-5" />} onClick={() => navigate({ to: "/pagamento" })} />
+      <BottomBar order={order} label="Fazer pedido" icon={<ShieldCheck className="h-5 w-5" />} onClick={startPayment} />
     </div>
   );
 }
