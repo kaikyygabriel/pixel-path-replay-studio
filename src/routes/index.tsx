@@ -44,7 +44,7 @@ function StorePage() {
   const selectedVariant = quickProduct?.variants.find((v) => v.id === quickVariant) ?? null;
   function addQuickToCart(product: Product, variant: Variant | null = null) {
     update({ cart: addToCart(state.cart, product.id, variant?.id ?? null, 1) });
-    window.dispatchEvent(new CustomEvent("shop-cart-flight", { detail: { image: variant?.image ?? product.image } }));
+    window.dispatchEvent(new CustomEvent("shop-cart-flight", { detail: { image: variant?.image ?? product.image, source: document.querySelector(`[data-cart-product="${product.id}"]`)?.getBoundingClientRect().toJSON() } }));
     setQuickProduct(null); setQuickVariant(null);
   }
   const updateShelfEdges = () => {
