@@ -1,16 +1,13 @@
 /**
- * Internal payment model. These states are OUR states — not provider statuses.
+ * Estados internos e modelo da cobrança PIX.
  */
 export type PaymentStatus = "pending" | "processing" | "paid" | "failed" | "cancelled" | "expired";
 
 export type PixCharge = {
-  /** ID do pedido interno que contém os produtos e quantidades comprados. */
   orderId: string;
-  /** ID do depósito PIX na TriboPay. */
   paymentId: string;
   status: PaymentStatus;
   amountCents: number;
-  /** PIX "copia e cola" payload issued by TriboPay. */
   pixCode: string;
   expiresAt: string;
 };
@@ -20,7 +17,7 @@ export type CreatePixInput = {
   amountCents: number;
   description: string;
   customer: { name: string; email: string; phone: string; cpf: string };
-  items: Array<{ title: string; quantity: number; unitPriceCents: number }>;
+  items: Array<{ productCode: string; variantCode: string | null; title: string; quantity: number; unitPriceCents: number }>;
 };
 
 export type CreatePixResult =
