@@ -42,7 +42,7 @@ function OfferTimer() {
   return <>{offer.hms}</>;
 }
 
-const strip = ["FRETE GRÁTIS BRASIL", "PIX APROVAÇÃO IMEDIATA", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
+const strip = ["FRETE GRÁTIS BRASIL", "ESPECIAL 25.12", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
 type DemoReview = { id: string; name: string; date: string; rating: number; text: string; media: string | null };
 const demoReviewCopy = [
   'Produto muito bonito e corresponde ao que eu esperava. Gostei bastante da compra!',
@@ -329,7 +329,7 @@ function ProductPage() {
                   </div>
                   <div className="mt-1.5 flex items-center gap-1.5 text-[12px]">
                     <span className="flex items-center gap-0.5 rounded bg-primary px-1 font-bold text-primary-foreground"><Zap className="h-3 w-3 fill-current" />Oferta Relâmpago</span>
-                    <span className="font-bold text-primary">{offer.hms}</span>
+                    <span className="font-bold text-primary"><OfferTimer /></span>
                   </div>
                   <div className="mt-1 flex items-center justify-between">
                     <div className="flex items-baseline gap-1">
