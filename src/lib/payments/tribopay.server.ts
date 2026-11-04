@@ -61,7 +61,6 @@ export const tribopay: PaymentProvider = {
       // A API valida offer_hash no nível da transação; manter também nos itens
       // do carrinho para compatibilidade com a associação produto/oferta.
       offer_hash: EXISTING_OFFER_HASH,
-      expire_in_days: 1,
       customer: {
         name: input.customer.name,
         email: input.customer.email,
@@ -117,7 +116,7 @@ export const tribopay: PaymentProvider = {
 
     const expiresAt = findDate(body, [
       "expires_at", "expiresAt", "expiration_date", "expirationDate", "expire_at", "valid_until",
-    ]) ?? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    ]) ?? new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
     return {
       paymentId,
