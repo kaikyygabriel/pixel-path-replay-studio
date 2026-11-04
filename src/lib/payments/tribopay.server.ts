@@ -67,7 +67,7 @@ export const tribopay: PaymentProvider = {
         price: item.unitPriceCents,
         quantity: item.quantity,
         operation_type: 1,
-        tangible: false,
+        tangible: true,
       })),
     };
 
@@ -93,10 +93,10 @@ export const tribopay: PaymentProvider = {
     const pixCode = findString(body, [
       "pix_code", "pixCode", "pix_copy_paste", "pixCopyPaste",
       "copy_paste", "copyPaste", "qr_code_text", "qrCodeText",
-      "brcode", "emv", "payload", "code",
+      "brcode", "emv", "payload", "qr_code", "qrcode", "pix_qr_code",
     ]);
     const paymentId = findString(body, [
-      "transaction_hash", "transactionHash", "hash", "payment_id", "paymentId", "id",
+      "transaction_hash", "transactionHash", "hash", "payment_id", "paymentId",
     ]);
 
     if (!pixCode || !paymentId) {
