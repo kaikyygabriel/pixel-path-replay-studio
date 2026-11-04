@@ -77,7 +77,7 @@ function ProductPage() {
     setTimeout(() => setAdded(false), 2200);
   }
   function go() {
-    update({ productId: p.id, variantId: variant?.id ?? null, qty });
+    update({ checkoutItems: [], productId: p.id, variantId: variant?.id ?? null, qty });
     navigate({ to: "/checkout" });
   }
 
