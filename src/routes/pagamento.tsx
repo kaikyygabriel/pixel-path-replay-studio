@@ -8,6 +8,56 @@ import { brl } from "@/lib/catalog";
 import { createPixPayment } from "@/lib/payments/payments.functions";
 import type { CreatePixResult } from "@/lib/payments/types";
 
+/**
+ * Evita criar duas cobranças para o mesmo checkout quando o React StrictMode
+ * repete effects, quando a rota remonta ou quando o cliente atualiza a página.
+ * O cache fica restrito à aba/sessão e é indexado por um fingerprint do pedido.
+ */
+const pixRequestsInFlight = new Map<string, Promise<CreatePixResult>>();
+
+function fingerprint(value: string): string {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(36) + "-" + value.length.toString(36);
+}
+
+function createPixPaymentOnce(requestKey: string, data: Parameters<typeof createPixPayment>[0]["data"]) {
+  const cacheKey = `multi-achadinhos:pix-charge:v1:${requestKey}`;
+  try {
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached) as CreatePixResult;
+      if (parsed?.ok && parsed.charge?.paymentId && parsed.charge?.pixCode) {
+        return Promise.resolve(parsed);
+      }
+    }
+  } catch {
+    // Se o armazenamento estiver indisponível, a chamada ainda pode prosseguir.
+  }
+
+  const existing = pixRequestsInFlight.get(requestKey);
+  if (existing) return existing;
+
+  const request = createPixPayment({ data })
+    .then((result) => {
+      if (result.ok) {
+        try {
+          sessionStorage.setItem(cacheKey, JSON.stringify(result));
+        } catch {
+          // A cobrança continua disponível no estado atual da página.
+        }
+      }
+      return result;
+    })
+    .finally(() => pixRequestsInFlight.delete(requestKey));
+
+  pixRequestsInFlight.set(requestKey, request);
+  return request;
+}
+
 export const Route = createFileRoute("/pagamento")({
   head: () => ({
     meta: [
@@ -31,21 +81,28 @@ function Pagamento() {
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState(false);
 
+  const paymentData = order.product && state.customer && state.address ? {
+    items: order.items.map((item) => ({
+      productId: item.product.id,
+      variantId: item.variant?.id ?? null,
+      quantity: item.qty,
+    })),
+    customer: { ...state.customer, cpf: state.address.cpf },
+  } : null;
+  const requestKey = paymentData
+    ? fingerprint(JSON.stringify(paymentData))
+    : null;
+
   useEffect(() => {
-    if (!order.product || !state.customer || !state.address) return;
-    createPixPayment({
-      data: {
-        items: order.items.map((item) => ({
-          productId: item.product.id,
-          variantId: item.variant?.id ?? null,
-          quantity: item.qty,
-        })),
-        customer: { ...state.customer, cpf: state.address.cpf },
-      },
-    })
-      .then(setResult)
-      .catch(() => setResult({ ok: false, reason: "error", message: "Não foi possível gerar o PIX." }));
-  }, [order.ready]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!paymentData || !requestKey) return;
+    let active = true;
+    createPixPaymentOnce(requestKey, paymentData)
+      .then((paymentResult) => { if (active) setResult(paymentResult); })
+      .catch(() => {
+        if (active) setResult({ ok: false, reason: "error", message: "Não foi possível gerar o PIX." });
+      });
+    return () => { active = false; };
+  }, [requestKey, order.ready]); // requestKey muda somente quando os dados do pedido mudam
 
   const charge = result?.ok ? result.charge : null;
   const timer = useCountdown(charge ? Date.parse(charge.expiresAt) : null);
@@ -95,8 +152,7 @@ function Pagamento() {
           </div>
           {charge && (
             <div className="flex items-center gap-1 text-[19px] font-extrabold">
-              <span className="rounded-lg bg-ink px-2 py-1 text-ink-foreground">{timer.mm}</span>:
-              <span className="rounded-lg bg-ink px-2 py-1 text-ink-foreground">{timer.ss}</span>
+              <span className="rounded-lg bg-ink px-2 py-1 text-ink-foreground">{timer.hms}</span>
             </div>
           )}
         </div>
