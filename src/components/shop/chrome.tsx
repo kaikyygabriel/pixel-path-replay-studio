@@ -1,7 +1,7 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
-  ChevronLeft, Search, User, Truck, Package, ShieldCheck, CreditCard, Lock, Headphones,
+  ChevronLeft, ChevronRight, Search, User, Truck, Package, ShieldCheck, CreditCard, Lock, Headphones, Ticket,
   Plus, Minus, Instagram, Facebook, Youtube, Mail, BadgeCheck, ShoppingBag,
   ShoppingCart, Bookmark, Store as StoreIcon, Scale, LogOut, X, Trash2,
 } from "lucide-react";
@@ -63,7 +63,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
     { icon: StoreIcon, t: "Vender", on: () => window.open("https://seller-br.tiktok.com/account/register?channel=ttcom_more", "_blank", "noopener,noreferrer") },
     { icon: Headphones, t: "Atendimento", on: () => setInfo("Atendimento") },
     { icon: Scale, t: "Jurídico", on: () => setInfo("Jurídico") },
-    { icon: LogOut, t: "Sair", on: () => { localStorage.removeItem("checkout-state-v2"); sessionStorage.clear(); update({ cart: [], favorites: [], following: false, customer: null, address: null, productId: null, variantId: null }); navigate({ to: "/" }); } },
+    { icon: LogOut, t: "Sair", on: () => { localStorage.removeItem("checkout-state-v2"); sessionStorage.clear(); update({ cart: [], checkoutItems: [], favorites: [], following: false, customer: null, address: null, productId: null, variantId: null }); navigate({ to: "/" }); } },
   ];
   return (
     <>
