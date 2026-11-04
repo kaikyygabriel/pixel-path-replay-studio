@@ -51,6 +51,13 @@ export const tribopay: PaymentProvider = {
     if (!token) throw new ProviderNotConfiguredError(this.name);
 
 
+    // Proteção temporária: o POST /transactions está gerando ofertas no painel.
+    // Não disparar novas cobranças até confirmar com a TriboPay o endpoint Cash-In
+    // que cria um PIX avulso sem cadastrar ofertas.
+    throw new Error(
+      "PIX temporariamente pausado para evitar a criação de novas ofertas na TriboPay. Aguardando confirmação do endpoint Cash-In."
+    );
+
     // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
     // pois a TriboPay recebe a credencial como query param.
     const url = new URL(`${API_BASE}/transactions`);
