@@ -6,19 +6,36 @@ import { useCheckout, useOfferEnd } from "@/lib/checkout";
 
 export function useOrder() {
   const { state, ready } = useCheckout();
-  const product: Product | undefined = state.productId ? getProduct(state.productId) : undefined;
-  const variant: Variant | null = product?.variants.find((v) => v.id === state.variantId) ?? null;
-  if (!product) return { ready, product: null as null };
-  const unitPrice = variant?.price ?? product.price;
-  const unitOriginal = variant?.original ?? product.original;
-  const pieces = (variant?.pieces ?? 1) * state.qty;
-  const totals = orderTotals(unitPrice * state.qty, unitOriginal * state.qty);
-  const title = variant ? `${product.checkoutTitle} · ${variant.color}` : product.checkoutTitle;
-  const image = variant?.image ?? product.image;
-  return { ready, product, variant, pieces, totals, title, image, unitPrice, unitOriginal, qty: state.qty };
+  const selected = state.checkoutItems?.length
+    ? state.checkoutItems
+    : state.productId ? [{ productId: state.productId, variantId: state.variantId, qty: state.qty }] : [];
+  const items = selected.map((entry) => {
+    const product = getProduct(entry.productId);
+    if (!product) return null;
+    const variant = product.variants.find((v) => v.id === entry.variantId) ?? null;
+    const unitPrice = variant?.price ?? product.price;
+    const unitOriginal = variant?.original ?? product.original;
+    const pieces = (variant?.pieces ?? 1) * entry.qty;
+    return {
+      product, variant, qty: entry.qty, unitPrice, unitOriginal, pieces,
+      price: unitPrice * entry.qty, original: unitOriginal * entry.qty,
+      title: variant ? `${product.checkoutTitle} · ${variant.color}` : product.checkoutTitle,
+      image: variant?.image ?? product.image,
+    };
+  }).filter((item): item is NonNullable<typeof item> => Boolean(item));
+  const first = items[0];
+  if (!first) return { ready, product: null as null, items: [] as typeof items };
+  const subtotal = items.reduce((sum, item) => sum + item.price, 0);
+  const original = items.reduce((sum, item) => sum + item.original, 0);
+  const totals = orderTotals(subtotal, original);
+  return {
+    ready, product: first.product, variant: first.variant, items,
+    pieces: items.reduce((sum, item) => sum + item.pieces, 0),
+    totals, title: items.length === 1 ? first.title : `${items.length} produtos selecionados`,
+    image: first.image, unitPrice: first.unitPrice, unitOriginal: first.unitOriginal,
+    qty: items.reduce((sum, item) => sum + item.qty, 0),
+  };
 }
-
-export type Order = Exclude<ReturnType<typeof useOrder>, { product: null }>;
 
 export function Section({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <section className={`mb-2 bg-background ${className}`}>{children}</section>;
@@ -30,31 +47,26 @@ export function ItemCard({ order, right }: { order: Order; right?: ReactNode }) 
   return (
     <Section className="px-3.5 py-3.5">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-[14px] font-extrabold">
-          {store.name} <Verified />
-        </div>
+        <div className="flex items-center gap-1.5 text-[14px] font-extrabold">{store.name} <Verified /></div>
         {right}
       </div>
-      <div className="mt-3 grid grid-cols-[64px_minmax(0,1fr)] gap-3">
-        <img src={order.image} alt="" className="h-16 w-16 rounded-lg border border-border object-contain p-1" />
-        <div className="min-w-0">
-          <div className="text-[13.5px] font-semibold leading-snug">{order.title}</div>
-          <div className="mt-1 flex items-center gap-1.5 text-[10px]">
-            <span className="flex items-center gap-0.5 rounded-sm bg-primary px-1.5 py-0.5 font-semibold text-primary-foreground"><Zap className="h-2.5 w-2.5 fill-current" />Oferta Relâmpago</span>
-            <span className="rounded-sm bg-primary-soft px-1.5 py-0.5 text-primary">{offer.mm}:{offer.ss}</span>
+      <div className="mt-3 space-y-3">
+        {order.items.map((item) => (
+          <div key={item.product.id + ":" + (item.variant?.id ?? "-")} className="grid grid-cols-[64px_minmax(0,1fr)] gap-3">
+            <img src={item.image} alt="" className="h-16 w-16 rounded-lg border border-border object-contain p-1" />
+            <div className="min-w-0">
+              <div className="text-[13.5px] font-semibold leading-snug">{item.title}</div>
+              <div className="mt-1 flex items-center gap-1.5 text-[10px]">
+                <span className="flex items-center gap-0.5 rounded-sm bg-primary px-1.5 py-0.5 font-semibold text-primary-foreground"><Zap className="h-2.5 w-2.5 fill-current" />Oferta Relâmpago</span>
+                <span className="rounded-sm bg-primary-soft px-1.5 py-0.5 text-primary">{offer.mm}:{offer.ss}</span>
+              </div>
+              <div className="mt-1 flex items-baseline justify-between text-[14px]">
+                <span><b>{brl(item.unitPrice * item.qty)}</b> <s className="text-muted-foreground">{brl(item.unitOriginal * item.qty)}</s></span>
+                <span className="text-muted-foreground">x{item.pieces}</span>
+              </div>
+            </div>
           </div>
-          <div className="mt-1 inline-flex items-center gap-1 rounded-sm bg-secondary px-1 text-[10px] font-bold">
-            <span className="h-2 w-2 rounded-full bg-gold" />Devolução gratuita
-          </div>
-        </div>
-      </div>
-      <div className="mt-1 flex items-baseline justify-between">
-        <div className="text-[15px]">
-          <span className="text-primary">-{discountPct(totals.subtotal, totals.original)}%</span>{" "}
-          <span className="font-medium">{brl(order.unitPrice)}</span>{" "}
-          <span className="text-muted-foreground line-through">{brl(order.unitOriginal)}</span>
-        </div>
-        <span className="text-[14px] text-muted-foreground">x{order.pieces}</span>
+        ))}
       </div>
     </Section>
   );
