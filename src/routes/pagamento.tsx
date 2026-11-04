@@ -6,7 +6,7 @@ import { useOrder } from "@/components/shop/order";
 import { useCheckout, useCountdown } from "@/lib/checkout";
 import { brl } from "@/lib/catalog";
 import { createPixPayment, getOrderPaymentStatus } from "@/lib/payments/payments.functions";
-import type { CreatePixResult } from "@/lib/payments/types";
+import type { CreatePixResult, PaymentStatus } from "@/lib/payments/types";
 
 /**
  * Evita criar duas cobranças para o mesmo checkout quando o React StrictMode
@@ -30,7 +30,7 @@ type PixPaymentData = {
 };
 
 function createPixPaymentOnce(requestKey: string, data: PixPaymentData) {
-  const cacheKey = `multi-achadinhos:pix-charge:v2:${requestKey}`;
+  const cacheKey = `multi-achadinhos:pix-charge:v3:${requestKey}`;
   try {
     const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
@@ -86,6 +86,7 @@ function Pagamento() {
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState(false);
   const [copyError, setCopyError] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("pending");
   const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
