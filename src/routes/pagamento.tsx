@@ -30,7 +30,7 @@ type PixPaymentData = {
 };
 
 function createPixPaymentOnce(requestKey: string, data: PixPaymentData) {
-  const cacheKey = `multi-achadinhos:pix-charge:v1:${requestKey}`;
+  const cacheKey = `multi-achadinhos:pix-charge:v2:${requestKey}`;
   try {
     const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
