@@ -154,8 +154,8 @@ export function TopBar({ back = false }: { back?: boolean }) {
           ) : (
             <div className="space-y-3 py-6 text-center">
               <p className="text-[15px] text-muted-foreground">Acesse os canais e documentos oficiais do TikTok Shop.</p>
-              <a href="https://support.tiktok.com/pt_BR" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Central de Ajuda do TikTok</a>
-              <a href="https://seller-br.tiktok.com/university/essay?knowledge_id=3912270300727057&lang=pt-BR" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Como falar com o suporte do TikTok Shop</a>
+              <button type="button" onClick={() => setInfo("Atendimento")} className="block w-full rounded-xl border border-border px-4 py-3 text-left font-semibold">Central de Ajuda do TikTok</button>
+              <button type="button" onClick={() => setInfo("Atendimento")} className="block w-full rounded-xl border border-border px-4 py-3 text-left font-semibold">Como falar com o suporte do TikTok Shop</button>
               <a href="https://seller-br.tiktok.com/university/essay?knowledge_id=2583022047233809&lang=pt-BR" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Política de Atendimento ao Cliente</a>
               <a href="https://seller-br.tiktok.com/university/essay?identity=1&knowledge_id=3268441302714113" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Termos de Uso e Venda do TikTok Shop</a>
             </div>
@@ -200,7 +200,7 @@ function SupportForm() {
         <button type="submit" className="h-12 w-full rounded-full bg-primary text-[16px] font-bold text-primary-foreground">Preparar mensagem para o suporte</button>
       </form>
       <p className="mt-4 text-[12px] leading-relaxed text-muted-foreground">
-        Ao continuar, seu aplicativo de e-mail será aberto com os dados preenchidos para você revisar e enviar. Este formulário não cria um protocolo automaticamente. Para suporte sobre pedidos, consulte também os canais oficiais dentro do TikTok Shop.
+        Ao continuar, seu aplicativo de e-mail será aberto com os dados preenchidos para você revisar e enviar. Este formulário não cria um protocolo automaticamente.
       </p>
       <div className="mt-5 border-t border-border pt-4">
         <h4 className="mb-3 text-[15px] font-bold">Políticas e informações oficiais</h4>
@@ -305,11 +305,9 @@ function Accordion({ title }: { title: string }) {
       <li><strong className="text-foreground">3.</strong> Adicione ao carrinho e finalize seu pedido com segurança.</li>
     </ul>
   ) : title === "Suporte ao cliente" ? (
-    <div className="px-4 pb-4 text-[14px] leading-relaxed text-muted-foreground">
-      <p>Precisa de ajuda com um pedido ou produto? Fale com nosso atendimento por e-mail.</p>
-      <a href="mailto:sac@multiachadinhos.tiktokshop" className="mt-2 inline-flex items-center gap-2 font-semibold text-primary">
-        <Mail className="h-4 w-4" /> sac@multiachadinhos.tiktokshop
-      </a>
+    <div className="px-4 pb-4">
+      <p className="mb-3 text-[14px] text-muted-foreground">Acesse o atendimento da plataforma.</p>
+      <button type="button" onClick={() => window.dispatchEvent(new Event("open-tiktok-support"))} className="rounded-full bg-primary px-5 py-2.5 text-[14px] font-bold text-primary-foreground">Central de ajuda / Falar com suporte</button>
     </div>
   ) : (
     <p className="px-4 pb-4 text-[14px] text-muted-foreground">As políticas e os termos da loja serão publicados aqui em breve.</p>
