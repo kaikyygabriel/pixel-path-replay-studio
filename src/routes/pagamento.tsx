@@ -123,6 +123,7 @@ function Pagamento() {
 
   useEffect(() => {
     if (!charge?.orderId) return;
+    setPaymentStatus(charge.status);
     let active = true;
     const refreshStatus = async () => {
       try {
@@ -145,7 +146,7 @@ function Pagamento() {
   if (!state.customer || !state.address) return <Navigate to="/checkout" />;
 
   async function copy() {
-    if (!charge || timer.left <= 0) return;
+    if (!charge || timer.left <= 0 || paymentStatus === "paid") return;
     let success = false;
     try {
       if (navigator.clipboard?.writeText) {
