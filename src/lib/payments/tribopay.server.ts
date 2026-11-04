@@ -66,6 +66,18 @@ async function readApiResponse(response: Response): Promise<unknown> {
   return body;
 }
 
+function makeExternalId(input: CreatePixInput): string {
+  const suffix = input.orderId.replace(/-/g, "").slice(0, 8);
+  const productRefs = [...new Set(input.items.map((item) =>
+    item.variantCode ? item.productCode + ":" + item.variantCode : item.productCode
+  ))];
+  const reference = productRefs.length === 1
+    ? productRefs[0]
+    : "multi-" + productRefs.join("+");
+  // Preserva o código real do produto e diferencia cobranças do mesmo produto.
+  return (reference + "-" + suffix).slice(0, 120);
+}
+
 export const tribopay: PaymentProvider = {
   name: "TriboPay",
   isConfigured() {
@@ -75,11 +87,10 @@ export const tribopay: PaymentProvider = {
     const token = apiToken();
     if (!token) throw new ProviderNotConfiguredError(this.name);
 
-    // O UUID do pedido é enviado como externalId. Não há product_hash/offer_hash
-    // nem chamada a /transactions: cada carrinho gera somente um Cash-In PIX.
+    // Cash-In gera somente a cobrança PIX. Sem offer_hash/product_hash e sem /transactions.
     const payload = {
       amount: input.amountCents,
-      externalId: input.orderId,
+      externalId: makeExternalId(input),
       method: "pix",
       transactionOrigin: "cashin",
       payer: {
@@ -137,8 +148,6 @@ export const tribopay: PaymentProvider = {
     return mapProviderStatus(rawStatus);
   },
   async parseWebhook() {
-    // Não aceitar postbacks até recebermos a especificação oficial de assinatura
-    // e formato. A confirmação ativa é feita pela consulta autenticada de depósito.
     throw new Error("Webhook TriboPay não habilitado: documentação de assinatura pendente.");
   },
 };
