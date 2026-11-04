@@ -225,8 +225,8 @@ function Pagamento() {
             {unavailable ? <AlertTriangle className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
           </span>
           <div className="min-w-0 flex-1">
-            <div className="text-[15px] font-bold">{unavailable ? "Pagamento indisponível" : charge ? "Pedido reservado" : "Gerando PIX…"}</div>
-            <div className="text-[13px] text-muted-foreground">{unavailable ? result.message : timer.left <= 0 && charge ? "Este PIX expirou. Gere uma nova cobrança para pagar." : "Pague o PIX antes que expire"}</div>
+            <div className="text-[15px] font-bold">{unavailable ? "Pagamento indisponível" : paymentStatus === "paid" ? "Pagamento confirmado" : charge ? "Pedido reservado" : "Gerando PIX…"}</div>
+            <div className="text-[13px] text-muted-foreground">{unavailable ? result.message : paymentStatus === "paid" ? "Seu pedido foi identificado e está confirmado." : timer.left <= 0 && charge ? "Este PIX expirou. Gere uma nova cobrança para pagar." : "Pague o PIX antes que expire"}</div>
           </div>
           {charge && (
             <div className="flex items-center gap-1 text-[19px] font-extrabold">
