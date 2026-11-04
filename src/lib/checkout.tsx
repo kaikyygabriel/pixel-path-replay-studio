@@ -108,12 +108,12 @@ export function useCountdown(target: number | null) {
   return { left, hms: `${p(h)}:${p(m)}:${p(s)}`, mm: p(Math.floor(left / 60)), ss: p(s) };
 }
 
-/** Flash-offer end time, kept for the session (32 minutes from first visit). */
+/** Flash-offer end time, kept for the session (60 minutes from first visit). */
 export function useOfferEnd() {
   const { state, update, ready } = useCheckout();
   useEffect(() => {
     if (ready && (!state.offerEndsAt || state.offerEndsAt < Date.now()))
-      update({ offerEndsAt: Date.now() + 32 * 60 * 1000 });
+      update({ offerEndsAt: Date.now() + 60 * 60 * 1000 });
   }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
   return useCountdown(state.offerEndsAt);
 }
