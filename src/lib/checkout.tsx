@@ -18,6 +18,7 @@ export type CartItem = { key: string; productId: string; variantId: string | nul
 export type CheckoutState = {
   cart: CartItem[];
   favorites: string[];
+  following: boolean;
   cartOpen: boolean;
   searchTerm: string;
   productId: string | null;
@@ -31,6 +32,7 @@ export type CheckoutState = {
 const empty: CheckoutState = {
   cart: [],
   favorites: [],
+  following: false,
   cartOpen: false,
   searchTerm: "",
   productId: null,
@@ -40,7 +42,8 @@ const empty: CheckoutState = {
   address: null,
   offerEndsAt: null,
 };
-const KEY = "checkout-state-v1";
+const KEY = "checkout-state-v2";
+const LEGACY_KEY = "checkout-state-v1";
 
 type Ctx = { state: CheckoutState; update: (p: Partial<CheckoutState>) => void; ready: boolean };
 const CheckoutCtx = createContext<Ctx | null>(null);
@@ -50,8 +53,11 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem(KEY);
-      if (raw) setState({ ...empty, ...JSON.parse(raw), cartOpen: false });
+      const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY) ?? sessionStorage.getItem(LEGACY_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw) as Partial<CheckoutState>;
+        setState({ ...empty, ...saved, cartOpen: false });
+      }
     } catch {
       /* ignore invalid or unavailable session storage */
     }
@@ -60,11 +66,23 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!ready) return;
     try {
-      sessionStorage.setItem(KEY, JSON.stringify(state));
+      localStorage.setItem(KEY, JSON.stringify(state));
     } catch {
       /* Storage may be unavailable or full; checkout remains usable in memory. */
     }
   }, [state, ready]);
+  useEffect(() => {
+    const sync = (event: StorageEvent) => {
+      if (event.key !== KEY || !event.newValue) return;
+      try {
+        setState({ ...empty, ...JSON.parse(event.newValue), cartOpen: false });
+      } catch {
+        /* Ignore malformed updates from another tab. */
+      }
+    };
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
+  }, []);
   const update = (p: Partial<CheckoutState>) => setState((s) => ({ ...s, ...p }));
   return <CheckoutCtx.Provider value={{ state, update, ready }}>{children}</CheckoutCtx.Provider>;
 }
