@@ -3,7 +3,10 @@ import { ProviderNotConfiguredError, type CreatePixInput, type PaymentProvider, 
 const API_BASE = "https://api.tribopay.com.br/api/public/v1";
 // Código do produto-mãe no painel TriboPay: todos os itens do carrinho
 // são registrados sob este produto, mantendo título, preço e quantidade individuais.
-const PARENT_PRODUCT_HASH_FALLBACK = "hnz0ihobyy";
+const PARENT_PRODUCT_HASH = "hnz0ihobyy";
+// Oferta existente informada pelo usuário (referência de R$ 10,00).
+// Reutilizada em todas as transações; nenhuma oferta é criada pela integração.
+const EXISTING_OFFER_HASH = "s6dxbbl44z";
 
 type JsonObject = Record<string, unknown>;
 
@@ -41,14 +44,11 @@ export const tribopay: PaymentProvider = {
   name: "TriboPay",
   isConfigured() {
     const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
-    const offerHash = process.env['TRIBOPAY_OFFER_HASH']?.trim();
-    return Boolean(token && offerHash);
+    return Boolean(token);
   },
   async createPixCharge(input: CreatePixInput): Promise<PixCharge> {
     const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
     if (!token) throw new ProviderNotConfiguredError(this.name);
-    const offerHash = process.env['TRIBOPAY_OFFER_HASH']?.trim();
-    if (!offerHash) throw new Error("Hash de uma oferta existente da TriboPay não configurado (TRIBOPAY_OFFER_HASH).");
 
     // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
     // pois a TriboPay recebe a credencial como query param.
@@ -66,8 +66,8 @@ export const tribopay: PaymentProvider = {
         document: input.customer.cpf.replace(/\D/g, ""),
       },
       cart: input.items.map((item) => ({
-        product_hash: PARENT_PRODUCT_HASH_FALLBACK,
-        offer_hash: offerHash,
+        product_hash: PARENT_PRODUCT_HASH,
+        offer_hash: EXISTING_OFFER_HASH,
         title: item.title,
         price: item.unitPriceCents,
         quantity: item.quantity,
