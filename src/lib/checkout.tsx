@@ -54,6 +54,11 @@ const CheckoutCtx = createContext<Ctx | null>(null);
 export function CheckoutProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<CheckoutState>(empty);
   const [ready, setReady] = useState(false);
+  const [offerClock, setOfferClock] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = window.setInterval(() => setOfferClock(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY) ?? sessionStorage.getItem(LEGACY_KEY);
@@ -66,6 +71,16 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     }
     setReady(true);
   }, []);
+  useEffect(() => {
+    if (!ready) return;
+    if (!state.offerEndsAt || state.offerEndsAt <= offerClock) {
+      setState((current) => {
+        if (current.offerEndsAt && current.offerEndsAt > Date.now()) return current;
+        const durationSeconds = 43 * 60 + Math.floor(Math.random() * (3 * 60));
+        return { ...current, offerEndsAt: Date.now() + durationSeconds * 1000 };
+      });
+    }
+  }, [ready, state.offerEndsAt, offerClock]);
   useEffect(() => {
     if (!ready) return;
     try {
@@ -111,13 +126,9 @@ export function useCountdown(target: number | null) {
   return { left, hms: `${p(h)}:${p(m)}:${p(s)}`, mm: p(Math.floor(left / 60)), ss: p(s) };
 }
 
-/** Flash-offer end time, kept for the session (60 minutes from first visit). */
+/** Shared flash-offer end time; initialized and renewed centrally for the whole visit. */
 export function useOfferEnd() {
-  const { state, update, ready } = useCheckout();
-  useEffect(() => {
-    if (ready && (!state.offerEndsAt || state.offerEndsAt < Date.now()))
-      update({ offerEndsAt: Date.now() + 60 * 60 * 1000 });
-  }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
+  const { state } = useCheckout();
   return useCountdown(state.offerEndsAt);
 }
 
