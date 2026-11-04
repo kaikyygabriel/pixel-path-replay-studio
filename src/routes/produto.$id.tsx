@@ -37,13 +37,12 @@ export const Route = createFileRoute("/produto/$id")({
   component: ProductPage,
 });
 
-const strip = ["FRETE GRÁTIS BRASIL", "PIX APROVAÇÃO IMEDIATA", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
+function OfferTimer() {\n  const offer = useOfferEnd();\n  return <>{offer.hms}</>;\n}\n\nconst strip = ["FRETE GRÁTIS BRASIL", "PIX APROVAÇÃO IMEDIATA", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
 
 function ProductPage() {
   const { product: p } = Route.useLoaderData();
   const navigate = useNavigate();
   const { state, update } = useCheckout();
-  const offer = useOfferEnd();
   const [idx, setIdx] = useState(0);
   const [sheet, setSheet] = useState<null | "buy" | "cart">(null);
   const [picked, setPicked] = useState<string | null>(null);
@@ -91,7 +90,7 @@ function ProductPage() {
       </div>
 
       <div className="relative bg-card">
-        <img src={p.gallery[idx]} alt={p.title} className="mx-auto aspect-square w-full object-contain p-4" />
+        <img src={p.gallery[idx]} alt={p.title} loading="eager" fetchPriority="high" decoding="async" width={600} height={600} className="mx-auto aspect-square w-full object-contain p-4" />
         {p.gallery.length > 1 && (
           <>
             <button aria-label="Anterior" onClick={() => setIdx((idx + p.gallery.length - 1) % p.gallery.length)} className="absolute left-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-background/85 shadow">
@@ -117,7 +116,7 @@ function ProductPage() {
         </div>
         <div className="text-right text-[12.5px] leading-tight">
           <div className="flex items-center justify-end gap-1 font-bold"><Zap className="h-4 w-4 fill-current" />Oferta Relâmpago</div>
-          <div className="mt-1">Termina em <b className="tabular-nums">{offer.hms}</b></div>
+          <div className="mt-1">Termina em <b className="tabular-nums"><OfferTimer /></b></div>
         </div>
       </div>
 
@@ -151,7 +150,7 @@ function ProductPage() {
                 onClick={() => setPicked(v.id)}
                 className={`grid w-full grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-xl border-2 bg-card p-2.5 text-left transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}
               >
-                <img src={v.image} alt="" className="h-[60px] w-[60px] rounded-lg object-cover" />
+                <img src={v.image} alt="" loading="lazy" decoding="async" width={60} height={60} className="h-[60px] w-[60px] rounded-lg object-cover" />
                 <div className="min-w-0">
                   <div className="truncate text-[14px] font-bold leading-tight">{v.line} · {v.color}</div>
                   <div className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-muted-foreground">2 de banho e 2 de rosto</div>
