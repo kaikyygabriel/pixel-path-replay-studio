@@ -24,13 +24,18 @@ function fingerprint(value: string): string {
   return (hash >>> 0).toString(36) + "-" + value.length.toString(36);
 }
 
-function createPixPaymentOnce(requestKey: string, data: Parameters<typeof createPixPayment>[0]["data"]) {
+type PixPaymentData = {
+  items: Array<{ productId: string; variantId: string | null; quantity: number }>;
+  customer: { name: string; email: string; phone: string; cpf: string };
+};
+
+function createPixPaymentOnce(requestKey: string, data: PixPaymentData) {
   const cacheKey = `multi-achadinhos:pix-charge:v1:${requestKey}`;
   try {
     const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
       const parsed = JSON.parse(cached) as CreatePixResult;
-      if (parsed?.ok && parsed.charge?.paymentId && parsed.charge?.pixCode) {
+      if (parsed?.ok && parsed.charge?.paymentId && parsed.charge?.pixCode && Date.parse(parsed.charge.expiresAt) > Date.now()) {
         return Promise.resolve(parsed);
       }
     }
