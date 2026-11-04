@@ -5,7 +5,7 @@ import { ArrowLeft, Clock, Copy, Check, ArrowDown, Smartphone, Landmark, Share2,
 import { useOrder } from "@/components/shop/order";
 import { useCheckout, useCountdown } from "@/lib/checkout";
 import { brl } from "@/lib/catalog";
-import { createPixPayment, getOrderPaymentStatus } from "@/lib/payments/payments.functions";
+import { createPixPayment, getPixPaymentStatus } from "@/lib/payments/payments.functions";
 import type { CreatePixResult, PaymentStatus } from "@/lib/payments/types";
 
 /**
@@ -127,7 +127,7 @@ function Pagamento() {
     let active = true;
     const refreshStatus = async () => {
       try {
-        const statusResult = await getOrderPaymentStatus({ data: { orderId: charge.orderId } });
+        const statusResult = await getOrderPaymentStatus({ data: { paymentId: charge.paymentId } });
         if (active && statusResult.ok) setPaymentStatus(statusResult.status);
       } catch {
         // A próxima consulta automática tentará novamente.
@@ -139,7 +139,7 @@ function Pagamento() {
       active = false;
       window.clearInterval(interval);
     };
-  }, [charge?.orderId]);
+  }, [charge?.paymentId]);
 
   if (!order.ready) return <div className="app-frame" />;
   if (!order.product) return <Navigate to="/" />;
