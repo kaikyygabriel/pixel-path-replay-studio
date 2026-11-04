@@ -15,7 +15,8 @@ export function useOrder() {
     const variant = product.variants.find((v) => v.id === entry.variantId) ?? null;
     const unitPrice = variant?.price ?? product.price;
     const unitOriginal = variant?.original ?? product.original;
-    const pieces = (variant?.pieces ?? 1) * entry.qty;
+    // A quantidade do carrinho representa unidades comerciais do produto, não peças internas do kit.
+    const pieces = entry.qty;
     return {
       product, variant, qty: entry.qty, unitPrice, unitOriginal, pieces,
       price: unitPrice * entry.qty, original: unitOriginal * entry.qty,
@@ -62,7 +63,7 @@ export function ItemCard({ order, right }: { order: Order; right?: ReactNode }) 
               </div>
               <div className="mt-1 flex items-baseline justify-between text-[14px]">
                 <span><b>{brl(item.unitPrice * item.qty)}</b> <s className="text-muted-foreground">{brl(item.unitOriginal * item.qty)}</s></span>
-                <span className="text-muted-foreground">x{item.pieces}</span>
+                <span className="text-muted-foreground">x{item.qty}</span>
               </div>
             </div>
           </div>
@@ -159,7 +160,7 @@ export function BottomBar({ order, label, onClick, icon, note }: { order: Order;
       {note}
       <SavingsBar saved={order.totals.discount} />
       <div className="flex items-baseline justify-between px-3.5 pt-2.5">
-        <span className="text-[14px] font-bold">Total ({order.pieces} itens)</span>
+        <span className="text-[14px] font-bold">Total ({order.qty} itens)</span>
         <span className="text-[19px] font-extrabold">{brl(order.totals.total)}</span>
       </div>
       <div className="px-3.5 pb-safe pt-2">
