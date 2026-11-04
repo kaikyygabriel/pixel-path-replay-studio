@@ -259,15 +259,7 @@ function Pagamento() {
           </div>
         </section>
 
-        {!copied && (
-          <div className="flex gap-3 rounded-xl border border-primary/30 bg-primary-soft p-3">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><Copy className="h-4 w-4" /></span>
-            <div>
-              <div className="text-[15px] font-bold">Para pagar, você precisa copiar o código PIX</div>
-              <div className="text-[13px] text-muted-foreground">Toque no botão abaixo do QR Code e cole no app do seu banco.</div>
-            </div>
-          </div>
-        )}
+
 
         <section className="rounded-xl bg-card p-2.5 text-center shadow-sm sm:p-4" aria-label="QR Code PIX">
           <div className="mx-auto flex aspect-square w-full max-w-[200px] items-center justify-center rounded-2xl border border-border bg-white p-2.5 sm:p-3">
@@ -290,9 +282,9 @@ function Pagamento() {
             <span className="text-muted-foreground">{paymentStatus === "paid" ? "Pagamento confirmado" : charge ? "Pedido reservado" : "Aguardando PIX"}</span>
           </div>
           <div className="p-3">
-            <h2 className="text-[16px] font-extrabold">Copie o código PIX para finalizar</h2>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">Copie o código, cole em PIX Copia e Cola no aplicativo do seu banco e confirme o pagamento. Depois, volte aqui para acompanhar a confirmação.</p>
-            {!copied && <ArrowDown className="mx-auto mt-2 h-4 w-4 text-primary" />}
+            <h2 className="text-[15px] font-extrabold">Pague com PIX Copia e Cola</h2>
+            <p className="mt-1 text-[12px] leading-snug text-muted-foreground">Copie o código abaixo, cole no app do seu banco e confirme.</p>
+            {!copied && <ArrowDown className="mx-auto mt-1.5 h-4 w-4 text-primary" />}
             <button
               onClick={copy}
               disabled={!charge || timer.left <= 0 || paymentStatus === "paid"}
@@ -304,17 +296,17 @@ function Pagamento() {
                 {copied ? <><span className="grid h-7 w-7 place-items-center rounded-full bg-background/30"><Check className="h-4 w-4" /></span>Código copiado</> : <><Copy className="h-5 w-5" />Copiar código PIX</>}
               </span>
             </button>
-            <div className="mt-3 rounded-xl bg-surface p-3">
+            <div className="mt-2.5 rounded-xl bg-surface p-2.5">
               <div className="flex items-center justify-between text-[12px] font-bold">
                 <span className="tracking-wide text-muted-foreground">PIX COPIA E COLA</span>
                 <button onClick={copy} disabled={!charge || timer.left <= 0} className={copied ? "text-success transition-colors duration-300" : "text-primary transition-colors duration-300 disabled:opacity-40"}>{copied ? "Copiado" : "Copiar"}</button>
               </div>
-              <div className="mt-2 max-h-24 overflow-y-auto break-all [overflow-wrap:anywhere] rounded-lg border border-border bg-card p-2.5 text-left font-mono text-[10px] leading-relaxed sm:text-[11.5px]">
+              <div className="mt-1.5 max-h-20 overflow-y-auto break-all [overflow-wrap:anywhere] rounded-lg border border-border bg-card p-2 text-left font-mono text-[10px] leading-snug sm:text-[11.5px]">
                 {charge ? charge.pixCode : <span className="font-sans italic text-muted-foreground">O código PIX aparecerá aqui quando a integração de pagamento estiver ativa.</span>}
               </div>
-              <p className="mt-2 text-[11px] text-muted-foreground">Não copiou? <b className="text-foreground">Toque e segure</b> no código e escolha <b className="text-foreground">Copiar.</b></p>
+              <p className="mt-1.5 text-[10px] leading-snug text-muted-foreground">Se preferir, toque e segure o código para copiar manualmente.</p>
             </div>
-            <div className="mt-4 grid grid-cols-3 text-center text-[12px] text-muted-foreground">
+            <div className="mt-3 grid grid-cols-3 text-center text-[11px] text-muted-foreground">
               {[
                 { n: 1, I: Copy, t: "Copiar código" },
                 { n: 2, I: Smartphone, t: "Abrir o banco" },
@@ -331,7 +323,7 @@ function Pagamento() {
                 );
               })}
             </div>
-            <div className="mt-4 flex items-center justify-center gap-3 border-t border-border pt-3 text-[13px] font-bold">
+            <div className="mt-3 flex items-center justify-center gap-3 border-t border-border pt-2.5 text-[12px] font-bold">
               <button
                 disabled={!charge || timer.left <= 0}
                 onClick={sharePixCode}
