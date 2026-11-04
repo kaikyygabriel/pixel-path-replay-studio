@@ -112,7 +112,6 @@ export const tribopay: PaymentProvider = {
       expiresAt,
     };
   },
-  },
   async getStatus() {
     throw new Error("Consulta de status TriboPay ainda não foi implementada.");
   },
