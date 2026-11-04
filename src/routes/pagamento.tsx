@@ -2,7 +2,6 @@ import { createFileRoute, Navigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { ArrowLeft, Clock, Copy, Check, ArrowDown, Smartphone, Landmark, Share2, ShieldCheck, AlertTriangle } from "lucide-react";
-import { BrandMark } from "@/components/shop/chrome";
 import { useOrder } from "@/components/shop/order";
 import { useCheckout, useCountdown } from "@/lib/checkout";
 import { brl } from "@/lib/catalog";
@@ -68,11 +67,11 @@ function Pagamento() {
 
   return (
     <div className="app-frame bg-surface pb-10">
-      <header className="relative flex h-[52px] items-center justify-center bg-ink text-ink-foreground">
-        <button aria-label="Voltar" onClick={() => router.history.back()} className="absolute left-3 grid h-9 w-9 place-items-center rounded-lg border border-ink-foreground/20 bg-ink-foreground/10">
+      <header className="sticky top-0 z-30 flex h-[58px] items-center gap-3 border-b border-ink-foreground/10 bg-ink px-3 text-ink-foreground shadow-sm">
+        <button aria-label="Voltar" onClick={() => router.history.back()} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-foreground/20 bg-ink-foreground/10">
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <BrandMark />
+        <img src="/Design%20sem%20nome%20%2811%29.png" alt="TikTok Shop" width={92} height={46} loading="eager" decoding="async" className="h-11 w-[92px] object-contain object-left" />
       </header>
 
       {toast && (
@@ -82,7 +81,7 @@ function Pagamento() {
         </div>
       )}
 
-      <div className="space-y-2.5 p-2.5">
+      <main className="mx-auto w-full max-w-[520px] space-y-3 p-3 sm:space-y-4 sm:p-4">
         <div className="flex items-center gap-3 rounded-2xl border border-primary/30 border-b-4 border-b-primary bg-primary-soft p-3.5">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             {unavailable ? <AlertTriangle className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
@@ -102,7 +101,7 @@ function Pagamento() {
         <div className="flex items-center justify-between rounded-2xl bg-card p-4 shadow-sm">
           <div>
             <div className="text-[12px] font-bold tracking-wide text-muted-foreground">TOTAL A PAGAR</div>
-            <div className="text-[30px] font-extrabold leading-tight">{brl(order.totals.total)}</div>
+            <div className="text-[clamp(1.65rem,7vw,1.9rem)] font-extrabold leading-tight tabular-nums">{brl(order.totals.total)}</div>
           </div>
           <span className="rounded-full bg-primary-soft px-3 py-1 text-[13px] font-bold text-primary">PIX à vista</span>
         </div>
@@ -117,16 +116,16 @@ function Pagamento() {
           </div>
         )}
 
-        <div className="rounded-2xl bg-card p-4 text-center shadow-sm">
-          <div className="mx-auto grid h-[176px] w-[176px] place-items-center rounded-2xl border border-border p-3">
+        <section className="rounded-2xl bg-card p-4 text-center shadow-sm sm:p-5" aria-label="QR Code PIX">
+          <div className="mx-auto flex aspect-square w-full max-w-[280px] items-center justify-center rounded-2xl border border-border bg-white p-3 sm:p-4">
             {charge ? (
-              <QRCodeSVG value={charge.pixCode} size={150} />
+              <QRCodeSVG value={charge.pixCode} size={256} level="M" marginSize={1} style={{ width: "100%", height: "auto", maxWidth: "256px" }} />
             ) : (
-              <span className="text-[12px] text-muted-foreground">{unavailable ? "QR Code será gerado pelo provedor de pagamento" : "Carregando…"}</span>
+              <span className="px-3 text-[12px] text-muted-foreground">{unavailable ? "QR Code será disponibilizado quando a integração de pagamento estiver configurada." : "Gerando seu QR Code…"}</span>
             )}
           </div>
-          <p className="mt-3 text-[13px] text-muted-foreground">Ou escaneie com o app do seu banco</p>
-        </div>
+          <p className="mt-3 text-[13px] text-muted-foreground">Abra o aplicativo do seu banco e escaneie o código</p>
+        </section>
 
         <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
           <div className="flex items-center gap-2 border-b border-border px-3.5 py-2.5 text-[13px]">
@@ -153,7 +152,7 @@ function Pagamento() {
                 <span className="tracking-wide text-muted-foreground">PIX COPIA E COLA</span>
                 <button onClick={copy} disabled={!charge} className={copied ? "text-success" : "text-primary disabled:opacity-40"}>{copied ? "Copiado" : "Copiar"}</button>
               </div>
-              <div className="mt-2 break-all rounded-lg border border-border bg-card p-2.5 font-mono text-[11.5px] leading-relaxed">
+              <div className="mt-2 max-h-32 overflow-y-auto break-all [overflow-wrap:anywhere] rounded-lg border border-border bg-card p-2.5 text-left font-mono text-[10px] leading-relaxed sm:text-[11.5px]">
                 {charge ? charge.pixCode : <span className="font-sans italic text-muted-foreground">O código PIX aparecerá aqui quando a integração de pagamento estiver ativa.</span>}
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground">Não copiou? <b className="text-foreground">Toque e segure</b> no código e escolha <b className="text-foreground">Copiar.</b></p>
@@ -189,7 +188,16 @@ function Pagamento() {
           </div>
         </div>
         <p className="flex items-center justify-center gap-1.5 py-2 text-[11.5px] text-muted-foreground"><ShieldCheck className="h-3.5 w-3.5 text-success" />Pagamento processado com segurança · Confirmação automática</p>
-      </div>
+      </main>
+      <footer className="mx-auto mt-2 w-full max-w-[520px] border-t border-border bg-background px-4 py-5 text-center">
+        <img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shop" width={170} height={52} loading="lazy" decoding="async" className="mx-auto h-10 w-[150px] object-contain" />
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] font-medium text-muted-foreground">
+          <span className="inline-flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5 text-success" />Ambiente protegido</span>
+          <span className="inline-flex items-center gap-1"><Landmark className="h-3.5 w-3.5" />Pagamento via PIX</span>
+        </div>
+        <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">Confira os dados e o valor antes de confirmar o pagamento no aplicativo do seu banco.</p>
+        <p className="mt-2 text-[10px] text-muted-foreground">© 2026 TikTok Shop · Todos os direitos reservados</p>
+      </footer>
     </div>
   );
 }
