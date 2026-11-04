@@ -263,7 +263,7 @@ function CartSheet() {
   const buySelected = () => {
     if (!selectedRows.length) return;
     const checkoutItems = selectedRows.map(({ i }) => ({ productId: i.productId, variantId: i.variantId, qty: i.qty }));
-    const first = checkoutItems[0];
+    const first = checkoutItems[0]; if (!first) return;
     update({ checkoutItems, productId: first.productId, variantId: first.variantId, qty: first.qty, cartOpen: false });
     navigate({ to: "/checkout" });
   };

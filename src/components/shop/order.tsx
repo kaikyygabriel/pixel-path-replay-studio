@@ -38,6 +38,8 @@ export function useOrder() {
   };
 }
 
+type Order = Extract<ReturnType<typeof useOrder>, { totals: unknown }>;
+
 export function Section({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <section className={`mb-2 bg-background ${className}`}>{children}</section>;
 }

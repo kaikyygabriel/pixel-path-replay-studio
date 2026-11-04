@@ -36,8 +36,9 @@ function StorePage() {
   const categoryFilters: { label: string; match: (p: Product) => boolean }[] = [
     { label: "Todos", match: () => true },
     { label: "Natal", match: (p) => p.category.toLocaleLowerCase("pt-BR").includes("natal") },
-    { label: "Cama, mesa e banho", match: (p) => /cama|mesa|banho|toalha/i.test(p.category) },
-    { label: "Eletroportáteis", match: (p) => /eletroportáteis/i.test(p.category) },
+    { label: "Casa & Utilidades", match: (p) => /cama|mesa|banho|toalha|casa|utilidade/i.test(p.category) },
+    { label: "Eletrônicos", match: (p) => /eletr/i.test(p.category) },
+    { label: "Moda", match: (p) => /moda|roupa|calçado|acessório/i.test(p.category) },
     { label: "Recomendados", match: () => true },
   ];
   const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true));
@@ -125,9 +126,9 @@ function StorePage() {
           ))}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
-              <h3 className="text-[16px] font-bold">{activeCategory === "natal" ? "Novidades de Natal em breve" : "Nenhum produto encontrado"}</h3>
-              <p className="mt-2 text-[13px] text-muted-foreground">{activeCategory === "natal" ? "Ainda não há produtos cadastrados nesta coleção." : "Tente buscar por outro nome ou categoria."}</p>
-              <button type="button" onClick={() => { setActiveCategory("todos"); update({ searchTerm: "" }); }} className="mt-4 text-[14px] font-semibold text-primary">Ver todos os produtos</button>
+              <h3 className="text-[16px] font-bold">{activeCategory === "Natal" ? "Novidades de Natal em breve" : "Nenhum produto encontrado"}</h3>
+              <p className="mt-2 text-[13px] text-muted-foreground">{activeCategory === "Natal" ? "Ainda não há produtos cadastrados nesta coleção." : "Tente buscar por outro nome ou categoria."}</p>
+              <button type="button" onClick={() => { setActiveCategory("Todos"); update({ searchTerm: "" }); }} className="mt-4 text-[14px] font-semibold text-primary">Ver todos os produtos</button>
             </div>
           )}
         </div>
@@ -138,6 +139,18 @@ function StorePage() {
           </div>
         )}
       </div>
+      {["Mais vendidos", "Novidades"].map((title) => (
+        <div key={title} className="px-3.5 pb-9">
+          <div className="mb-3 flex items-center gap-2">
+            <span className="h-4 w-1 rounded-full bg-primary" />
+            <h3 className="text-[17px] font-extrabold">{title}</h3>
+          </div>
+          <div className="rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
+            <p className="text-[14px] font-bold">Em breve</p>
+            <p className="mt-1 text-[13px] text-muted-foreground">Novos produtos chegando nesta seção.</p>
+          </div>
+        </div>
+      ))}
       <SiteFooter />
       {quickProduct && <Sheet title="Escolha sua opção" onClose={() => { setQuickProduct(null); setQuickVariant(null); }}>
         <div className="py-3"><div className="flex items-center gap-3"><img src={selectedVariant?.image ?? quickProduct.image} alt="" className="h-20 w-20 rounded-xl object-contain" /><div><p className="text-[14px] font-semibold">{quickProduct.title}</p><p className="mt-1 text-[17px] font-extrabold text-primary">{brl(selectedVariant?.price ?? quickProduct.price)}</p></div></div>
