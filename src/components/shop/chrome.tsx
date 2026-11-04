@@ -42,7 +42,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
     { icon: ShoppingBag, t: "Comprar", on: () => navigate({ to: "/" }) },
     { icon: ShoppingCart, t: "Meu carrinho", dot: count > 0, on: () => update({ cartOpen: true }) },
     { icon: Bookmark, t: "Favoritos", on: () => setInfo("Favoritos") },
-    { icon: StoreIcon, t: "Vender", on: () => setInfo("Vender") },
+    { icon: StoreIcon, t: "Vender", on: () => window.open("https://seller-br.tiktok.com/account/register?channel=ttcom_more", "_blank", "noopener,noreferrer") },
     { icon: Headphones, t: "Atendimento", on: () => setInfo("Atendimento") },
     { icon: Scale, t: "Jurídico", on: () => setInfo("Jurídico") },
     { icon: LogOut, t: "Sair", on: () => { localStorage.removeItem("checkout-state-v2"); sessionStorage.clear(); update({ cart: [], favorites: [], following: false, customer: null, address: null, productId: null, variantId: null }); navigate({ to: "/" }); } },
@@ -149,14 +149,71 @@ export function TopBar({ back = false }: { back?: boolean }) {
                 </div>
               );
             })()
+          ) : info === "Atendimento" ? (
+            <SupportForm />
           ) : (
-            <p className="py-8 text-center text-[16px] text-muted-foreground">
-              Informações em breve. O lojista ainda vai cadastrar este conteúdo.
-            </p>
+            <div className="space-y-3 py-6 text-center">
+              <p className="text-[15px] text-muted-foreground">Acesse os canais e documentos oficiais do TikTok Shop.</p>
+              <a href="https://support.tiktok.com/pt_BR" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Central de Ajuda do TikTok</a>
+              <a href="https://seller-br.tiktok.com/university/essay?knowledge_id=3912270300727057&lang=pt-BR" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Como falar com o suporte do TikTok Shop</a>
+              <a href="https://seller-br.tiktok.com/university/essay?knowledge_id=2583022047233809&lang=pt-BR" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Política de Atendimento ao Cliente</a>
+              <a href="https://seller-br.tiktok.com/university/essay?identity=1&knowledge_id=3268441302714113" target="_blank" rel="noopener noreferrer" className="block rounded-xl border border-border px-4 py-3 text-left font-semibold">Termos de Uso e Venda do TikTok Shop</a>
+            </div>
           )}
         </Sheet>
       )}
     </>
+  );
+}
+
+function SupportForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [description, setDescription] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const subject = encodeURIComponent("Solicitação de atendimento — TikTok Shop");
+    const body = encodeURIComponent(`Nome: ${name}\nE-mail para retorno: ${email}\n\nDescrição da solicitação:\n${description}\n\nEnviado pelo formulário de atendimento.`);
+    window.location.href = `mailto:e-commerce@tiktok.com?subject=${subject}&body=${body}`;
+    setSent(true);
+  };
+
+  return (
+    <div className="py-5">
+      <div className="mb-5 text-center">
+        <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-secondary"><Headphones className="h-6 w-6" /></div>
+        <h3 className="text-[20px] font-bold">Atendimento TikTok Shop</h3>
+        <p className="mt-1 text-[14px] text-muted-foreground">Preencha os dados para preparar sua mensagem de atendimento.</p>
+      </div>
+      <form onSubmit={submit} className="space-y-4">
+        <label className="block space-y-1.5">
+          <span className="text-[14px] font-semibold">Nome completo</span>
+          <input required autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Digite seu nome" className="h-12 w-full rounded-xl border border-border bg-background px-3 text-[15px] outline-none focus:border-primary" />
+        </label>
+        <label className="block space-y-1.5">
+          <span className="text-[14px] font-semibold">E-mail</span>
+          <input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seuemail@exemplo.com" className="h-12 w-full rounded-xl border border-border bg-background px-3 text-[15px] outline-none focus:border-primary" />
+        </label>
+        <label className="block space-y-1.5">
+          <span className="text-[14px] font-semibold">Como podemos ajudar?</span>
+          <textarea required minLength={10} rows={5} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Descreva sua dúvida ou solicitação..." className="w-full resize-y rounded-xl border border-border bg-background p-3 text-[15px] outline-none focus:border-primary" />
+        </label>
+        <button type="submit" className="h-12 w-full rounded-full bg-primary text-[16px] font-bold text-primary-foreground">Preparar mensagem para o suporte</button>
+      </form>
+      <p className="mt-4 text-[12px] leading-relaxed text-muted-foreground">
+        Ao continuar, seu aplicativo de e-mail será aberto com os dados preenchidos para você revisar e enviar. Este formulário não cria um protocolo automaticamente. Para suporte sobre pedidos, consulte também os canais oficiais dentro do TikTok Shop.
+      </p>
+      <div className="mt-5 border-t border-border pt-4">
+        <h4 className="mb-3 text-[15px] font-bold">Políticas e informações oficiais</h4>
+        <div className="space-y-2 text-[13px]">
+          <a className="block font-medium text-primary underline" href="https://seller-br.tiktok.com/university/essay?knowledge_id=2583022047233809&lang=pt-BR" target="_blank" rel="noopener noreferrer">Política de Atendimento ao Cliente</a>
+          <a className="block font-medium text-primary underline" href="https://seller-br.tiktok.com/university/essay?identity=1&knowledge_id=3268441302714113" target="_blank" rel="noopener noreferrer">Termos de Uso e Venda do TikTok Shop</a>
+          <a className="block font-medium text-primary underline" href="https://support.tiktok.com/pt_BR" target="_blank" rel="noopener noreferrer">Central de Ajuda</a>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -281,15 +338,15 @@ export function SiteFooter() {
   ];
   return (
     <footer className="bg-background">
-      <div className="flex items-center justify-between bg-ink px-4 py-4 text-ink-foreground">
+      <div className="flex items-center justify-between gap-2 bg-ink px-3 py-2 text-ink-foreground">
         <img
           src="/logo%20estendida%20tiktok%20shop.png"
           alt="TikTok Shop"
-          width={264}
-          height={80}
+          width={185}
+          height={56}
           loading="eager"
           decoding="async"
-          className="h-20 w-[264px] shrink-0 object-contain object-left"
+          className="h-14 w-[185px] shrink-0 object-contain object-left"
         />
         <div className="text-right text-[13px] leading-snug">
           <div className="font-semibold">Compre com segurança</div>
