@@ -234,11 +234,11 @@ export function SiteFooter() {
         <img
           src="/logo%20estendida%20tiktok%20shop.png"
           alt="TikTok Shop"
-          width={150}
-          height={48}
+          width={264}
+          height={80}
           loading="eager"
           decoding="async"
-          className="h-10 w-[132px] shrink-0 object-contain object-left"
+          className="h-20 w-[264px] shrink-0 object-contain object-left"
         />
         <div className="text-right text-[13px] leading-snug">
           <div className="font-semibold">Compre com segurança</div>
