@@ -1,5 +1,5 @@
 import { createFileRoute, Navigate, useRouter } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { ArrowLeft, Clock, Copy, Check, ArrowDown, Smartphone, Landmark, Share2, ShieldCheck, AlertTriangle } from "lucide-react";
 import { useOrder } from "@/components/shop/order";
@@ -85,6 +85,14 @@ function Pagamento() {
   const [result, setResult] = useState<CreatePixResult | null>(null);
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (copiedTimer.current) clearTimeout(copiedTimer.current);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+  }, []);
 
   const paymentData = order.product && state.customer && state.address ? {
     items: order.items.map((item) => ({
@@ -117,15 +125,45 @@ function Pagamento() {
   if (!state.customer || !state.address) return <Navigate to="/checkout" />;
 
   async function copy() {
-    if (!charge) return;
+    if (!charge || timer.left <= 0) return;
+    let success = false;
     try {
-      await navigator.clipboard.writeText(charge.pixCode);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(charge.pixCode);
+        success = true;
+      }
     } catch {
-      /* fall back to manual long-press */
+      // Tenta o método compatível com navegadores móveis mais antigos.
     }
+    if (!success) {
+      const field = document.createElement("textarea");
+      field.value = charge.pixCode;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      field.style.pointerEvents = "none";
+      document.body.appendChild(field);
+      field.select();
+      field.setSelectionRange(0, field.value.length);
+      try { success = document.execCommand("copy"); } catch { success = false; }
+      document.body.removeChild(field);
+    }
+    if (!success) {
+      setCopyError(true);
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+      setToast(true);
+      toastTimer.current = setTimeout(() => setToast(false), 2600);
+      return;
+    }
+    setCopyError(false);
     setCopied(true);
     setToast(true);
-    setTimeout(() => setToast(false), 2500);
+    if (copiedTimer.current) clearTimeout(copiedTimer.current);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    // O estado verde é temporário: o botão volta suavemente a "Copiar" para
+    // permitir uma nova cópia sem recarregar a página.
+    copiedTimer.current = setTimeout(() => setCopied(false), 2200);
+    toastTimer.current = setTimeout(() => setToast(false), 2600);
   }
 
   const unavailable = result && !result.ok;
@@ -141,8 +179,8 @@ function Pagamento() {
 
       {toast && (
         <div className="fixed left-1/2 top-3 z-50 flex w-[86%] max-w-[420px] -translate-x-1/2 items-center gap-3 rounded-full bg-ink px-4 py-2.5 text-ink-foreground shadow-lg">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-success"><Check className="h-4 w-4" /></span>
-          <div className="text-[13px] leading-tight"><b className="block text-[15px]">Código PIX copiado</b>Cole em “PIX Copia e Cola” no seu banco</div>
+          <span className={`grid h-8 w-8 place-items-center rounded-full ${copyError ? "bg-destructive" : "bg-success"}`}>{copyError ? <AlertTriangle className="h-4 w-4" /> : <Check className="h-4 w-4" />}</span>
+          <div className="text-[13px] leading-tight"><b className="block text-[15px]">{copyError ? "Não foi possível copiar" : "Código PIX copiado"}</b>{copyError ? "Selecione e copie o código manualmente." : "Cole em “PIX Copia e Cola” no seu banco"}</div>
         </div>
       )}
 
@@ -153,7 +191,7 @@ function Pagamento() {
           </span>
           <div className="min-w-0 flex-1">
             <div className="text-[15px] font-bold">{unavailable ? "Pagamento indisponível" : charge ? "Pedido reservado" : "Gerando PIX…"}</div>
-            <div className="text-[13px] text-muted-foreground">{unavailable ? result.message : "Pague o PIX antes que expire"}</div>
+            <div className="text-[13px] text-muted-foreground">{unavailable ? result.message : timer.left <= 0 && charge ? "Este PIX expirou. Gere uma nova cobrança para pagar." : "Pague o PIX antes que expire"}</div>
           </div>
           {charge && (
             <div className="flex items-center gap-1 text-[19px] font-extrabold">
@@ -206,15 +244,16 @@ function Pagamento() {
             {!copied && <ArrowDown className="mx-auto mt-2 h-4 w-4 text-primary" />}
             <button
               onClick={copy}
-              disabled={!charge}
-              className={`mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-[15px] font-extrabold text-primary-foreground ring-4 disabled:opacity-40 ${copied ? "bg-success ring-success/25" : "bg-primary ring-primary/25"}`}
+              disabled={!charge || timer.left <= 0}
+              aria-live="polite"
+              className={`mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-[15px] font-extrabold text-primary-foreground ring-4 transition-all duration-300 ease-out active:scale-[0.985] disabled:opacity-40 ${copied ? "bg-success ring-success/25" : "bg-primary ring-primary/25"}`}
             >
               {copied ? <><span className="grid h-7 w-7 place-items-center rounded-full bg-background/30"><Check className="h-4 w-4" /></span>Código copiado</> : <><Copy className="h-5 w-5" />Copiar código PIX</>}
             </button>
             <div className="mt-3 rounded-xl bg-surface p-3">
               <div className="flex items-center justify-between text-[12px] font-bold">
                 <span className="tracking-wide text-muted-foreground">PIX COPIA E COLA</span>
-                <button onClick={copy} disabled={!charge} className={copied ? "text-success" : "text-primary disabled:opacity-40"}>{copied ? "Copiado" : "Copiar"}</button>
+                <button onClick={copy} disabled={!charge || timer.left <= 0} className={copied ? "text-success transition-colors duration-300" : "text-primary transition-colors duration-300 disabled:opacity-40"}>{copied ? "Copiado" : "Copiar"}</button>
               </div>
               <div className="mt-2 max-h-24 overflow-y-auto break-all [overflow-wrap:anywhere] rounded-lg border border-border bg-card p-2.5 text-left font-mono text-[10px] leading-relaxed sm:text-[11.5px]">
                 {charge ? charge.pixCode : <span className="font-sans italic text-muted-foreground">O código PIX aparecerá aqui quando a integração de pagamento estiver ativa.</span>}
@@ -240,7 +279,7 @@ function Pagamento() {
             </div>
             <div className="mt-4 flex items-center justify-center gap-3 border-t border-border pt-3 text-[13px] font-bold">
               <button
-                disabled={!charge}
+                disabled={!charge || timer.left <= 0}
                 onClick={() => charge && navigator.share?.({ text: charge.pixCode }).catch(() => {})}
                 className="flex items-center gap-1 text-primary disabled:opacity-40"
               >
