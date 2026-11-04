@@ -22,7 +22,7 @@ export const Route = createFileRoute("/api/public/webhooks/tribopay")({
           const event = await tribopay.parseWebhook(raw, request.headers);
           // TODO: idempotent update of the stored order by event.eventId / paymentId.
           void event;
-          return new Response(null, { status: 204 });
+          return new Response("ok", { status: 200, headers: { "content-type": "text/plain; charset=utf-8" } });
         } catch {
           return new Response(null, { status: 401 });
         }
