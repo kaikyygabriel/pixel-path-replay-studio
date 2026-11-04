@@ -37,7 +37,12 @@ export const Route = createFileRoute("/produto/$id")({
   component: ProductPage,
 });
 
-function OfferTimer() {\n  const offer = useOfferEnd();\n  return <>{offer.hms}</>;\n}\n\nconst strip = ["FRETE GRÁTIS BRASIL", "PIX APROVAÇÃO IMEDIATA", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
+function OfferTimer() {
+  const offer = useOfferEnd();
+  return <>{offer.hms}</>;
+}
+
+const strip = ["FRETE GRÁTIS BRASIL", "PIX APROVAÇÃO IMEDIATA", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
 
 function ProductPage() {
   const { product: p } = Route.useLoaderData();
