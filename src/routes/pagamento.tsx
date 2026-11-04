@@ -5,7 +5,7 @@ import { ArrowLeft, Clock, Copy, Check, ArrowDown, Smartphone, Landmark, Share2,
 import { useOrder } from "@/components/shop/order";
 import { useCheckout, useCountdown } from "@/lib/checkout";
 import { brl } from "@/lib/catalog";
-import { createPixPayment } from "@/lib/payments/payments.functions";
+import { createPixPayment, getOrderPaymentStatus } from "@/lib/payments/payments.functions";
 import type { CreatePixResult } from "@/lib/payments/types";
 
 /**
