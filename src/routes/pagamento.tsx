@@ -80,12 +80,14 @@ export const Route = createFileRoute("/pagamento")({
 
 function Pagamento() {
   const order = useOrder();
-  const { state } = useCheckout();
+  const { state, update } = useCheckout();
   const router = useRouter();
   const [result, setResult] = useState<CreatePixResult | null>(null);
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState(false);
   const [copyError, setCopyError] = useState(false);
+  const [expiryTransition, setExpiryTransition] = useState(false);
+  const expiryHandled = useRef(false);
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("pending");
   const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -120,6 +122,17 @@ function Pagamento() {
 
   const charge = result?.ok ? result.charge : null;
   const timer = useCountdown(charge ? Date.parse(charge.expiresAt) : null);
+
+  useEffect(() => {
+    if (!charge || timer.left > 0 || paymentStatus === "paid" || expiryHandled.current) return;
+    expiryHandled.current = true;
+    setExpiryTransition(true);
+    const timeout = window.setTimeout(() => {
+      update({ checkoutItems: [], cartOpen: true });
+      void router.navigate({ to: "/" });
+    }, 1100);
+    return () => window.clearTimeout(timeout);
+  }, [charge?.paymentId, timer.left, paymentStatus]);
 
   useEffect(() => {
     if (!charge?.orderId) return;
