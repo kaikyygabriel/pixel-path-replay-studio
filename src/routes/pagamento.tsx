@@ -121,6 +121,25 @@ function Pagamento() {
   const charge = result?.ok ? result.charge : null;
   const timer = useCountdown(charge ? Date.parse(charge.expiresAt) : null);
 
+  useEffect(() => {
+    if (!charge?.orderId) return;
+    let active = true;
+    const refreshStatus = async () => {
+      try {
+        const statusResult = await getOrderPaymentStatus({ data: { orderId: charge.orderId } });
+        if (active && statusResult.ok) setPaymentStatus(statusResult.status);
+      } catch {
+        // A próxima consulta automática tentará novamente.
+      }
+    };
+    void refreshStatus();
+    const interval = window.setInterval(() => void refreshStatus(), 5000);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+    };
+  }, [charge?.orderId]);
+
   if (!order.ready) return <div className="app-frame" />;
   if (!order.product) return <Navigate to="/" />;
   if (!state.customer || !state.address) return <Navigate to="/checkout" />;
