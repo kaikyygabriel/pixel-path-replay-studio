@@ -50,15 +50,6 @@ export const tribopay: PaymentProvider = {
     const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
     if (!token) throw new ProviderNotConfiguredError(this.name);
 
-    // PROTEÇÃO DE PRODUÇÃO:
-    // O usuário confirmou que POST /transactions está criando uma nova oferta
-    // para valores dinâmicos. A documentação disponível não descreve um fluxo
-    // PIX avulso sem oferta nem sobrescrita de preço comprovada. Bloqueamos a
-    // chamada antes de atingir a TriboPay para impedir novas ofertas/cobranças
-    // até existir um endpoint oficialmente suportado para cobrança dinâmica.
-    throw new Error(
-      "Geração PIX temporariamente pausada: a TriboPay está criando ofertas automaticamente para cada valor. A integração será reativada após validar um fluxo de cobrança sem criação de ofertas."
-    );
 
     // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
     // pois a TriboPay recebe a credencial como query param.
