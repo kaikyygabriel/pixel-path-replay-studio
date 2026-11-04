@@ -140,3 +140,20 @@
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
+/* Barra de progresso do feedback de cópia PIX: reinicia a cada cópia. */
+@keyframes pix-copy-progress {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+.pix-copy-progress {
+  animation: pix-copy-progress 2.2s linear forwards;
+  transform-origin: left center;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pix-copy-progress {
+    animation-duration: 0.01ms;
+  }
+}
