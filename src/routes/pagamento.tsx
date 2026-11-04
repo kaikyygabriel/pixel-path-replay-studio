@@ -127,7 +127,7 @@ function Pagamento() {
     let active = true;
     const refreshStatus = async () => {
       try {
-        const statusResult = await getOrderPaymentStatus({ data: { paymentId: charge.paymentId } });
+        const statusResult = await getPixPaymentStatus({ data: { paymentId: charge.paymentId } });
         if (active && statusResult.ok) setPaymentStatus(statusResult.status);
       } catch {
         // A próxima consulta automática tentará novamente.
