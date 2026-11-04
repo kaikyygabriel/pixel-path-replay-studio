@@ -166,6 +166,21 @@ function Pagamento() {
     toastTimer.current = setTimeout(() => setToast(false), 2600);
   }
 
+  async function sharePixCode() {
+    if (!charge || timer.left <= 0) return;
+    if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+      try {
+        // Envia exclusivamente o payload PIX, sem título, descrição ou dados do pedido.
+        await navigator.share({ text: charge.pixCode });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        // Se o compartilhamento nativo falhar, oferece cópia como alternativa.
+      }
+    }
+    await copy();
+  }
+
   const unavailable = result && !result.ok;
 
   return (
@@ -246,9 +261,12 @@ function Pagamento() {
               onClick={copy}
               disabled={!charge || timer.left <= 0}
               aria-live="polite"
-              className={`mt-2 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-[15px] font-extrabold text-primary-foreground ring-4 transition-all duration-300 ease-out active:scale-[0.985] disabled:opacity-40 ${copied ? "bg-success ring-success/25" : "bg-primary ring-primary/25"}`}
+              className={`relative mt-2 flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl py-3 text-[15px] font-extrabold text-primary-foreground ring-4 transition-colors duration-300 ease-out active:scale-[0.985] disabled:opacity-40 ${copied ? "bg-success ring-success/25" : "bg-primary ring-primary/25"}`}
             >
-              {copied ? <><span className="grid h-7 w-7 place-items-center rounded-full bg-background/30"><Check className="h-4 w-4" /></span>Código copiado</> : <><Copy className="h-5 w-5" />Copiar código PIX</>}
+              {copied && <span key="copy-progress" aria-hidden="true" className="pix-copy-progress pointer-events-none absolute inset-x-0 bottom-0 z-0 h-1 origin-left bg-white/80" />}
+              <span className="relative z-10 inline-flex items-center justify-center gap-2">
+                {copied ? <><span className="grid h-7 w-7 place-items-center rounded-full bg-background/30"><Check className="h-4 w-4" /></span>Código copiado</> : <><Copy className="h-5 w-5" />Copiar código PIX</>}
+              </span>
             </button>
             <div className="mt-3 rounded-xl bg-surface p-3">
               <div className="flex items-center justify-between text-[12px] font-bold">
@@ -280,8 +298,9 @@ function Pagamento() {
             <div className="mt-4 flex items-center justify-center gap-3 border-t border-border pt-3 text-[13px] font-bold">
               <button
                 disabled={!charge || timer.left <= 0}
-                onClick={() => charge && navigator.share?.({ text: charge.pixCode }).catch(() => {})}
-                className="flex items-center gap-1 text-primary disabled:opacity-40"
+                onClick={sharePixCode}
+                className="flex min-h-10 items-center gap-1 rounded-md px-2 text-primary transition-colors hover:bg-primary/5 active:scale-[0.98] disabled:opacity-40"
+                aria-label="Compartilhar somente o código PIX"
               >
                 <Share2 className="h-4 w-4" />Compartilhar código
               </button>
