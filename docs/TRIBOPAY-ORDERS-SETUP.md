@@ -1,31 +1,25 @@
-# TriboPay + pedidos persistentes
+# TriboPay Cash-In PIX com referência de produto
 
-O checkout grava cada pedido no Supabase antes de solicitar o PIX. O UUID do pedido é enviado à TriboPay como \`externalId\`, e o ID do depósito retornado fica gravado no mesmo registro. Assim, os itens e as quantidades permanecem associados à cobrança sem criar ofertas novas.
+O checkout utiliza diretamente a Cash API da TriboPay para criar um PIX dinâmico. Não depende de Supabase nem de banco externo para gerar a cobrança.
 
-## 1. Banco
+O campo \`externalId\` recebe o código interno do produto (e da variação, quando existir), acompanhado de um sufixo curto e único para diferenciar compras do mesmo produto. Em carrinhos com mais de um produto, a referência começa com \`multi-\` e contém os códigos dos itens.
 
-Execute o SQL de \`supabase/migrations/20261104000000_create_orders.sql\` no SQL Editor do projeto Supabase.
+Exemplos de referência:
+- \`chaleira-unitermi-atacama-a1b2c3d4\`
+- \`jogo-toalhas-karsten:bosco-azul-a1b2c3d4\`
+- \`multi-chaleira-unitermi-atacama+jogo-toalhas-karsten-a1b2c3d4\`
 
-## 2. Secrets do servidor
+A cobrança continua sendo um único PIX dinâmico pelo total do carrinho. Não é criada oferta e não são enviados \`offer_hash\` ou \`product_hash\`.
 
-Configure no ambiente de execução do site:
+## Configuração
 
-- \`SUPABASE_URL\`: URL do projeto Supabase.
-- \`SUPABASE_SERVICE_ROLE_KEY\`: chave service_role do projeto. Somente no servidor; nunca use prefixo \`VITE_\`.
-- \`TRIBOPAY_API_TOKEN\`: token da Cash API TriboPay já utilizado para gerar PIX.
+Mantenha apenas o Secret de servidor:
+- \`TRIBOPAY_API_TOKEN\`
 
-Não coloque esses valores no código-fonte nem em variáveis públicas do navegador.
+Opcionalmente, \`TRIBOPAY_API_KEY\` é aceito como nome legado. Nunca coloque o token em variável \`VITE_\` nem no código do navegador.
 
-## 3. Confirmação
+## Confirmação
 
-A página consulta a Cash API no servidor a cada 5 segundos e atualiza o pedido com os estados documentados \`pending\`, \`paid\`, \`expired\` e \`cancelled\`. A consulta usa \`GET /deposits/{id}\`.
+A página consulta \`GET /deposits/{hash}\` diretamente pela Cash API e atualiza o estado do PIX. A confirmação não depende de banco de pedidos.
 
-O webhook permanece desativado até recebermos a documentação oficial de assinatura/autenticação e formato do evento. Nenhuma notificação pública é considerada prova de pagamento.
-
-## 4. Privacidade e segurança
-
-O banco guarda o resumo dos produtos, quantidades, valores, dados básicos do comprador, ID do depósito e estado do pedido. O CPF não é persistido pelo aplicativo. A chave service_role e o token TriboPay são usados apenas em código de servidor.
-
-## 5. Importante
-
-Sem configurar os dois secrets do Supabase e executar a migration, o checkout não cria novas cobranças: isso evita gerar PIX sem um pedido persistido para vinculá-lo.
+O webhook permanece desativado até recebermos a documentação oficial de assinatura/autenticação e formato do evento.
