@@ -40,10 +40,10 @@ function providerMessage(body: unknown): string {
 export const tribopay: PaymentProvider = {
   name: "TriboPay",
   isConfigured() {
-    return Boolean((process.env.TRIBOPAY_API_TOKEN ?? process.env.TRIBOPAY_API_KEY)?.trim());
+    return Boolean((process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim());
   },
   async createPixCharge(input: CreatePixInput): Promise<PixCharge> {
-    const token = (process.env.TRIBOPAY_API_TOKEN ?? process.env.TRIBOPAY_API_KEY)?.trim();
+    const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
     if (!token) throw new ProviderNotConfiguredError(this.name);
 
     // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
@@ -62,7 +62,7 @@ export const tribopay: PaymentProvider = {
         document: input.customer.cpf.replace(/\D/g, ""),
       },
       cart: input.items.map((item) => ({
-        product_hash: process.env.TRIBOPAY_PRODUCT_HASH?.trim() || PARENT_PRODUCT_HASH_FALLBACK,
+        product_hash: process.env['TRIBOPAY_PRODUCT_HASH']?.trim() || PARENT_PRODUCT_HASH_FALLBACK,
         title: item.title,
         price: item.unitPriceCents,
         quantity: item.quantity,
