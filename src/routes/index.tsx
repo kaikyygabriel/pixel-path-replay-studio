@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Share2, Ticket, ShoppingCart } from "lucide-react";
-import { useState } from "react";
 import { TopBar, SiteFooter, Verified } from "@/components/shop/chrome";
 import { products, store, brl, discountPct } from "@/lib/catalog";
 import { useCheckout } from "@/lib/checkout";
@@ -22,7 +21,6 @@ export const Route = createFileRoute("/")({
 function StorePage() {
   const { state, update } = useCheckout();
   const following = state.following;
-  const { state, update } = useCheckout();
   const normalizedQuery = state.searchTerm.trim().toLocaleLowerCase("pt-BR");
   const visibleProducts = products.filter((product) =>
     [product.title, product.cardTitle, product.category]
