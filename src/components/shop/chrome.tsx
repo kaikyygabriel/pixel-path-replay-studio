@@ -45,7 +45,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
     { icon: StoreIcon, t: "Vender", on: () => setInfo("Vender") },
     { icon: Headphones, t: "Atendimento", on: () => setInfo("Atendimento") },
     { icon: Scale, t: "Jurídico", on: () => setInfo("Jurídico") },
-    { icon: LogOut, t: "Sair", on: () => { sessionStorage.clear(); update({ cart: [], favorites: [], customer: null, address: null, productId: null, variantId: null }); navigate({ to: "/" }); } },
+    { icon: LogOut, t: "Sair", on: () => { localStorage.removeItem("checkout-state-v2"); sessionStorage.clear(); update({ cart: [], favorites: [], following: false, customer: null, address: null, productId: null, variantId: null }); navigate({ to: "/" }); } },
   ];
   return (
     <>
@@ -287,7 +287,7 @@ export function SiteFooter() {
         </div>
       </div>
       <p className="border-t border-border py-5 text-center text-[12px] text-muted-foreground">
-        © 2026 {store.brandName} · Todos os direitos reservados
+        © 2026 TikTok Shop · Todos os direitos reservados
       </p>
     </footer>
   );
