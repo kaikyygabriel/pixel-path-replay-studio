@@ -68,8 +68,9 @@ export const tribopay: PaymentProvider = {
         document: input.customer.cpf.replace(/\D/g, ""),
       },
       cart: input.items.map((item) => ({
+        // A documentação define offer_hash somente no nível da transação.
+        // Dentro de cada item do cart deve existir apenas o product_hash.
         product_hash: PARENT_PRODUCT_HASH,
-        offer_hash: EXISTING_OFFER_HASH,
         title: item.title,
         price: item.unitPriceCents,
         quantity: item.quantity,
