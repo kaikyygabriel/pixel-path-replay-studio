@@ -58,6 +58,9 @@ export const tribopay: PaymentProvider = {
     const payload = {
       amount: input.amountCents,
       payment_method: "pix",
+      // A API valida offer_hash no nível da transação; manter também nos itens
+      // do carrinho para compatibilidade com a associação produto/oferta.
+      offer_hash: EXISTING_OFFER_HASH,
       expire_in_days: 1,
       customer: {
         name: input.customer.name,
