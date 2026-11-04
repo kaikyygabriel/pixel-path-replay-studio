@@ -66,7 +66,7 @@ export const tribopay: PaymentProvider = {
         document: input.customer.cpf.replace(/\D/g, ""),
       },
       cart: input.items.map((item) => ({
-        product_hash: process.env['TRIBOPAY_PRODUCT_HASH']?.trim() || PARENT_PRODUCT_HASH_FALLBACK,
+        product_hash: PARENT_PRODUCT_HASH_FALLBACK,
         offer_hash: offerHash,
         title: item.title,
         price: item.unitPriceCents,
