@@ -5,7 +5,7 @@ import {
   Plus, Minus, Instagram, Facebook, Youtube, Mail, BadgeCheck, ShoppingBag,
   ShoppingCart, Bookmark, Store as StoreIcon, Scale, LogOut, X, Trash2,
 } from "lucide-react";
-import { store, getProduct, brl } from "@/lib/catalog";
+import { store, products, getProduct, brl } from "@/lib/catalog";
 import { useCheckout, setCartQty } from "@/lib/checkout";
 
 export function Verified({ className = "h-4 w-4" }: { className?: string }) {
@@ -30,14 +30,16 @@ export function TopBar({ back = false }: { back?: boolean }) {
   const { state, update } = useCheckout();
   const [menu, setMenu] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
   const profileButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (!menu) return;
-    const h = (e: PointerEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setMenu(false); };
+    if (!menu && !searchFocused) return;
+    const h = (e: PointerEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setMenu(false); if (searchRef.current && !searchRef.current.contains(e.target as Node)) setSearchFocused(false); };
     document.addEventListener("pointerdown", h);
     return () => document.removeEventListener("pointerdown", h);
-  }, [menu]);
+  }, [menu, searchFocused]);
   useEffect(() => {
     const fly = (event: Event) => {
       const detail = (event as CustomEvent<{ image: string; source?: { x: number; y: number; width: number; height: number } }>).detail;
@@ -74,27 +76,24 @@ export function TopBar({ back = false }: { back?: boolean }) {
           </button>
         )}
         <Link to="/" aria-label="TikTok Shopping" className="flex h-10 w-[72px] shrink-0 items-center justify-center overflow-visible"><img src="/Design%20sem%20nome%20%2811%29.png" alt="TikTok Shopping" width={68} height={48} loading="eager" decoding="async" className="block h-12 w-[68px] max-w-none shrink-0 object-contain" /></Link>
-        <label className="flex h-10 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
-          <Search className="h-5 w-5 shrink-0 text-primary" />
-          <input
-            aria-label="Buscar produtos"
-            type="search"
-            value={state.searchTerm}
-            onChange={(event) => update({ searchTerm: event.target.value })}
-            placeholder="Buscar produtos"
-            className="w-full min-w-0 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground"
-          />
-          {state.searchTerm && (
-            <button
-              type="button"
-              aria-label="Limpar busca"
-              onClick={() => update({ searchTerm: "" })}
-              className="shrink-0 rounded-md px-2 py-1 text-[13px] font-semibold text-primary"
-            >
-              Limpar
-            </button>
-          )}
-        </label>
+        <div ref={searchRef} className="relative min-w-0">
+          <label className="flex h-10 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
+            <Search className="h-5 w-5 shrink-0 text-primary" />
+            <input aria-label="Buscar produtos" type="search" value={state.searchTerm} onFocus={() => setSearchFocused(true)} onChange={(event) => update({ searchTerm: event.target.value })} placeholder="Buscar produtos" className="w-full min-w-0 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground" />
+            {state.searchTerm && <button type="button" aria-label="Limpar busca" onClick={() => update({ searchTerm: "" })} className="shrink-0 rounded-md px-2 py-1 text-[13px] font-semibold text-primary">Limpar</button>}
+          </label>
+          {searchFocused && state.searchTerm.trim().length >= 2 && (() => {
+            const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
+            const query = normalize(state.searchTerm.trim());
+            const matches = products.filter((product) => [product.title, product.cardTitle, product.category].some((value) => normalize(value).includes(query))).slice(0, 6);
+            return <div role="listbox" aria-label="Sugestões de produtos" className="absolute left-0 right-0 top-[46px] z-[55] max-h-[min(65vh,420px)] overflow-y-auto rounded-xl border border-border bg-popover p-1.5 shadow-xl">
+              {matches.length ? matches.map((product) => <button key={product.id} type="button" role="option" aria-selected="false" onMouseDown={(event) => event.preventDefault()} onClick={() => { setSearchFocused(false); update({ searchTerm: "" }); navigate({ to: "/produto/$id", params: { id: product.id } }); }} className="flex w-full items-center gap-3 rounded-lg p-2 text-left hover:bg-secondary">
+                <img src={product.image} alt="" className="h-12 w-12 shrink-0 rounded-lg bg-secondary object-contain" />
+                <span className="min-w-0 flex-1"><span className="block line-clamp-2 text-[13px] font-semibold">{product.title}</span><span className="mt-0.5 block text-[12px] text-muted-foreground">{brl(product.price)}</span></span>
+              </button>) : <p className="px-3 py-4 text-center text-[13px] text-muted-foreground">Nenhum produto encontrado na loja.</p>}
+            </div>;
+          })()}
+        </div>
         <div ref={ref} className="relative">
           <button ref={profileButton} aria-label="Menu da conta" aria-expanded={menu} onClick={() => setMenu(!menu)} className="relative grid h-10 w-10 place-items-center rounded-full bg-secondary">
             <User className="h-6 w-6" />
@@ -330,7 +329,7 @@ const features = [
   { icon: Truck, t: "Frete grátis", s: "Em todos os produtos" },
   { icon: Package, t: "Envio expresso", s: "Embalagem protegida" },
   { icon: ShieldCheck, t: "Compra protegida", s: "Lacrada com nota fiscal" },
-  { icon: CreditCard, t: "Pagamento PIX", s: "Aprovação imediata" },
+  { icon: CreditCard, t: "Pagamento PIX", s: "ESPECIAL 25.12" },
   { icon: Lock, t: "Site seguro", s: "Criptografia SSL 256-bit" },
   { icon: Headphones, t: "Suporte 7 dias", s: "Atendimento humanizado" },
 ];
