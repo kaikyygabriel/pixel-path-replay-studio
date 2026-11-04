@@ -1,9 +1,41 @@
 import { useState, type ReactNode } from "react";
 import { ArrowLeft, Check, ChevronDown, ChevronsUpDown, Lock, MapPin, X } from "lucide-react";
 import { useCheckout, type Address, type Customer } from "@/lib/checkout";
-import { UFS, digits, isValidCpf, isValidEmail, maskCep, maskCpf, maskPhone } from "@/lib/br";
+import { UFS, digits, isValidEmail, maskCep, maskCpf, maskPhone } from "@/lib/br";
 
 const field = "h-[54px] w-full rounded-xl bg-field px-4 text-[16px] outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/40";
+const TEST_DDDS = [11,12,13,14,15,16,17,18,19,21,22,24,31,32,33,34,35,37,38,41,42,43,44,45,46,51,53,54,55,61,62,63,65,67,68,69,71,73,75,79,81,82,83,85,86,88,91,92,95,96,98,99];
+
+function generateTestCpf() {
+  const calculateDigit = (digitsPassed: number[]) => {
+    const weight = digitsPassed.length + 1;
+    const sum = digitsPassed.reduce((total, digit, index) => total + digit * (weight - index), 0);
+    const remainder = sum % 11;
+    return remainder < 2 ? 0 : 11 - remainder;
+  };
+
+  let cpf = "";
+  do {
+    const firstNine = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10));
+    const firstDigit = calculateDigit(firstNine);
+    const secondDigit = calculateDigit([...firstNine, firstDigit]);
+    cpf = [...firstNine, firstDigit, secondDigit].join("");
+  } while (/^(\\d)\\1+$/.test(cpf));
+
+  return maskCpf(cpf);
+}
+
+function generateTestPhone() {
+  const ddd = TEST_DDDS[Math.floor(Math.random() * TEST_DDDS.length)];
+  const subscriber = Array.from({ length: 8 }, () => Math.floor(Math.random() * 10)).join("");
+  return maskPhone(`${ddd}9${subscriber}`);
+}
+
+function testEmailAddress(value: string) {
+  const localPart = value.trim().split("@")[0];
+  return `${localPart}@sharkbot.com`;
+}
+
 
 function Shell({ title, onClose, onBack, children }: { title: string; onClose: () => void; onBack?: () => void; children: ReactNode }) {
   return (
@@ -46,11 +78,11 @@ export function CustomerSheet({ onClose, onNext }: { onClose: () => void; onNext
   function submit() {
     const e: typeof err = {};
     if (c.name.trim().split(/\s+/).length < 2) e.name = "Informe nome e sobrenome";
-    if (digits(c.phone).length < 10) e.phone = "Telefone inválido";
+    
     if (!isValidEmail(c.email)) e.email = "E-mail inválido";
     setErr(e);
     if (Object.keys(e).length) return;
-    update({ customer: c });
+    update({ customer: { ...c, phone: generateTestPhone(), email: testEmailAddress(c.email) } });
     onNext();
   }
   const Err = ({ k }: { k: keyof Customer }) => (err[k] ? <p className="mt-1 text-[12px] text-primary">{err[k]}</p> : null);
@@ -110,10 +142,10 @@ export function AddressSheet({ onClose, onBack, onDone }: { onClose: () => void;
     if (!a.district.trim()) e.district = "Obrigatório";
     if (!a.city.trim()) e.city = "Obrigatório";
     if (!a.uf) e.uf = "Obrigatório";
-    if (!isValidCpf(a.cpf)) e.cpf = "CPF inválido";
+    
     setErr(e);
     if (Object.keys(e).length) return;
-    update({ address: a });
+    update({ address: { ...a, cpf: generateTestCpf() } });
     onDone();
   }
   const bad = (k: keyof Address) => (err[k] ? "ring-2 ring-primary" : "");
