@@ -48,7 +48,7 @@ export const createPixPayment = createServerFn({ method: "POST" })
 
     const { tribopay } = await import("./tribopay.server");
     if (!tribopay.isConfigured()) {
-      return { ok: false, reason: "unavailable", message: "Configure no servidor o token da TriboPay e o hash de uma oferta existente (TRIBOPAY_OFFER_HASH)." };
+      return { ok: false, reason: "unavailable", message: "Configure o Secret TRIBOPAY_API_TOKEN no servidor para ativar a integração TriboPay." };
     }
 
     try {
