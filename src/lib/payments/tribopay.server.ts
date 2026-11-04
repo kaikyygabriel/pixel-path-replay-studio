@@ -40,11 +40,15 @@ function providerMessage(body: unknown): string {
 export const tribopay: PaymentProvider = {
   name: "TriboPay",
   isConfigured() {
-    return Boolean((process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim());
+    const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
+    const offerHash = process.env['TRIBOPAY_OFFER_HASH']?.trim();
+    return Boolean(token && offerHash);
   },
   async createPixCharge(input: CreatePixInput): Promise<PixCharge> {
     const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
     if (!token) throw new ProviderNotConfiguredError(this.name);
+    const offerHash = process.env['TRIBOPAY_OFFER_HASH']?.trim();
+    if (!offerHash) throw new Error("Hash de uma oferta existente da TriboPay não configurado (TRIBOPAY_OFFER_HASH).");
 
     // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
     // pois a TriboPay recebe a credencial como query param.
@@ -63,6 +67,7 @@ export const tribopay: PaymentProvider = {
       },
       cart: input.items.map((item) => ({
         product_hash: process.env['TRIBOPAY_PRODUCT_HASH']?.trim() || PARENT_PRODUCT_HASH_FALLBACK,
+        offer_hash: offerHash,
         title: item.title,
         price: item.unitPriceCents,
         quantity: item.quantity,
