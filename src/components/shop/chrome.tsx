@@ -79,7 +79,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
         <div ref={searchRef} className="relative min-w-0">
           <label className="flex h-10 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
             <Search className="h-5 w-5 shrink-0 text-primary" />
-            <input aria-label="Buscar produtos" type="search" value={state.searchTerm} onFocus={() => setSearchFocused(true)} onChange={(event) => update({ searchTerm: event.target.value })} placeholder="Buscar produtos" className="w-full min-w-0 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground" />
+            <input aria-label="Buscar produtos" type="search" value={state.searchTerm} onFocus={() => setSearchFocused(true)} onChange={(event) => update({ searchTerm: event.target.value })} placeholder="Buscar produtos" className="w-full min-w-0 bg-transparent text-base outline-none placeholder:text-muted-foreground" />
             {state.searchTerm && <button type="button" aria-label="Limpar busca" onClick={() => update({ searchTerm: "" })} className="shrink-0 rounded-md px-2 py-1 text-[13px] font-semibold text-primary">Limpar</button>}
           </label>
           {searchFocused && state.searchTerm.trim().length >= 2 && (() => {
