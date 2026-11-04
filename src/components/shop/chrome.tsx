@@ -248,13 +248,26 @@ export function Sheet({ title, onClose, children }: { title: string; onClose: ()
 function CartSheet() {
   const { state, update } = useCheckout();
   const navigate = useNavigate();
+  const [selected, setSelected] = useState<string[]>(state.cart.map((item) => item.key));
+  const [couponOpen, setCouponOpen] = useState(false);
   const close = () => update({ cartOpen: false });
   const rows = state.cart.map((i) => {
     const p = getProduct(i.productId);
-    const v = p?.variants.find((x) => x.id === i.variantId) ?? null;
+    const v = p?.variants.find((item) => item.id === i.variantId) ?? null;
     return p ? { i, p, v, price: v?.price ?? p.price, image: v?.image ?? p.image } : null;
   }).filter((r): r is NonNullable<typeof r> => !!r);
-  const total = rows.reduce((n, r) => n + r.price * r.i.qty, 0);
+  const selectedRows = rows.filter((row) => selected.includes(row.i.key));
+  const total = selectedRows.reduce((sum, row) => sum + row.price * row.i.qty, 0);
+  const allSelected = rows.length > 0 && rows.every((row) => selected.includes(row.i.key));
+  const toggleAll = () => setSelected(allSelected ? [] : rows.map((row) => row.i.key));
+  const toggle = (key: string) => setSelected((current) => current.includes(key) ? current.filter((item) => item !== key) : [...current, key]);
+  const buySelected = () => {
+    if (!selectedRows.length) return;
+    const checkoutItems = selectedRows.map(({ i }) => ({ productId: i.productId, variantId: i.variantId, qty: i.qty }));
+    const first = checkoutItems[0];
+    update({ checkoutItems, productId: first.productId, variantId: first.variantId, qty: first.qty, cartOpen: false });
+    navigate({ to: "/checkout" });
+  };
   return (
     <Sheet title="Meu carrinho" onClose={close}>
       {rows.length === 0 ? (
@@ -264,32 +277,49 @@ function CartSheet() {
           <button onClick={() => { close(); navigate({ to: "/" }); }} className="mt-6 h-14 w-full rounded-full bg-primary text-[18px] font-bold text-primary-foreground">Ver ofertas</button>
         </div>
       ) : (
-        <div className="py-3">
+        <div className="py-3 pb-5">
+          <div className="mb-2 flex items-center justify-between border-b border-border pb-3">
+            <label className="flex items-center gap-2 text-[14px] font-semibold">
+              <input type="checkbox" checked={allSelected} onChange={toggleAll} className="h-4 w-4 accent-primary" />
+              Selecionar todos
+            </label>
+            <span className="text-[12px] text-muted-foreground">{selectedRows.length} de {rows.length} selecionados</span>
+          </div>
           {rows.map(({ i, p, v, price, image }) => (
-            <div key={i.key} className="grid grid-cols-[72px_minmax(0,1fr)] gap-3 border-b border-border py-3">
-              <img src={image} alt="" loading="lazy" decoding="async" width={72} height={72} className="h-[72px] w-[72px] rounded-xl border border-border object-contain p-1" />
+            <div key={i.key} className="grid grid-cols-[22px_64px_minmax(0,1fr)] gap-2 border-b border-border py-3">
+              <input aria-label={`Selecionar ${p.title}`} type="checkbox" checked={selected.includes(i.key)} onChange={() => toggle(i.key)} className="mt-2 h-4 w-4 accent-primary" />
+              <img src={image} alt="" loading="lazy" decoding="async" width={64} height={64} className="h-16 w-16 rounded-xl border border-border object-contain p-1" />
               <div className="min-w-0">
-                <div className="line-clamp-2 text-[15px] font-semibold leading-snug">{p.title}</div>
-                {v && <div className="text-[13px] text-muted-foreground">{v.line} · {v.color}</div>}
+                <div className="line-clamp-2 text-[14px] font-semibold leading-snug">{p.title}</div>
+                {v && <div className="text-[12px] text-muted-foreground">{v.line} · {v.color}</div>}
                 <div className="mt-2 flex items-center justify-between gap-2">
-                  <span className="text-[17px] font-extrabold">{brl(price * i.qty)}</span>
-                  <div className="flex items-center gap-2">
+                  <span className="text-[16px] font-extrabold">{brl(price * i.qty)}</span>
+                  <div className="flex items-center gap-1">
                     <div className="flex items-center rounded-lg border border-border">
-                      <button aria-label="Diminuir" onClick={() => update({ cart: setCartQty(state.cart, i.key, i.qty - 1) })} className="grid h-9 w-9 place-items-center"><Minus className="h-4 w-4" /></button>
-                      <span className="w-7 text-center text-[16px] font-semibold">{i.qty}</span>
-                      <button aria-label="Aumentar" onClick={() => update({ cart: setCartQty(state.cart, i.key, i.qty + 1) })} className="grid h-9 w-9 place-items-center"><Plus className="h-4 w-4" /></button>
+                      <button aria-label="Diminuir" onClick={() => update({ cart: setCartQty(state.cart, i.key, i.qty - 1) })} className="grid h-8 w-8 place-items-center"><Minus className="h-4 w-4" /></button>
+                      <span className="w-6 text-center text-[14px] font-semibold">{i.qty}</span>
+                      <button aria-label="Aumentar" onClick={() => update({ cart: setCartQty(state.cart, i.key, i.qty + 1) })} className="grid h-8 w-8 place-items-center"><Plus className="h-4 w-4" /></button>
                     </div>
-                    <button aria-label="Remover" onClick={() => update({ cart: setCartQty(state.cart, i.key, 0) })} className="grid h-9 w-9 place-items-center rounded-lg bg-secondary"><Trash2 className="h-4 w-4" /></button>
+                    <button aria-label="Remover" onClick={() => { update({ cart: setCartQty(state.cart, i.key, 0) }); setSelected((current) => current.filter((key) => key !== i.key)); }} className="grid h-8 w-8 place-items-center rounded-lg bg-secondary"><Trash2 className="h-4 w-4" /></button>
                   </div>
                 </div>
-                <button
-                  onClick={() => { update({ productId: p.id, variantId: i.variantId, qty: i.qty, cartOpen: false }); navigate({ to: "/checkout" }); }}
-                  className="mt-2 h-10 w-full rounded-full bg-primary text-[15px] font-bold text-primary-foreground"
-                >Comprar este item</button>
               </div>
             </div>
           ))}
-          <div className="flex items-center justify-between py-4 text-[18px] font-bold"><span>Total do carrinho</span><span>{brl(total)}</span></div>
+          <button onClick={() => setCouponOpen(true)} className="mt-3 flex w-full items-center justify-between rounded-xl border border-border p-3 text-left">
+            <span className="flex items-center gap-2 text-[14px] font-semibold"><Ticket className="h-5 w-5 text-primary" />Descontos do pedido</span>
+            <span className="flex items-center gap-2"><span className="rounded bg-teal-soft px-2 py-1 text-[12px] font-semibold text-teal-ink">Frete grátis</span><ChevronRight className="h-4 w-4" /></span>
+          </button>
+          <div className="mt-3 flex items-center justify-between text-[17px] font-bold"><span>Total selecionado</span><span>{brl(total)}</span></div>
+          <button disabled={!selectedRows.length} onClick={buySelected} className="mt-3 h-12 w-full rounded-full bg-primary text-[16px] font-extrabold text-primary-foreground disabled:opacity-40">Comprar ({selectedRows.length})</button>
+          {couponOpen && <Sheet title="Cupons do pedido" onClose={() => setCouponOpen(false)}>
+            <div className="flex items-center gap-3 py-5">
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-teal-soft text-teal-ink"><Truck className="h-6 w-6" /></span>
+              <div className="min-w-0 flex-1"><div className="font-bold">Frete grátis</div><div className="text-[13px] text-muted-foreground">Cupom obrigatório aplicado nesta primeira compra.</div></div>
+              <span className="rounded-full bg-teal-soft px-3 py-1 text-[12px] font-bold text-teal-ink">Ativo</span>
+            </div>
+            <p className="pb-5 text-[13px] text-muted-foreground">O desconto nos produtos é calculado automaticamente conforme os itens selecionados; ele não é um cupom.</p>
+          </Sheet>}
         </div>
       )}
     </Sheet>
