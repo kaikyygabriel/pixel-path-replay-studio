@@ -145,7 +145,7 @@ function CartSheet() {
         <div className="py-3">
           {rows.map(({ i, p, v, price, image }) => (
             <div key={i.key} className="grid grid-cols-[72px_minmax(0,1fr)] gap-3 border-b border-border py-3">
-              <img src={image} alt="" className="h-[72px] w-[72px] rounded-xl border border-border object-contain p-1" />
+              <img src={image} alt="" loading="lazy" decoding="async" width={72} height={72} className="h-[72px] w-[72px] rounded-xl border border-border object-contain p-1" />
               <div className="min-w-0">
                 <div className="line-clamp-2 text-[15px] font-semibold leading-snug">{p.title}</div>
                 {v && <div className="text-[13px] text-muted-foreground">{v.line} · {v.color}</div>}
@@ -272,7 +272,7 @@ export function SiteFooter() {
       <div className="p-4">
         <div className="overflow-hidden rounded-xl border border-border">
           <div className="flex items-center gap-3 p-4">
-            <img src={store.logo} alt="" className="h-12 w-12 shrink-0 rounded-xl" />
+            <img src={store.logo} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-xl" />
             <div className="min-w-0">
               <div className="flex items-center gap-1 text-[16px] font-bold">{store.brandName} <Verified /></div>
               <div className="text-[12px] text-muted-foreground">Loja oficial</div>
