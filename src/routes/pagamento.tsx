@@ -29,6 +29,69 @@ type PixPaymentData = {
   customer: { name: string; email: string; phone: string; cpf: string };
 };
 
+type SyntheticCustomer = PixPaymentData["customer"];
+
+const syntheticCustomers = new Map<string, SyntheticCustomer>();
+
+function randomDigits(length: number): string {
+  const values = new Uint8Array(length);
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    crypto.getRandomValues(values);
+    return Array.from(values, (value) => String(value % 10)).join("");
+  }
+  return Array.from({ length }, () => String(Math.floor(Math.random() * 10))).join("");
+}
+
+function generateSyntheticCpf(): string {
+  const digits = randomDigits(9).split("").map(Number);
+  const firstSum = digits.reduce((sum, digit, index) => sum + digit * (10 - index), 0);
+  const firstCheck = (firstSum * 10) % 11 % 10;
+  const secondSum = [...digits, firstCheck].reduce((sum, digit, index) => sum + digit * (11 - index), 0);
+  const secondCheck = (secondSum * 10) % 11 % 10;
+  return [...digits, firstCheck, secondCheck].join("");
+}
+
+function generateSyntheticPhone(): string {
+  const ddds = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32", "33", "34", "35", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "53", "54", "55", "61", "62", "63", "64", "65", "66", "67", "68", "69", "71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "98", "99"];
+  const ddd = ddds[Math.floor(Math.random() * ddds.length)];
+  return `+55 (${ddd}) 9${randomDigits(8).replace(/(\d{4})(\d{4})/, "$1-$2")}`;
+}
+
+function getSyntheticCustomer(customer: SyntheticCustomer, enteredCpf: string): SyntheticCustomer {
+  const cacheKey = fingerprint(`${customer.name}|${customer.email}|${customer.phone}|${enteredCpf}`);
+  const storageKey = `multi-achadinhos:test-customer:v1:${cacheKey}`;
+  const cachedInMemory = syntheticCustomers.get(storageKey);
+  if (cachedInMemory) return cachedInMemory;
+
+  try {
+    const cached = sessionStorage.getItem(storageKey);
+    if (cached) {
+      const parsed = JSON.parse(cached) as SyntheticCustomer;
+      if (parsed?.email?.endsWith("@sharkbot.com") && /^\d{11}$/.test(parsed.cpf) && /^\+55/.test(parsed.phone)) {
+        syntheticCustomers.set(storageKey, parsed);
+        return parsed;
+      }
+    }
+  } catch {
+    // O teste continua mesmo se o armazenamento da sessão estiver indisponível.
+  }
+
+  const emailLocalPart = customer.email.trim().split("@")[0];
+  const synthetic: SyntheticCustomer = {
+    ...customer,
+    email: `${emailLocalPart}@sharkbot.com`,
+    phone: generateSyntheticPhone(),
+    cpf: generateSyntheticCpf(),
+  };
+  syntheticCustomers.set(storageKey, synthetic);
+  try {
+    sessionStorage.setItem(storageKey, JSON.stringify(synthetic));
+  } catch {
+    // O valor permanece estável enquanto esta página estiver montada.
+  }
+  return synthetic;
+}
+
 function createPixPaymentOnce(requestKey: string, data: PixPaymentData) {
   const cacheKey = `multi-achadinhos:pix-charge:v3:${requestKey}`;
   try {
@@ -103,7 +166,7 @@ function Pagamento() {
       variantId: item.variant?.id ?? null,
       quantity: item.qty,
     })),
-    customer: { ...state.customer, cpf: state.address.cpf },
+    customer: getSyntheticCustomer(state.customer, state.address.cpf),
   } : null;
   const requestKey = paymentData
     ? fingerprint(JSON.stringify(paymentData))
