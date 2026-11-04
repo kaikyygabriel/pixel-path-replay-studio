@@ -55,7 +55,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
             <ChevronLeft className="h-7 w-7" />
           </button>
         )}
-        <Link to="/" aria-label="TikTok Shopping" className="flex h-10 w-[72px] shrink-0 items-center justify-center overflow-visible"><img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shopping" width={68} height={48} loading="eager" decoding="async" className="block h-12 w-[68px] max-w-none shrink-0 object-contain" /></Link>
+        <Link to="/" aria-label="TikTok Shopping" className="flex h-10 w-[72px] shrink-0 items-center justify-center overflow-visible"><img src="/Design%20sem%20nome%20%2811%29.png" alt="TikTok Shopping" width={68} height={48} loading="eager" decoding="async" className="block h-12 w-[68px] max-w-none shrink-0 object-contain" /></Link>
         <label className="flex h-10 min-w-0 items-center gap-2 rounded-xl border-[1.5px] border-primary px-3">
           <Search className="h-5 w-5 shrink-0 text-primary" />
           <input
@@ -232,7 +232,7 @@ export function SiteFooter() {
     <footer className="bg-background">
       <div className="flex items-center justify-between bg-ink px-4 py-4 text-ink-foreground">
         <img
-          src="/Design%20sem%20nome%20%2811%29.png"
+          src="/logo%20estendida%20tiktok%20shop.png"
           alt="TikTok Shop"
           width={150}
           height={48}
