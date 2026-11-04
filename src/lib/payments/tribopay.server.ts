@@ -3,7 +3,7 @@ import { ProviderNotConfiguredError, type CreatePixInput, type PaymentProvider, 
 const API_BASE = "https://api.tribopay.com.br/api/public/v1";
 // Código do produto-mãe no painel TriboPay: todos os itens do carrinho
 // são registrados sob este produto, mantendo título, preço e quantidade individuais.
-const PARENT_PRODUCT_HASH = "hnz0ihobyy";
+const PARENT_PRODUCT_HASH_FALLBACK = "hnz0ihobyy";
 
 type JsonObject = Record<string, unknown>;
 
@@ -40,10 +40,10 @@ function providerMessage(body: unknown): string {
 export const tribopay: PaymentProvider = {
   name: "TriboPay",
   isConfigured() {
-    return Boolean(process.env.TRIBOPAY_API_TOKEN?.trim());
+    return Boolean((process.env.TRIBOPAY_API_TOKEN ?? process.env.TRIBOPAY_API_KEY)?.trim());
   },
   async createPixCharge(input: CreatePixInput): Promise<PixCharge> {
-    const token = process.env.TRIBOPAY_API_TOKEN?.trim();
+    const token = (process.env.TRIBOPAY_API_TOKEN ?? process.env.TRIBOPAY_API_KEY)?.trim();
     if (!token) throw new ProviderNotConfiguredError(this.name);
 
     // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
@@ -62,7 +62,7 @@ export const tribopay: PaymentProvider = {
         document: input.customer.cpf.replace(/\D/g, ""),
       },
       cart: input.items.map((item) => ({
-        product_hash: PARENT_PRODUCT_HASH,
+        product_hash: process.env.TRIBOPAY_PRODUCT_HASH?.trim() || PARENT_PRODUCT_HASH_FALLBACK,
         title: item.title,
         price: item.unitPriceCents,
         quantity: item.quantity,
