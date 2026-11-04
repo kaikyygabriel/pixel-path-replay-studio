@@ -132,3 +132,11 @@
     transform: translateX(-50%);
   }
 }
+
+/* Remove the injected Lovable editing badge from the storefront. */
+#lovable-badge,
+#lovable-badge * {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
