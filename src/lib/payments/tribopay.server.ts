@@ -1,12 +1,7 @@
+import { randomUUID } from "node:crypto";
 import { ProviderNotConfiguredError, type CreatePixInput, type PaymentProvider, type PixCharge } from "./types";
 
-const API_BASE = "https://api.tribopay.com.br/api/public/v1";
-// Código do produto-mãe no painel TriboPay: todos os itens do carrinho
-// são registrados sob este produto, mantendo título, preço e quantidade individuais.
-const PARENT_PRODUCT_HASH = "hnz0ihobyy";
-// Oferta existente informada pelo usuário (referência de R$ 10,00).
-// Reutilizada em todas as transações; nenhuma oferta é criada pela integração.
-const EXISTING_OFFER_HASH = "s6dxbbl44z";
+const CASH_API_BASE = "https://api.tribopay.com.br/api/public/cash";
 
 type JsonObject = Record<string, unknown>;
 
@@ -51,48 +46,36 @@ export const tribopay: PaymentProvider = {
     if (!token) throw new ProviderNotConfiguredError(this.name);
 
 
-    // Proteção temporária: o POST /transactions está gerando ofertas no painel.
-    // Não disparar novas cobranças até confirmar com a TriboPay o endpoint Cash-In
-    // que cria um PIX avulso sem cadastrar ofertas.
-    throw new Error(
-      "PIX temporariamente pausado para evitar a criação de novas ofertas na TriboPay. Aguardando confirmação do endpoint Cash-In."
-    );
-
-    // Token permanece exclusivamente no servidor. Nunca registrar esta URL,
-    // pois a TriboPay recebe a credencial como query param.
-    const url = new URL(`${API_BASE}/transactions`);
-    url.searchParams.set("api_token", token);
+    // Cash-In gera um depósito PIX diretamente, sem usar /transactions
+    // e sem enviar product_hash ou offer_hash.
+    const externalId = randomUUID();
+    const configuredPostback = process.env["TRIBOPAY_POSTBACK_URL"]?.trim();
+    const appUrl = process.env["APP_URL"]?.trim() || process.env["VITE_APP_URL"]?.trim();
+    const postbackUrl = configuredPostback || (appUrl
+      ? `${appUrl.replace(/\\/$/, "")}/api/public/webhooks/tribopay`
+      : undefined);
 
     const payload = {
       amount: input.amountCents,
-      payment_method: "pix",
-      // A API valida offer_hash no nível da transação; manter também nos itens
-      // do carrinho para compatibilidade com a associação produto/oferta.
-      offer_hash: EXISTING_OFFER_HASH,
-      customer: {
+      externalId,
+      ...(postbackUrl ? { postbackUrl } : {}),
+      method: "pix",
+      transactionOrigin: "cashin",
+      payer: {
         name: input.customer.name,
         email: input.customer.email,
-        phone_number: input.customer.phone.replace(/\D/g, ""),
-        document: input.customer.cpf.replace(/\D/g, ""),
+        document: input.customer.cpf.replace(/\\D/g, ""),
+        phone: { number: input.customer.phone.replace(/\\D/g, "") },
       },
-      cart: input.items.map((item) => ({
-        // A documentação define offer_hash somente no nível da transação.
-        // Dentro de cada item do cart deve existir apenas o product_hash.
-        product_hash: PARENT_PRODUCT_HASH,
-        title: item.title,
-        price: item.unitPriceCents,
-        quantity: item.quantity,
-        operation_type: 1,
-        tangible: true,
-      })),
     };
 
-    // Única operação realizada aqui: POST /transactions. Não há chamadas para
-    // endpoints de criação/edição de produtos ou ofertas; os hashes abaixo são
-    // referências fixas de registros já existentes no painel.
-    const response = await fetch(url, {
+    const response = await fetch(`${CASH_API_BASE}/deposits/pix`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify(payload),
       cache: "no-store",
     });
@@ -101,31 +84,25 @@ export const tribopay: PaymentProvider = {
     try {
       body = await response.json();
     } catch {
-      throw new Error(`Resposta inválida da TriboPay (HTTP ${response.status}).`);
+      throw new Error(`Resposta inválida da Cash API (HTTP ${response.status}).`);
     }
 
     if (!response.ok) {
-      // Não incluir token nem URL na mensagem/console.
-      throw new Error(`TriboPay HTTP ${response.status}: ${providerMessage(body)}`);
+      throw new Error(`Cash API HTTP ${response.status}: ${providerMessage(body)}`);
     }
 
-    const pixCode = findString(body, [
-      "pix_code", "pixCode", "pix_copy_paste", "pixCopyPaste",
-      "copy_paste", "copyPaste", "qr_code_text", "qrCodeText",
-      "brcode", "emv", "payload", "qr_code", "qrcode", "pix_qr_code",
-    ]);
-    const paymentId = findString(body, [
-      "transaction_hash", "transactionHash", "hash", "payment_id", "paymentId",
-    ]);
+    const pix = asObject(asObject(body)?.pix);
+    const pixCode = typeof pix?.code === "string" && pix.code.trim()
+      ? pix.code.trim()
+      : null;
+    const paymentId = findString(body, ["id"]);
 
     if (!pixCode || !paymentId) {
-      // Resposta sem os campos necessários não deve ser apresentada como PIX válido.
-      throw new Error("A TriboPay respondeu, mas não retornou o identificador e o código PIX esperados.");
+      throw new Error("A Cash API respondeu, mas não retornou pix.code e id.");
     }
 
-    const expiresAt = findDate(body, [
-      "expires_at", "expiresAt", "expiration_date", "expirationDate", "expire_at", "valid_until",
-    ]) ?? new Date(Date.now() + 15 * 60 * 1000).toISOString();
+    const expiresAt = findDate(body, ["expiresAt", "expires_at", "expirationDate", "expiration_date"])
+      ?? new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
     return {
       paymentId,
@@ -134,6 +111,7 @@ export const tribopay: PaymentProvider = {
       pixCode,
       expiresAt,
     };
+  },
   },
   async getStatus() {
     throw new Error("Consulta de status TriboPay ainda não foi implementada.");
