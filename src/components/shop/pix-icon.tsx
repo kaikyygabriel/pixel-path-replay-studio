@@ -1,11 +1,3 @@
 export function PixIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" className={`text-teal-ink ${className}`} aria-label="PIX">
-      <g fill="currentColor">
-        <path d="M16 2.8 9.9 8.9a3 3 0 0 0 0 4.2l2.2 2.2h1.2L10.9 12.9a1.6 1.6 0 0 1 0-2.3L16 5.5l5.1 5.1a1.6 1.6 0 0 1 0 2.3l-2.4 2.4h1.2l2.2-2.2a3 3 0 0 0 0-4.2z" />
-        <path d="m16 29.2 6.1-6.1a3 3 0 0 0 0-4.2l-2.2-2.2h-1.2l2.4 2.4a1.6 1.6 0 0 1 0 2.3L16 26.5l-5.1-5.1a1.6 1.6 0 0 1 0-2.3l2.4-2.4h-1.2l-2.2 2.2a3 3 0 0 0 0 4.2z" />
-        <path d="m2.8 16 6.1-6.1h1.2L7.9 12l.9.9H11a2.6 2.6 0 0 1 1.8.8l2 2a1.6 1.6 0 0 0 2.2 0l2-2a2.6 2.6 0 0 1 1.8-.8h2.2l.9-.9-2.2-2.1h1.2L29.2 16l-6.1 6.1h-1.2l2.2-2.1-.9-.9H21a2.6 2.6 0 0 1-1.8-.8l-2-2a1.6 1.6 0 0 0-2.2 0l-2 2a2.6 2.6 0 0 1-1.8.8H8.8l-.9.9 2.2 2.1H8.9z" />
-      </g>
-    </svg>
-  );
+  return <img src="/images-removebg-preview.png" alt="PIX" className={`inline-block object-contain ${className}`} />;
 }
