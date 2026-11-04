@@ -67,11 +67,11 @@ function Pagamento() {
 
   return (
     <div className="app-frame bg-surface pb-10">
-      <header className="sticky top-0 z-30 flex h-12 items-center justify-center border-b border-ink-foreground/10 bg-ink px-3 text-ink-foreground shadow-sm">
+      <header className="sticky top-0 z-30 flex h-14 items-center justify-center border-b border-ink-foreground/10 bg-ink px-3 text-ink-foreground shadow-sm">
         <button aria-label="Voltar" onClick={() => router.history.back()} className="absolute left-3 grid h-8 w-8 place-items-center rounded-lg border border-ink-foreground/20 bg-ink-foreground/10">
           <ArrowLeft className="h-4 w-4" />
         </button>
-        <img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shop" width={150} height={42} loading="eager" decoding="async" className="h-8 w-[132px] object-contain brightness-0 invert" />
+        <img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shop" width={150} height={42} loading="eager" decoding="async" className="h-10 w-[158px] object-contain brightness-0 invert" />
       </header>
 
       {toast && (
@@ -187,10 +187,9 @@ function Pagamento() {
             </div>
           </div>
         </div>
-        <p className="flex items-center justify-center gap-1.5 py-2 text-[11.5px] text-muted-foreground"><ShieldCheck className="h-3.5 w-3.5 text-success" />Pagamento processado com segurança · Confirmação automática</p>
       </main>
       <footer className="mx-auto mt-2 w-full max-w-[520px] border-t border-border bg-background px-4 py-5 text-center">
-        <img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shop" width={170} height={52} loading="lazy" decoding="async" className="mx-auto h-10 w-[150px] object-contain" />
+        <img src="/Design%20sem%20nome%20%2811%29.png" alt="TikTok Shop" width={158} height={48} loading="lazy" decoding="async" className="mx-auto h-10 w-[158px] object-contain" />
         <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] font-medium text-muted-foreground">
           <span className="inline-flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5 text-success" />Ambiente protegido</span>
           <span className="inline-flex items-center gap-1"><Landmark className="h-3.5 w-3.5" />Pagamento via PIX</span>
