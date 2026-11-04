@@ -220,17 +220,17 @@ function Pagamento() {
         </div>
       )}
 
-      <main className="mx-auto w-full max-w-[420px] space-y-2.5 px-2.5 py-3 sm:space-y-3 sm:px-3 sm:py-4">
-        <div className="flex items-center gap-3 rounded-xl border border-primary/30 border-b-4 border-b-primary bg-primary-soft p-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+      <main className="mx-auto w-full max-w-[420px] space-y-2 px-2.5 py-2.5 sm:space-y-3 sm:px-3 sm:py-4">
+        <div className="flex items-center gap-2.5 rounded-xl border border-primary/30 border-b-4 border-b-primary bg-primary-soft p-2.5">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             {unavailable ? <AlertTriangle className="h-4 w-4" /> : paymentStatus === "paid" ? <Check className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
           </span>
           <div className="min-w-0 flex-1">
             <div className="text-[15px] font-bold">{unavailable ? "Pagamento indisponível" : paymentStatus === "paid" ? "Pagamento confirmado" : charge ? "Pedido reservado" : "Gerando PIX…"}</div>
-            <div className="text-[13px] text-muted-foreground">{unavailable ? result.message : paymentStatus === "paid" ? "Seu pedido foi identificado e está confirmado." : timer.left <= 0 && charge ? "Este PIX expirou. Gere uma nova cobrança para pagar." : "Pague o PIX antes que expire"}</div>
+            <div className="text-[13px] leading-tight text-muted-foreground">{unavailable ? result.message : paymentStatus === "paid" ? "Seu pedido foi identificado e está confirmado." : timer.left <= 0 && charge ? "Este PIX expirou. Gere uma nova cobrança para pagar." : "Pague antes de expirar"}</div>
           </div>
           {charge && paymentStatus !== "paid" && (
-            <div className="flex items-center gap-1 text-[19px] font-extrabold">
+            <div className="flex shrink-0 items-center gap-1 text-[17px] font-extrabold">
               <span className="rounded-lg bg-ink px-2 py-1 text-ink-foreground">{timer.hms}</span>
             </div>
           )}
@@ -251,7 +251,7 @@ function Pagamento() {
           </div>
           <div className="mt-2 space-y-2">
             {order.items.map((item) => (
-              <div key={item.product.id + ":" + (item.variant?.id ?? "-")} className="flex items-start justify-between gap-3 text-[12px]">
+              <div key={item.product.id + ":" + (item.variant?.id ?? "-")} className="flex items-center justify-between gap-2 text-[12px] leading-tight">
                 <span className="min-w-0 flex-1">{item.title} <b className="whitespace-nowrap">× {item.qty}</b></span>
                 <b className="shrink-0 tabular-nums">{brl(item.price)}</b>
               </div>
@@ -269,15 +269,15 @@ function Pagamento() {
           </div>
         )}
 
-        <section className="rounded-xl bg-card p-3 text-center shadow-sm sm:p-4" aria-label="QR Code PIX">
-          <div className="mx-auto flex aspect-square w-full max-w-[220px] items-center justify-center rounded-2xl border border-border bg-white p-3 sm:p-4">
+        <section className="rounded-xl bg-card p-2.5 text-center shadow-sm sm:p-4" aria-label="QR Code PIX">
+          <div className="mx-auto flex aspect-square w-full max-w-[200px] items-center justify-center rounded-2xl border border-border bg-white p-2.5 sm:p-3">
             {charge ? (
-              <QRCodeSVG value={charge.pixCode} size={210} level="M" marginSize={1} style={{ width: "100%", height: "auto", maxWidth: "210px" }} />
+              <QRCodeSVG value={charge.pixCode} size={190} level="M" marginSize={1} style={{ width: "100%", height: "auto", maxWidth: "190px" }} />
             ) : (
               <span className="px-3 text-[12px] text-muted-foreground">{unavailable ? "QR Code será disponibilizado quando a integração de pagamento estiver configurada." : "Gerando seu QR Code…"}</span>
             )}
           </div>
-          <p className="mt-3 text-[13px] text-muted-foreground">Abra o aplicativo do seu banco e escaneie o código</p>
+          <p className="mt-2 text-[13px] leading-tight text-muted-foreground">Abra o aplicativo do seu banco e escaneie o código</p>
         </section>
 
         <div className="overflow-hidden rounded-xl bg-card shadow-sm">
