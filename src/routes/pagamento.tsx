@@ -243,6 +243,21 @@ function Pagamento() {
           <span className="rounded-full bg-primary-soft px-3 py-1 text-[13px] font-bold text-primary">PIX à vista</span>
         </div>
 
+        <section className="rounded-xl bg-card p-3 shadow-sm">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-[14px] font-extrabold">Itens do pedido</h2>
+            {charge?.orderId && <span className="text-[10px] font-semibold text-muted-foreground">Pedido #{charge.orderId.slice(0, 8).toUpperCase()}</span>}
+          </div>
+          <div className="mt-2 space-y-2">
+            {order.items.map((item) => (
+              <div key={item.product.id + ":" + (item.variant?.id ?? "-")} className="flex items-start justify-between gap-3 text-[12px]">
+                <span className="min-w-0 flex-1">{item.title} <b className="whitespace-nowrap">× {item.qty}</b></span>
+                <b className="shrink-0 tabular-nums">{brl(item.price)}</b>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {!copied && (
           <div className="flex gap-3 rounded-xl border border-primary/30 bg-primary-soft p-3">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><Copy className="h-4 w-4" /></span>
