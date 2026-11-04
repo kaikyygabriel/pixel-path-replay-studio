@@ -1,6 +1,6 @@
 import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { MapPin, ChevronRight, Ticket } from "lucide-react";
+import { MapPin, ChevronRight, Ticket, Truck } from "lucide-react";
 import { PageHeader } from "@/components/shop/chrome";
 import { BottomBar, ItemCard, OrderSummary, Protections, Section, useOrder } from "@/components/shop/order";
 import { AddressSheet, CustomerSheet } from "@/components/shop/checkout-sheets";
@@ -28,6 +28,7 @@ function Checkout() {
   const { state } = useCheckout();
   const navigate = useNavigate();
   const [step, setStep] = useState<0 | 1 | 2>(0);
+  const [couponOpen, setCouponOpen] = useState(false);
 
   if (!order.ready) return <div className="app-frame" />;
   if (!order.product) return <Navigate to="/" />;
@@ -64,17 +65,20 @@ function Checkout() {
           <span className="flex items-center gap-1.5"><s className="text-muted-foreground">R$ 26,20</s><b>Frete grátis</b></span>
         </div>
       </div>
-      <Section className="flex items-center justify-between px-3.5 py-5">
-        <span className="flex items-center gap-2 text-[14px] font-bold"><Ticket className="h-5 w-5 text-primary" />Descontos do pedido</span>
-        <span className="flex items-center gap-2">
-          <span className="flex flex-col items-end gap-1 text-[12px]">
-            <span className="rounded-sm bg-teal-soft px-2 py-0.5 text-teal-ink">Frete grátis</span>
-            <span className="rounded-sm bg-primary-soft px-2 py-0.5 text-primary">– {brl(order.totals.discount)}</span>
+      <Section className="px-3.5 py-4">
+        <button onClick={() => setCouponOpen(true)} className="flex w-full items-center justify-between text-left">
+          <span className="flex items-center gap-2 text-[14px] font-bold"><Ticket className="h-5 w-5 text-primary" />Descontos do pedido</span>
+          <span className="flex items-center gap-2">
+            <span className="flex flex-col items-end gap-1 text-[12px]">
+              <span className="rounded-sm bg-teal-soft px-2 py-0.5 text-teal-ink">Frete grátis</span>
+              <span className="rounded-sm bg-primary-soft px-2 py-0.5 text-primary">– {brl(order.totals.discount)}</span>
+            </span>
+            <ChevronRight className="h-4 w-4" />
           </span>
-          <ChevronRight className="h-4 w-4" />
-        </span>
+        </button>
       </Section>
       <OrderSummary order={order} />
+      {couponOpen && <div className="fixed inset-0 z-[70] flex items-end justify-center bg-overlay" onClick={() => setCouponOpen(false)}><div className="w-full max-w-[480px] rounded-t-3xl bg-background p-5" onClick={(event) => event.stopPropagation()}><div className="mb-4 flex items-center justify-between"><h2 className="text-[18px] font-bold">Cupons do pedido</h2><button onClick={() => setCouponOpen(false)} className="text-[14px] font-semibold text-primary">Fechar</button></div><div className="flex items-center gap-3 rounded-xl border border-teal-ink/30 p-3"><span className="grid h-11 w-11 place-items-center rounded-full bg-teal-soft text-teal-ink"><Truck className="h-6 w-6" /></span><div className="min-w-0 flex-1"><div className="font-bold">Frete grátis</div><div className="text-[12px] text-muted-foreground">Cupom obrigatório da primeira compra</div></div><span className="rounded-full bg-teal-soft px-3 py-1 text-[12px] font-bold text-teal-ink">Ativo</span></div><p className="mt-3 text-[13px] text-muted-foreground">O desconto de {brl(order.totals.discount)} é calculado automaticamente sobre os produtos e não é um cupom.</p></div></div>}
       <Section className="px-3.5 py-4">
         <h2 className="mb-3 text-[17px] font-bold">Forma de pagamento</h2>
         <div className="flex items-start gap-3">
