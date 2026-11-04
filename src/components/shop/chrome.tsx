@@ -231,7 +231,15 @@ export function SiteFooter() {
   return (
     <footer className="bg-background">
       <div className="flex items-center justify-between bg-ink px-4 py-4 text-ink-foreground">
-        <BrandMark small />
+        <img
+          src="/Design%20sem%20nome%20%2811%29.png"
+          alt="TikTok Shop"
+          width={150}
+          height={48}
+          loading="eager"
+          decoding="async"
+          className="h-10 w-[132px] shrink-0 object-contain object-left"
+        />
         <div className="text-right text-[13px] leading-snug">
           <div className="font-semibold">Compre com segurança</div>
           <div className="opacity-80">Pagamento via PIX</div>
