@@ -1,5 +1,4 @@
-import { randomUUID } from "node:crypto";
-import { ProviderNotConfiguredError, type CreatePixInput, type PaymentProvider, type PixCharge } from "./types";
+import { ProviderNotConfiguredError, type CreatePixInput, type PaymentProvider, type PaymentStatus, type PixCharge } from "./types";
 
 const CASH_API_BASE = "https://api.tribopay.com.br/api/public/cash";
 
@@ -35,30 +34,52 @@ function providerMessage(body: unknown): string {
   return findString(body, ["message", "msg", "error", "description"]) ?? "A TriboPay não conseguiu criar a cobrança PIX.";
 }
 
+function mapProviderStatus(raw: string | null): PaymentStatus {
+  switch ((raw ?? "").toLowerCase()) {
+    case "pending": return "pending";
+    case "processing": return "processing";
+    case "paid":
+    case "completed": return "paid";
+    case "expired": return "expired";
+    case "cancelled":
+    case "canceled": return "cancelled";
+    case "failed":
+    case "rejected": return "failed";
+    default: throw new Error("A TriboPay retornou um status de depósito não reconhecido.");
+  }
+}
+
+function apiToken() {
+  return (process.env["TRIBOPAY_API_TOKEN"] ?? process.env["TRIBOPAY_API_KEY"])?.trim();
+}
+
+async function readApiResponse(response: Response): Promise<unknown> {
+  let body: unknown;
+  try {
+    body = await response.json();
+  } catch {
+    throw new Error("Resposta inválida da Cash API (HTTP " + response.status + ").");
+  }
+  if (!response.ok) {
+    throw new Error("Cash API HTTP " + response.status + ": " + providerMessage(body));
+  }
+  return body;
+}
+
 export const tribopay: PaymentProvider = {
   name: "TriboPay",
   isConfigured() {
-    const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
-    return Boolean(token);
+    return Boolean(apiToken());
   },
   async createPixCharge(input: CreatePixInput): Promise<PixCharge> {
-    const token = (process.env['TRIBOPAY_API_TOKEN'] ?? process.env['TRIBOPAY_API_KEY'])?.trim();
+    const token = apiToken();
     if (!token) throw new ProviderNotConfiguredError(this.name);
 
-
-    // Cash-In gera um depósito PIX diretamente, sem usar /transactions
-    // e sem enviar product_hash ou offer_hash.
-    const externalId = randomUUID();
-    const configuredPostback = process.env["TRIBOPAY_POSTBACK_URL"]?.trim();
-    const appUrl = process.env["APP_URL"]?.trim() || process.env["VITE_APP_URL"]?.trim();
-    const postbackUrl = configuredPostback || (appUrl
-      ? `${appUrl.endsWith("/") ? appUrl.slice(0, -1) : appUrl}/api/public/webhooks/tribopay`
-      : undefined);
-
+    // O UUID do pedido é enviado como externalId. Não há product_hash/offer_hash
+    // nem chamada a /transactions: cada carrinho gera somente um Cash-In PIX.
     const payload = {
       amount: input.amountCents,
-      externalId,
-      ...(postbackUrl ? { postbackUrl } : {}),
+      externalId: input.orderId,
       method: "pix",
       transactionOrigin: "cashin",
       payer: {
@@ -69,33 +90,20 @@ export const tribopay: PaymentProvider = {
       },
     };
 
-    const response = await fetch(`${CASH_API_BASE}/deposits/pix`, {
+    const response = await fetch(CASH_API_BASE + "/deposits/pix", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
       body: JSON.stringify(payload),
       cache: "no-store",
     });
-
-    let body: unknown;
-    try {
-      body = await response.json();
-    } catch {
-      throw new Error(`Resposta inválida da Cash API (HTTP ${response.status}).`);
-    }
-
-    if (!response.ok) {
-      throw new Error(`Cash API HTTP ${response.status}: ${providerMessage(body)}`);
-    }
-
+    const body = await readApiResponse(response);
     const pix = asObject(asObject(body)?.pix);
-    const pixCode = typeof pix?.code === "string" && pix.code.trim()
-      ? pix.code.trim()
-      : null;
-    const paymentId = findString(body, ["id"]);
+    const pixCode = typeof pix?.code === "string" && pix.code.trim() ? pix.code.trim() : null;
+    const paymentId = findString(body, ["id", "hash"]);
 
     if (!pixCode || !paymentId) {
       throw new Error("A Cash API respondeu, mas não retornou pix.code e id.");
@@ -105,6 +113,7 @@ export const tribopay: PaymentProvider = {
       ?? new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
     return {
+      orderId: input.orderId,
       paymentId,
       status: "pending",
       amountCents: input.amountCents,
@@ -112,10 +121,24 @@ export const tribopay: PaymentProvider = {
       expiresAt,
     };
   },
-  async getStatus() {
-    throw new Error("Consulta de status TriboPay ainda não foi implementada.");
+  async getStatus(paymentId: string): Promise<PaymentStatus> {
+    const token = apiToken();
+    if (!token) throw new ProviderNotConfiguredError(this.name);
+    const response = await fetch(CASH_API_BASE + "/deposits/" + encodeURIComponent(paymentId), {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+      cache: "no-store",
+    });
+    const body = await readApiResponse(response);
+    const rawStatus = findString(body, ["status"]);
+    return mapProviderStatus(rawStatus);
   },
   async parseWebhook() {
-    throw new Error("Validação de webhook TriboPay ainda não foi implementada.");
+    // Não aceitar postbacks até recebermos a especificação oficial de assinatura
+    // e formato. A confirmação ativa é feita pela consulta autenticada de depósito.
+    throw new Error("Webhook TriboPay não habilitado: documentação de assinatura pendente.");
   },
 };
