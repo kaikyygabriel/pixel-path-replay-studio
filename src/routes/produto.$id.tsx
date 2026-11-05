@@ -64,7 +64,7 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
   const towel = productId === 'jogo-toalhas-karsten';
   const names = ['Mariana S.', 'Rafaela M.', 'Camila R.', 'João P.', 'Ana C.', 'Patrícia L.'];
   const ratings = towel ? [5, 5, 5, 5, 4, 5] : [5, 5, 4, 5, 5, 4];
-  return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 5 dias', 'há 1 semana', 'há 2 semanas', 'há 3 semanas', 'há 1 mês'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
+  return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 3 dias', 'há 5 dias', 'há 1 semana', 'há 10 dias', 'há 2 semanas'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
 }
 function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${product.sold} vendidos` : ""; }
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
@@ -98,9 +98,9 @@ function ProductPage() {
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
   const demoReviews: DemoReview[] = isTclTv ? [
-    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i], date: ["há 2 dias", "há 5 dias", "há 1 semana", "há 2 semanas", "há 3 semanas"][i], rating: 5, text: photo.caption, media: photo.src })),
-    { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 1 mês", rating: 4, text: "Imagem muito bonita e sistema fácil de usar. Gostei bastante.", media: null },
-    { id: "tcl-review-text-7", name: "Lucas F.", date: "há 1 mês", rating: 4, text: "Boa televisão, chegou bem embalada e atendeu às expectativas.", media: null },
+    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i], date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i], rating: 5, text: photo.caption, media: photo.src })),
+    { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e sistema fácil de usar. Gostei bastante.", media: null },
+    { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Boa televisão, chegou bem embalada e atendeu às expectativas.", media: null },
     { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 1 mês", rating: 5, text: "Ótima experiência de uso e qualidade de imagem.", media: null },
   ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
@@ -292,6 +292,7 @@ function ProductPage() {
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
+        <p className="mt-1 text-[11px] text-muted-foreground">Conteúdo demonstrativo para pré-visualização — substitua por avaliações verificadas antes de publicar</p>
         <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
           <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center">
             <strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong>
@@ -317,13 +318,9 @@ function ProductPage() {
             <button onClick={() => setShowAllReviewMedia(true)} className="shrink-0 text-[12px] font-bold text-primary">Ver tudo <ChevronRight className="inline h-4 w-4" /></button>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
-            {isTclTv ? tclReviewPhotos.map((photo) => <button key={photo.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <img src={photo.src} alt={photo.caption} loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
-              <p className="mt-1 line-clamp-2 text-[11px] font-semibold">{photo.caption}</p>
-            </button>) : reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <img src={review.media!} alt="Imagem da avaliação" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
-              <p className="mt-1 truncate text-[11px] font-semibold">{review.name}</p>
-              <ReviewStars rating={review.rating} size="h-3 w-3" />
+            {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
+              <img src={review.media!} alt="Mídia ilustrativa associada à avaliação demonstrativa" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
+              <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>
             </button>)}
           </div>
         </div>}
@@ -357,7 +354,7 @@ function ProductPage() {
               <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Imagem da avaliação" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><div className="mt-1.5 flex items-center justify-between gap-1"><span className="truncate text-[11px] font-semibold">{review.name}</span><ReviewStars rating={review.rating} size="h-3 w-3" /></div></div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia ilustrativa associada à avaliação demonstrativa" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div></div>)}</div>
           </div>
         </div>
       )}
