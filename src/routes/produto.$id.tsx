@@ -286,7 +286,6 @@ function ProductPage() {
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
-        <>
         {isTclTv ? (
           <>
             <div className="mt-3 flex items-center gap-2 text-sm"><ReviewStars rating={reviewAverage} size="h-4 w-4" /><strong>{reviewAverage.toFixed(1)} de 5</strong><span className="text-muted-foreground">· nota informada no cadastro do produto</span></div>
@@ -305,7 +304,7 @@ function ProductPage() {
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">{filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">{review.media && <img src={review.media} alt="Imagem associada à avaliação" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}<div className="flex flex-col p-2.5"><div className="flex items-center gap-2"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span><div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div></div><div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div><p className="mt-2 text-[12px] leading-snug">{review.text}</p></div></article>)}</div>
         {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Ainda não há avaliações para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
         {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
-        </>
+        </>}
       </section>
       <div className="h-10 bg-surface" />
       <SiteFooter />
