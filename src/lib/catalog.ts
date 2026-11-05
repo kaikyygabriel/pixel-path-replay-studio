@@ -51,6 +51,7 @@ export type Product = {
   rating: number | null;
   reviews: number | null;
   sold: string | null;
+  description?: string;
 };
 
 const towelVariants: Variant[] = [
@@ -89,6 +90,34 @@ export const products: Product[] = [
     gallery: [kettle.url],
     variants: [],
     rating: null, reviews: null, sold: null,
+  },
+  {
+    id: "arvore-natal-kit-87-enfeites",
+    title: "Árvore de Natal 1,20 m + Kit com 87 Enfeites",
+    cardTitle: "Árvore de Natal 1,20 m + 87 Enfeites",
+    checkoutTitle: "Árvore de Natal 1,20 m com Kit de 87 Enfeites",
+    category: "Natal · Decoração",
+    price: 4285,
+    original: 9299,
+    shippingOriginal: 2620,
+    image: "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-1.png",
+    gallery: [
+      "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-1.png",
+      "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-2.png",
+      "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-3.png",
+      "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-4.png",
+      "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-5.png",
+      "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-6.png",
+      "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-7.png",
+    ],
+    variants: [
+      { id: "arvore-127v", line: "Tensão", color: "127V", description: "Versão 127V · Árvore de Natal com pisca-pisca", price: 4285, original: 9299, pieces: 1, image: "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-1.png" },
+      { id: "arvore-220v", line: "Tensão", color: "220V", description: "Versão 220V · Árvore de Natal com pisca-pisca", price: 4285, original: 9299, pieces: 1, image: "/products/arvore-natal-kit-87-enfeites/arvore-de-natal-1.png" },
+    ],
+    description: "Deixe a decoração de fim de ano pronta com uma árvore de 1,20 m e um kit com 87 enfeites variados. Compacta, reutilizável e fácil de montar, é ideal para ambientes internos.\n\nA árvore possui 110 galhos verdes, estrutura flexível e pés em PVC reforçado. O kit inclui ponteira estrela, pisca-pisca, festão, 6 laços, 12 bolinhas e 66 pendentes decorativos.\n\nEscolha a voltagem do pisca-pisca: 127V ou 220V. Cores e modelos dos enfeites podem variar conforme a disponibilidade. Imagens ilustrativas.",
+    rating: 5,
+    reviews: null,
+    sold: "800+",
   },
 ];
 

@@ -54,12 +54,13 @@ const demoReviewCopy = [
 ];
 // Dados locais de demonstração para uso interno; substituir por avaliações reais antes de publicar em produção.
 function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
+  if (productId === "arvore-natal-kit-87-enfeites") return []; // Não exibir depoimentos sem avaliações reais.
   const towel = productId === 'jogo-toalhas-karsten';
   const names = ['Mariana S.', 'Rafaela M.', 'Camila R.', 'João P.', 'Ana C.', 'Patrícia L.'];
   const ratings = towel ? [5, 5, 5, 5, 4, 5] : [5, 5, 4, 5, 5, 4];
   return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 5 dias', 'há 1 semana', 'há 2 semanas', 'há 3 semanas', 'há 1 mês'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
 }
-function formatDemoSales(productId: string) { return productId === 'jogo-toalhas-karsten' ? '7,8 mil vendidos' : '2,4 mil vendidos'; }
+function formatDemoSales(productId: string) { return productId === "arvore-natal-kit-87-enfeites" ? "800+ vendidos" : productId === "jogo-toalhas-karsten" ? "7,8 mil vendidos" : "2,4 mil vendidos"; }
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
   return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
     const fill = Math.max(0, Math.min(1, rating - (n - 1)));
@@ -83,7 +84,7 @@ function ProductPage() {
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
   const demoReviews = makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
-  const reviewAverage = demoReviews.reduce((sum, review) => sum + review.rating, 0) / demoReviews.length;
+  const reviewAverage = demoReviews.length ? demoReviews.reduce((sum, review) => sum + review.rating, 0) / demoReviews.length : (p.rating ?? 0);
   const reviewMedia = demoReviews.filter((review) => review.media);
   const variant = p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -172,7 +173,7 @@ function ProductPage() {
       {hasVariants && (
         <>
           <div className="mt-6 flex items-center justify-between gap-3 px-4">
-            <h2 className="text-[16px] font-bold">Selecionar modelo e cor</h2>
+            <h2 className="text-[16px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : "Selecionar modelo e cor"}</h2>
             <span className="truncate text-[13px] text-muted-foreground">{variant ? `${variant.line} · ${variant.color}` : `${p.variants.length} opções`}</span>
           </div>
           <div className="space-y-2.5 px-4 pt-3">
@@ -185,9 +186,9 @@ function ProductPage() {
                 <img src={v.image} alt="" loading="lazy" decoding="async" width={60} height={60} className="h-[60px] w-[60px] rounded-lg object-cover" />
                 <div className="min-w-0">
                   <div className="truncate text-[14px] font-bold leading-tight">{v.line} · {v.color}</div>
-                  <div className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-muted-foreground">2 de banho e 2 de rosto</div>
+                  <div className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-muted-foreground">{v.description}</div>
                   <span className="mt-1.5 inline-block rounded-md bg-success-soft px-1.5 py-0.5 text-[12px] font-semibold text-success">
-                    Economize {brl(v.original - v.price)}
+                    {p.id === "arvore-natal-kit-87-enfeites" ? "Opção selecionável" : `Economize ${brl(v.original - v.price)}`}
                   </span>
                 </div>
                 <div className="text-right">
@@ -244,12 +245,14 @@ function ProductPage() {
             <button onClick={() => setOpened(opened === t ? null : t)} className="flex w-full items-center justify-between py-4 text-[16px] font-semibold">
               {t}<ChevronDown className={`h-5 w-5 transition-transform ${opened === t ? "rotate-180" : ""}`} />
             </button>
-            {opened === t && <p className="pb-4 text-[15px] text-muted-foreground">{p.title}</p>}
+            {opened === t && <p className="whitespace-pre-line pb-4 text-[14px] leading-relaxed text-muted-foreground">{p.description ?? p.title}</p>}
           </div>
         ))}
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
+        {demoReviews.length === 0 && <p className="mt-3 text-[13px] text-muted-foreground">As avaliações dos clientes serão exibidas aqui quando estiverem disponíveis.</p>}
+        {demoReviews.length > 0 && <>
         <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
           <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center"><strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong><ReviewStars rating={Math.round(reviewAverage)} size="h-4 w-4" /><span className="mt-1 text-[11px] text-muted-foreground">{demoReviews.length} avaliações</span></div>
           <div className="space-y-1.5">{[5,4,3,2,1].map((stars) => { const count = demoReviews.filter((review) => review.rating === stars).length; const percent = demoReviews.length ? (count / demoReviews.length) * 100 : 0; return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}><span className="w-3 text-[11px] text-muted-foreground">{stars}</span><Star className="h-3 w-3 fill-ink text-ink" /><span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span><span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span></button>; })}</div>
@@ -259,6 +262,7 @@ function ProductPage() {
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">{filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">{review.media && <img src={review.media} alt="Imagem associada à avaliação" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}<div className="flex flex-col p-2.5"><div className="flex items-center gap-2"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span><div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div></div><div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div><p className="mt-2 text-[12px] leading-snug">{review.text}</p></div></article>)}</div>
         {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">Nenhuma avaliação nesta faixa de estrelas na amostra.</p>}
         {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
+        </>}
       </section>
       <div className="h-10 bg-surface" />
       <SiteFooter />
@@ -325,7 +329,7 @@ function ProductPage() {
                 <img src={(variant ?? p.variants[0])?.image} alt="" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
                 <div className="min-w-0 flex-1">
                   <div className="text-[14px] font-bold leading-snug">
-                    Karsten {variant ? `${variant.line} · ${variant.color}` : "Bosco · Azul Serena/Azul Naval"} · 4 toalhas
+                    {p.title} {variant ? `· ${variant.color}` : ""}
                   </div>
                   <div className="mt-1.5 flex items-center gap-1.5 text-[12px]">
                     <span className="flex items-center gap-0.5 rounded bg-primary px-1 font-bold text-primary-foreground"><Zap className="h-3 w-3 fill-current" />Oferta Relâmpago</span>
@@ -355,7 +359,7 @@ function ProductPage() {
                 <span>Receba até 4 – 5 de nov.</span>
                 <span><s className="text-muted-foreground">R$ 26,20</s> <b className="text-teal-ink">Grátis</b></span>
               </div>
-              <div className="mt-4 text-[14.5px] font-bold">Karsten · Escolha modelo e cor ({p.variants.length})</div>
+              <div className="mt-4 text-[14.5px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : `Escolha modelo e cor (${p.variants.length})`}</div>
               <div className="mt-2.5 grid grid-cols-3 gap-2.5">
                 {p.variants.map((v: Variant) => (
                   <button key={v.id} onClick={() => setPicked(v.id)} className={`min-w-0 rounded-xl border-2 bg-card p-1.5 text-center transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}>

@@ -146,9 +146,17 @@ function StorePage() {
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
-            <div className="rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
-              <p className="text-[14px] font-bold">Em breve</p>
-              <p className="mt-1 text-[13px] text-muted-foreground">Novos produtos chegando nesta seção.</p>
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {products.filter((p) => p.id === "arvore-natal-kit-87-enfeites").map((p) => (
+                <Link key={p.id} to="/produto/$id" params={{ id: p.id }} className="flex w-full min-w-0 items-center gap-3 rounded-xl bg-card p-3">
+                  <img src={p.image} alt={p.title} loading="lazy" className="h-24 w-24 shrink-0 rounded-lg object-contain" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block line-clamp-2 text-[14px] font-semibold">{p.cardTitle}</span>
+                    <span className="mt-1 block text-[17px] font-extrabold">{brl(p.price)}</span>
+                    <span className="text-[12px] text-muted-foreground line-through">{brl(p.original)}</span>
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
           <div className="px-3.5 pb-9">
