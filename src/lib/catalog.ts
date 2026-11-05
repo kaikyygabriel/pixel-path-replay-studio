@@ -86,9 +86,19 @@ export const products: Product[] = [
     price: 3623,
     original: 4990,
     shippingOriginal: 2620,
-    image: kettle.url,
-    gallery: [kettle.url],
-    variants: [],
+    image: "/chaleira%20uniterm%201.png",
+    gallery: [
+      "/chaleira%20uniterm%201.png",
+      "/chaleira%20uniterm%202.png",
+      "/chaleira%20uniterm%203.png",
+      "/chaleira%20uniterm%204.png",
+      "/chaleira%20uniterm%205.png",
+    ],
+    variants: [
+      { id: "chaleira-127v", line: "Tensão", color: "127V", description: "Versão 127V", price: 3623, original: 4990, pieces: 1, image: "/chaleira%20uniterm%201.png" },
+      { id: "chaleira-220v", line: "Tensão", color: "220V", description: "Versão 220V", price: 3623, original: 4990, pieces: 1, image: "/chaleira%20uniterm%201.png" },
+    ],
+    description: "Prepare café, chá, chimarrão e outras bebidas com praticidade. A chaleira elétrica tem capacidade de 1,8 L, acabamento em aço inox e aquecimento rápido, ideal para casa ou trabalho.\n\nDisponível em 127V ou 220V. Não é bivolt: selecione a voltagem compatível com sua residência antes de comprar.",
     rating: 4.7, reviews: null, sold: "2,4 mil",
   },
   {
