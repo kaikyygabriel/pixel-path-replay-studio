@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ChevronLeft, ChevronRight, ChevronDown, Bookmark, Zap, Truck, ShieldCheck, Check, Store,
   ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Lock, Clock,
@@ -95,6 +95,7 @@ function ProductPage() {
   const navigate = useNavigate();
   const { state, update } = useCheckout();
   const [idx, setIdx] = useState(0);
+  const galleryRef = useRef<HTMLDivElement>(null);
   const [sheet, setSheet] = useState<null | "buy" | "cart">(null);
   const [picked, setPicked] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
@@ -196,7 +197,7 @@ function ProductPage() {
           style={{ touchAction: "pan-x pan-y" }}
         >
           {p.gallery.map((src, i) => (
-            <img key={src + i} src={src} alt={i === 0 ? p.title : ""} loading={i === 0 ? "eager" : "eager"} fetchPriority={i === 0 ? "high" : "low"} decoding="async" draggable={false} width={600} height={600} className="aspect-square w-full shrink-0 snap-center object-contain p-4" />
+            <img key={src + i} src={src} alt={i === 0 ? p.title : ""} loading="eager" fetchPriority={i === 0 ? "high" : "low"} decoding="async" draggable={false} width={600} height={600} className="aspect-square w-full shrink-0 snap-center object-contain p-4" />
           ))}
         </div>
         {p.gallery.length > 1 && (
