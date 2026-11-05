@@ -121,6 +121,7 @@ export const tribopay: PaymentProvider = {
     ]) ?? new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
     return {
+      orderId: input.orderId,
       paymentId,
       status: "pending",
       amountCents: input.amountCents,
