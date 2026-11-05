@@ -88,6 +88,7 @@ function ProductPage() {
   const reviewMedia = demoReviews.filter((review) => review.media);
   const variant = p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
+  const isVoltageOnly = p.id === "arvore-natal-kit-87-enfeites";
   const unitCount = variant ? variant.pieces : 1;
   const shownPrice = variant ? variant.price : p.price;
   const shownOriginal = variant ? variant.original : p.original;
@@ -176,30 +177,39 @@ function ProductPage() {
             <h2 className="text-[16px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : "Selecionar modelo e cor"}</h2>
             <span className="truncate text-[13px] text-muted-foreground">{variant ? `${variant.line} · ${variant.color}` : `${p.variants.length} opções`}</span>
           </div>
-          <div className="space-y-2.5 px-4 pt-3">
-            {p.variants.map((v: Variant) => (
-              <button
-                key={v.id}
-                onClick={() => setPicked(v.id)}
-                className={`grid w-full grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-xl border-2 bg-card p-2.5 text-left transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}
-              >
-                <img src={v.image} alt="" loading="lazy" decoding="async" width={60} height={60} className="h-[60px] w-[60px] rounded-lg object-cover" />
-                <div className="min-w-0">
-                  <div className="truncate text-[14px] font-bold leading-tight">{v.line} · {v.color}</div>
-                  <div className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-muted-foreground">{v.description}</div>
-                  <span className="mt-1.5 inline-block rounded-md bg-success-soft px-1.5 py-0.5 text-[12px] font-semibold text-success">
-                    {p.id === "arvore-natal-kit-87-enfeites" ? "Opção selecionável" : `Economize ${brl(v.original - v.price)}`}
+          {isVoltageOnly ? (
+            <div className="grid grid-cols-2 gap-3 px-4 pt-3">
+              {p.variants.map((v: Variant) => (
+                <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
+                  className={`flex min-h-[58px] items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                  <span className="text-[16px] font-extrabold">{v.color}</span>
+                  <span className={`grid h-5 w-5 place-items-center rounded-full border-2 ${picked === v.id ? "border-primary" : "border-border"}`}>
+                    {picked === v.id && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
                   </span>
-                </div>
-                <div className="text-right">
-                  <div className="whitespace-nowrap text-[15px] font-extrabold">{brl(v.price)}</div>
-                  <div className="text-[12px] text-muted-foreground line-through">{brl(v.original)}</div>
-                  <div className="text-[11.5px] text-muted-foreground">{brl(unitPrice(v))}/un.</div>
-                  <span className={`ml-auto mt-1.5 block h-5 w-5 rounded-full border-2 ${picked === v.id ? "border-[6px] border-primary" : "border-border"}`} />
-                </div>
-              </button>
-            ))}
-          </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-2.5 px-4 pt-3">
+              {p.variants.map((v: Variant) => (
+                <button key={v.id} onClick={() => setPicked(v.id)}
+                  className={`grid w-full grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-xl border-2 bg-card p-2.5 text-left transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}>
+                  <img src={v.image} alt="" loading="lazy" decoding="async" width={60} height={60} className="h-[60px] w-[60px] rounded-lg object-cover" />
+                  <div className="min-w-0">
+                    <div className="truncate text-[14px] font-bold leading-tight">{v.line} · {v.color}</div>
+                    <div className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-muted-foreground">{v.description}</div>
+                    <span className="mt-1.5 inline-block rounded-md bg-success-soft px-1.5 py-0.5 text-[12px] font-semibold text-success">Economize {brl(v.original - v.price)}</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="whitespace-nowrap text-[15px] font-extrabold">{brl(v.price)}</div>
+                    <div className="text-[12px] text-muted-foreground line-through">{brl(v.original)}</div>
+                    <div className="text-[11.5px] text-muted-foreground">{brl(unitPrice(v))}/un.</div>
+                    <span className={`ml-auto mt-1.5 block h-5 w-5 rounded-full border-2 ${picked === v.id ? "border-[6px] border-primary" : "border-border"}`} />
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </>
       )}
 
@@ -360,14 +370,26 @@ function ProductPage() {
                 <span><s className="text-muted-foreground">R$ 26,20</s> <b className="text-teal-ink">Grátis</b></span>
               </div>
               <div className="mt-4 text-[14.5px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : `Escolha modelo e cor (${p.variants.length})`}</div>
-              <div className="mt-2.5 grid grid-cols-3 gap-2.5">
-                {p.variants.map((v: Variant) => (
-                  <button key={v.id} onClick={() => setPicked(v.id)} className={`min-w-0 rounded-xl border-2 bg-card p-1.5 text-center transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}>
-                    <img src={v.image} alt="" className="aspect-[4/3] w-full rounded object-cover" />
-                    <div className="mt-1 text-[11.5px] font-semibold leading-tight">{v.line}</div><div className="line-clamp-2 break-words text-[11px] leading-tight text-muted-foreground">{v.color}</div>
-                  </button>
-                ))}
-              </div>
+              {isVoltageOnly ? (
+                <div className="mt-2.5 grid grid-cols-2 gap-3">
+                  {p.variants.map((v: Variant) => (
+                    <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
+                      className={`flex min-h-[54px] items-center justify-between rounded-xl border-2 px-4 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                      <span className="text-[15px] font-extrabold">{v.color}</span>
+                      <span className={`grid h-5 w-5 place-items-center rounded-full border-2 ${picked === v.id ? "border-primary" : "border-border"}`}>{picked === v.id && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-2.5 grid grid-cols-3 gap-2.5">
+                  {p.variants.map((v: Variant) => (
+                    <button key={v.id} onClick={() => setPicked(v.id)} className={`min-w-0 rounded-xl border-2 bg-card p-1.5 text-center transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}>
+                      <img src={v.image} alt="" className="aspect-[4/3] w-full rounded object-cover" />
+                      <div className="mt-1 text-[11.5px] font-semibold leading-tight">{v.line}</div><div className="line-clamp-2 break-words text-[11px] leading-tight text-muted-foreground">{v.color}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
               <p className="mt-3 text-[13px] text-muted-foreground">{variant ? " " : "Selecione uma opção para continuar."}</p>
               <div className="mt-4 flex items-baseline justify-between border-t border-border pt-3">
                 <span className="text-[16px] font-bold">Total ({unitCount * qty} itens)</span>
