@@ -11,19 +11,6 @@ function randomDigits(length: number): string {
   return Array.from({ length }, () => String(randomInt(0, 10))).join("");
 }
 
-function generateValidCpf(): string {
-  let base = randomDigits(9);
-  while (/^(\d)\1{8}$/.test(base)) base = randomDigits(9);
-  const calculateDigit = (digits: string, initialWeight: number) => {
-    const sum = [...digits].reduce((total, digit, index) => total + Number(digit) * (initialWeight - index), 0);
-    const remainder = sum % 11;
-    return remainder < 2 ? 0 : 11 - remainder;
-  };
-  const first = calculateDigit(base, 10);
-  const second = calculateDigit(base + first, 11);
-  return base + first + second;
-}
-
 function generateBrazilianPhone(): string {
   const ddd = BRAZIL_DDDS[randomInt(0, BRAZIL_DDDS.length)];
   return String(ddd) + "9" + randomDigits(8);
@@ -38,7 +25,7 @@ function makeProviderCustomer(customer: { name: string; email: string; phone: st
     name: customer.name,
     email,
     phone: generateBrazilianPhone(),
-    cpf: generateValidCpf(),
+    cpf: customer.cpf,
   };
 }
 
