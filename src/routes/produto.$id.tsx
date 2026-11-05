@@ -402,7 +402,7 @@ function ProductPage() {
                 <span><s className="text-muted-foreground">R$ 26,20</s> <b className="text-teal-ink">Grátis</b></span>
               </div>
               <div className="mt-4 text-[14.5px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : `Escolha modelo e cor (${p.variants.length})`}</div>
-              {isVoltageOnly ? (
+              {optionKind === "voltage" ? (
                 <div className="mt-2.5 flex items-center justify-start gap-2">
                   {p.variants.map((v: Variant) => (
                     <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
