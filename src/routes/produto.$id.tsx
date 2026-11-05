@@ -89,10 +89,6 @@ function ProductPage() {
   const [visibleReviews, setVisibleReviews] = useState(3);
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
-  const demoReviews = isTclTv ? [] : makeDemoReviews(p.id, p.gallery);
-  const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
-  const reviewAverage = p.rating ?? 0;
-  const reviewMedia = demoReviews.filter((review) => review.media);
   const tclReviewPhotos = isTclTv ? [
     { id: "tcl-review-1", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
     { id: "tcl-review-2", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%202.png", caption: "Registro da embalagem recebida" },
@@ -100,6 +96,16 @@ function ProductPage() {
     { id: "tcl-review-4", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%204.png", caption: "Tela em reprodução de conteúdo" },
     { id: "tcl-review-5", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%205.png", caption: "TV em uso durante uma partida" },
   ] : [];
+  // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
+  const demoReviews: DemoReview[] = isTclTv ? [
+    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i], date: ["há 2 dias", "há 5 dias", "há 1 semana", "há 2 semanas", "há 3 semanas"][i], rating: 5, text: photo.caption, media: photo.src })),
+    { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 1 mês", rating: 4, text: "Imagem muito bonita e sistema fácil de usar. Gostei bastante.", media: null },
+    { id: "tcl-review-text-7", name: "Lucas F.", date: "há 1 mês", rating: 4, text: "Boa televisão, chegou bem embalada e atendeu às expectativas.", media: null },
+    { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 1 mês", rating: 5, text: "Ótima experiência de uso e qualidade de imagem.", media: null },
+  ] : makeDemoReviews(p.id, p.gallery);
+  const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
+  const reviewAverage = p.rating ?? 0;
+  const reviewMedia = demoReviews.filter((review) => review.media);
   const variant = p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
   const optionKind = getOptionKind(p.variants);
