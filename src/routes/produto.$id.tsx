@@ -125,16 +125,16 @@ function ProductPage() {
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
   const demoReviews: DemoReview[] = isTclTv ? [
-    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i], date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i], rating: 5, text: ["Gostei muitoo, já tô aproveitando pra jogar e a imagem ficou linda", "Chegou bem embaladinha e tudo certinho, adorei", "Na primeira configuração foi bem tranquilo, já comecei a usar", "Já tô assistindo meus conteúdos e a imagem tá muito boa", "Usei pra jogar e ficou muito bom, gostei demais"][i], media: photo.src })),
+    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i] ?? "", date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i] ?? "", rating: 5, text: ["Gostei muitoo, já tô aproveitando pra jogar e a imagem ficou linda", "Chegou bem embaladinha e tudo certinho, adorei", "Na primeira configuração foi bem tranquilo, já comecei a usar", "Já tô assistindo meus conteúdos e a imagem tá muito boa", "Usei pra jogar e ficou muito bom, gostei demais"][i] ?? "", media: photo.src })),
     { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
     { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
     { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 12 dias", rating: 5, text: "A imagem é linda, já tô aproveitando pra assistir meus filmes", media: null },
   ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
     id: photo.id,
-    name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i],
-    date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i],
+    name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
+    date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
     rating: 5,
-    text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i],
+    text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
     media: photo.src,
   })) : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
