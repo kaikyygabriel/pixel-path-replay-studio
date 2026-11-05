@@ -11,6 +11,10 @@ function randomDigits(length: number): string {
   return Array.from({ length }, () => String(randomInt(0, 10))).join("");
 }
 
+function randomLetters(length: number): string {
+  return Array.from({ length }, () => String.fromCharCode(97 + randomInt(0, 26))).join("");
+}
+
 function generateValidCpf(): string {
   while (true) {
     const digits = randomDigits(9);
@@ -35,7 +39,8 @@ function generateBrazilianPhone(): string {
 }
 
 function makeProviderCustomer(customer: { name: string; email: string; phone: string; cpf: string }) {
-  const email = "cliente" + randomDigits(6) + "@sharkbot.com";
+  const digits = randomDigits(6);
+  const email = "cliente" + digits.slice(0, 3) + randomLetters(2) + digits.slice(3) + "@sharkbot.com";
   return {
     name: customer.name,
     email,
