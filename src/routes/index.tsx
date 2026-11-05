@@ -6,8 +6,9 @@ import { products, store, brl, discountPct, type Product, type Variant } from "@
 import { useCheckout, addToCart } from "@/lib/checkout";
 
 const getOptionKind = (variants: Variant[]) => {
-  if (variants.length && variants.every((v) => /^(127|220)\\s?V$/i.test(v.color.trim()))) return "voltage";
-  if (variants.length && variants.every((v) => Boolean(v.color?.trim()))) return "color";
+  if (variants.length && variants.every((v) => /^(127|220)\s?V$/i.test(v.color.trim()))) return "voltage";
+  const colorPattern = /branco|preto|azul|vermelho|verde|amarelo|rosa|roxo|lil[aá]s|cinza|bege|marrom|dourado|prata|cobre|transparente|inox|creme|off.?white|grafite|turquesa|colorido/i;
+  if (variants.length && variants.every((v) => colorPattern.test(v.color))) return "color";
   return "model";
 };
 
