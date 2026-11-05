@@ -75,7 +75,7 @@ export const products: Product[] = [
     image: towelMain.url,
     gallery: [towelMain.url, v0.url, v1.url, v2.url],
     variants: towelVariants,
-    rating: null, reviews: null, sold: null,
+    rating: 4.8, reviews: null, sold: "7,8 mil",
   },
   {
     id: "chaleira-unitermi-atacama",
@@ -89,7 +89,7 @@ export const products: Product[] = [
     image: kettle.url,
     gallery: [kettle.url],
     variants: [],
-    rating: null, reviews: null, sold: null,
+    rating: 4.7, reviews: null, sold: "2,4 mil",
   },
   {
     id: "arvore-natal-kit-87-enfeites",
