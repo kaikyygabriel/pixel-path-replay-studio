@@ -116,11 +116,15 @@ function StorePage() {
             <div key={p.id} className="relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3">
               <Link to="/produto/$id" params={{ id: p.id }}>
                 <div className="relative"><img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{activeCategory === "Natal" && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div>
-                {(p.rating != null || p.sold) && <div className="mt-2 flex items-center gap-1 text-[11px]">{p.rating != null && <><span className="relative text-muted-foreground">★★★★★<span className="absolute inset-y-0 left-0 overflow-hidden text-amber-500" style={{ width: ((p.rating / 5) * 100) + "%" }}>★★★★★</span></span><b>{p.rating.toFixed(1)}</b></>}{p.sold && <span className="text-muted-foreground">{p.sold} vendidos</span>}</div>}
                 <h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3>
               </Link>
               <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
+              {(p.rating != null || p.sold) && <div className="relative mt-2 flex min-w-0 items-center gap-1 overflow-hidden text-[11px]">
+                {p.rating != null && <><span className="shrink-0 text-black tracking-[-1px]">★★★★★</span><b className="shrink-0 text-foreground">{p.rating.toFixed(1)}</b></>}
+                {p.sold && <span className="min-w-0 truncate whitespace-nowrap text-muted-foreground">{p.sold} vendidos</span>}
+                {p.sold && <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-card to-transparent" />}
+              </div>}
               <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { if (p.variants.length) { setQuickProduct(p); setQuickVariant(null); } else addQuickToCart(p); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
             </div>
           ))}
@@ -154,14 +158,15 @@ function StorePage() {
                       <img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />
                       <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>
                     </div>
-                    {(p.rating != null || p.sold) && <div className="mt-2 flex items-center gap-1 text-[11px]">
-                      {p.rating != null && <><span className="relative text-muted-foreground">★★★★★<span className="absolute inset-y-0 left-0 overflow-hidden text-amber-500" style={{ width: ((p.rating / 5) * 100) + "%" }}>★★★★★</span></span><b>{p.rating.toFixed(1)}</b></>}
-                      {p.sold && <span className="text-muted-foreground">{p.sold} vendidos</span>}
-                    </div>}
                     <h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3>
                   </Link>
                   <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
                   <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
+                    {(p.rating != null || p.sold) && <div className="relative mt-2 flex min-w-0 items-center gap-1 overflow-hidden text-[11px]">
+                      {p.rating != null && <><span className="shrink-0 text-black tracking-[-1px]">★★★★★</span><b className="shrink-0 text-foreground">{p.rating.toFixed(1)}</b></>}
+                      {p.sold && <span className="min-w-0 truncate whitespace-nowrap text-muted-foreground">{p.sold} vendidos</span>}
+                      {p.sold && <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-card to-transparent" />}
+                    </div>}
                   <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
                 </div>
               ))}
