@@ -1,5 +1,4 @@
 import towelMain from "@/assets/towel_main.jpg.asset.json";
-import kettle from "@/assets/kettle.jpg.asset.json";
 import v0 from "@/assets/var0.jpg.asset.json";
 import v1 from "@/assets/var1.jpg.asset.json";
 import v2 from "@/assets/var2.jpg.asset.json";
