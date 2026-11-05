@@ -22,15 +22,28 @@ function isHtmlNavigation(request: Request): boolean {
     (destination === null || destination === "document");
 }
 
-function applySecurityHeaders(response: Response, isDocument: boolean): Response {
+// Lovable renders the project inside an editor preview, often from a desktop
+// browser and inside an iframe. Keep the production access gate, but never
+// block the development/preview hosts used to inspect the project.
+function isPreviewRequest(request: Request): boolean {
+  const hostname = new URL(request.url).hostname.toLowerCase();
+  return hostname === "localhost" || hostname === "127.0.0.1" ||
+    hostname.endsWith(".lovable.app") ||
+    hostname.endsWith(".lovableproject.com") ||
+    hostname.endsWith(".lovable.dev");
+}
+
+function applySecurityHeaders(response: Response, isDocument: boolean, allowEmbedding: boolean): Response {
   const headers = new Headers(response.headers);
   headers.set("X-Content-Type-Options", "nosniff");
-  headers.set("X-Frame-Options", "DENY");
+  if (!allowEmbedding) headers.set("X-Frame-Options", "DENY");
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
   headers.set("X-Permitted-Cross-Domain-Policies", "none");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
-  headers.set("Content-Security-Policy", "base-uri 'self'; object-src 'none'; frame-ancestors 'none'");
+  headers.set("Content-Security-Policy", allowEmbedding
+    ? "base-uri 'self'; object-src 'none'"
+    : "base-uri 'self'; object-src 'none'; frame-ancestors 'none'");
   headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   if (isDocument) {
     headers.set("Vary", "User-Agent");
@@ -83,14 +96,16 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     const documentNavigation = isHtmlNavigation(request);
+    const previewRequest = isPreviewRequest(request);
 
-    if (documentNavigation && !isMobileDeviceRequest(request)) {
+    if (documentNavigation && !previewRequest && !isMobileDeviceRequest(request)) {
       return applySecurityHeaders(
         new Response(null, {
           status: 302,
           headers: { Location: "https://google.com" },
         }),
         true,
+        false,
       );
     }
 
@@ -98,13 +113,13 @@ export default {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       const normalized = await normalizeCatastrophicSsrResponse(response);
-      return applySecurityHeaders(normalized, documentNavigation);
+      return applySecurityHeaders(normalized, documentNavigation, previewRequest);
     } catch (error) {
       console.error(error);
       return applySecurityHeaders(new Response(renderErrorPage(), {
         status: 500,
         headers: { "content-type": "text/html; charset=utf-8" },
-      }), documentNavigation);
+      }), documentNavigation, previewRequest);
     }
   },
 };
