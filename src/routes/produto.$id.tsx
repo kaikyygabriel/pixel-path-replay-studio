@@ -67,6 +67,19 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
   return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 3 dias', 'há 5 dias', 'há 1 semana', 'há 10 dias', 'há 2 semanas'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
 }
 function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${product.sold} vendidos` : ""; }
+function estimateReviewCount(sold: string | null): number {
+  if (!sold) return 0;
+  const normalized = sold.toLowerCase().replace(/\s/g, "").replace(",", ".");
+  const amount = Number.parseFloat(normalized.replace(/[^0-9.]/g, ""));
+  if (!Number.isFinite(amount)) return 0;
+  return Math.round((normalized.includes("mil") ? amount * 1000 : amount) * 0.2);
+}
+function getEstimatedRatingDistribution(total: number, rating: number): Record<number, number> {
+  if (!total) return { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  const fiveStars = Math.round(total * Math.max(0, Math.min(1, rating - 4)));
+  return { 5: fiveStars, 4: total - fiveStars, 3: 0, 2: 0, 1: 0 };
+}
+
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
   return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
     const fill = Math.max(0, Math.min(1, rating - (n - 1)));
@@ -89,6 +102,16 @@ function ProductPage() {
   const [visibleReviews, setVisibleReviews] = useState(3);
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
+  const isKettle = p.id === "chaleira-unitermi-atacama";
+  const kettleReviewPhotos = isKettle ? [
+    { id: "kettle-review-1", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-1.png" },
+    { id: "kettle-review-2", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-2.png" },
+    { id: "kettle-review-3", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-3.png" },
+    { id: "kettle-review-4", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-4.png" },
+    { id: "kettle-review-5", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png" },
+    { id: "kettle-review-6", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png" },
+    { id: "kettle-review-7", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png" },
+  ] : [];
   const tclReviewPhotos = isTclTv ? [
     { id: "tcl-review-1", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
     { id: "tcl-review-2", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%202.png", caption: "Registro da embalagem recebida" },
@@ -102,7 +125,14 @@ function ProductPage() {
     { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
     { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
     { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 12 dias", rating: 5, text: "A imagem é linda, já tô aproveitando pra assistir meus filmes", media: null },
-  ] : makeDemoReviews(p.id, p.gallery);
+  ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
+    id: photo.id,
+    name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i],
+    date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i],
+    rating: 5,
+    text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i],
+    media: photo.src,
+  })) : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const reviewMedia = demoReviews.filter((review) => review.media);
@@ -297,12 +327,14 @@ function ProductPage() {
           <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center">
             <strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong>
             <ReviewStars rating={reviewAverage} size="h-4 w-4" />
-            <span className="mt-1 text-[11px] text-muted-foreground">{demoReviews.length} avaliações</span>
+            <span className="mt-1 text-[11px] text-muted-foreground">~{estimateReviewCount(p.sold).toLocaleString("pt-BR")} avaliações</span>
           </div>
           <div className="space-y-1.5">
             {[5,4,3,2,1].map((stars) => {
-              const count = demoReviews.filter((review) => review.rating === stars).length;
-              const percent = demoReviews.length ? (count / demoReviews.length) * 100 : 0;
+              const total = estimateReviewCount(p.sold);
+              const distribution = getEstimatedRatingDistribution(total, reviewAverage);
+              const count = distribution[stars] ?? 0;
+              const percent = total ? (count / total) * 100 : 0;
               return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}>
                 <span className="w-3 text-[11px] text-muted-foreground">{stars}</span>
                 <Star className="h-3 w-3 fill-ink text-ink" />
