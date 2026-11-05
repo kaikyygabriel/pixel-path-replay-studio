@@ -51,12 +51,12 @@ function OfferTimer() {
 const strip = ["FRETE GRÁTIS BRASIL", "ESPECIAL 25.12", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
 type DemoReview = { id: string; name: string; date: string; rating: number; text: string; media: string | null };
 const demoReviewCopy = [
-  'Produto muito bonito e corresponde ao que eu esperava. Gostei bastante da compra!',
-  'Chegou direitinho e bem embalado. A qualidade me surpreendeu.',
-  'Gostei do acabamento e da praticidade. Atendeu bem às minhas expectativas.',
-  'Boa compra! O produto é como aparece nas fotos e parece ser bem resistente.',
-  'Tudo certo com o pedido. Estou satisfeita com o produto.',
-  'Valeu a pena. Produto bonito, útil e fácil de usar no dia a dia.',
+  'Gostei muitoo, é bem bonito e ficou ótimo aqui em casa',
+  'Chegou direitinho e bem embalado, gostei da qualidade',
+  'Muito prático pro dia a dia, era exatamente o que eu precisava',
+  'É igual aparece nas fotos, gostei bastante da compra',
+  'Tô usando bastante e até agora tá tudo certinho',
+  'Valeu a pena, produto bonito e fácil de usar',
 ];
 // Dados locais de demonstração para uso interno; substituir por avaliações reais antes de publicar em produção.
 function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
@@ -98,10 +98,10 @@ function ProductPage() {
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
   const demoReviews: DemoReview[] = isTclTv ? [
-    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i], date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i], rating: 5, text: photo.caption, media: photo.src })),
-    { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e sistema fácil de usar. Gostei bastante.", media: null },
-    { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Boa televisão, chegou bem embalada e atendeu às expectativas.", media: null },
-    { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 12 dias", rating: 5, text: "Ótima experiência de uso e qualidade de imagem.", media: null },
+    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i], date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i], rating: 5, text: ["Gostei muitoo, já tô aproveitando pra jogar e a imagem ficou linda", "Chegou bem embaladinha e tudo certinho, adorei", "Na primeira configuração foi bem tranquilo, já comecei a usar", "Já tô assistindo meus conteúdos e a imagem tá muito boa", "Usei pra jogar e ficou muito bom, gostei demais"][i], media: photo.src })),
+    { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
+    { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
+    { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 12 dias", rating: 5, text: "A imagem é linda, já tô aproveitando pra assistir meus filmes", media: null },
   ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
