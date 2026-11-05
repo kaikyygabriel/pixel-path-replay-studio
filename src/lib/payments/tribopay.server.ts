@@ -4,9 +4,6 @@ const API_BASE = "https://api.tribopay.com.br/api/public/v1";
 // Código do produto-mãe no painel TriboPay: todos os itens do carrinho
 // são registrados sob este produto, mantendo título, preço e quantidade individuais.
 const PARENT_PRODUCT_HASH = "hnz0ihobyy";
-// Oferta existente informada pelo usuário (referência de R$ 10,00).
-// Reutilizada em todas as transações; nenhuma oferta é criada pela integração.
-const EXISTING_OFFER_HASH = "s6dxbbl44z";
 
 type JsonObject = Record<string, unknown>;
 
@@ -59,9 +56,6 @@ export const tribopay: PaymentProvider = {
     const payload = {
       amount: input.amountCents,
       payment_method: "pix",
-      // A API valida offer_hash no nível da transação; manter também nos itens
-      // do carrinho para compatibilidade com a associação produto/oferta.
-      offer_hash: EXISTING_OFFER_HASH,
       customer: {
         name: input.customer.name,
         email: input.customer.email,
