@@ -157,3 +157,8 @@
     animation-duration: 0.01ms;
   }
 }
+
+@layer base {
+  a, button, [role="button"], input, select, textarea, label { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+}
