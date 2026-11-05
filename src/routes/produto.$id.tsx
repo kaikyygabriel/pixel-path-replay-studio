@@ -101,7 +101,7 @@ function ProductPage() {
     ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i], date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i], rating: 5, text: photo.caption, media: photo.src })),
     { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e sistema fácil de usar. Gostei bastante.", media: null },
     { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Boa televisão, chegou bem embalada e atendeu às expectativas.", media: null },
-    { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 1 mês", rating: 5, text: "Ótima experiência de uso e qualidade de imagem.", media: null },
+    { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 12 dias", rating: 5, text: "Ótima experiência de uso e qualidade de imagem.", media: null },
   ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
