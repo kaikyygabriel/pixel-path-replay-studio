@@ -72,7 +72,10 @@ function estimateReviewCount(sold: string | null): number {
   const normalized = sold.toLowerCase().replace(/\s/g, "").replace(",", ".");
   const amount = Number.parseFloat(normalized.replace(/[^0-9.]/g, ""));
   if (!Number.isFinite(amount)) return 0;
-  return Math.round((normalized.includes("mil") ? amount * 1000 : amount) * 0.2);
+  const units = normalized.includes("mil") ? amount * 1000 : amount;
+  // Variação discreta e estável entre 19% e 21%, sem arredondar em dezenas/centenas.
+  const variation = ((Math.round(units) % 21) - 10) / 1000;
+  return Math.max(1, Math.round(units * (0.2 + variation)));
 }
 function getEstimatedRatingDistribution(total: number, rating: number): Record<number, number> {
   if (!total) return { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -104,13 +107,13 @@ function ProductPage() {
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
   const isKettle = p.id === "chaleira-unitermi-atacama";
   const kettleReviewPhotos = isKettle ? [
-    { id: "kettle-review-1", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-1.png" },
-    { id: "kettle-review-2", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-2.png" },
-    { id: "kettle-review-3", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-3.png" },
-    { id: "kettle-review-4", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-4.png" },
-    { id: "kettle-review-5", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png" },
-    { id: "kettle-review-6", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png" },
-    { id: "kettle-review-7", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png" },
+    { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
+    { id: "kettle-review-2", src: "/avalia%C3%A7%C3%A3o%20chaleira%202.png" },
+    { id: "kettle-review-3", src: "/avalia%C3%A7%C3%A3o%20chaleira%203.png" },
+    { id: "kettle-review-4", src: "/avalia%C3%A7%C3%A3o%20chaleira%204.png" },
+    { id: "kettle-review-5", src: "/avalia%C3%A7%C3%A3o%20chaleira%205.png" },
+    { id: "kettle-review-6", src: "/avalia%C3%A7%C3%A3o%20chaleira%206.png" },
+    { id: "kettle-review-7", src: "/avalia%C3%A7%C3%A3o%20chaleira%207.png" },
   ] : [];
   const tclReviewPhotos = isTclTv ? [
     { id: "tcl-review-1", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
