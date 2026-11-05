@@ -118,6 +118,34 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    const blockContextMenu = (event: MouseEvent) => {
+      event.preventDefault();
+    };
+
+    const blockInspectionShortcuts = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase();
+      const modifier = event.ctrlKey || event.metaKey;
+      const blocked =
+        event.key === "F12" ||
+        (modifier && event.shiftKey && ["i", "j", "c"].includes(key)) ||
+        (modifier && ["u", "s"].includes(key));
+
+      if (blocked) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+
+    document.addEventListener("contextmenu", blockContextMenu, true);
+    document.addEventListener("keydown", blockInspectionShortcuts, true);
+
+    return () => {
+      document.removeEventListener("contextmenu", blockContextMenu, true);
+      document.removeEventListener("keydown", blockInspectionShortcuts, true);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
