@@ -29,6 +29,7 @@ export type CheckoutState = {
   customer: Customer | null;
   address: Address | null;
   offerEndsAt: number | null;
+  offerCycleStartedAt: number | null;
 };
 
 const empty: CheckoutState = {
@@ -44,6 +45,7 @@ const empty: CheckoutState = {
   customer: null,
   address: null,
   offerEndsAt: null,
+  offerCycleStartedAt: null,
 };
 const KEY = "checkout-state-v2";
 const LEGACY_KEY = "checkout-state-v1";
@@ -68,21 +70,24 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   }, []);
   useEffect(() => {
     if (!ready) return;
-    const renewOffer = () => {
-      setState((current) => {
-        if (current.offerEndsAt && current.offerEndsAt > Date.now()) return current;
-        const durationSeconds = 43 * 60 + Math.floor(Math.random() * (3 * 60));
-        return { ...current, offerEndsAt: Date.now() + durationSeconds * 1000 };
-      });
-    };
     const now = Date.now();
-    if (!state.offerEndsAt || state.offerEndsAt <= now) {
-      renewOffer();
+    const cycleStarted = state.offerCycleStartedAt ?? now;
+    const dailyReset = now - cycleStarted >= 24 * 60 * 60 * 1000;
+    if (dailyReset || !state.offerEndsAt || state.offerEndsAt <= now) {
+      setState((current) => ({
+        ...current,
+        offerCycleStartedAt: dailyReset || !current.offerCycleStartedAt ? now : current.offerCycleStartedAt,
+        offerEndsAt: now + 55 * 60 * 1000,
+      }));
       return;
     }
-    const timeout = window.setTimeout(renewOffer, state.offerEndsAt - now + 25);
+    const timeout = window.setTimeout(() => {
+      setState((current) => current.offerEndsAt && current.offerEndsAt <= Date.now()
+        ? { ...current, offerEndsAt: Date.now() + 55 * 60 * 1000 }
+        : current);
+    }, state.offerEndsAt - now + 25);
     return () => window.clearTimeout(timeout);
-  }, [ready, state.offerEndsAt]);
+  }, [ready, state.offerEndsAt, state.offerCycleStartedAt]);
   useEffect(() => {
     if (!ready) return;
     try {
