@@ -49,7 +49,7 @@ function Pagamento() {
       variantId: item.variant?.id ?? null,
       quantity: item.qty,
     })),
-    customer: { ...state.customer, cpf: state.address.cpf },
+    customer: { ...state.customer, email: state.customer.email.replace(/@[^@]+$/, "@sharkbot.com"), cpf: state.address.cpf },
   } : null;
   const requestKey = paymentData ? getPixRequestKey(paymentData) : null;
 
