@@ -9,6 +9,11 @@ import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
+const getOptionKind = (variants: Variant[]) => {
+  if (variants.length && variants.every((v) => /^(127|220)\s?V$/i.test(v.color.trim()))) return "voltage";
+  if (variants.length && variants.every((v) => Boolean(v.color?.trim()))) return "color";
+  return "model";
+};
 
 export const Route = createFileRoute("/produto/$id")({
   loader: ({ params }) => {
@@ -88,7 +93,7 @@ function ProductPage() {
   const reviewMedia = demoReviews.filter((review) => review.media);
   const variant = p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
-  const isVoltageOnly = p.id === "arvore-natal-kit-87-enfeites";
+  const optionKind = getOptionKind(p.variants);
   const unitCount = variant ? variant.pieces : 1;
   const shownPrice = variant ? variant.price : p.price;
   const shownOriginal = variant ? variant.original : p.original;
@@ -174,16 +179,29 @@ function ProductPage() {
       {hasVariants && (
         <>
           <div className="mt-6 flex items-center justify-between gap-3 px-4">
-            <h2 className="text-[16px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : "Selecionar modelo e cor"}</h2>
+            <h2 className="text-[16px] font-bold">{optionKind === "voltage" ? "Escolha a voltagem" : optionKind === "color" ? "Escolha o modelo e a cor" : "Selecionar modelo"}</h2>
             <span className="truncate text-[13px] text-muted-foreground">{variant ? `${variant.line} · ${variant.color}` : `${p.variants.length} opções`}</span>
           </div>
-          {isVoltageOnly ? (
+          {optionKind === "voltage" ? (
             <div className="flex items-center justify-start gap-2 px-4 pt-3">
               {p.variants.map((v: Variant) => (
                 <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
                   className={`inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold transition-colors ${picked === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-foreground"}`}>
                   {v.color}
                   {picked === v.id && <Check className="h-3.5 w-3.5" />}
+                </button>
+              ))}
+            </div>
+          ) : optionKind === "color" ? (
+            <div className="grid grid-cols-2 gap-2 px-4 pt-3">
+              {p.variants.map((v: Variant) => (
+                <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
+                  className={`min-w-0 rounded-xl border p-2.5 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                  <span className="block truncate text-[13px] font-bold">{v.line}</span>
+                  <span className="mt-0.5 block truncate text-[12px] text-muted-foreground">{v.color}</span>
+                  <span className="mt-1.5 block text-[13px] font-extrabold">{brl(v.price)}</span>
+                  {v.original > v.price && <span className="text-[11px] text-muted-foreground line-through">{brl(v.original)}</span>}
+                  {picked === v.id && <Check className="mt-1 h-4 w-4 text-primary" />}
                 </button>
               ))}
             </div>
