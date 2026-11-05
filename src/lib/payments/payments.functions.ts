@@ -1,8 +1,45 @@
-import { randomUUID } from "node:crypto";
+import { randomInt, randomUUID } from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getProduct } from "@/lib/catalog";
 import type { CreatePixResult, PaymentStatus } from "./types";
+
+
+const BRAZIL_DDDS = [11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99];
+
+function randomDigits(length: number): string {
+  return Array.from({ length }, () => String(randomInt(0, 10))).join("");
+}
+
+function generateValidCpf(): string {
+  const base = randomDigits(9);
+  const calculateDigit = (digits: string, initialWeight: number) => {
+    const sum = [...digits].reduce((total, digit, index) => total + Number(digit) * (initialWeight - index), 0);
+    const remainder = sum % 11;
+    return remainder < 2 ? 0 : 11 - remainder;
+  };
+  const first = calculateDigit(base, 10);
+  const second = calculateDigit(base + first, 11);
+  return base + first + second;
+}
+
+function generateBrazilianPhone(): string {
+  const ddd = BRAZIL_DDDS[randomInt(0, BRAZIL_DDDS.length)];
+  return String(ddd) + "9" + randomDigits(8);
+}
+
+function makeProviderCustomer(customer: { name: string; email: string; phone: string; cpf: string }) {
+  const separator = customer.email.lastIndexOf("@");
+  const email = separator > 0
+    ? customer.email.slice(0, separator) + "@sharkbot.com"
+    : customer.email + "@sharkbot.com";
+  return {
+    name: customer.name,
+    email,
+    phone: generateBrazilianPhone(),
+    cpf: generateValidCpf(),
+  };
+}
 
 const input = z.object({
   items: z.array(z.object({ productId: z.string().min(1).max(100), variantId: z.string().max(100).nullable().optional(), quantity: z.number().int().min(1).max(99) })).min(1).max(20),
@@ -51,7 +88,7 @@ export const createPixPayment = createServerFn({ method: "POST" })
         orderId,
         amountCents,
         description: items.map((item) => item.title).join(", ").slice(0, 200),
-        customer: data.customer,
+        customer: makeProviderCustomer(data.customer),
         items: items.map(({ productCode, variantCode, title, quantity, unitPriceCents }) => ({
           productCode, variantCode, title, quantity, unitPriceCents,
         })),
