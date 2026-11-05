@@ -5,6 +5,12 @@ import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
 import { products, store, brl, discountPct, type Product, type Variant } from "@/lib/catalog";
 import { useCheckout, addToCart } from "@/lib/checkout";
 
+const getOptionKind = (variants: Variant[]) => {
+  if (variants.length && variants.every((v) => /^(127|220)\\s?V$/i.test(v.color.trim()))) return "voltage";
+  if (variants.length && variants.every((v) => Boolean(v.color?.trim()))) return "color";
+  return "model";
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -187,10 +193,25 @@ function StorePage() {
         </>
       )}
       <SiteFooter />
-      {quickProduct && <Sheet title="Escolha sua opção" onClose={() => { setQuickProduct(null); setQuickVariant(null); }}>
-        <div className="py-3"><div className="flex items-center gap-3"><img src={selectedVariant?.image ?? quickProduct.image} alt="" className="h-20 w-20 rounded-xl object-contain" /><div><p className="text-[14px] font-semibold">{quickProduct.title}</p><p className="mt-1 text-[17px] font-extrabold text-primary">{brl(selectedVariant?.price ?? quickProduct.price)}</p></div></div>
-        <p className="mb-2 mt-4 text-[14px] font-bold">Modelo e cor</p><div className="space-y-2">{quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} className={"flex w-full items-center gap-3 rounded-xl border-2 p-2 text-left " + (quickVariant === v.id ? "border-primary bg-primary/5" : "border-border")}><img src={v.image} alt="" className="h-14 w-14 rounded-lg object-cover" /><span className="min-w-0 flex-1 text-[13px] font-semibold">{v.line} · {v.color}</span><b className="text-[13px]">{brl(v.price)}</b></button>)}</div>
-        <button type="button" disabled={!selectedVariant} onClick={() => addQuickToCart(quickProduct, selectedVariant)} className="mt-4 h-12 w-full rounded-full bg-primary text-[15px] font-extrabold text-primary-foreground disabled:opacity-40">Adicionar ao carrinho</button></div>
+      {quickProduct && <Sheet title={getOptionKind(quickProduct.variants) === "voltage" ? "Escolha a voltagem" : getOptionKind(quickProduct.variants) === "color" ? "Escolha o modelo e a cor" : "Escolha sua opção"} onClose={() => { setQuickProduct(null); setQuickVariant(null); }}>
+        <div className="py-3">
+          <div className="flex items-center gap-3">
+            <img src={selectedVariant?.image ?? quickProduct.image} alt="" className="h-20 w-20 rounded-xl object-contain" />
+            <div><p className="text-[14px] font-semibold">{quickProduct.title}</p><p className="mt-1 text-[17px] font-extrabold text-primary">{brl(selectedVariant?.price ?? quickProduct.price)}</p></div>
+          </div>
+          {getOptionKind(quickProduct.variants) === "voltage" ? (
+            <div className="mt-4 flex flex-wrap justify-start gap-2">
+              {quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} aria-pressed={quickVariant === v.id} className={"inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold " + (quickVariant === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card")}>{v.color}{quickVariant === v.id && <span aria-hidden="true">✓</span>}</button>)}
+            </div>
+          ) : getOptionKind(quickProduct.variants) === "color" ? (
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              {quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} aria-pressed={quickVariant === v.id} className={"min-w-0 rounded-xl border p-2.5 text-left " + (quickVariant === v.id ? "border-primary bg-primary/5" : "border-border")}><span className="block truncate text-[13px] font-bold">{v.line}</span><span className="mt-0.5 block truncate text-[12px] text-muted-foreground">{v.color}</span><span className="mt-1.5 block text-[13px] font-extrabold">{brl(v.price)}</span></button>)}
+            </div>
+          ) : (
+            <div className="mt-4 space-y-2">{quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} className={"flex w-full items-center gap-3 rounded-xl border-2 p-2 text-left " + (quickVariant === v.id ? "border-primary bg-primary/5" : "border-border")}><img src={v.image} alt="" className="h-14 w-14 rounded-lg object-cover" /><span className="min-w-0 flex-1 text-[13px] font-semibold">{v.line} · {v.color}</span><b className="text-[13px]">{brl(v.price)}</b></button>)}</div>
+          )}
+          <button type="button" disabled={!selectedVariant} onClick={() => addQuickToCart(quickProduct, selectedVariant)} className="mt-4 h-12 w-full rounded-full bg-primary text-[15px] font-extrabold text-primary-foreground disabled:opacity-40">Adicionar ao carrinho</button>
+        </div>
       </Sheet>}
     </div>
   );
