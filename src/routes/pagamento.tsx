@@ -167,7 +167,7 @@ function Pagamento() {
         <button aria-label="Voltar" onClick={() => router.history.back()} className="absolute left-3 grid h-8 w-8 place-items-center rounded-lg border border-ink-foreground/20 bg-ink-foreground/10">
           <ArrowLeft className="h-4 w-4" />
         </button>
-        <img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shop" width={150} height={42} loading="eager" decoding="async" className="h-10 w-[158px] object-contain brightness-0 invert" />
+        <img src="/logo%20estendida%20tiktok%20shop.png" alt="TikTok Shop" width={168} height={44} loading="eager" decoding="async" className="h-11 w-[168px] object-contain brightness-0 invert" />
       </header>
 
       {toast && (
