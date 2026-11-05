@@ -146,16 +146,24 @@ function StorePage() {
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
-            <div className="flex gap-3 overflow-x-auto pb-2">
+            <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {products.filter((p) => p.id === "arvore-natal-kit-87-enfeites").map((p) => (
-                <Link key={p.id} to="/produto/$id" params={{ id: p.id }} className="flex w-full min-w-0 items-center gap-3 rounded-xl bg-card p-3">
-                  <img src={p.image} alt={p.title} loading="lazy" className="h-24 w-24 shrink-0 rounded-lg object-contain" />
-                  <span className="min-w-0 flex-1">
-                    <span className="block line-clamp-2 text-[14px] font-semibold">{p.cardTitle}</span>
-                    <span className="mt-1 block text-[17px] font-extrabold">{brl(p.price)}</span>
-                    <span className="text-[12px] text-muted-foreground line-through">{brl(p.original)}</span>
-                  </span>
-                </Link>
+                <div key={p.id} className="relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3">
+                  <Link to="/produto/$id" params={{ id: p.id }}>
+                    <div className="relative">
+                      <img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />
+                      <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>
+                    </div>
+                    {(p.rating != null || p.sold) && <div className="mt-2 flex items-center gap-1 text-[11px]">
+                      {p.rating != null && <><span className="relative text-muted-foreground">★★★★★<span className="absolute inset-y-0 left-0 overflow-hidden text-amber-500" style={{ width: ((p.rating / 5) * 100) + "%" }}>★★★★★</span></span><b>{p.rating.toFixed(1)}</b></>}
+                      {p.sold && <span className="text-muted-foreground">{p.sold} vendidos</span>}
+                    </div>}
+                    <h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3>
+                  </Link>
+                  <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
+                  <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
+                </div>
               ))}
             </div>
           </div>
