@@ -139,18 +139,30 @@ function StorePage() {
           </div>
         )}
       </div>
-      {["Mais vendidos", "Novidades"].map((title) => (
-        <div key={title} className="px-3.5 pb-9">
-          <div className="mb-3 flex items-center gap-2">
-            <span className="h-4 w-1 rounded-full bg-primary" />
-            <h3 className="text-[17px] font-extrabold">{title}</h3>
+      {activeCategory === "Todos" && (
+        <>
+          <div className="px-3.5 pb-9">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="h-4 w-1 rounded-full bg-primary" />
+              <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
+            </div>
+            <div className="rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
+              <p className="text-[14px] font-bold">Em breve</p>
+              <p className="mt-1 text-[13px] text-muted-foreground">Novos produtos chegando nesta seção.</p>
+            </div>
           </div>
-          <div className="rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
-            <p className="text-[14px] font-bold">Em breve</p>
-            <p className="mt-1 text-[13px] text-muted-foreground">Novos produtos chegando nesta seção.</p>
+          <div className="px-3.5 pb-9">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="h-4 w-1 rounded-full bg-primary" />
+              <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
+            </div>
+            <div className="rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
+              <p className="text-[14px] font-bold">Em breve</p>
+              <p className="mt-1 text-[13px] text-muted-foreground">Novos produtos chegando nesta seção.</p>
+            </div>
           </div>
-        </div>
-      ))}
+        </>
+      )}
       <SiteFooter />
       {quickProduct && <Sheet title="Escolha sua opção" onClose={() => { setQuickProduct(null); setQuickVariant(null); }}>
         <div className="py-3"><div className="flex items-center gap-3"><img src={selectedVariant?.image ?? quickProduct.image} alt="" className="h-20 w-20 rounded-xl object-contain" /><div><p className="text-[14px] font-semibold">{quickProduct.title}</p><p className="mt-1 text-[17px] font-extrabold text-primary">{brl(selectedVariant?.price ?? quickProduct.price)}</p></div></div>
