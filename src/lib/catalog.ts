@@ -127,7 +127,7 @@ export const products: Product[] = [
     rating: 5,
     reviews: null,
     sold: "800+",
-  },,
+  },
   {
     id: "smart-tv-tcl-55p8k-qled-4k",
     title: "Smart TV TCL 55” QLED 4K Google TV · 144 Hz",
