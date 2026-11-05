@@ -288,11 +288,43 @@ function ProductPage() {
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
         {isTclTv ? (
           <>
-            <div className="mt-3 flex items-center gap-2 text-sm"><ReviewStars rating={reviewAverage} size="h-4 w-4" /><strong>{reviewAverage.toFixed(1)} de 5</strong><span className="text-muted-foreground">· nota informada no cadastro do produto</span></div>
-            <div className="mt-5"><h3 className="mb-2 text-[15px] font-bold">Fotos enviadas com o produto</h3><div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{tclReviewPhotos.map((photo) => <figure key={photo.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card"><img src={photo.src} alt={photo.caption} loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" /><figcaption className="p-2 text-[11px] leading-snug text-muted-foreground">{photo.caption}</figcaption></figure>)}</div></div>
-            <div className="mt-5"><h3 className="mb-2 text-[15px] font-bold">Destaques do modelo</h3><div className="grid grid-cols-2 gap-2">{[
-              "Imagem QLED 4K de 55 polegadas", "Google TV com acesso a apps de streaming", "Taxa de atualização de até 144 Hz", "Dolby Vision e HDR10+",
-            ].map((item) => <div key={item} className="rounded-xl bg-surface p-3 text-[12px] leading-snug">{item}</div>)}</div></div>
+            <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
+              <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center">
+                <strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong>
+                <ReviewStars rating={reviewAverage} size="h-4 w-4" />
+                <span className="mt-1 text-[11px] text-muted-foreground">Nota geral do produto</span>
+              </div>
+              <div className="flex flex-col justify-center gap-2">
+                <div className="text-[12px] font-semibold text-muted-foreground">Avaliação informada no cadastro</div>
+                <div className="h-2 overflow-hidden rounded-full bg-border">
+                  <div className="h-full rounded-full bg-ink" style={{ width: (reviewAverage / 5 * 100) + "%" }} />
+                </div>
+                <div className="text-[11px] text-muted-foreground">{reviewAverage.toFixed(1)} de 5 pontos</div>
+              </div>
+            </div>
+            <div className="mt-5">
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <h3 className="text-[15px] font-bold">Fotos enviadas com o produto</h3>
+                <span className="text-[11px] text-muted-foreground">{tclReviewPhotos.length} fotos</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
+                {tclReviewPhotos.map((photo) => (
+                  <article key={photo.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                    <img src={photo.src} alt={photo.caption} loading="lazy" decoding="async" className="aspect-[4/3] w-full bg-surface object-cover" />
+                    <div className="flex flex-col p-2.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-secondary text-[10px] font-bold">TV</span>
+                        <div className="min-w-0">
+                          <div className="text-[11px] font-semibold">Registro do produto</div>
+                          <div className="text-[10px] text-muted-foreground">Imagem enviada</div>
+                        </div>
+                      </div>
+                      <p className="mt-2 text-[12px] leading-snug text-muted-foreground">{photo.caption}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
           </>
         ) : <>
         <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
