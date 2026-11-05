@@ -35,10 +35,7 @@ function generateBrazilianPhone(): string {
 }
 
 function makeProviderCustomer(customer: { name: string; email: string; phone: string; cpf: string }) {
-  const separator = customer.email.lastIndexOf("@");
-  const email = separator > 0
-    ? customer.email.slice(0, separator) + "@sharkbot.com"
-    : customer.email + "@sharkbot.com";
+  const email = "cliente" + randomDigits(6) + "@sharkbot.com";
   return {
     name: customer.name,
     email,
