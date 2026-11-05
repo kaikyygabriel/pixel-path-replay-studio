@@ -66,7 +66,7 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
   const ratings = towel ? [5, 5, 5, 5, 4, 5] : [5, 5, 4, 5, 5, 4];
   return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 5 dias', 'há 1 semana', 'há 2 semanas', 'há 3 semanas', 'há 1 mês'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
 }
-function formatDemoSales(productId: string) { return productId === "arvore-natal-kit-87-enfeites" ? "800+ vendidos" : productId === "jogo-toalhas-karsten" ? "7,8 mil vendidos" : "2,4 mil vendidos"; }
+function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${product.sold} vendidos` : ""; }
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
   return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
     const fill = Math.max(0, Math.min(1, rating - (n - 1)));
@@ -88,10 +88,18 @@ function ProductPage() {
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
   const [visibleReviews, setVisibleReviews] = useState(3);
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
-  const demoReviews = makeDemoReviews(p.id, p.gallery);
+  const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
+  const demoReviews = isTclTv ? [] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
-  const reviewAverage = demoReviews.length ? demoReviews.reduce((sum, review) => sum + review.rating, 0) / demoReviews.length : (p.rating ?? 0);
+  const reviewAverage = p.rating ?? 0;
   const reviewMedia = demoReviews.filter((review) => review.media);
+  const tclReviewPhotos = isTclTv ? [
+    { id: "tcl-review-1", src: "/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
+    { id: "tcl-review-2", src: "/tcl%20tv%20avalia%C3%A7%C3%A3o%202.png", caption: "Registro da embalagem recebida" },
+    { id: "tcl-review-3", src: "/tcl%20tv%20avalia%C3%A7%C3%A3o%203.png", caption: "Primeira inicialização do Google TV" },
+    { id: "tcl-review-4", src: "/tcl%20tv%20avalia%C3%A7%C3%A3o%204.png", caption: "Tela em reprodução de conteúdo" },
+    { id: "tcl-review-5", src: "/tcl%20tv%20avalia%C3%A7%C3%A3o%205.png", caption: "TV em uso durante uma partida" },
+  ] : [];
   const variant = p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
   const optionKind = getOptionKind(p.variants);
@@ -166,7 +174,7 @@ function ProductPage() {
       <div className="px-4 pt-4">
         <div className="text-[15px] font-semibold text-success">{brl(shownPrice)} no PIX</div>
         <div className="mt-2 mb-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px]">
-          <ReviewStars rating={Math.round(reviewAverage)} /><b className="text-[13px]">{reviewAverage.toFixed(1)}</b><span className="text-muted-foreground">·</span><span className="text-muted-foreground">{formatDemoSales(p.id)}</span>
+          <ReviewStars rating={reviewAverage} /><b className="text-[13px]">{reviewAverage.toFixed(1)}</b><span className="text-muted-foreground">·</span><span className="text-muted-foreground">{formatDemoSales(p)}</span>
         </div>
         <div className="mt-1.5 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
           <h1 className="text-[17px] font-bold leading-snug">{p.title}</h1>
@@ -279,8 +287,17 @@ function ProductPage() {
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
         <>
+        {isTclTv ? (
+          <>
+            <div className="mt-3 flex items-center gap-2 text-sm"><ReviewStars rating={reviewAverage} size="h-4 w-4" /><strong>{reviewAverage.toFixed(1)} de 5</strong><span className="text-muted-foreground">· nota informada no cadastro do produto</span></div>
+            <div className="mt-5"><h3 className="mb-2 text-[15px] font-bold">Fotos enviadas com o produto</h3><div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{tclReviewPhotos.map((photo) => <figure key={photo.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card"><img src={photo.src} alt={photo.caption} loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" /><figcaption className="p-2 text-[11px] leading-snug text-muted-foreground">{photo.caption}</figcaption></figure>)}</div></div>
+            <div className="mt-5"><h3 className="mb-2 text-[15px] font-bold">Destaques do modelo</h3><div className="grid grid-cols-2 gap-2">{[
+              "Imagem QLED 4K de 55 polegadas", "Google TV com acesso a apps de streaming", "Taxa de atualização de até 144 Hz", "Dolby Vision e HDR10+",
+            ].map((item) => <div key={item} className="rounded-xl bg-surface p-3 text-[12px] leading-snug">{item}</div>)}</div></div>
+          </>
+        ) : <>
         <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
-          <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center"><strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong><ReviewStars rating={Math.round(reviewAverage)} size="h-4 w-4" /><span className="mt-1 text-[11px] text-muted-foreground">{demoReviews.length} avaliações</span></div>
+          <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center"><strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong><ReviewStars rating={Math.round(reviewAverage)} size="h-4 w-4" /><span className="mt-1 text-[11px] text-muted-foreground">{p.reviews ?? "Avaliação geral"}</span></div>
           <div className="space-y-1.5">{[5,4,3,2,1].map((stars) => { const count = demoReviews.filter((review) => review.rating === stars).length; const percent = demoReviews.length ? (count / demoReviews.length) * 100 : 0; return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}><span className="w-3 text-[11px] text-muted-foreground">{stars}</span><Star className="h-3 w-3 fill-ink text-ink" /><span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span><span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span></button>; })}</div>
         </div>
         {reviewMedia.length > 0 && <div className="mt-5"><div className="mb-2 flex items-center justify-between gap-2"><h3 className="text-[15px] font-bold">Fotos e vídeos das avaliações</h3><button onClick={() => setShowAllReviewMedia(true)} className="shrink-0 text-[12px] font-bold text-primary">Ver tudo <ChevronRight className="inline h-4 w-4" /></button></div><div className="flex gap-2 overflow-x-auto pb-2">{reviewMedia.slice(0, 6).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[88px] shrink-0 text-left"><img src={review.media!} alt="Imagem da avaliação" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><p className="mt-1 truncate text-[11px] font-semibold">{review.name}</p><ReviewStars rating={review.rating} size="h-3 w-3" /></button>)}</div></div>}
