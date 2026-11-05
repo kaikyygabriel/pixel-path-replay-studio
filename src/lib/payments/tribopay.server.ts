@@ -54,14 +54,32 @@ function apiToken() {
 }
 
 async function readApiResponse(response: Response): Promise<unknown> {
-  let body: unknown;
-  try {
-    body = await response.json();
-  } catch {
-    throw new Error("Resposta inválida da Cash API (HTTP " + response.status + ").");
+  const rawBody = await response.text();
+  let body: unknown = null;
+  let isJson = false;
+
+  if (rawBody.trim()) {
+    try {
+      body = JSON.parse(rawBody);
+      isJson = true;
+    } catch {
+      // Gateways/proxies podem responder HTML ou texto, especialmente em 5xx.
+    }
   }
+
   if (!response.ok) {
-    throw new Error("Cash API HTTP " + response.status + ": " + providerMessage(body));
+    if (isJson) {
+      throw new Error("Cash API HTTP " + response.status + ": " + providerMessage(body));
+    }
+    if (response.status === 521) {
+      throw new Error("Cash API HTTP 521: o servidor de origem da TriboPay não aceitou a conexão (Cloudflare). A requisição não chegou a uma resposta da API; verifique a disponibilidade do gateway.");
+    }
+    const contentType = response.headers.get("content-type") ?? "desconhecido";
+    throw new Error("Cash API HTTP " + response.status + ": resposta não JSON (Content-Type: " + contentType + ").");
+  }
+
+  if (!isJson) {
+    throw new Error("Cash API HTTP " + response.status + ": resposta vazia ou fora do formato JSON esperado.");
   }
   return body;
 }
@@ -119,16 +137,6 @@ export const tribopay: PaymentProvider = {
     if (!pixCode || !paymentId) {
       throw new Error("A Cash API respondeu, mas não retornou pix.code e id.");
     }
-    if (!isValidPixPayload(pixCode)) {
-      console.error("TriboPay retornou payload PIX inválido:", {
-        paymentId,
-        length: pixCode.length,
-        startsWithEmv: pixCode.startsWith("000201"),
-        hasCrcField: /6304[0-9A-Fa-f]{4}$/.test(pixCode),
-      });
-      throw new Error("A TriboPay retornou um código PIX inválido. A cobrança não pode ser exibida com segurança; entre em contato com o suporte do gateway.");
-    }
-
     const expiresAt = findDate(body, ["expiresAt", "expires_at", "expirationDate", "expiration_date"])
       ?? new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
