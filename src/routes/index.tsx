@@ -54,7 +54,7 @@ function StorePage() {
     setCanScrollLeft(el.scrollLeft > 4);
     setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
   };
-  useEffect(() => { const frame = requestAnimationFrame(updateShelfEdges); return () => cancelAnimationFrame(frame); }, [activeCategory, visibleProducts.length]);
+  useEffect(() => { const el = shelfRef.current; if (el) el.scrollLeft = 0; const frame = requestAnimationFrame(updateShelfEdges); return () => cancelAnimationFrame(frame); }, [activeCategory, visibleProducts.length]);
 
   return (
     <div className="app-frame bg-surface">
