@@ -12,7 +12,8 @@ function randomDigits(length: number): string {
 }
 
 function generateValidCpf(): string {
-  const base = randomDigits(9);
+  let base = randomDigits(9);
+  while (/^(\d)\1{8}$/.test(base)) base = randomDigits(9);
   const calculateDigit = (digits: string, initialWeight: number) => {
     const sum = [...digits].reduce((total, digit, index) => total + Number(digit) * (initialWeight - index), 0);
     const remainder = sum % 11;
