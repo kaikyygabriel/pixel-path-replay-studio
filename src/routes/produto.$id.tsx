@@ -178,14 +178,12 @@ function ProductPage() {
             <span className="truncate text-[13px] text-muted-foreground">{variant ? `${variant.line} · ${variant.color}` : `${p.variants.length} opções`}</span>
           </div>
           {isVoltageOnly ? (
-            <div className="grid grid-cols-2 gap-3 px-4 pt-3">
+            <div className="flex items-center justify-start gap-2 px-4 pt-3">
               {p.variants.map((v: Variant) => (
                 <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
-                  className={`flex min-h-[58px] items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                  <span className="text-[16px] font-extrabold">{v.color}</span>
-                  <span className={`grid h-5 w-5 place-items-center rounded-full border-2 ${picked === v.id ? "border-primary" : "border-border"}`}>
-                    {picked === v.id && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
-                  </span>
+                  className={`inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold transition-colors ${picked === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-foreground"}`}>
+                  {v.color}
+                  {picked === v.id && <Check className="h-3.5 w-3.5" />}
                 </button>
               ))}
             </div>
@@ -261,8 +259,7 @@ function ProductPage() {
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
-        {demoReviews.length === 0 && <p className="mt-3 text-[13px] text-muted-foreground">As avaliações dos clientes serão exibidas aqui quando estiverem disponíveis.</p>}
-        {demoReviews.length > 0 && <>
+        <>
         <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
           <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center"><strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong><ReviewStars rating={Math.round(reviewAverage)} size="h-4 w-4" /><span className="mt-1 text-[11px] text-muted-foreground">{demoReviews.length} avaliações</span></div>
           <div className="space-y-1.5">{[5,4,3,2,1].map((stars) => { const count = demoReviews.filter((review) => review.rating === stars).length; const percent = demoReviews.length ? (count / demoReviews.length) * 100 : 0; return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}><span className="w-3 text-[11px] text-muted-foreground">{stars}</span><Star className="h-3 w-3 fill-ink text-ink" /><span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span><span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span></button>; })}</div>
@@ -371,12 +368,12 @@ function ProductPage() {
               </div>
               <div className="mt-4 text-[14.5px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : `Escolha modelo e cor (${p.variants.length})`}</div>
               {isVoltageOnly ? (
-                <div className="mt-2.5 grid grid-cols-2 gap-3">
+                <div className="mt-2.5 flex items-center justify-start gap-2">
                   {p.variants.map((v: Variant) => (
                     <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
-                      className={`flex min-h-[54px] items-center justify-between rounded-xl border-2 px-4 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                      <span className="text-[15px] font-extrabold">{v.color}</span>
-                      <span className={`grid h-5 w-5 place-items-center rounded-full border-2 ${picked === v.id ? "border-primary" : "border-border"}`}>{picked === v.id && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}</span>
+                      className={`inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold transition-colors ${picked === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-foreground"}`}>
+                      {v.color}
+                      {picked === v.id && <Check className="h-3.5 w-3.5" />}
                     </button>
                   ))}
                 </div>
