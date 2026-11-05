@@ -22,6 +22,7 @@ function isHtmlNavigation(request: Request): boolean {
     (destination === null || destination === "document");
 }
 
+// Preview compatibility marker: this file is included in the next GitHub-to-Lovable sync.
 // Lovable renders the project inside an editor preview, often from a desktop
 // browser and inside an iframe. Keep the production access gate, but never
 // block the development/preview hosts used to inspect the project.
