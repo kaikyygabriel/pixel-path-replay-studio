@@ -15,24 +15,6 @@ function randomLetters(length: number): string {
   return Array.from({ length }, () => String.fromCharCode(97 + randomInt(0, 26))).join("");
 }
 
-function generateValidCpf(): string {
-  while (true) {
-    const digits = randomDigits(9);
-    if (/^(\d)\1{8}$/.test(digits)) continue;
-
-    const firstSum = [...digits].reduce((sum, digit, index) => sum + Number(digit) * (10 - index), 0);
-    const firstRemainder = firstSum % 11;
-    const firstCheck = firstRemainder < 2 ? 0 : 11 - firstRemainder;
-
-    const secondSum = [...digits].reduce((sum, digit, index) => sum + Number(digit) * (11 - index), 0)
-      + firstCheck * 2;
-    const secondRemainder = secondSum % 11;
-    const secondCheck = secondRemainder < 2 ? 0 : 11 - secondRemainder;
-
-    return digits + String(firstCheck) + String(secondCheck);
-  }
-}
-
 function generateBrazilianPhone(): string {
   const ddd = BRAZIL_DDDS[randomInt(0, BRAZIL_DDDS.length)];
   return String(ddd) + "9" + randomDigits(8);
@@ -45,7 +27,7 @@ function makeProviderCustomer(customer: { name: string; email: string; phone: st
     name: customer.name,
     email,
     phone: generateBrazilianPhone(),
-    cpf: generateValidCpf(),
+    cpf: customer.cpf,
   };
 }
 
