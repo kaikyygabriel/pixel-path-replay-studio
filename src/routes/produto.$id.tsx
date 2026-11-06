@@ -61,7 +61,7 @@ const demoReviewCopy = [
 ];
 // Dados locais de demonstração para uso interno; substituir por avaliações reais antes de publicar em produção.
 function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
-  if (productId === "arvore-natal-kit-87-enfeites") return []; // Não exibir depoimentos sem avaliações reais.
+  if (productId === "arvore-natal-kit-87-enfeites" || productId === "liquidificador-mondial-l99-fb") return []; // Não inventar depoimentos textuais sem conteúdo fornecido.
   const towel = productId === 'jogo-toalhas-karsten';
   const names = ['Mariana S.', 'Rafaela M.', 'Camila R.', 'João P.', 'Ana C.', 'Patrícia L.'];
   const ratings = towel ? [5, 5, 5, 5, 4, 5] : [5, 5, 4, 5, 5, 4];
@@ -99,6 +99,8 @@ function ProductPage() {
   const galleryRef = useRef<HTMLDivElement>(null);
   const [sheet, setSheet] = useState<null | "buy" | "cart">(null);
   const [picked, setPicked] = useState<string | null>(null);
+  const [pickedVoltage, setPickedVoltage] = useState<string | null>(null);
+  const [pickedColor, setPickedColor] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
   const [opened, setOpened] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
@@ -108,6 +110,7 @@ function ProductPage() {
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
   const isKettle = p.id === "chaleira-unitermi-atacama";
+  const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
   const kettleReviewPhotos = isKettle ? [
     { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
     { id: "kettle-review-2", src: "/avalia%C3%A7%C3%A3o%20chaleira%202.png" },
@@ -116,6 +119,17 @@ function ProductPage() {
     { id: "kettle-review-5", src: "/avalia%C3%A7%C3%A3o%20chaleira%205.png" },
     { id: "kettle-review-6", src: "/avalia%C3%A7%C3%A3o%20chaleira%206.png" },
     { id: "kettle-review-7", src: "/avalia%C3%A7%C3%A3o%20chaleira%207.png" },
+  ] : [];
+  const mondialReviewPhotos = isMondialBlender ? [
+    { id: "mondial-review-1", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-1.webp" },
+    { id: "mondial-review-2", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-2.webp" },
+    { id: "mondial-review-3", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-3.webp" },
+    { id: "mondial-review-4", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-4.webp" },
+    { id: "mondial-review-5", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-5.webp" },
+    { id: "mondial-review-6", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-6.webp" },
+    { id: "mondial-review-7", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-7.webp" },
+    { id: "mondial-review-8", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-8.webp" },
+    { id: "mondial-review-9", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-9.webp" },
   ] : [];
   const tclReviewPhotos = isTclTv ? [
     { id: "tcl-review-1", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
@@ -140,8 +154,9 @@ function ProductPage() {
   })) : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = demoReviews.filter((review) => review.media);
-  const variant = p.variants.find((v: Variant) => v.id === picked) ?? null;
+  const reviewMedia = isMondialBlender ? mondialReviewPhotos.map((photo, i) => ({ id: photo.id, media: photo.src, rating: i === 8 ? 4 : 5 })) : demoReviews.filter((review) => review.media);
+  const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
+  const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
   const optionKind = getOptionKind(p.variants);
   const unitCount = variant ? variant.pieces : 1;
@@ -247,10 +262,22 @@ function ProductPage() {
       {hasVariants && (
         <>
           <div className="mt-6 flex items-center justify-between gap-3 px-4">
-            <h2 className="text-[16px] font-bold">{optionKind === "voltage" ? "Escolha a voltagem" : optionKind === "color" ? "Escolha o modelo e a cor" : "Selecionar modelo"}</h2>
-            <span className="truncate text-[13px] text-muted-foreground">{variant ? `${variant.line} · ${variant.color}` : `${p.variants.length} opções`}</span>
+            <h2 className="text-[16px] font-bold">{isMondialBlender ? "Escolha a voltagem e a cor" : optionKind === "voltage" ? "Escolha a voltagem" : optionKind === "color" ? "Escolha o modelo e a cor" : "Selecionar modelo"}</h2>
+            <span className="truncate text-[13px] text-muted-foreground">{variant ? `${variant.line} · ${variant.color}` : isMondialBlender ? "2 voltagens · 3 cores" : `${p.variants.length} opções`}</span>
           </div>
-          {optionKind === "voltage" ? (
+          {isMondialBlender ? (
+            <div className="space-y-4 px-4 pt-3">
+              <div><div className="mb-2 text-[13px] font-bold">1. Voltagem</div><div className="flex gap-2">
+                {["127V", "220V"].map((voltage) => <button key={voltage} type="button" onClick={() => setPickedVoltage(voltage)} aria-pressed={pickedVoltage === voltage} className={`inline-flex h-10 min-w-[88px] items-center justify-center gap-2 rounded-lg border px-4 text-[13px] font-bold transition-colors ${pickedVoltage === voltage ? "border-primary bg-primary/5 text-primary" : "border-border bg-card"}`}>{voltage}{pickedVoltage === voltage && <Check className="h-3.5 w-3.5" />}</button>)}
+              </div></div>
+              <div><div className="mb-2 text-[13px] font-bold">2. Cor</div><div className="grid grid-cols-3 gap-2">
+                {colorVariants.map((v) => <button key={v.color} type="button" onClick={() => setPickedColor(v.color)} aria-pressed={pickedColor === v.color} className={`min-w-0 rounded-xl border p-2 text-center transition-colors ${pickedColor === v.color ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                  <img src={v.image} alt={v.color} loading="lazy" decoding="async" width={72} height={72} className="mx-auto aspect-square w-full rounded-lg bg-surface object-contain" />
+                  <span className="mt-1 block text-[12px] font-bold">{v.color}</span>{pickedColor === v.color && <Check className="mx-auto mt-1 h-3.5 w-3.5 text-primary" />}
+                </button>)}
+              </div></div>
+            </div>
+          ) : optionKind === "voltage" ? (
             <div className="flex items-center justify-start gap-2 px-4 pt-3">
               {p.variants.map((v: Variant) => (
                 <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
@@ -377,7 +404,7 @@ function ProductPage() {
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <img src={review.media!} alt="Mídia ilustrativa associada à avaliação demonstrativa" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
+              <img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
               <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>
             </button>)}
           </div>
@@ -388,7 +415,7 @@ function ProductPage() {
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            {review.media && <img src={review.media} alt="Imagem associada à avaliação" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
+            {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
             <div className="flex flex-col p-2.5">
               <div className="flex items-center gap-2">
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
@@ -497,32 +524,16 @@ function ProductPage() {
                 <span className="capitalize">Receba até {formatEstimatedDelivery()}</span>
                 <span><s className="text-muted-foreground">R$ 26,20</s> <b className="text-teal-ink">Grátis</b></span>
               </div>
-              <div className="mt-4 text-[14.5px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : `Escolha modelo e cor (${p.variants.length})`}</div>
-              {optionKind === "voltage" ? (
-                <div className="mt-2.5 flex items-center justify-start gap-2">
-                  {p.variants.map((v: Variant) => (
-                    <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
-                      className={`inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold transition-colors ${picked === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-foreground"}`}>
-                      {v.color}
-                      {picked === v.id && <Check className="h-3.5 w-3.5" />}
-                    </button>
-                  ))}
+              <div className="mt-4 text-[14.5px] font-bold">{isMondialBlender ? "Escolha a voltagem e depois a cor" : p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : `Escolha modelo e cor (${p.variants.length})`}</div>
+              {isMondialBlender ? (
+                <div className="mt-3 space-y-4">
+                  <div><div className="mb-2 text-[13px] font-bold">1. Voltagem</div><div className="flex gap-2">{["127V", "220V"].map((voltage) => <button key={voltage} type="button" onClick={() => setPickedVoltage(voltage)} aria-pressed={pickedVoltage === voltage} className={`inline-flex h-9 min-w-[78px] items-center justify-center gap-2 rounded-lg border px-3 text-[12px] font-bold ${pickedVoltage === voltage ? "border-primary bg-primary/5 text-primary" : "border-border bg-card"}`}>{voltage}{pickedVoltage === voltage && <Check className="h-3 w-3" />}</button>)}</div></div>
+                  <div><div className="mb-2 text-[13px] font-bold">2. Cor</div><div className="grid grid-cols-3 gap-2">{colorVariants.map((v) => <button key={v.color} type="button" onClick={() => setPickedColor(v.color)} aria-pressed={pickedColor === v.color} className={`min-w-0 rounded-xl border p-1.5 text-center ${pickedColor === v.color ? "border-primary bg-primary/5" : "border-border bg-card"}`}><img src={v.image} alt={v.color} loading="lazy" decoding="async" width={64} height={64} className="mx-auto aspect-square w-full rounded-lg bg-surface object-contain" /><span className="mt-1 block text-[11px] font-bold">{v.color}</span>{pickedColor === v.color && <Check className="mx-auto mt-1 h-3 w-3 text-primary" />}</button>)}</div></div>
                 </div>
+              ) : optionKind === "voltage" ? (
+                <div className="mt-2.5 flex items-center justify-start gap-2">{p.variants.map((v: Variant) => <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id} className={`inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold transition-colors ${picked === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-foreground"}`}>{v.color}{picked === v.id && <Check className="h-3.5 w-3.5" />}</button>)}</div>
               ) : (
-                <div className="mt-2.5 grid grid-cols-2 gap-2">
-                  {p.variants.map((v: Variant) => (
-                    <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
-                      className={`flex min-w-0 items-center gap-2 rounded-xl border bg-card p-2 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border"}`}>
-                      <img src={v.image} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-lg bg-surface object-cover" />
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[11.5px] font-bold">{v.line}</span>
-                        <span className="mt-0.5 block line-clamp-2 text-[11px] leading-tight text-muted-foreground">{v.color}</span>
-                        <span className="mt-1 block text-[12px] font-extrabold">{brl(v.price)}</span>
-                      </span>
-                      {picked === v.id && <Check className="h-3.5 w-3.5 shrink-0 text-primary" />}
-                    </button>
-                  ))}
-                </div>
+                <div className="mt-2.5 grid grid-cols-2 gap-2">{p.variants.map((v: Variant) => <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id} className={`flex min-w-0 items-center gap-2 rounded-xl border bg-card p-2 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border"}`}><img src={v.image} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-lg bg-surface object-cover" /><span className="min-w-0 flex-1"><span className="block truncate text-[11.5px] font-bold">{v.line}</span><span className="mt-0.5 block line-clamp-2 text-[11px] leading-tight text-muted-foreground">{v.color}</span><span className="mt-1 block text-[12px] font-extrabold">{brl(v.price)}</span></span>{picked === v.id && <Check className="h-3.5 w-3.5 shrink-0 text-primary" />}</button>)}</div>
               )}
               <p className="mt-3 text-[13px] text-muted-foreground">{variant ? " " : "Selecione uma opção para continuar."}</p>
               <div className="mt-4 flex items-baseline justify-between border-t border-border pt-3">

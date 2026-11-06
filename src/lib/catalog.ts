@@ -61,6 +61,12 @@ const towelVariants: Variant[] = [
   { id: "bosco-bege", line: "Bosco", color: "Bege/Marrom", description: "2 toalhas de banho e 2 de rosto · Bosco · Bege/Marrom · frete grátis", price: 3499, original: 10899, pieces: 4, image: v2.url },
 ];
 
+const mondialVariants: Variant[] = (["127V", "220V"] as const).flatMap((voltage) => [
+  { id: `mondial-l99-${voltage.toLowerCase()}-preto`, line: voltage, color: "Preto", description: `Liquidificador Mondial Turbo Power L-99 FB · 550W · ${voltage} · Preto`, price: 4985, original: 17290, pieces: 1, image: "/products/liquidificador-mondial-l99-fb/variants/liquidificador-mondial-preto.webp" },
+  { id: `mondial-l99-${voltage.toLowerCase()}-branco`, line: voltage, color: "Branco", description: `Liquidificador Mondial Turbo Power L-99 FB · 550W · ${voltage} · Branco`, price: 4985, original: 17290, pieces: 1, image: "/products/liquidificador-mondial-l99-fb/variants/liquidificador-mondial-branco.webp" },
+  { id: `mondial-l99-${voltage.toLowerCase()}-vermelho`, line: voltage, color: "Vermelho", description: `Liquidificador Mondial Turbo Power L-99 FB · 550W · ${voltage} · Vermelho`, price: 4985, original: 17290, pieces: 1, image: "/products/liquidificador-mondial-l99-fb/variants/liquidificador-mondial-vermelho.webp" },
+]);
+
 export const products: Product[] = [
   {
     id: "jogo-toalhas-karsten",
@@ -149,6 +155,26 @@ export const products: Product[] = [
     variants: [],
     description: "Tenha uma experiência de entretenimento imersiva com a Smart TV TCL 55P8K. Tela QLED 4K de 55 polegadas, painel HVA e frequência real de 144 Hz para imagens nítidas, cores vibrantes e movimentos fluidos.\n\nCom Google TV, Google Assistente, Google Cast, Wi-Fi Dual Band e Bluetooth 5.4, oferece acesso prático aos principais aplicativos de streaming. Conta ainda com HDR10+, Dolby Vision e sistema de áudio 2.1 canais com subwoofer e Dolby Audio.\n\nPossui 4 entradas HDMI, 2 USB, HDMI 2.1, eARC e padrão VESA 300 × 300 mm. Alimentação automática de 100–240 V.\n\nDimensões com pedestal: 77,5 × 122,6 × 28,9 cm. Peso: 11,5 kg. Acompanha controle remoto e manual.",
     rating: 4.9, reviews: null, sold: "10 mil+",
+  },
+  {
+    id: "liquidificador-mondial-l99-fb",
+    title: "Liquidificador Turbo Power Mondial Preto 550W L-99 FB",
+    cardTitle: "Liquidificador Mondial Turbo Power 550W",
+    checkoutTitle: "Liquidificador Turbo Power Mondial L-99 FB 550W",
+    category: "Mondial · Eletroportáteis",
+    price: 4985,
+    original: 17290,
+    shippingOriginal: 2620,
+    image: "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-2.webp",
+    gallery: [
+      "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-2.webp",
+      "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-3.webp",
+      "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-4.webp",
+      "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-5.webp",
+    ],
+    variants: mondialVariants,
+    description: "Liquidificador Turbo Power Mondial L-99 FB com potência de 550W, disponível nas cores preto, branco e vermelho. Escolha primeiro a voltagem compatível com sua residência e depois a cor desejada. As versões 127V e 220V são opções distintas, não bivolt.",
+    rating: 4.9, reviews: null, sold: "12,5 mil",
   },
 ];
 

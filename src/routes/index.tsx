@@ -31,6 +31,8 @@ function StorePage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [quickProduct, setQuickProduct] = useState<Product | null>(null);
   const [quickVariant, setQuickVariant] = useState<string | null>(null);
+  const [quickVoltage, setQuickVoltage] = useState<string | null>(null);
+  const [quickColor, setQuickColor] = useState<string | null>(null);
   const shelfRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -49,11 +51,13 @@ function StorePage() {
     { label: "Recomendados", match: () => true },
   ];
   const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true));
-  const selectedVariant = quickProduct?.variants.find((v) => v.id === quickVariant) ?? null;
+  const isMondialBlender = quickProduct?.id === "liquidificador-mondial-l99-fb";
+  const quickColorVariants = isMondialBlender ? quickProduct!.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
+  const selectedVariant = quickProduct ? (isMondialBlender ? quickProduct.variants.find((v) => v.line === quickVoltage && v.color === quickColor) ?? null : quickProduct.variants.find((v) => v.id === quickVariant) ?? null) : null;
   function addQuickToCart(product: Product, variant: Variant | null = null) {
     update({ cart: addToCart(state.cart, product.id, variant?.id ?? null, 1) });
     window.dispatchEvent(new CustomEvent("shop-cart-flight", { detail: { image: variant?.image ?? product.image, source: document.querySelector(`[data-cart-product="${product.id}"]`)?.getBoundingClientRect().toJSON() } }));
-    setQuickProduct(null); setQuickVariant(null);
+    setQuickProduct(null); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null);
   }
   const updateShelfEdges = () => {
     const el = shelfRef.current;
@@ -184,7 +188,7 @@ function StorePage() {
                 <span className="min-w-0 truncate whitespace-nowrap text-muted-foreground">{p.sold ?? "0"} vendidos</span>
                 <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-card to-transparent" />
               </div>
-                  <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
+                  <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
                 </div>
               ))}
             </div>
@@ -202,13 +206,18 @@ function StorePage() {
         </>
       )}
       <SiteFooter />
-      {quickProduct && <Sheet title={getOptionKind(quickProduct.variants) === "voltage" ? "Escolha a voltagem" : getOptionKind(quickProduct.variants) === "color" ? "Escolha o modelo e a cor" : "Escolha sua opção"} onClose={() => { setQuickProduct(null); setQuickVariant(null); }}>
+      {quickProduct && <Sheet title={isMondialBlender ? "Escolha a voltagem e a cor" : getOptionKind(quickProduct.variants) === "voltage" ? "Escolha a voltagem" : getOptionKind(quickProduct.variants) === "color" ? "Escolha o modelo e a cor" : "Escolha sua opção"} onClose={() => { setQuickProduct(null); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); }}>
         <div className="py-3">
           <div className="flex items-center gap-3">
             <img src={selectedVariant?.image ?? quickProduct.image} alt="" className="h-20 w-20 rounded-xl object-contain" />
             <div><p className="text-[14px] font-semibold">{quickProduct.title}</p><p className="mt-1 text-[17px] font-extrabold text-primary">{brl(selectedVariant?.price ?? quickProduct.price)}</p></div>
           </div>
-          {getOptionKind(quickProduct.variants) === "voltage" ? (
+          {isMondialBlender ? (
+            <div className="mt-4 space-y-4">
+              <div><div className="mb-2 text-[13px] font-bold">1. Escolha a voltagem</div><div className="flex gap-2">{["127V", "220V"].map((voltage) => <button key={voltage} type="button" onClick={() => setQuickVoltage(voltage)} aria-pressed={quickVoltage === voltage} className={"inline-flex h-9 min-w-[78px] items-center justify-center gap-2 rounded-lg border px-3 text-[12px] font-bold " + (quickVoltage === voltage ? "border-primary bg-primary/5 text-primary" : "border-border bg-card")}>{voltage}{quickVoltage === voltage && <span aria-hidden="true">✓</span>}</button>)}</div></div>
+              <div><div className="mb-2 text-[13px] font-bold">2. Escolha a cor</div><div className="grid grid-cols-3 gap-2">{quickColorVariants.map((v) => <button key={v.color} type="button" onClick={() => setQuickColor(v.color)} aria-pressed={quickColor === v.color} className={"min-w-0 rounded-xl border p-1.5 text-center " + (quickColor === v.color ? "border-primary bg-primary/5" : "border-border bg-card")}><img src={v.image} alt={v.color} loading="lazy" decoding="async" width={64} height={64} className="mx-auto aspect-square w-full rounded-lg bg-surface object-contain" /><span className="mt-1 block text-[11px] font-bold">{v.color}</span>{quickColor === v.color && <span className="mt-0.5 block text-[11px] font-bold text-primary">✓</span>}</button>)}</div></div>
+            </div>
+          ) : getOptionKind(quickProduct.variants) === "voltage" ? (
             <div className="mt-4 flex flex-wrap justify-start gap-2">
               {quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} aria-pressed={quickVariant === v.id} className={"inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold " + (quickVariant === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card")}>{v.color}{quickVariant === v.id && <span aria-hidden="true">✓</span>}</button>)}
             </div>
