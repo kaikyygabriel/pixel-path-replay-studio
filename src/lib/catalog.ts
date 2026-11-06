@@ -177,6 +177,34 @@ export const products: Product[] = [
     description: "Liquidificador Turbo Power Mondial L-99 FB com potência de 550W, disponível nas cores preto, branco e vermelho. Escolha primeiro a voltagem compatível com sua residência e depois a cor desejada. As versões 127V e 220V são opções distintas, não bivolt.",
     rating: 4.9, reviews: null, sold: "12,5 mil",
   },
+  {
+    id: "micro-ondas-philco-pmo31s",
+    title: "Micro-ondas Philco 28L 1100W PMO31S Tira Odor",
+    cardTitle: "Micro-ondas Philco 28L 1100W PMO31S",
+    checkoutTitle: "Micro-ondas Philco PMO31S 28L 1100W Tira Odor",
+    category: "Casa & Utilidades · Recomendados · Natal · 25.12",
+    price: 12785,
+    original: 52990,
+    shippingOriginal: 2620,
+    image: "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-capa.png",
+    gallery: [
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-capa.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-2.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-3.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-4.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-5.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-6.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-7.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-8.png",
+      "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-9.png",
+    ],
+    variants: [
+      { id: "philco-pmo31s-127v", line: "Tensão", color: "127V", description: "Micro-ondas Philco PMO31S 28L · 1100W · 127V", price: 12785, original: 52990, pieces: 1, image: "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-capa.png" },
+      { id: "philco-pmo31s-220v", line: "Tensão", color: "220V", description: "Micro-ondas Philco PMO31S 28L · 1100W · 220V", price: 12785, original: 52990, pieces: 1, image: "/products/micro-ondas-philco-pmo31s/gallery/micro-ondas-philco-capa.png" },
+    ],
+    description: "O Micro-ondas Philco PMO31S 28L 1100W traz potência e praticidade para facilitar sua rotina na cozinha. Com capacidade de 28 litros, ele oferece espaço para diferentes recipientes e potência de 1100W para aquecer, cozinhar e descongelar alimentos com eficiência.\n\nA Pintura Limpa Fácil facilita a limpeza do interior, enquanto a Função Tira Odor ajuda a eliminar cheiros indesejáveis após o preparo. O micro-ondas também possui classificação energética A, contribuindo para mais eficiência no uso diário.\n\nPara deixar o preparo ainda mais simples, o PMO31S conta com 10 níveis de potência, descongelamento por tempo ou peso, funções de cozinhar por tempo ou peso e receitas pré-programadas. São opções para preparar lasanha, pizza, pipoca, brigadeiro e bolo de caneca, além do Menu Fit com sopa, batatas e legumes.\n\nO Micro-ondas Philco PMO31S também conta com função Manter Aquecido, +30 segundos, relógio digital, trava de segurança e possibilidade de desligar o display e os sons. Com 28L de capacidade e 1100W de potência, reúne recursos para tornar o preparo dos alimentos mais prático no dia a dia.\n\nDisponível em 127V ou 220V. Não é bivolt: selecione a voltagem compatível com sua residência antes de comprar.",
+    rating: 4.8, reviews: null, sold: "500+",
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
