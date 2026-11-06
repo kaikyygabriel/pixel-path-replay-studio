@@ -35,7 +35,7 @@ function Checkout() {
   if (!order.product) return <Navigate to="/" />;
 
   return (
-    <div className="app-frame bg-surface pb-[150px]">
+    <div className="app-frame page-enter bg-surface pb-[150px]">
       <PageHeader title="Produto selecionado" />
       <Section className="mt-2 px-4 py-4">
         <div className="flex items-center justify-between gap-3">
