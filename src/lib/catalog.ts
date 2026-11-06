@@ -167,6 +167,7 @@ export const products: Product[] = [
     shippingOriginal: 2620,
     image: "/products/liquidificador-mondial-l99-fb/variants/liquidificador-mondial-preto.webp",
     gallery: [
+      "/products/liquidificador-mondial-l99-fb/variants/liquidificador-mondial-preto.webp",
       "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-2.webp",
       "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-3.webp",
       "/products/liquidificador-mondial-l99-fb/gallery/liquidificador-mondial-preto-4.webp",
