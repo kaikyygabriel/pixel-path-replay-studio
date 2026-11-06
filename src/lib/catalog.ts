@@ -204,7 +204,7 @@ export const products: Product[] = [
     ],
     description: "O Micro-ondas Philco PMO31S 28L 1100W traz potência e praticidade para facilitar sua rotina na cozinha. Com capacidade de 28 litros, ele oferece espaço para diferentes recipientes e potência de 1100W para aquecer, cozinhar e descongelar alimentos com eficiência.\n\nA Pintura Limpa Fácil facilita a limpeza do interior, enquanto a Função Tira Odor ajuda a eliminar cheiros indesejáveis após o preparo. O micro-ondas também possui classificação energética A, contribuindo para mais eficiência no uso diário.\n\nPara deixar o preparo ainda mais simples, o PMO31S conta com 10 níveis de potência, descongelamento por tempo ou peso, funções de cozinhar por tempo ou peso e receitas pré-programadas. São opções para preparar lasanha, pizza, pipoca, brigadeiro e bolo de caneca, além do Menu Fit com sopa, batatas e legumes.\n\nO Micro-ondas Philco PMO31S também conta com função Manter Aquecido, +30 segundos, relógio digital, trava de segurança e possibilidade de desligar o display e os sons. Com 28L de capacidade e 1100W de potência, reúne recursos para tornar o preparo dos alimentos mais prático no dia a dia.\n\nDisponível em 127V ou 220V. Não é bivolt: selecione a voltagem compatível com sua residência antes de comprar.",
     rating: 4.8, reviews: null, sold: "500+",
-  },,
+  },
   {
     id: "ar-condicionado-lg-ai-voice-9000",
     title: "Ar-Condicionado Split LG AI Voice Inverter 9.000 BTUs Frio Wi-Fi",
