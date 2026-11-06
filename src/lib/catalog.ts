@@ -204,6 +204,28 @@ export const products: Product[] = [
     ],
     description: "O Micro-ondas Philco PMO31S 28L 1100W traz potência e praticidade para facilitar sua rotina na cozinha. Com capacidade de 28 litros, ele oferece espaço para diferentes recipientes e potência de 1100W para aquecer, cozinhar e descongelar alimentos com eficiência.\n\nA Pintura Limpa Fácil facilita a limpeza do interior, enquanto a Função Tira Odor ajuda a eliminar cheiros indesejáveis após o preparo. O micro-ondas também possui classificação energética A, contribuindo para mais eficiência no uso diário.\n\nPara deixar o preparo ainda mais simples, o PMO31S conta com 10 níveis de potência, descongelamento por tempo ou peso, funções de cozinhar por tempo ou peso e receitas pré-programadas. São opções para preparar lasanha, pizza, pipoca, brigadeiro e bolo de caneca, além do Menu Fit com sopa, batatas e legumes.\n\nO Micro-ondas Philco PMO31S também conta com função Manter Aquecido, +30 segundos, relógio digital, trava de segurança e possibilidade de desligar o display e os sons. Com 28L de capacidade e 1100W de potência, reúne recursos para tornar o preparo dos alimentos mais prático no dia a dia.\n\nDisponível em 127V ou 220V. Não é bivolt: selecione a voltagem compatível com sua residência antes de comprar.",
     rating: 4.8, reviews: null, sold: "500+",
+  },,
+  {
+    id: "ar-condicionado-lg-ai-voice-9000",
+    title: "Ar-Condicionado Split LG AI Voice Inverter 9.000 BTUs Frio Wi-Fi",
+    cardTitle: "Ar-Condicionado LG AI Voice Inverter 9.000 BTUs",
+    checkoutTitle: "Ar-Condicionado Split LG AI Voice Inverter 9.000 BTUs Frio 220V",
+    category: "Casa & Utilidades · Eletrônicos · Mais vendidos",
+    price: 69327,
+    original: 217800,
+    shippingOriginal: 2620,
+    image: "/products/ar-condicionado-lg-ai-voice-9000/gallery/ar-condicionado-lg-capa.png",
+    gallery: [
+      "/products/ar-condicionado-lg-ai-voice-9000/gallery/ar-condicionado-lg-capa.png",
+      "/products/ar-condicionado-lg-ai-voice-9000/gallery/ar-condicionado-lg-2.png",
+      "/products/ar-condicionado-lg-ai-voice-9000/gallery/ar-condicionado-lg-3.png",
+      "/products/ar-condicionado-lg-ai-voice-9000/gallery/ar-condicionado-lg-4.png",
+      "/products/ar-condicionado-lg-ai-voice-9000/gallery/ar-condicionado-lg-5.png",
+      "/products/ar-condicionado-lg-ai-voice-9000/gallery/ar-condicionado-lg-6.png",
+    ],
+    variants: [],
+    description: "O Ar-Condicionado Split LG AI Smart Inverter Voice de 9.000 BTUs oferece climatização fria com conectividade e controle inteligente. A tecnologia AI SmartCare ajusta o funcionamento de acordo com os hábitos de uso, enquanto o compressor Inverter ajuda a manter a temperatura com mais estabilidade.\n\nPelo aplicativo LG ThinQ, é possível ligar e desligar o aparelho, programar horários, ajustar funções e acompanhar o consumo à distância. O modelo também é compatível com comandos de voz por Google Assistente e Alexa.\n\nCom operação silenciosa, serpentina de cobre com proteção GoldFin e gás refrigerante R-32, é indicado para ambientes de até aproximadamente 12 m², conforme as condições do local.\n\n**Especificações principais:** 9.000 BTUs · ciclo frio · tecnologia Inverter · Wi-Fi · 220V monofásico · gás R-32 · serpentina de cobre · classificação energética B · consumo informado de 363,4 kWh/ano.\n\n**Atenção:** produto disponível exclusivamente em 220V. Não é bivolt. Verifique a instalação elétrica e as condições do ambiente antes da compra. A instalação deve ser realizada por profissional qualificado.",
+    rating: 4.9, reviews: null, sold: "1.000+",
   },
 ];
 
