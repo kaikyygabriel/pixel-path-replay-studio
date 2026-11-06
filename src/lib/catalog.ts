@@ -1,9 +1,3 @@
-import towelMain from "@/assets/towel_main.jpg.asset.json";
-import v0 from "@/assets/var0.jpg.asset.json";
-import v1 from "@/assets/var1.jpg.asset.json";
-import v2 from "@/assets/var2.jpg.asset.json";
-import v3 from "@/assets/var3.jpg.asset.json";
-import v4 from "@/assets/var4.jpg.asset.json";
 
 /**
  * Store identity. Fields set to null are business details the owner has not
@@ -54,11 +48,11 @@ export type Product = {
 };
 
 const towelVariants: Variant[] = [
-  { id: "bosco-azul", line: "Bosco", color: "Azul Serena/Azul Naval", description: "2 toalhas de banho e 2 de rosto · Bosco · Azul Serena/Azul Naval · frete grátis", price: 3798, original: 12841, pieces: 4, image: v0.url },
-  { id: "provence-branco", line: "Provence", color: "Branco/Argila", description: "2 toalhas de banho e 2 de rosto · Provence · Branco/Argila · frete grátis", price: 4691, original: 17990, pieces: 4, image: v3.url },
-  { id: "bosco-cinza", line: "Bosco", color: "Cinza", description: "2 toalhas de banho e 2 de rosto · Bosco · Cinza · frete grátis", price: 3472, original: 10491, pieces: 4, image: v1.url },
-  { id: "provence-verde", line: "Provence", color: "Verde", description: "2 toalhas de banho e 2 de rosto · Provence · Verde · frete grátis", price: 4491, original: 12990, pieces: 4, image: v4.url },
-  { id: "bosco-bege", line: "Bosco", color: "Bege/Marrom", description: "2 toalhas de banho e 2 de rosto · Bosco · Bege/Marrom · frete grátis", price: 3499, original: 10899, pieces: 4, image: v2.url },
+  { id: "bosco-azul", line: "Bosco", color: "Azul Serena/Azul Naval", description: "2 toalhas de banho e 2 de rosto · Bosco · Azul Serena/Azul Naval · frete grátis", price: 3798, original: 12841, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-01-capa.png" },
+  { id: "provence-branco", line: "Provence", color: "Branco/Argila", description: "2 toalhas de banho e 2 de rosto · Provence · Branco/Argila · frete grátis", price: 4691, original: 17990, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-05.png" },
+  { id: "bosco-cinza", line: "Bosco", color: "Cinza", description: "2 toalhas de banho e 2 de rosto · Bosco · Cinza · frete grátis", price: 3472, original: 10491, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-08.png" },
+  { id: "provence-verde", line: "Provence", color: "Verde", description: "2 toalhas de banho e 2 de rosto · Provence · Verde · frete grátis", price: 4491, original: 12990, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-12.png" },
+  { id: "bosco-bege", line: "Bosco", color: "Bege/Marrom", description: "2 toalhas de banho e 2 de rosto · Bosco · Bege/Marrom · frete grátis", price: 3499, original: 10899, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-10.png" },
 ];
 
 const mondialVariants: Variant[] = (["127V", "220V"] as const).flatMap((voltage) => [
@@ -77,8 +71,25 @@ export const products: Product[] = [
     price: 3798,
     original: 12841,
     shippingOriginal: 2620,
-    image: towelMain.url,
-    gallery: [towelMain.url, v0.url, v1.url, v2.url],
+    image: "/products/jogo-toalhas-karsten/gallery/towel-01-capa.png",
+    gallery: [
+      "/products/jogo-toalhas-karsten/gallery/towel-01-capa.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-02.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-03.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-04.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-05.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-06.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-07.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-08.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-09.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-10.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-11.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-12.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-13.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-14.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-15.png",
+      "/products/jogo-toalhas-karsten/gallery/towel-16.png",
+    ],
     variants: towelVariants,
     rating: 4.8, reviews: null, sold: "7,8 mil",
   },
