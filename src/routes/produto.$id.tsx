@@ -169,7 +169,7 @@ function ProductPage() {
     rating: 5,
     text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
     media: photo.src,
-  })) : makeDemoReviews(p.id, p.gallery);
+  })) : isPhilcoMicrowave ? [] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const reviewMedia = [...demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating })), ...philcoReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: reviewAverage }))];
