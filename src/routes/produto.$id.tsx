@@ -229,7 +229,7 @@ function ProductPage() {
     { id: "christmas-tree-review-text-6", name: "Mariana R.", date: "há 3 dias", rating: 5, text: "Montei no fim de semana e ficou muito bonita, gostei bastante do resultado", media: null },
     { id: "christmas-tree-review-text-7", name: "Felipe S.", date: "há 8 dias", rating: 5, text: "O kit já vem bem completo e facilitou bastante na hora de decorar", media: null },
     { id: "christmas-tree-review-text-8", name: "Aline T.", date: "há 13 dias", rating: 5, text: "É compacta e ficou ótima na minha sala, os enfeites deram o toque final", media: null },
-: isTclTv ? [
+  ] : isTclTv ? [
     ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i] ?? "", date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i] ?? "", rating: 5, text: ["Gostei muitoo, já tô aproveitando pra jogar e a imagem ficou linda", "Chegou bem embaladinha e tudo certinho, adorei", "Na primeira configuração foi bem tranquilo, já comecei a usar", "Já tô assistindo meus conteúdos e a imagem tá muito boa", "Usei pra jogar e ficou muito bom, gostei demais"][i] ?? "", media: photo.src })),
     { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
     { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
