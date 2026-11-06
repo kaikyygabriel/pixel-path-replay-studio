@@ -453,7 +453,7 @@ function ProductPage() {
               </div>
               {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
-              {isPhilcoMicrowave && <p className="mt-2 text-[9px] font-medium uppercase tracking-wide text-muted-foreground">Conteúdo demonstrativo</p>}
+
             </div>
           </article>)}
         </div>
