@@ -7,6 +7,7 @@ import {
 import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
 import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
+import { CartAddButton } from "@/components/shop/cart-add-button";
 import { formatEstimatedDelivery } from "@/lib/delivery";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
@@ -186,6 +187,7 @@ function ProductPage() {
   }
   function putInCart() {
     update({ cart: addToCart(state.cart, p.id, variant?.id ?? null, qty) });
+    window.dispatchEvent(new CustomEvent("shop-cart-added", { detail: { productId: p.id } }));
     setSheet(null);
     setAdded(true);
     setTimeout(() => setAdded(false), 2200);
@@ -482,9 +484,7 @@ function ProductPage() {
           <ShoppingCart className="h-6 w-6" />Carrinho
           {cartCount(state.cart) > 0 && <span className="absolute -right-2 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[11px] font-bold text-primary-foreground">{cartCount(state.cart)}</span>}
         </button>
-        <button aria-label="Adicionar ao carrinho" onClick={startCart} className="grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary">
-          <ShoppingCart className="h-6 w-6" /><Plus className="-mt-3 h-3.5 w-3.5" />
-        </button>
+        <CartAddButton productId={p.id} label="Adicionar ao carrinho" onClick={startCart} className="h-12 w-12 rounded-2xl" />
         <button onClick={startBuy} className="h-12 rounded-full bg-primary text-primary-foreground shadow-[0_6px_18px_color-mix(in_oklab,var(--primary)_35%,transparent)]">
           <div className="text-[16px] font-extrabold leading-tight">Comprar agora</div>
           <div className="text-[12px] leading-tight opacity-90">{brl(shownPrice)} | Frete grátis</div>
