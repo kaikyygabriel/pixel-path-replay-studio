@@ -134,7 +134,7 @@ function StorePage() {
           {visibleProducts.map((p, index) => (
             <div key={p.id} className={`relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3 ${index === 0 ? "ml-3.5" : ""}`}>
               <Link to="/produto/$id" params={{ id: p.id }}>
-                <div className="relative"><img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{activeCategory === "Natal" && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div>
+                <div className="relative"><img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{/natal|25\\.12/i.test(p.category) && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div>
                 <h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3>
               </Link>
               <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
@@ -171,7 +171,7 @@ function StorePage() {
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
             <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {products.filter((p) => p.id === "arvore-natal-kit-87-enfeites").map((p) => (
+              {products.filter((p) => /natal|25\\.12/i.test(p.category)).map((p) => (
                 <div key={p.id} className="relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3">
                   <Link to="/produto/$id" params={{ id: p.id }}>
                     <div className="relative">
@@ -198,9 +198,16 @@ function StorePage() {
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
             </div>
-            <div className="rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
-              <p className="text-[14px] font-bold">Em breve</p>
-              <p className="mt-1 text-[13px] text-muted-foreground">Novos produtos chegando nesta seção.</p>
+            <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {[...products].sort((a, b) => { const sales = (value: string | null) => { if (!value) return 0; const n = Number.parseFloat(value.toLowerCase().replace(",", ".").replace(/[^0-9.]/g, "")); return Number.isFinite(n) ? n * (value.toLowerCase().includes("mil") ? 1000 : 1) : 0; }; return sales(b.sold) - sales(a.sold); }).map((p) => (
+                <div key={p.id} className="relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3">
+                  <Link to="/produto/$id" params={{ id: p.id }}><div className="relative"><img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{/natal/i.test(p.category) && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div><h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3></Link>
+                  <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
+                  <div className="relative mt-2 flex min-w-0 items-center gap-1 overflow-hidden text-[11px]"><span className="shrink-0 tracking-[-1px] text-black">★★★★★</span><b>{(p.rating ?? 0).toFixed(1)}</b><span className="min-w-0 truncate text-muted-foreground">{p.sold ?? "0"} vendidos</span></div>
+                  <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
+                </div>
+              ))}
             </div>
           </div>
         </>
@@ -215,7 +222,7 @@ function StorePage() {
           {isMondialBlender ? (
             <div className="mt-4 space-y-4">
               <div><div className="mb-2 text-[13px] font-bold">1. Escolha a voltagem</div><div className="flex gap-2">{["127V", "220V"].map((voltage) => <button key={voltage} type="button" onClick={() => setQuickVoltage(voltage)} aria-pressed={quickVoltage === voltage} className={"inline-flex h-9 min-w-[78px] items-center justify-center gap-2 rounded-lg border px-3 text-[12px] font-bold " + (quickVoltage === voltage ? "border-primary bg-primary/5 text-primary" : "border-border bg-card")}>{voltage}{quickVoltage === voltage && <span aria-hidden="true">✓</span>}</button>)}</div></div>
-              <div><div className="mb-2 text-[13px] font-bold">2. Escolha a cor</div><div className="grid grid-cols-3 gap-2">{quickColorVariants.map((v) => <button key={v.color} type="button" onClick={() => setQuickColor(v.color)} aria-pressed={quickColor === v.color} className={"min-w-0 rounded-xl border p-1.5 text-center " + (quickColor === v.color ? "border-primary bg-primary/5" : "border-border bg-card")}><img src={v.image} alt={v.color} loading="lazy" decoding="async" width={64} height={64} className="mx-auto aspect-square w-full rounded-lg bg-surface object-contain" /><span className="mt-1 block text-[11px] font-bold">{v.color}</span>{quickColor === v.color && <span className="mt-0.5 block text-[11px] font-bold text-primary">✓</span>}</button>)}</div></div>
+              <div><div className="mb-2 text-[13px] font-bold">2. Escolha a cor</div><div className="space-y-2">{quickColorVariants.map((v) => <button key={v.color} type="button" onClick={() => setQuickColor(v.color)} aria-pressed={quickColor === v.color} className={"flex w-full min-w-0 items-center gap-3 rounded-xl border p-2.5 text-left " + (quickColor === v.color ? "border-primary bg-primary/5" : "border-border bg-card")}><img src={v.image} alt={v.color} loading="lazy" decoding="async" width={56} height={56} className="h-14 w-14 shrink-0 rounded-lg bg-surface object-contain" /><span className="min-w-0 flex-1"><span className="block text-[13px] font-bold">{v.color}</span><span className="mt-0.5 block text-[11px] text-muted-foreground">Turbo Power L-99 FB · 550W</span><span className="mt-1 block text-[12px] font-extrabold">{brl(v.price)}</span></span>{quickColor === v.color && <span className="shrink-0 font-bold text-primary">✓</span>}</button>)}</div></div>
             </div>
           ) : getOptionKind(quickProduct.variants) === "voltage" ? (
             <div className="mt-4 flex flex-wrap justify-start gap-2">
