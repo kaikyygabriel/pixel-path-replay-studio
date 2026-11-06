@@ -127,16 +127,16 @@ function ProductPage() {
     { id: "kettle-review-7", src: "/avalia%C3%A7%C3%A3o%20chaleira%207.png" },
   ] : [];
   const towelReviewPhotos = isKarstenTowel ? [
-    { id: "karsten-review-1", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-01.png" },
-    { id: "karsten-review-2", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-02.png" },
-    { id: "karsten-review-3", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-03.png" },
-    { id: "karsten-review-4", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-04.png" },
-    { id: "karsten-review-5", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-05.png" },
-    { id: "karsten-review-6", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-06.png" },
-    { id: "karsten-review-7", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-07.png" },
-    { id: "karsten-review-8", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-08.png" },
-    { id: "karsten-review-9", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-09.png" },
-    { id: "karsten-review-10", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-10.png" }
+    { id: "karsten-review-1", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%201.png" },
+    { id: "karsten-review-2", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%202.png" },
+    { id: "karsten-review-3", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%203.png" },
+    { id: "karsten-review-4", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%204.png" },
+    { id: "karsten-review-5", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%205.png" },
+    { id: "karsten-review-6", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%206.png" },
+    { id: "karsten-review-7", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%207.png" },
+    { id: "karsten-review-8", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%208.png" },
+    { id: "karsten-review-9", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%209.png" },
+    { id: "karsten-review-10", src: "/jogo%20de%20toalhas%20avalia%C3%A7%C3%A3o%2010.png" }
   ] : [];
   const mondialReviewPhotos = isMondialBlender ? [
     { id: "mondial-review-1", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-1.webp" },
