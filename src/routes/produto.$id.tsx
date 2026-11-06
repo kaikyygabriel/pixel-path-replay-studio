@@ -169,7 +169,7 @@ function ProductPage() {
     rating: 5,
     text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
     media: photo.src,
-  })) : isPhilcoMicrowave ? philcoReviewPhotos.map((photo, i) => ({ id: photo.id, name: "Cliente", date: "Foto enviada", rating: reviewAverage, text: "", media: photo.src })) : makeDemoReviews(p.id, p.gallery);
+  })) : isPhilcoMicrowave ? philcoReviewPhotos.map((photo, i) => ({ id: photo.id, name: "Cliente", date: "Foto enviada", rating: p.rating ?? 0, text: "", media: photo.src })) : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const reviewMedia = isPhilcoMicrowave ? philcoReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: reviewAverage })) : demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating }));
