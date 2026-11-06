@@ -169,10 +169,10 @@ function ProductPage() {
     rating: 5,
     text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
     media: photo.src,
-  })) : isPhilcoMicrowave ? [] : makeDemoReviews(p.id, p.gallery);
+  })) : isPhilcoMicrowave ? philcoReviewPhotos.map((photo) => ({ id: photo.id, name: "Cliente", date: "Avaliação com foto", rating: 0, text: "Registro visual enviado junto à avaliação do produto", media: photo.src })) : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = [...demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating })), ...philcoReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: reviewAverage }))];
+  const reviewMedia = isPhilcoMicrowave ? philcoReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: reviewAverage })) : demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating }));
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -440,7 +440,7 @@ function ProductPage() {
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
                 <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
               </div>
-              <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>
+              {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
               <p className="mt-2 text-[12px] leading-snug">{review.text}</p>
             </div>
           </article>)}
