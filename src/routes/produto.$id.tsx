@@ -116,6 +116,7 @@ function ProductPage() {
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
   const isKettle = p.id === "chaleira-unitermi-atacama";
   const isKarstenTowel = p.id === "jogo-toalhas-karsten";
+  const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
   const kettleReviewPhotos = isKettle ? [
     { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
@@ -125,6 +126,13 @@ function ProductPage() {
     { id: "kettle-review-5", src: "/avalia%C3%A7%C3%A3o%20chaleira%205.png" },
     { id: "kettle-review-6", src: "/avalia%C3%A7%C3%A3o%20chaleira%206.png" },
     { id: "kettle-review-7", src: "/avalia%C3%A7%C3%A3o%20chaleira%207.png" },
+  ] : [];
+  const christmasTreeReviewPhotos = isChristmasTree ? [
+    { id: "christmas-tree-review-1", src: "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-1.png" },
+    { id: "christmas-tree-review-2", src: "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-2.png" },
+    { id: "christmas-tree-review-3", src: "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-3.png" },
+    { id: "christmas-tree-review-4", src: "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-4.png" },
+    { id: "christmas-tree-review-5", src: "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-5.png" },
   ] : [];
   const towelReviewPhotos = isKarstenTowel ? [
     { id: "karsten-review-1", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-01.png" },
@@ -203,7 +211,25 @@ function ProductPage() {
     { id: "karsten-review-text-11", name: "Bruno M.", date: "há 4 dias", rating: 5, text: "O conjunto ficou lindo no banheiro, gostei muito das cores e do toque", media: null },
     { id: "karsten-review-text-12", name: "Larissa G.", date: "há 9 dias", rating: 4, text: "São bonitas e macias, atenderam bem o que eu precisava", media: null },
     { id: "karsten-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 5, text: "Gostei da compra, as quatro peças vieram certinhas e bem embaladas", media: null },
-  ] : isTclTv ? [
+  ] : isChristmasTree ? [
+    ...christmasTreeReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Gabriela M.", "Renato P.", "Camila F.", "Bruno A.", "Larissa C."][i] ?? "",
+      date: ["há 2 dias", "há 4 dias", "há 6 dias", "há 9 dias", "há 12 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "Ficou linda montada aqui em casa, deu um charme especial na sala",
+        "Veio tudo certinho e os enfeites deixaram a árvore bem bonita",
+        "Gostei do tamanho, ficou perfeita no cantinho que eu tinha separado",
+        "A montagem foi tranquila e depois de enfeitada ficou uma graça",
+        "Adorei o conjunto, os enfeites dão um efeito bem bonito na decoração",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "christmas-tree-review-text-6", name: "Mariana R.", date: "há 3 dias", rating: 5, text: "Montei no fim de semana e ficou muito bonita, gostei bastante do resultado", media: null },
+    { id: "christmas-tree-review-text-7", name: "Felipe S.", date: "há 8 dias", rating: 5, text: "O kit já vem bem completo e facilitou bastante na hora de decorar", media: null },
+    { id: "christmas-tree-review-text-8", name: "Aline T.", date: "há 13 dias", rating: 5, text: "É compacta e ficou ótima na minha sala, os enfeites deram o toque final", media: null },
+: isTclTv ? [
     ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i] ?? "", date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i] ?? "", rating: 5, text: ["Gostei muitoo, já tô aproveitando pra jogar e a imagem ficou linda", "Chegou bem embaladinha e tudo certinho, adorei", "Na primeira configuração foi bem tranquilo, já comecei a usar", "Já tô assistindo meus conteúdos e a imagem tá muito boa", "Usei pra jogar e ficou muito bom, gostei demais"][i] ?? "", media: photo.src })),
     { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
     { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
