@@ -115,6 +115,7 @@ function ProductPage() {
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
   const isKettle = p.id === "chaleira-unitermi-atacama";
+  const isKarstenTowel = p.id === "jogo-toalhas-karsten";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
   const kettleReviewPhotos = isKettle ? [
     { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
@@ -124,6 +125,18 @@ function ProductPage() {
     { id: "kettle-review-5", src: "/avalia%C3%A7%C3%A3o%20chaleira%205.png" },
     { id: "kettle-review-6", src: "/avalia%C3%A7%C3%A3o%20chaleira%206.png" },
     { id: "kettle-review-7", src: "/avalia%C3%A7%C3%A3o%20chaleira%207.png" },
+  ] : [];
+  const towelReviewPhotos = isKarstenTowel ? [
+    { id: "karsten-review-1", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-01.png" },
+    { id: "karsten-review-2", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-02.png" },
+    { id: "karsten-review-3", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-03.png" },
+    { id: "karsten-review-4", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-04.png" },
+    { id: "karsten-review-5", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-05.png" },
+    { id: "karsten-review-6", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-06.png" },
+    { id: "karsten-review-7", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-07.png" },
+    { id: "karsten-review-8", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-08.png" },
+    { id: "karsten-review-9", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-09.png" },
+    { id: "karsten-review-10", src: "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-10.png" }
   ] : [];
   const mondialReviewPhotos = isMondialBlender ? [
     { id: "mondial-review-1", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-1.webp" },
@@ -167,7 +180,30 @@ function ProductPage() {
     { id: "philco-review-7", src: "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-7.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isTclTv ? [
+  const demoReviews: DemoReview[] = isKarstenTowel ? [
+    ...towelReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R."][i] ?? "",
+      date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 6 dias", "há 8 dias", "há 10 dias", "há 12 dias", "há 14 dias", "há 16 dias", "há 18 dias"][i] ?? "",
+      rating: i === 8 ? 4 : 5,
+      text: [
+        "As toalhas são bem macias e vieram do jeitinho que eu esperava",
+        "Gostei bastante da qualidade, são bonitas e têm um toque muito bom",
+        "O jogo chegou certinho, as peças são bonitas e parecem bem resistentes",
+        "São macias e têm um tamanho ótimo para usar no dia a dia",
+        "A cor é linda pessoalmente e o tecido é bem gostoso",
+        "Gostei do acabamento, ficaram lindas no meu banheiro",
+        "Boa absorção e um toque bem agradável, compraria novamente",
+        "Chegaram bem embaladas e são ainda mais bonitas de perto",
+        "Gostei do conjunto, só achei a textura um pouco diferente do que imaginei",
+        "Produto muito bonito, as toalhas têm uma qualidade ótima",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "karsten-review-text-11", name: "Bruno M.", date: "há 4 dias", rating: 5, text: "O conjunto ficou lindo no banheiro, gostei muito das cores e do toque", media: null },
+    { id: "karsten-review-text-12", name: "Larissa G.", date: "há 9 dias", rating: 4, text: "São bonitas e macias, atenderam bem o que eu precisava", media: null },
+    { id: "karsten-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 5, text: "Gostei da compra, as quatro peças vieram certinhas e bem embaladas", media: null },
+  ] : isTclTv ? [
     ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i] ?? "", date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i] ?? "", rating: 5, text: ["Gostei muitoo, já tô aproveitando pra jogar e a imagem ficou linda", "Chegou bem embaladinha e tudo certinho, adorei", "Na primeira configuração foi bem tranquilo, já comecei a usar", "Já tô assistindo meus conteúdos e a imagem tá muito boa", "Usei pra jogar e ficou muito bom, gostei demais"][i] ?? "", media: photo.src })),
     { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
     { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
