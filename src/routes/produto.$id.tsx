@@ -144,7 +144,14 @@ function ProductPage() {
     { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
     { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
     { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 12 dias", rating: 5, text: "A imagem é linda, já tô aproveitando pra assistir meus filmes", media: null },
-  ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
+  ] : isMondialBlender ? mondialReviewPhotos.map((photo, i) => ({
+    id: photo.id,
+    name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A."][i] ?? "",
+    date: ["há 1 dia", "há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 9 dias", "há 10 dias", "há 12 dias", "há 13 dias"][i] ?? "",
+    rating: 5,
+    text: ["Gostei muitoo, bate bem e não ocupa muito espaço aqui na cozinha", "Chegou certinho e já fiz vitamina, gostei bastante", "É simples de usar e tritura bem as frutas", "O liquidificador é bonito e funcionou direitinho aqui", "Já usei pra fazer suco e ficou ótimo", "Gostei do tamanho e da potência, atende bem no dia a dia", "Veio bem embalado e tá funcionando certinho", "Muito bom pelo preço, gostei da compra", "Tô usando bastante pra vitaminas e tá dando conta tranquilo"][i] ?? "",
+    media: photo.src,
+  })) : isKettle ? kettleReviewPhotos.map((photo, i) => ({
     id: photo.id,
     name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
     date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
@@ -154,7 +161,7 @@ function ProductPage() {
   })) : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = isMondialBlender ? mondialReviewPhotos.map((photo, i) => ({ id: photo.id, media: photo.src, rating: i === 8 ? 4 : 5 })) : demoReviews.filter((review) => review.media);
+  const reviewMedia = demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating }));
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
