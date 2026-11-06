@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Share2, Ticket, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
+import { Share2, Ticket, ChevronLeft, ChevronRight } from "lucide-react";
+import { CartAddButton } from "@/components/shop/cart-add-button";
 import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
 import { products, store, brl, discountPct, type Product, type Variant } from "@/lib/catalog";
 import { useCheckout, addToCart } from "@/lib/checkout";
@@ -56,6 +57,7 @@ function StorePage() {
   const selectedVariant = quickProduct ? (isMondialBlender ? quickProduct.variants.find((v) => v.line === quickVoltage && v.color === quickColor) ?? null : quickProduct.variants.find((v) => v.id === quickVariant) ?? null) : null;
   function addQuickToCart(product: Product, variant: Variant | null = null) {
     update({ cart: addToCart(state.cart, product.id, variant?.id ?? null, 1) });
+    window.dispatchEvent(new CustomEvent("shop-cart-added", { detail: { productId: product.id } }));
     window.dispatchEvent(new CustomEvent("shop-cart-flight", { detail: { image: variant?.image ?? product.image, source: document.querySelector(`[data-cart-product="${product.id}"]`)?.getBoundingClientRect().toJSON() } }));
     setQuickProduct(null); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null);
   }
@@ -145,7 +147,7 @@ function StorePage() {
                 <span className="min-w-0 truncate whitespace-nowrap text-muted-foreground">{p.sold ?? "0"} vendidos</span>
                 <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-card to-transparent" />
               </div>
-              <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { if (p.variants.length) { setQuickProduct(p); setQuickVariant(null); } else addQuickToCart(p); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
+              <CartAddButton productId={p.id} label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { if (p.variants.length) { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); } else addQuickToCart(p); }} className="mx-auto mt-2" />
             </div>
           ))}
           {visibleProducts.length === 0 && (
@@ -188,7 +190,7 @@ function StorePage() {
                 <span className="min-w-0 truncate whitespace-nowrap text-muted-foreground">{p.sold ?? "0"} vendidos</span>
                 <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-card to-transparent" />
               </div>
-                  <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
+                  <CartAddButton productId={p.id} label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); }} className="mx-auto mt-2" />
                 </div>
               ))}
             </div>
@@ -205,7 +207,7 @@ function StorePage() {
                   <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
                   <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
                   <div className="relative mt-2 flex min-w-0 items-center gap-1 overflow-hidden text-[11px]"><span className="shrink-0 tracking-[-1px] text-black">★★★★★</span><b>{(p.rating ?? 0).toFixed(1)}</b><span className="min-w-0 truncate text-muted-foreground">{p.sold ?? "0"} vendidos</span></div>
-                  <button type="button" aria-label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); }} className="mx-auto mt-2 grid h-9 w-10 place-items-center rounded-full bg-primary-soft text-primary active:scale-90"><ShoppingCart className="h-5 w-5" /></button>
+                  <CartAddButton productId={p.id} label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); }} className="mx-auto mt-2" />
                 </div>
               ))}
             </div>
