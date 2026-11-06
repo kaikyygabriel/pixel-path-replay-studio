@@ -51,8 +51,8 @@ const towelVariants: Variant[] = [
   { id: "bosco-azul", line: "Bosco", color: "Azul Serena/Azul Naval", description: "2 toalhas de banho e 2 de rosto · Bosco · Azul Serena/Azul Naval · frete grátis", price: 3798, original: 12841, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-01-capa.png" },
   { id: "provence-branco", line: "Provence", color: "Branco/Argila", description: "2 toalhas de banho e 2 de rosto · Provence · Branco/Argila · frete grátis", price: 4691, original: 17990, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-05.png" },
   { id: "bosco-cinza", line: "Bosco", color: "Cinza", description: "2 toalhas de banho e 2 de rosto · Bosco · Cinza · frete grátis", price: 3472, original: 10491, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-08.png" },
-  { id: "provence-verde", line: "Provence", color: "Verde", description: "2 toalhas de banho e 2 de rosto · Provence · Verde · frete grátis", price: 4491, original: 12990, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-12.png" },
-  { id: "bosco-bege", line: "Bosco", color: "Bege/Marrom", description: "2 toalhas de banho e 2 de rosto · Bosco · Bege/Marrom · frete grátis", price: 3499, original: 10899, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-10.png" },
+  { id: "provence-verde", line: "Provence", color: "Verde", description: "2 toalhas de banho e 2 de rosto · Provence · Verde · frete grátis", price: 4491, original: 12990, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-11.png" },
+  { id: "bosco-bege", line: "Bosco", color: "Bege/Marrom", description: "2 toalhas de banho e 2 de rosto · Bosco · Bege/Marrom · frete grátis", price: 3499, original: 10899, pieces: 4, image: "/products/jogo-toalhas-karsten/gallery/towel-14.png" },
 ];
 
 const mondialVariants: Variant[] = (["127V", "220V"] as const).flatMap((voltage) => [
