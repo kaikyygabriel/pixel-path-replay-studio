@@ -277,10 +277,11 @@ function ProductPage() {
               <div><div className="mb-2 text-[13px] font-bold">1. Voltagem</div><div className="flex gap-2">
                 {["127V", "220V"].map((voltage) => <button key={voltage} type="button" onClick={() => setPickedVoltage(voltage)} aria-pressed={pickedVoltage === voltage} className={`inline-flex h-10 min-w-[88px] items-center justify-center gap-2 rounded-lg border px-4 text-[13px] font-bold transition-colors ${pickedVoltage === voltage ? "border-primary bg-primary/5 text-primary" : "border-border bg-card"}`}>{voltage}{pickedVoltage === voltage && <Check className="h-3.5 w-3.5" />}</button>)}
               </div></div>
-              <div><div className="mb-2 text-[13px] font-bold">2. Cor</div><div className="grid grid-cols-3 gap-2">
-                {colorVariants.map((v) => <button key={v.color} type="button" onClick={() => setPickedColor(v.color)} aria-pressed={pickedColor === v.color} className={`min-w-0 rounded-xl border p-2 text-center transition-colors ${pickedColor === v.color ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                  <img src={v.image} alt={v.color} loading="lazy" decoding="async" width={72} height={72} className="mx-auto aspect-square w-full rounded-lg bg-surface object-contain" />
-                  <span className="mt-1 block text-[12px] font-bold">{v.color}</span>{pickedColor === v.color && <Check className="mx-auto mt-1 h-3.5 w-3.5 text-primary" />}
+              <div><div className="mb-2 text-[13px] font-bold">2. Cor</div><div className="space-y-2">
+                {colorVariants.map((v) => <button key={v.color} type="button" onClick={() => setPickedColor(v.color)} aria-pressed={pickedColor === v.color} className={`flex w-full min-w-0 items-center gap-3 rounded-xl border p-2.5 text-left transition-colors ${pickedColor === v.color ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                  <img src={v.image} alt={v.color} loading="lazy" decoding="async" width={56} height={56} className="h-14 w-14 shrink-0 rounded-lg bg-surface object-contain" />
+                  <span className="min-w-0 flex-1"><span className="block text-[13px] font-bold">{v.color}</span><span className="mt-0.5 block text-[11px] text-muted-foreground">Turbo Power L-99 FB · 550W</span><span className="mt-1 block text-[13px] font-extrabold">{brl(v.price)}</span></span>
+                  {pickedColor === v.color && <Check className="h-4 w-4 shrink-0 text-primary" />}
                 </button>)}
               </div></div>
             </div>
