@@ -71,11 +71,15 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
 function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${product.sold} vendidos` : ""; }
 function estimateReviewCount(sold: string | null): number {
   if (!sold) return 0;
-  const normalized = sold.toLowerCase().replace(/\s/g, "").replace(",", ".");
-  const amount = Number.parseFloat(normalized.replace(/[^0-9.]/g, ""));
+  const normalized = sold.toLowerCase().replace(/\s/g, "");
+  const numeric = normalized.replace(/[^0-9.,]/g, "");
+  // "1.000+" usa ponto de milhar; "7,8 mil" usa vírgula decimal.
+  const amount = normalized.includes("mil")
+    ? Number.parseFloat(numeric.replace(",", "."))
+    : Number.parseFloat(numeric.replace(/\./g, "").replace(",", "."));
   if (!Number.isFinite(amount)) return 0;
   const units = normalized.includes("mil") ? amount * 1000 : amount;
-  // Variação discreta e estável entre 19% e 21%, sem arredondar em dezenas/centenas.
+  // Cerca de 20% das vendas, com pequena variação e sem arredondar em dezenas/centenas.
   const variation = ((Math.round(units) % 21) - 10) / 1000;
   return Math.max(1, Math.round(units * (0.2 + variation)));
 }
@@ -189,13 +193,13 @@ function ProductPage() {
     { id: "lg-review-4", name: "Fernanda S.", date: "há 7 dias", rating: 5, text: "Produto excelente e muito econômico, gostei bastante", media: lgReviewPhotos[3].src },
     { id: "lg-review-5", name: "André P.", date: "há 8 dias", rating: 5, text: "O ar gela bem e o controle pelo celular é muito prático", media: lgReviewPhotos[4].src },
     { id: "lg-review-6", name: "Camila T.", date: "há 9 dias", rating: 5, text: "Bem silencioso e mantém o quarto numa temperatura agradável", media: lgReviewPhotos[5].src },
-    { id: "lg-review-7", name: "Roberto L.", date: "há 11 dias", rating: 4, text: "Gostei da função inverter e de poder ajustar tudo pelo app", media: lgReviewPhotos[6].src },
+    { id: "lg-review-7", name: "Roberto L.", date: "há 11 dias", rating: 5, text: "Gostei da função inverter e de poder ajustar tudo pelo app", media: lgReviewPhotos[6].src },
     { id: "lg-review-8", name: "Patrícia F.", date: "há 13 dias", rating: 5, text: "Instalado e funcionando direitinho, atende muito bem", media: lgReviewPhotos[7].src },
     { id: "lg-review-9", name: "Diego C.", date: "há 15 dias", rating: 5, text: "Ótimo aparelho, gostei principalmente da conexão Wi-Fi", media: lgReviewPhotos[8].src },
     { id: "lg-review-10", name: "Renata B.", date: "há 18 dias", rating: 5, text: "Gela rápido e é fácil de programar pelo celular", media: lgReviewPhotos[9].src },
     { id: "lg-review-text-11", name: "Thiago N.", date: "há 3 dias", rating: 5, text: "Muito bom, funciona bem e quase não faz barulho", media: null },
     { id: "lg-review-text-12", name: "Aline G.", date: "há 10 dias", rating: 5, text: "Gostei da praticidade e do conforto que ele proporciona", media: null },
-    { id: "lg-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 4, text: "Atendeu minhas expectativas, resfria o ambiente direitinho", media: null },
+    { id: "lg-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 5, text: "Atendeu minhas expectativas, resfria o ambiente direitinho", media: null },
   ] : isPhilcoMicrowave ? [
     { id: "philco-review-1", name: "Mariana S.", date: "há 2 dias", rating: 5, text: "Chegou direitinho e ficou ótimo na minha cozinha, gostei bastante", media: philcoReviewPhotos[0].src },
     { id: "philco-review-2", name: "Rafael M.", date: "há 4 dias", rating: 5, text: "É bem espaçoso por dentro e achei fácil de mexer", media: philcoReviewPhotos[1].src },
