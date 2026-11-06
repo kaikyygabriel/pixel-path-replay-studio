@@ -7,6 +7,7 @@ import { AddressSheet, CustomerSheet } from "@/components/shop/checkout-sheets";
 import { useCheckout } from "@/lib/checkout";
 import { brl } from "@/lib/catalog";
 import { PixIcon } from "@/components/shop/pix-icon";
+import { formatEstimatedDelivery } from "@/lib/delivery";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -61,7 +62,7 @@ function Checkout() {
       />
       <div className="-mt-1 mb-2 bg-background px-3.5 pb-3">
         <div className="flex items-center justify-between rounded-lg bg-teal-soft px-3 py-3 text-[13px]">
-          <span>Receba até 4 – 5 de nov.</span>
+          <span className="capitalize">Receba até {formatEstimatedDelivery()}</span>
           <span className="flex items-center gap-1.5"><s className="text-muted-foreground">R$ 26,20</s><b>Frete grátis</b></span>
         </div>
       </div>
