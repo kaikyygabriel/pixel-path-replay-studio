@@ -7,6 +7,7 @@ import {
 import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
 import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
+import { formatEstimatedDelivery } from "@/lib/delivery";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
 const getOptionKind = (variants: Variant[]) => {
@@ -303,7 +304,7 @@ function ProductPage() {
             <span className="rounded-md bg-teal-soft px-2 py-0.5 font-semibold text-teal-ink">Frete grátis</span>
             <span className="text-muted-foreground line-through">R$ 26,20</span>
           </div>
-          <div className="mt-1 text-[14.5px] font-bold">Receba até 4 – 5 de nov.</div>
+          <div className="mt-1 text-[14.5px] font-bold capitalize">Receba até {formatEstimatedDelivery()}</div>
         </div>
         <ChevronRight className="h-5 w-5 text-muted-foreground" />
       </div>
