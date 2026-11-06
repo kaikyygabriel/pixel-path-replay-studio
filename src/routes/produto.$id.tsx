@@ -264,12 +264,15 @@ function ProductPage() {
             <div className="grid grid-cols-2 gap-2 px-4 pt-3">
               {p.variants.map((v: Variant) => (
                 <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
-                  className={`min-w-0 rounded-xl border p-2.5 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
-                  <span className="block truncate text-[13px] font-bold">{v.line}</span>
-                  <span className="mt-0.5 block truncate text-[12px] text-muted-foreground">{v.color}</span>
-                  <span className="mt-1.5 block text-[13px] font-extrabold">{brl(v.price)}</span>
-                  {v.original > v.price && <span className="text-[11px] text-muted-foreground line-through">{brl(v.original)}</span>}
-                  {picked === v.id && <Check className="mt-1 h-4 w-4 text-primary" />}
+                  className={`flex min-w-0 items-center gap-2.5 rounded-xl border p-2 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border bg-card"}`}>
+                  <img src={v.image} alt="" loading="lazy" decoding="async" width={52} height={52} className="h-[52px] w-[52px] shrink-0 rounded-lg bg-surface object-cover" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[13px] font-bold">{v.line}</span>
+                    <span className="mt-0.5 block line-clamp-2 text-[12px] leading-snug text-muted-foreground">{v.color}</span>
+                    <span className="mt-1 block text-[13px] font-extrabold">{brl(v.price)}</span>
+                    {v.original > v.price && <span className="block text-[11px] text-muted-foreground line-through">{brl(v.original)}</span>}
+                  </span>
+                  {picked === v.id && <Check className="h-4 w-4 shrink-0 text-primary" />}
                 </button>
               ))}
             </div>
@@ -506,11 +509,17 @@ function ProductPage() {
                   ))}
                 </div>
               ) : (
-                <div className="mt-2.5 grid grid-cols-3 gap-2.5">
+                <div className="mt-2.5 grid grid-cols-2 gap-2">
                   {p.variants.map((v: Variant) => (
-                    <button key={v.id} onClick={() => setPicked(v.id)} className={`min-w-0 rounded-xl border-2 bg-card p-1.5 text-center transition-colors duration-200 ${picked === v.id ? "border-primary" : "border-border"}`}>
-                      <img src={v.image} alt="" className="aspect-[4/3] w-full rounded object-cover" />
-                      <div className="mt-1 text-[11.5px] font-semibold leading-tight">{v.line}</div><div className="line-clamp-2 break-words text-[11px] leading-tight text-muted-foreground">{v.color}</div>
+                    <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id}
+                      className={`flex min-w-0 items-center gap-2 rounded-xl border bg-card p-2 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border"}`}>
+                      <img src={v.image} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-lg bg-surface object-cover" />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-[11.5px] font-bold">{v.line}</span>
+                        <span className="mt-0.5 block line-clamp-2 text-[11px] leading-tight text-muted-foreground">{v.color}</span>
+                        <span className="mt-1 block text-[12px] font-extrabold">{brl(v.price)}</span>
+                      </span>
+                      {picked === v.id && <Check className="h-3.5 w-3.5 shrink-0 text-primary" />}
                     </button>
                   ))}
                 </div>
