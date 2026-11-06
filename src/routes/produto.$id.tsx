@@ -169,10 +169,21 @@ function ProductPage() {
     rating: 5,
     text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
     media: photo.src,
-  })) : isPhilcoMicrowave ? philcoReviewPhotos.map((photo, i) => ({ id: photo.id, name: "Cliente", date: "Foto enviada", rating: p.rating ?? 0, text: "", media: photo.src })) : makeDemoReviews(p.id, p.gallery);
+  })) : isPhilcoMicrowave ? [
+    { id: "philco-review-1", name: "Mariana S.", date: "há 2 dias", rating: 5, text: "Chegou direitinho e ficou ótimo na minha cozinha, gostei bastante", media: philcoReviewPhotos[0].src },
+    { id: "philco-review-2", name: "Rafael M.", date: "há 4 dias", rating: 5, text: "É bem espaçoso por dentro e achei fácil de mexer", media: philcoReviewPhotos[1].src },
+    { id: "philco-review-3", name: "Camila R.", date: "há 6 dias", rating: 5, text: "O design é bonito e esquenta super bem, atendeu ao que eu precisava", media: philcoReviewPhotos[2].src },
+    { id: "philco-review-4", name: "João P.", date: "há 8 dias", rating: 5, text: "Gostei das funções e principalmente do tira odor, bem prático", media: philcoReviewPhotos[3].src },
+    { id: "philco-review-5", name: "Ana C.", date: "há 10 dias", rating: 5, text: "Muito bonito, fácil de limpar e chegou bem embalado", media: philcoReviewPhotos[4].src },
+    { id: "philco-review-6", name: "Fernanda L.", date: "há 13 dias", rating: 4, text: "Bom tamanho e várias opções de uso, estou gostando", media: philcoReviewPhotos[5].src },
+    { id: "philco-review-7", name: "Lucas A.", date: "há 16 dias", rating: 5, text: "Funcionou certinho desde que chegou, recomendo conferir a voltagem antes", media: philcoReviewPhotos[6].src },
+    { id: "philco-review-text-8", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "O espaço interno é ótimo e o painel é simples de entender", media: null },
+    { id: "philco-review-text-9", name: "Bruno F.", date: "há 11 dias", rating: 4, text: "Atendeu bem aqui em casa, gostei do aquecimento e do acabamento", media: null },
+    { id: "philco-review-text-10", name: "Juliana M.", date: "há 18 dias", rating: 5, text: "Gostei bastante das funções, principalmente para o dia a dia", media: null },
+  ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = isPhilcoMicrowave ? philcoReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: reviewAverage })) : demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating }));
+  const reviewMedia = demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating }));
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -428,10 +439,10 @@ function ProductPage() {
             </button>)}
           </div>
         </div>}
-        {!isPhilcoMicrowave && <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>
           {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
-        </div>}
+        </div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
@@ -442,7 +453,7 @@ function ProductPage() {
               </div>
               {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
-              {isPhilcoMicrowave && <p className="mt-2 text-[12px] leading-snug text-muted-foreground">Mídia enviada pelo cliente</p>}
+              {isPhilcoMicrowave && <p className="mt-2 text-[9px] font-medium uppercase tracking-wide text-muted-foreground">Conteúdo demonstrativo</p>}
             </div>
           </article>)}
         </div>
