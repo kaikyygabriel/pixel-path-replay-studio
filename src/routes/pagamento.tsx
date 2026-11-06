@@ -201,16 +201,22 @@ function Pagamento() {
           <span className="rounded-full bg-primary-soft px-3 py-1 text-[13px] font-bold text-primary">PIX à vista</span>
         </div>
 
-        <section className="rounded-xl bg-card p-3 shadow-sm">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="text-[14px] font-extrabold">Itens do pedido</h2>
-            {charge?.orderId && <span className="text-[10px] font-semibold text-muted-foreground">Pedido #{charge.orderId.slice(0, 8).toUpperCase()}</span>}
+        <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+          <div className="flex items-center justify-between gap-3 border-b border-border/70 px-3.5 py-3">
+            <div className="min-w-0">
+              <h2 className="text-[14px] font-extrabold leading-tight">Itens do pedido</h2>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">{order.items.reduce((total, item) => total + item.qty, 0)} {order.items.reduce((total, item) => total + item.qty, 0) === 1 ? "item" : "itens"}</p>
+            </div>
+            {charge?.orderId && <span className="shrink-0 rounded-md bg-muted px-2 py-1 text-[10px] font-semibold tracking-wide text-muted-foreground">#{charge.orderId.slice(0, 8).toUpperCase()}</span>}
           </div>
-          <div className="mt-2 space-y-2">
+          <div className="divide-y divide-border/70 px-3.5">
             {order.items.map((item) => (
-              <div key={item.product.id + ":" + (item.variant?.id ?? "-")} className="flex items-center justify-between gap-2 text-[12px] leading-tight">
-                <span className="min-w-0 flex-1">{item.title} <b className="whitespace-nowrap">× {item.qty}</b></span>
-                <b className="shrink-0 tabular-nums">{brl(item.price)}</b>
+              <div key={item.product.id + ":" + (item.variant?.id ?? "-")} className="flex min-w-0 flex-col gap-2 py-3">
+                <p className="break-words text-[13px] font-medium leading-[1.35] text-foreground">{item.title}</p>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="inline-flex shrink-0 items-center rounded-md bg-muted px-2 py-1 text-[11px] font-semibold text-muted-foreground">Qtd. {item.qty}</span>
+                  <b className="min-w-0 text-right text-[14px] font-extrabold tabular-nums">{brl(item.price)}</b>
+                </div>
               </div>
             ))}
           </div>
