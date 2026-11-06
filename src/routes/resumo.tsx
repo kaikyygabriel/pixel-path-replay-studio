@@ -3,6 +3,7 @@ import { MapPin, Truck, Package, ShieldCheck } from "lucide-react";
 import { PageHeader } from "@/components/shop/chrome";
 import { BottomBar, ItemCard, LockNote, OrderSummary, Protections, Section, useOrder } from "@/components/shop/order";
 import { PixIcon } from "@/components/shop/pix-icon";
+import { formatEstimatedDelivery } from "@/lib/delivery";
 import { useCheckout } from "@/lib/checkout";
 import { createPixPaymentOnce, getPixRequestKey } from "@/lib/payments/pix-client";
 
@@ -64,10 +65,10 @@ function Resumo() {
       </div>
       <Section className="px-3.5 py-4">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="flex items-center gap-1.5 rounded-full bg-success px-3.5 py-2 text-[15px] font-bold text-primary-foreground"><Truck className="h-4 w-4" />Frete grátis</span>
+          <span className="inline-flex items-center gap-2 rounded-full border border-success/20 bg-success-soft px-3 py-2 text-[14px] font-bold text-success shadow-sm"><span className="grid h-7 w-7 place-items-center rounded-full bg-background/80"><Truck className="h-4 w-4" /></span>Frete grátis</span>
           <span className="text-[14px] font-semibold">com rastreio · Entrega estimada</span>
         </div>
-        <p className="mt-3 text-[14px]">Chega Quarta-feira, 4 de Novembro via Correios (SEDEX).</p>
+        <p className="mt-3 text-[14px] capitalize">Chega {formatEstimatedDelivery()} via Correios (SEDEX)</p>
         <div className="mt-3 flex items-center gap-2 rounded-lg bg-success-soft px-3 py-2.5 text-[13px] text-success">
           <Package className="h-4 w-4" />Embalagem reforçada com proteção anti-impacto
         </div>
