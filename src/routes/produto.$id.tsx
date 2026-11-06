@@ -169,7 +169,7 @@ function ProductPage() {
     rating: 5,
     text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
     media: photo.src,
-  })) : isPhilcoMicrowave ? philcoReviewPhotos.map((photo) => ({ id: photo.id, name: "Cliente", date: "Avaliação com foto", rating: 0, text: "Registro visual enviado junto à avaliação do produto", media: photo.src })) : makeDemoReviews(p.id, p.gallery);
+  })) : isPhilcoMicrowave ? philcoReviewPhotos.map((photo, i) => ({ id: photo.id, name: "Cliente", date: "Foto enviada", rating: reviewAverage, text: "", media: photo.src })) : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const reviewMedia = isPhilcoMicrowave ? philcoReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: reviewAverage })) : demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating }));
@@ -441,7 +441,8 @@ function ProductPage() {
                 <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
               </div>
               {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
-              <p className="mt-2 text-[12px] leading-snug">{review.text}</p>
+              {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
+              {isPhilcoMicrowave && <p className="mt-2 text-[12px] leading-snug text-muted-foreground">Mídia enviada pelo cliente</p>}
             </div>
           </article>)}
         </div>
