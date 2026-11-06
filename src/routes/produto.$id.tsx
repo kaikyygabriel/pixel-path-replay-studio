@@ -139,6 +139,19 @@ function ProductPage() {
     { id: "tcl-review-4", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%204.png", caption: "Tela em reprodução de conteúdo" },
     { id: "tcl-review-5", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%205.png", caption: "TV em uso durante uma partida" },
   ] : [];
+  const isLgAirConditioner = p.id === "ar-condicionado-lg-ai-voice-9000";
+  const lgReviewPhotos = isLgAirConditioner ? [
+    { id: "lg-review-1", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-1.png" },
+    { id: "lg-review-2", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-2.png" },
+    { id: "lg-review-3", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-3.png" },
+    { id: "lg-review-4", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-4.png" },
+    { id: "lg-review-5", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-5.png" },
+    { id: "lg-review-6", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-6.png" },
+    { id: "lg-review-7", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-7.png" },
+    { id: "lg-review-8", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-8.png" },
+    { id: "lg-review-9", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-9.png" },
+    { id: "lg-review-10", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-10.png" },
+  ] : [];
   const isPhilcoMicrowave = p.id === "micro-ondas-philco-pmo31s";
   const philcoReviewPhotos = isPhilcoMicrowave ? [
     { id: "philco-review-1", src: "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-1.png" },
@@ -169,6 +182,20 @@ function ProductPage() {
     rating: 5,
     text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
     media: photo.src,
+  })) : isLgAirConditioner ? [
+    { id: "lg-review-1", name: "Marcos A.", date: "há 2 dias", rating: 5, text: "Pelo aplicativo consigo programar o horário para ligar e desligar, facilita muito minha rotina", media: lgReviewPhotos[0].src },
+    { id: "lg-review-2", name: "Juliana R.", date: "há 4 dias", rating: 5, text: "Sem comentários, esse está entre os melhores que já tive", media: lgReviewPhotos[1].src },
+    { id: "lg-review-3", name: "Carlos M.", date: "há 5 dias", rating: 5, text: "Produto de qualidade, acabamento muito bom", media: lgReviewPhotos[2].src },
+    { id: "lg-review-4", name: "Fernanda S.", date: "há 7 dias", rating: 5, text: "Produto excelente e muito econômico, gostei bastante", media: lgReviewPhotos[3].src },
+    { id: "lg-review-5", name: "André P.", date: "há 8 dias", rating: 5, text: "O ar gela bem e o controle pelo celular é muito prático", media: lgReviewPhotos[4].src },
+    { id: "lg-review-6", name: "Camila T.", date: "há 9 dias", rating: 5, text: "Bem silencioso e mantém o quarto numa temperatura agradável", media: lgReviewPhotos[5].src },
+    { id: "lg-review-7", name: "Roberto L.", date: "há 11 dias", rating: 4, text: "Gostei da função inverter e de poder ajustar tudo pelo app", media: lgReviewPhotos[6].src },
+    { id: "lg-review-8", name: "Patrícia F.", date: "há 13 dias", rating: 5, text: "Instalado e funcionando direitinho, atende muito bem", media: lgReviewPhotos[7].src },
+    { id: "lg-review-9", name: "Diego C.", date: "há 15 dias", rating: 5, text: "Ótimo aparelho, gostei principalmente da conexão Wi-Fi", media: lgReviewPhotos[8].src },
+    { id: "lg-review-10", name: "Renata B.", date: "há 18 dias", rating: 5, text: "Gela rápido e é fácil de programar pelo celular", media: lgReviewPhotos[9].src },
+    { id: "lg-review-text-11", name: "Thiago N.", date: "há 3 dias", rating: 5, text: "Muito bom, funciona bem e quase não faz barulho", media: null },
+    { id: "lg-review-text-12", name: "Aline G.", date: "há 10 dias", rating: 5, text: "Gostei da praticidade e do conforto que ele proporciona", media: null },
+    { id: "lg-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 4, text: "Atendeu minhas expectativas, resfria o ambiente direitinho", media: null },
   })) : isPhilcoMicrowave ? [
     { id: "philco-review-1", name: "Mariana S.", date: "há 2 dias", rating: 5, text: "Chegou direitinho e ficou ótimo na minha cozinha, gostei bastante", media: philcoReviewPhotos[0].src },
     { id: "philco-review-2", name: "Rafael M.", date: "há 4 dias", rating: 5, text: "É bem espaçoso por dentro e achei fácil de mexer", media: philcoReviewPhotos[1].src },
