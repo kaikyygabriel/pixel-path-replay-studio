@@ -130,8 +130,8 @@ export const tribopay: PaymentProvider = {
       cache: "no-store",
     });
     const body = await readApiResponse(response);
-    const pix = asObject(asObject(body)?.pix);
-    const pixCode = typeof pix?.code === "string" && pix.code.trim() ? pix.code.trim() : null;
+    const pix = asObject(asObject(body)?["pix"]);
+    const pixCode = typeof pix?["code"] === "string" && pix["code"].trim() ? pix["code"].trim() : null;
     const paymentId = findString(body, ["id", "hash"]);
 
     if (!pixCode || !paymentId) {
