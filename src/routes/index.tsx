@@ -214,7 +214,15 @@ function StorePage() {
             </div>
           ) : getOptionKind(quickProduct.variants) === "color" ? (
             <div className="mt-4 grid grid-cols-2 gap-2">
-              {quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} aria-pressed={quickVariant === v.id} className={"min-w-0 rounded-xl border p-2.5 text-left " + (quickVariant === v.id ? "border-primary bg-primary/5" : "border-border")}><span className="block truncate text-[13px] font-bold">{v.line}</span><span className="mt-0.5 block truncate text-[12px] text-muted-foreground">{v.color}</span><span className="mt-1.5 block text-[13px] font-extrabold">{brl(v.price)}</span></button>)}
+              {quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} aria-pressed={quickVariant === v.id} className={"flex min-w-0 items-center gap-2 rounded-xl border p-2 text-left transition-colors " + (quickVariant === v.id ? "border-primary bg-primary/5" : "border-border bg-card")}>
+                <img src={v.image} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-lg bg-surface object-cover" />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[11.5px] font-bold">{v.line}</span>
+                  <span className="mt-0.5 block line-clamp-2 text-[11px] leading-tight text-muted-foreground">{v.color}</span>
+                  <span className="mt-1 block text-[12px] font-extrabold">{brl(v.price)}</span>
+                </span>
+                {quickVariant === v.id && <span aria-hidden="true" className="shrink-0 text-primary">✓</span>}
+              </button>)}
             </div>
           ) : (
             <div className="mt-4 space-y-2">{quickProduct.variants.map((v) => <button key={v.id} type="button" onClick={() => setQuickVariant(v.id)} className={"flex w-full items-center gap-3 rounded-xl border-2 p-2 text-left " + (quickVariant === v.id ? "border-primary bg-primary/5" : "border-border")}><img src={v.image} alt="" className="h-14 w-14 rounded-lg object-cover" /><span className="min-w-0 flex-1 text-[13px] font-semibold">{v.line} · {v.color}</span><b className="text-[13px]">{brl(v.price)}</b></button>)}</div>
