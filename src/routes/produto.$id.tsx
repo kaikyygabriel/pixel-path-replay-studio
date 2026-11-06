@@ -385,7 +385,6 @@ function ProductPage() {
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
-        <p className="mt-1 text-[11px] text-muted-foreground">Conteúdo demonstrativo para pré-visualização — substitua por avaliações verificadas antes de publicar</p>
         <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
           <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center">
             <strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong>
