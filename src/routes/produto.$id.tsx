@@ -446,7 +446,9 @@ function ProductPage() {
           <div className="space-y-1.5">
             {[5,4,3,2,1].map((stars) => {
               const total = estimateReviewCount(p.sold);
-              const distribution = getEstimatedRatingDistribution(total, reviewAverage);
+              const distribution = p.id === "ar-condicionado-lg-ai-voice-9000"
+                ? { 5: Math.max(0, total - 6), 4: Math.min(6, total), 3: 0, 2: 0, 1: 0 }
+                : getEstimatedRatingDistribution(total, reviewAverage);
               const count = distribution[stars] ?? 0;
               const percent = total ? (count / total) * 100 : 0;
               return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}>
