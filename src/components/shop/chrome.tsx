@@ -233,7 +233,7 @@ function SupportForm() {
 export function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-overlay" onClick={onClose}>
-      <div className="max-h-[85dvh] w-full max-w-[480px] overflow-y-auto rounded-t-3xl bg-background pb-safe animate-in slide-in-from-bottom duration-300" onClick={(e) => e.stopPropagation()}>
+      <div className="max-h-[85dvh] w-full max-w-[480px] overflow-y-auto rounded-t-3xl bg-background pb-safe animate-in slide-in-from-bottom duration-200 ease-out" onClick={(e) => e.stopPropagation()}>
         <div className="sticky top-0 flex items-center justify-between border-b border-border bg-background px-4 py-3.5">
           <h2 className="text-[19px] font-bold">{title}</h2>
           <button aria-label="Fechar" onClick={onClose} className="grid h-10 w-10 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>

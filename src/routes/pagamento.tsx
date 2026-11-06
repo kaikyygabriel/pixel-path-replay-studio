@@ -162,7 +162,7 @@ function Pagamento() {
   const unavailable = result && !result.ok;
 
   return (
-    <div className="app-frame bg-surface pb-10">
+    <div className="app-frame page-enter bg-surface pb-10">
       <header className="sticky top-0 z-30 flex h-14 items-center justify-center border-b border-ink-foreground/10 bg-ink px-3 text-ink-foreground shadow-sm">
         <button aria-label="Voltar" onClick={() => router.history.back()} className="absolute left-3 grid h-8 w-8 place-items-center rounded-lg border border-ink-foreground/20 bg-ink-foreground/10">
           <ArrowLeft className="h-4 w-4" />

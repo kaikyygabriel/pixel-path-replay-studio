@@ -47,7 +47,7 @@ function Resumo() {
   };
   const a = state.address;
   return (
-    <div className="app-frame bg-surface pb-[150px]">
+    <div className="app-frame page-enter bg-surface pb-[150px]">
       <PageHeader title="Resumo do pedido" />
       <Section className="mt-2 px-3.5 py-4">
         <div className="flex items-center justify-between">

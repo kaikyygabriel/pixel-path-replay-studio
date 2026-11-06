@@ -162,3 +162,8 @@
   a, button, [role="button"], input, select, textarea, label { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
   html { -webkit-text-size-adjust: 100%; }
 }
+
+/* Entrada de página quase imperceptível: leve e rápida. */
+@keyframes page-enter { from { opacity: .6; } to { opacity: 1; } }
+.page-enter { animation: page-enter 140ms ease-out both; }
+@media (prefers-reduced-motion: reduce) { .page-enter { animation: none; } }

@@ -63,8 +63,16 @@ function StorePage() {
   };
   useEffect(() => { const el = shelfRef.current; if (el) el.scrollLeft = 0; const frame = requestAnimationFrame(updateShelfEdges); return () => cancelAnimationFrame(frame); }, [activeCategory, visibleProducts.length]);
 
+  useEffect(() => {
+    const reset = () => document.querySelectorAll<HTMLElement>("[data-shelf]").forEach((el) => { el.scrollTo({ left: 0, behavior: "instant" as ScrollBehavior }); });
+    reset();
+    const f1 = requestAnimationFrame(() => { reset(); updateShelfEdges(); });
+    const t = window.setTimeout(reset, 60);
+    return () => { cancelAnimationFrame(f1); window.clearTimeout(t); };
+  }, []);
+
   return (
-    <div className="app-frame bg-surface">
+    <div className="app-frame bg-surface page-enter">
       <TopBar />
       <div className="relative h-[116px] overflow-hidden bg-ink">
         <img src="/banner%20loja.png" alt="" loading="eager" fetchPriority="high" decoding="async" width={1200} height={240} className="absolute inset-0 h-full w-full object-cover object-center" />
@@ -101,7 +109,7 @@ function StorePage() {
           <h2 className="text-[21px] font-extrabold">Produtos da loja</h2>
           <button type="button" onClick={() => setActiveCategory("Todos")} className="shrink-0 text-[14px] font-bold text-primary">Ver todos</button>
         </div>
-        <div className="-mx-3.5 mb-4 flex gap-6 overflow-x-auto border-b border-border px-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div data-shelf className="-mx-3.5 mb-4 flex gap-6 overflow-x-auto border-b border-border px-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryFilters.map((tab) => (
             <button key={tab.label} type="button" onClick={() => setActiveCategory(tab.label)} className={"relative min-h-11 shrink-0 whitespace-nowrap text-[14px] font-semibold " + (activeCategory === tab.label ? "text-foreground" : "text-muted-foreground")}>
               {tab.label}{activeCategory === tab.label && <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-primary" />}
@@ -118,7 +126,7 @@ function StorePage() {
       <div className="relative pb-9">
         {canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface to-transparent" />}
         {canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
-        <div ref={shelfRef} onScroll={updateShelfEdges} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {visibleProducts.map((p, index) => (
             <div key={p.id} className={`relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3 ${index === 0 ? "ml-3.5" : ""}`}>
               <Link to="/produto/$id" params={{ id: p.id }}>
@@ -158,7 +166,7 @@ function StorePage() {
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
-            <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {products.filter((p) => p.id === "arvore-natal-kit-87-enfeites").map((p) => (
                 <div key={p.id} className="relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3">
                   <Link to="/produto/$id" params={{ id: p.id }}>

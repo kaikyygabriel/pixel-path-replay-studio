@@ -34,7 +34,7 @@ export const Route = createFileRoute("/produto/$id")({
     ],
   }),
   notFoundComponent: () => (
-    <div className="app-frame grid place-items-center p-8 text-center">
+    <div className="app-frame page-enter grid place-items-center p-8 text-center">
       <div>
         <p className="mb-4">Produto não encontrado.</p>
         <Link to="/" className="font-semibold text-primary">Voltar à loja</Link>
@@ -174,7 +174,7 @@ function ProductPage() {
   }
 
   return (
-    <div className="app-frame pb-[84px]">
+    <div className="app-frame page-enter pb-[84px]">
       <TopBar back />
       <div className="overflow-hidden bg-ink py-2.5 text-[13px] font-bold tracking-[0.12em] text-ink-foreground">
         <div className="marquee flex w-max gap-6 whitespace-nowrap">
