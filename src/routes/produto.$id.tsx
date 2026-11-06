@@ -300,8 +300,8 @@ function ProductPage() {
       <div className="mt-5 flex items-center justify-between border-y border-border px-4 py-3">
         <div>
           <div className="flex items-center gap-2 text-[13px]">
-            <Truck className="h-5 w-5" />
-            <span className="rounded-md bg-teal-soft px-2 py-0.5 font-semibold text-teal-ink">Frete grátis</span>
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-teal-soft text-teal-ink ring-1 ring-teal-ink/10"><Truck className="h-4 w-4" /></span>
+            <span className="rounded-full bg-teal-soft px-3 py-1 font-bold tracking-tight text-teal-ink">Frete grátis</span>
             <span className="text-muted-foreground line-through">R$ 26,20</span>
           </div>
           <div className="mt-1 text-[14.5px] font-bold capitalize">Receba até {formatEstimatedDelivery()}</div>
