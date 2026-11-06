@@ -4,11 +4,12 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { CheckoutProvider } from "../lib/checkout";
@@ -117,6 +118,19 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  useLayoutEffect(() => {
+    // Sempre inicia a nova página no topo, inclusive ao voltar pelo histórico.
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
+
+  useEffect(() => {
+    // Evita que o navegador restaure a posição antiga ao navegar para trás/para frente.
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
 
   useEffect(() => {
     const blockContextMenu = (event: MouseEvent) => {
