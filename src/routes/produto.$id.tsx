@@ -491,7 +491,7 @@ function ProductPage() {
                 </div>
               </div>
               <div className="mt-2 flex items-center justify-between rounded-lg bg-teal-soft px-3 py-2.5 text-[13px]">
-                <span>Receba até 4 – 5 de nov.</span>
+                <span className="capitalize">Receba até {formatEstimatedDelivery()}</span>
                 <span><s className="text-muted-foreground">R$ 26,20</s> <b className="text-teal-ink">Grátis</b></span>
               </div>
               <div className="mt-4 text-[14.5px] font-bold">{p.id === "arvore-natal-kit-87-enfeites" ? "Escolha a voltagem" : `Escolha modelo e cor (${p.variants.length})`}</div>
