@@ -606,7 +606,7 @@ function ProductPage() {
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
               <img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
-              {!isSquishyToy && review.rating > 0 && <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}
+              {review.rating > 0 && <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}
             </button>)}
           </div>
         </div>}
@@ -641,7 +641,7 @@ function ProductPage() {
               <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{!isSquishyToy && review.rating > 0 && <div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}</div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{review.rating > 0 && <div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}</div>)}</div>
           </div>
         </div>
       )}
