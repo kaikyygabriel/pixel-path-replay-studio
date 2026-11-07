@@ -293,7 +293,7 @@ export const products: Product[] = [
     checkoutTitle: "Casa dos Sonhos Barbie Dreamhouse Mattel HMX10 com 75+ Acessórios",
     category: "Brinquedos · Infantil · Presentes · Barbie · Casa & Utilidades · Natal · 25.12 · Mais vendidos · Recomendados",
     price: 29385,
-    original: 269999,
+    original: 129990,
     shippingOriginal: 2620,
     image: "/products/barbie-casa-dos-sonhos/gallery/barbie-casa-capa.png",
     gallery: [
