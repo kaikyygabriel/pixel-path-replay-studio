@@ -94,7 +94,12 @@ function getEstimatedRatingDistribution(total: number, rating: number): Record<n
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
   return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
     const fill = Math.max(0, Math.min(1, rating - (n - 1)));
-    return <span key={n} className={"relative inline-block " + size}><Star className="absolute inset-0 h-full w-full text-border" /><span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: (fill * 100) + "%" }}><Star className="h-full w-full fill-[#FFC43B] text-[#FFC43B]" /></span></span>;
+    return <span key={n} className={"relative inline-block shrink-0 " + size}>
+      <Star className="absolute inset-0 h-full w-full text-border" />
+      <span className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - fill * 100}% 0 0)` }}>
+        <Star className="absolute inset-0 h-full w-full fill-[#FFC43B] text-[#FFC43B]" />
+      </span>
+    </span>;
   })}</span>;
 }
 
