@@ -238,7 +238,7 @@ export const products: Product[] = [
     variants: [],
     description: "O Ar-Condicionado Split LG AI Smart Inverter Voice de 9.000 BTUs oferece climatização fria com conectividade e controle inteligente. A tecnologia AI SmartCare ajusta o funcionamento de acordo com os hábitos de uso, enquanto o compressor Inverter ajuda a manter a temperatura com mais estabilidade.\n\nPelo aplicativo LG ThinQ, é possível ligar e desligar o aparelho, programar horários, ajustar funções e acompanhar o consumo à distância. O modelo também é compatível com comandos de voz por Google Assistente e Alexa.\n\nCom operação silenciosa, serpentina de cobre com proteção GoldFin e gás refrigerante R-32, é indicado para ambientes de até aproximadamente 12 m², conforme as condições do local.\n\n**Especificações principais:** 9.000 BTUs · ciclo frio · tecnologia Inverter · Wi-Fi · 220V monofásico · gás R-32 · serpentina de cobre · classificação energética B · consumo informado de 363,4 kWh/ano.\n\n**Atenção:** produto disponível exclusivamente em 220V. Não é bivolt. Verifique a instalação elétrica e as condições do ambiente antes da compra. A instalação deve ser realizada por profissional qualificado.",
     rating: 5, reviews: null, sold: "1.000+",
-  },,
+  },
   {
     id: "air-fryer-oven-mondial-afon-12l",
     title: "Fritadeira Air Fryer Oven Mondial 12L Digital 2200W AFON-12L-BI",
