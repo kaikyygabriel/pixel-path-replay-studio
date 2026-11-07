@@ -46,6 +46,8 @@
   --color-flash-from: var(--flash-from);
   --color-flash-to: var(--flash-to);
   --color-overlay: var(--overlay);
+  --color-flash-label: var(--flash-label);
+  --color-flash-soft: var(--flash-soft);
 }
 
 :root {
@@ -84,7 +86,14 @@
   --flash-from: oklch(0.63 0.24 15);
   --flash-to: oklch(0.72 0.18 45);
   --overlay: oklch(0 0 0 / 0.55);
+  --flash-label: oklch(0.69 0.20 38);
+  --flash-soft: oklch(0.97 0.018 38);
 }
+
+.flash-offer-badge { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; font-size: 11px; font-weight: 700; line-height: 1.5; }
+.flash-offer-label { display: inline-flex; align-items: center; gap: 2px; background: var(--flash-label); color: var(--primary-foreground); padding: 2px 4px; border-radius: 4px 0 0 4px; }
+.flash-offer-label svg { width: 12px; height: 14px; flex-shrink: 0; }
+.flash-offer-time { color: var(--flash-label); background: var(--flash-soft); padding: 2px 4px; border-radius: 0 4px 4px 0; }
 
 @layer base {
   * {
