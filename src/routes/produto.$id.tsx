@@ -593,6 +593,10 @@ function ProductPage() {
           </div>
           <Link to="/" className="flex h-10 items-center rounded-full bg-secondary px-3 text-[14px] font-bold">Ver loja<ChevronRight className="h-4 w-4" /></Link>
         </div>
+        <div className="mt-3 grid grid-cols-2 items-center gap-3 text-[12px] leading-tight text-muted-foreground">
+          <p><span className="font-semibold text-foreground">100%</span> responde em 24 horas</p>
+          <p className="text-right"><span className="font-semibold text-foreground">99%</span> envios pontuais</p>
+        </div>
       </div>
 
       <div className="border-t-8 border-surface px-4 py-5">
