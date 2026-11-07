@@ -82,7 +82,7 @@ function useFlashDeadline(product: Product) {
 }
 
 export function FlashIcon({ className = "h-4 w-4" }: { className?: string }) {
-  return <svg viewBox="0 0 17 24" aria-hidden="true" className={className} fill="currentColor" preserveAspectRatio="xMidYMid meet"><path d="M13 0 3 1 0 13 5 14 3 24 17 10 13 7 15 1Z" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor"><path d="M10.5 2.5h9L14 10h5.3L5.6 22l3.3-10H4.5z" /></svg>;
 }
 
 function DiscountIcon() {
