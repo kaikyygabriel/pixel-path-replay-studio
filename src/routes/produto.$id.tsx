@@ -1,16 +1,16 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import {
-  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Truck, ShieldCheck, Check, Store,
+  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Zap, Truck, ShieldCheck, Check, Store,
   ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Lock, Clock,
 } from "lucide-react";
 import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
-import { getProduct, store, brl, unitPrice, type Variant } from "@/lib/catalog";
-import { useCheckout, addToCart, type CartItem } from "@/lib/checkout";
+import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
+import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
 import { CartAddButton } from "@/components/shop/cart-add-button";
 import { formatEstimatedDelivery } from "@/lib/delivery";
 import { ProductRecommendations } from "@/components/shop/product-recommendations";
-import { FlashOfferBadge, ProductBadges, ReviewMediaRating } from "@/components/shop/product-presentation";
+import { ReviewMediaRating } from "@/components/shop/product-presentation";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
 const getOptionKind = (variants: Variant[]) => {
@@ -46,6 +46,11 @@ export const Route = createFileRoute("/produto/$id")({
   ),
   component: ProductPage,
 });
+
+function OfferTimer() {
+  const offer = useOfferEnd();
+  return <>{offer.hms}</>;
+}
 
 const strip = ["FRETE GRÁTIS BRASIL", "ESPECIAL 25.12", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
 type DemoReview = { id: string; name: string; date: string; rating: number; text: string; media: string | null };
@@ -459,23 +464,19 @@ function ProductPage() {
         </span>
       </div>
 
-      {p.flashOffer ? (
-        <div className="bg-flash grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 text-primary-foreground">
-          <div className="min-w-0">
+      <div className="bg-flash grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 text-primary-foreground">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="shrink-0 rounded-md bg-background/25 px-2 py-0.5 text-[14px] font-bold">-{discountPct(shownPrice, shownOriginal)}%</span>
             <span className="truncate text-[24px] font-extrabold leading-none">{brl(shownPrice)}</span>
-            <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
           </div>
-          <FlashOfferBadge product={p} className="justify-end" />
+          <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
         </div>
-      ) : (
-        <div className="bg-card px-4 py-3">
-          <div className="flex flex-wrap items-baseline gap-x-2">
-            <span className="text-[24px] font-extrabold leading-none text-primary">{brl(shownPrice)}</span>
-            <s className="text-[14px] text-muted-foreground">{brl(shownOriginal)}</s>
-          </div>
-          <ProductBadges product={p} price={shownPrice} original={shownOriginal} />
+        <div className="text-right text-[12.5px] leading-tight">
+          <div className="flex items-center justify-end gap-1 font-bold"><Zap className="h-4 w-4 fill-current" />Oferta Relâmpago</div>
+          <div className="mt-1">Termina em <b className="tabular-nums"><OfferTimer /></b></div>
         </div>
-      )}
+      </div>
 
       <div className="px-4 pt-4">
         <div className="text-[15px] font-semibold text-success">{brl(shownPrice)} no PIX</div>
@@ -628,7 +629,7 @@ function ProductPage() {
               const percent = total ? (count / total) * 100 : 0;
               return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}>
                 <span className="w-3 text-[11px] text-muted-foreground">{stars}</span>
-                <Star className="h-3 w-3 fill-gold text-gold" />
+                <Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />
                 <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span>
                 <span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span>
               </button>;
@@ -733,7 +734,10 @@ function ProductPage() {
                   <div className="text-[14px] font-bold leading-snug">
                     {p.title} {variant ? `· ${variant.color}` : ""}
                   </div>
-                  <ProductBadges product={p} price={shownPrice} original={shownOriginal} />
+                  <div className="mt-1.5 flex items-center gap-1.5 text-[12px]">
+                    <span className="flex items-center gap-0.5 rounded bg-primary px-1 font-bold text-primary-foreground"><Zap className="h-3 w-3 fill-current" />Oferta Relâmpago</span>
+                    <span className="font-bold text-primary"><OfferTimer /></span>
+                  </div>
                   <div className="mt-1 flex items-center justify-between">
                     <div className="flex items-baseline gap-1">
                       <span className="text-[20px] font-extrabold text-primary">{brl(shownPrice * qty)}</span>
@@ -744,7 +748,7 @@ function ProductPage() {
                   <div className="flex items-center justify-between">
                     <div className="text-[12px]">
                       <span className="text-muted-foreground line-through">{brl(shownOriginal)}</span>{" "}
-                      
+                      <span className="rounded bg-primary-soft px-1 font-bold text-primary">-{discountPct(shownPrice, shownOriginal)}%</span>
                     </div>
                     <div className="flex items-center rounded-lg border border-border text-[16px]">
                       <button aria-label="Diminuir" onClick={() => setQty(Math.max(1, qty - 1))} className="grid h-9 w-9 place-items-center"><Minus className="h-4 w-4" /></button>
