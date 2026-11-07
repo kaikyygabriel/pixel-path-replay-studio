@@ -325,7 +325,7 @@ function ProductPage() {
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const reviewMedia = [
-    ...demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating })),
+    ...demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating, caption: null as string | null })),
     ...squishyReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: 0, caption: photo.caption })),
   ];
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];

@@ -284,7 +284,8 @@ export const products: Product[] = [
     variants: [],
     description: "Descubra qual modelo vai chegar! O Squishy Surpresa Colecionável é um brinquedo de apertar, com toque macio, visual divertido e acabamento brilhante. Cada unidade vem em sua própria embalagem individual, e a abertura faz parte da experiência de descobrir a versão recebida.\n\nA coleção reúne diferentes modelos e cores, incluindo algumas versões especiais. O envio é sortido: a cor e o modelo são escolhidos aleatoriamente, sem possibilidade de selecionar uma versão específica e sem garantia de receber uma versão rara.\n\n**O que acompanha:** 1 squishy surpresa em sua embalagem individual.\n\n**Importante:** este anúncio corresponde a uma unidade, não a um kit. As outras cores, modelos e embalagens que aparecem nas imagens servem para apresentar a variedade da coleção; a caixa expositora e as demais unidades não acompanham a compra.",
     rating: 5.0, reviews: null, sold: "1.000+",
-  },];
+  },
+];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
 
