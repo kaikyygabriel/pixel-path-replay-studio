@@ -298,7 +298,7 @@ function ProductPage() {
       text: [
         "O meu veio nesse tom verdinho com brilho, achei muito fofo. A embalagem também é uma graça.",
         "Veio roxinho e a abertura foi a parte mais divertida, porque eu não sabia qual cor ia aparecer.",
-        "Recebi o rosa e achei lindo! É macio para apertar e o potinho deixa tudo bem bonitinho.",
+        "",
         "O azul chegou bem brilhante, gostei de abrir e descobrir qual modelo tinha vindo.",
         "O meu veio azul clarinho, bem delicado. O brilho aparece bastante quando bate luz.",
         "Recebi o lilás. A textura é gostosa de apertar e ele fica guardadinho no próprio potinho.",
