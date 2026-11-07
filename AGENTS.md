@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Project rules
+- Product-page recommendations use a browser-safe catalog selector and a shared grid after reviews; exclude the current item and combine catalog sales ranking with Christmas categories to avoid extra requests.
 - Storefront is a mobile-first checkout flow: `/` store → `/produto/$id` → `/checkout` (data + address sheets) → `/resumo` → `/pagamento`. Why: mirrors the reference screen sequence.
 - Catalog and store identity live in `src/lib/catalog.ts`; unknown business details stay `null` and render as pending. Why: never invent legal/company data.
 - Checkout state is client-side in `src/lib/checkout.tsx` (sessionStorage). Why: no backend/orders persistence yet.
