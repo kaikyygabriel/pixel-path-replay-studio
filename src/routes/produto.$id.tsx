@@ -202,6 +202,7 @@ function ProductPage() {
     { id: "lg-review-9", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-9.png" },
     { id: "lg-review-10", src: "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-10.png" },
   ] : [];
+  const isBarbieDreamhouse = p.id === "barbie-casa-dos-sonhos-hmx10";
   const isPhilcoMicrowave = p.id === "micro-ondas-philco-pmo31s";
   const philcoReviewPhotos = isPhilcoMicrowave ? [
     { id: "philco-review-1", src: "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-1.png" },
@@ -211,6 +212,16 @@ function ProductPage() {
     { id: "philco-review-5", src: "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-5.png" },
     { id: "philco-review-6", src: "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-6.png" },
     { id: "philco-review-7", src: "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-7.png" },
+  ] : [];
+  const barbieReviewPhotos = isBarbieDreamhouse ? [
+    { id: "barbie-review-1", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-01.png" },
+    { id: "barbie-review-2", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-02.png" },
+    { id: "barbie-review-3", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-03.png" },
+    { id: "barbie-review-4", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-04.png" },
+    { id: "barbie-review-5", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-05.png" },
+    { id: "barbie-review-6", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-06.png" },
+    { id: "barbie-review-7", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-07.png" },
+    { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
   const demoReviews: DemoReview[] = isKarstenTowel ? [
@@ -332,6 +343,27 @@ function ProductPage() {
     { id: "lg-review-text-11", name: "Thiago N.", date: "há 3 dias", rating: 5, text: "Muito bom, funciona bem e quase não faz barulho", media: null },
     { id: "lg-review-text-12", name: "Aline G.", date: "há 10 dias", rating: 5, text: "Gostei da praticidade e do conforto que ele proporciona", media: null },
     { id: "lg-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 5, text: "Atendeu minhas expectativas, resfria o ambiente direitinho", media: null },
+  ] : isBarbieDreamhouse ? [
+    ...barbieReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Camila R.", "Fernanda M.", "Juliana P.", "Rafaela C.", "Aline S.", "Bruna T.", "Patrícia L.", "Mariana F."][i] ?? "",
+      date: ["há 12 dias", "há 4 dias", "há 9 dias", "há 2 dias", "há 13 dias", "há 6 dias", "há 1 dia", "há 10 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "A casinha é linda!! Minha filha ficou encantada quando viu tudo montado. A piscina e o escorregador já viraram os favoritos kkkk.",
+        "Ela é enorme mesmo, precisei separar um cantinho pra montar. Depois de pronta fica maravilhosa e tem bastante espaço pra brincar.",
+        "Levamos um tempinho na montagem, mas seguindo o manual deu certo. Minha pequena ficou toda animada quando viu a casa pronta.",
+        "Os detalhes dos cômodos são muito bonitos, tem vários espaços pra inventar histórias. Gostei bastante do resultado.",
+        "Minha menina amou!! O escorregador e a piscininha fizeram sucesso por aqui. Ficou linda montada.",
+        "Veio com bastante acessório e a casa fica bem grandona. Dá pra brincar de vários jeitos.",
+        "O elevador e o escorregador são muito legais, deixam a brincadeira mais completa. Minha filha adorou.",
+        "Foi um presentão, ficou linda depois de montada. Só recomendo deixar um espaço reservado porque ela é grande.",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "barbie-review-text-9", name: "Débora A.", date: "há 7 dias", rating: 5, text: "Chegou bem embalada e com as peças organizadas. A montagem exige um pouco de paciência, mas o resultado fica lindo.", media: null },
+    { id: "barbie-review-text-10", name: "Renata V.", date: "há 3 dias", rating: 5, text: "Minha sobrinha ficou apaixonada pela casa! Ela tem muitos cantinhos e acessórios pra imaginar várias brincadeiras.", media: null },
+    { id: "barbie-review-text-11", name: "Priscila G.", date: "há 11 dias", rating: 5, text: "Gostei muito da casa, só é importante lembrar que a boneca não acompanha. No restante, é bem completa.", media: null },
   ] : isPhilcoMicrowave ? [
     { id: "philco-review-1", name: "Mariana S.", date: "há 2 dias", rating: 5, text: "Chegou direitinho e ficou ótimo na minha cozinha, gostei bastante", media: philcoReviewPhotos[0].src },
     { id: "philco-review-2", name: "Rafael M.", date: "há 4 dias", rating: 5, text: "É bem espaçoso por dentro e achei fácil de mexer", media: philcoReviewPhotos[1].src },

@@ -285,7 +285,26 @@ export const products: Product[] = [
     description: "Descubra qual modelo vai chegar! O Squishy Surpresa Colecionável é um brinquedo de apertar, com toque macio, visual divertido e acabamento brilhante. Cada unidade vem em sua própria embalagem individual, e a abertura faz parte da experiência de descobrir a versão recebida.\n\nA coleção reúne diferentes modelos e cores, incluindo algumas versões especiais. O envio é sortido: a cor e o modelo são escolhidos aleatoriamente, sem possibilidade de selecionar uma versão específica e sem garantia de receber uma versão rara.\n\n**O que acompanha:** 1 squishy surpresa em sua embalagem individual.\n\n**Importante:** este anúncio corresponde a uma unidade, não a um kit. As outras cores, modelos e embalagens que aparecem nas imagens servem para apresentar a variedade da coleção; a caixa expositora e as demais unidades não acompanham a compra.",
     rating: 5.0, reviews: null, sold: "1.000+",
   },
-];
+
+  {
+    id: "barbie-casa-dos-sonhos-hmx10",
+    title: "Casa dos Sonhos Barbie Dreamhouse Mattel HMX10 · 3 Andares",
+    cardTitle: "Casa dos Sonhos Barbie 3 Andares",
+    checkoutTitle: "Casa dos Sonhos Barbie Dreamhouse Mattel HMX10 com 75+ Acessórios",
+    category: "Brinquedos · Infantil · Presentes · Barbie · Casa & Utilidades · Natal · 25.12 · Mais vendidos · Recomendados",
+    price: 29385,
+    original: 269999,
+    shippingOriginal: 2620,
+    image: "/products/barbie-casa-dos-sonhos/gallery/barbie-casa-capa.png",
+    gallery: [
+      "/products/barbie-casa-dos-sonhos/gallery/barbie-casa-capa.png",
+      "/products/barbie-casa-dos-sonhos/gallery/barbie-casa-carrossel-02.png",
+      "/products/barbie-casa-dos-sonhos/gallery/barbie-casa-carrossel-03.png",
+    ],
+    variants: [],
+    description: "A Barbie Dreamhouse HMX10 é uma casa de bonecas de três andares, com espaços internos e externos para brincar em 360 graus. São 10 áreas de convivência, incluindo ambientes de lazer, cozinha, sala, quarto, banheiro, varanda e uma piscina com escorregador em espiral de três andares.\n\nA brincadeira fica ainda mais completa com elevador funcional, recursos de luz e som na cozinha e no banheiro, além de áreas especiais para os pets, com elevador, escorregador e piscina próprios. No último andar, o espaço extra se transforma em uma área para festa do pijama, com lugar para até quatro bonecas.\n\nO conjunto acompanha mais de 75 peças e acessórios para personalizar os ambientes, incluindo um cachorrinho. É indicado para crianças a partir de 3 anos. A casa precisa ser montada e utiliza 3 pilhas AA, vendidas separadamente.\n\n**O que acompanha:** 1 Casa dos Sonhos Barbie de três andares e mais de 75 peças, incluindo um cachorrinho.\n\n**Importante:** as bonecas Barbie não estão incluídas. As pilhas AA necessárias para os efeitos de luz e som também são vendidas separadamente. A montagem é necessária; cores e decorações podem variar.",
+    rating: 5.0, reviews: null, sold: "500+",
+  },];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
 

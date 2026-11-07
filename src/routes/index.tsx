@@ -46,6 +46,8 @@ function StorePage() {
   const categoryFilters: { label: string; match: (p: Product) => boolean }[] = [
     { label: "Todos", match: () => true },
     { label: "Natal", match: (p) => p.category.toLocaleLowerCase("pt-BR").includes("natal") },
+    { label: "Brinquedos", match: (p) => /brinquedo|infantil|barbie/i.test(p.category + " " + p.title) },
+    { label: "Presentes", match: (p) => /presente|natal|brinquedo|infantil/i.test(p.category) },
     { label: "Casa & Utilidades", match: (p) => /cama|mesa|banho|toalha|casa|utilidade/i.test(p.category) },
     { label: "Eletrônicos", match: (p) => /eletr/i.test(p.category) },
     { label: "Moda", match: (p) => /moda|roupa|calçado|acessório/i.test(p.category) },
