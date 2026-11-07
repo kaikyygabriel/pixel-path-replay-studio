@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import {
-  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Zap, Truck, ShieldCheck, Check, Store,
+  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Truck, ShieldCheck, Check, Store,
   ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Lock, Clock,
 } from "lucide-react";
 import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
@@ -10,7 +10,7 @@ import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checko
 import { CartAddButton } from "@/components/shop/cart-add-button";
 import { formatEstimatedDelivery } from "@/lib/delivery";
 import { ProductRecommendations } from "@/components/shop/product-recommendations";
-import { ReviewMediaRating } from "@/components/shop/product-presentation";
+import { FlashIcon, ReviewMediaRating } from "@/components/shop/product-presentation";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
 const getOptionKind = (variants: Variant[]) => {
@@ -478,7 +478,7 @@ function ProductPage() {
           <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
         </div>
         <div className="text-right text-[12.5px] leading-tight">
-          <div className="flex items-center justify-end gap-1 font-bold"><Zap className="h-4 w-4 fill-current" />Oferta Relâmpago</div>
+          <div className="flex items-center justify-end gap-1 font-bold"><FlashIcon className="h-4 w-4" />Oferta Relâmpago</div>
           <div className="mt-1">Termina em <b className="tabular-nums"><OfferTimer /></b></div>
         </div>
       </div>
@@ -740,7 +740,7 @@ function ProductPage() {
                     {p.title} {variant ? `· ${variant.color}` : ""}
                   </div>
                   <div className="mt-1.5 flex items-center gap-1.5 text-[12px]">
-                    <span className="flex items-center gap-0.5 rounded bg-primary px-1 font-bold text-primary-foreground"><Zap className="h-3 w-3 fill-current" />Oferta Relâmpago</span>
+                    <span className="flex items-center gap-0.5 rounded bg-primary px-1 font-bold text-primary-foreground"><FlashIcon className="h-3 w-3" />Oferta Relâmpago</span>
                     <span className="font-bold text-primary"><OfferTimer /></span>
                   </div>
                   <div className="mt-1 flex items-center justify-between">
