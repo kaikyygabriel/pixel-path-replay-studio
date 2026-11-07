@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Project rules
+- Product shelves and recommendation grids share ProductCard presentation; flash labels share FlashOfferBadge and only use explicit catalog deadlines, never visit-based timers. Why: consistent styling and truthful expiry across pages.
 - Product-page recommendations use a browser-safe catalog selector and a shared grid after reviews; exclude the current item and combine catalog sales ranking with Christmas categories to avoid extra requests.
 - Storefront is a mobile-first checkout flow: `/` store → `/produto/$id` → `/checkout` (data + address sheets) → `/resumo` → `/pagamento`. Why: mirrors the reference screen sequence.
 - Catalog and store identity live in `src/lib/catalog.ts`; unknown business details stay `null` and render as pending. Why: never invent legal/company data.
