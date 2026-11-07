@@ -172,15 +172,15 @@ function ProductPage() {
     { id: "air-fryer-review-10", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-10.png" }
   ] : [];
   const squishyReviewPhotos = isSquishyToy ? [
-    { id: "squishy-review-1", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-01.png", caption: "Modelo verde perolado mostrado fora da embalagem individual." },
-    { id: "squishy-review-2", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-02.png", caption: "Embalagem individual aberta, com o modelo roxo parcialmente visível." },
-    { id: "squishy-review-3", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-03.png", caption: "Modelo rosa apresentado em seu potinho individual." },
-    { id: "squishy-review-4", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-04.png", caption: "Versão azul com acabamento brilhante dentro da embalagem." },
-    { id: "squishy-review-5", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-05.png", caption: "Detalhe da peça azul-clara com acabamento translúcido." },
-    { id: "squishy-review-6", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-06.png", caption: "Modelo lilás com textura mesclada e partículas de brilho." },
-    { id: "squishy-review-7", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-07.png", caption: "Embalagem individual da coleção, com a identificação do brinquedo." },
-    { id: "squishy-review-8", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-08.png", caption: "Versão dourada com brilho apresentada dentro do potinho." },
-    { id: "squishy-review-9", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-09.png", caption: "Modelo verde-claro mostrado dentro da embalagem individual." },
+    { id: "squishy-review-1", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-01.png" },
+    { id: "squishy-review-2", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-02.png" },
+    { id: "squishy-review-3", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-03.png" },
+    { id: "squishy-review-4", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-04.png" },
+    { id: "squishy-review-5", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-05.png" },
+    { id: "squishy-review-6", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-06.png" },
+    { id: "squishy-review-7", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-07.png" },
+    { id: "squishy-review-8", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-08.png" },
+    { id: "squishy-review-9", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-09.png" },
   ] : [];
   const tclReviewPhotos = isTclTv ? [
     { id: "tcl-review-1", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
@@ -352,7 +352,6 @@ function ProductPage() {
       id: review.id,
       media: review.media!,
       rating: review.rating,
-      caption: isSquishyToy ? squishyReviewPhotos.find((photo) => photo.id === review.id)?.caption ?? null : null,
     }));
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
@@ -607,7 +606,7 @@ function ProductPage() {
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
               <img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
-              {review.rating > 0 && <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}{review.caption && <p className="mt-1.5 line-clamp-2 text-[10px] leading-tight text-muted-foreground">{review.caption}</p>}
+              {!isSquishyToy && review.rating > 0 && <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}
             </button>)}
           </div>
         </div>}
@@ -642,7 +641,7 @@ function ProductPage() {
               <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{review.rating > 0 && <div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}{review.caption && <p className="mt-1.5 text-[11px] leading-snug text-muted-foreground">{review.caption}</p>}</div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{!isSquishyToy && review.rating > 0 && <div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}</div>)}</div>
           </div>
         </div>
       )}
