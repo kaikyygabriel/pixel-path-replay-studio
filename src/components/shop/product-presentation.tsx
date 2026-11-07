@@ -101,37 +101,23 @@ export function FlashOfferBadge({ product, className = "" }: { product: Product;
 }
 
 export function ProductBadges({ product, price = product.price, original = product.original }: { product: Product; price?: number; original?: number }) {
+  const shipping = <span className="inline-flex min-h-6 shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-teal-soft px-1.5 py-1 text-[10px] font-semibold leading-none text-teal-ink">Frete grátis</span>;
   if (product.flashOffer) {
-    return <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-      <FlashOfferBadge product={product} />
-      <span className="inline-flex items-center rounded-md bg-teal-soft px-2 py-1 text-[11px] font-semibold text-teal-ink">Frete grátis</span>
+    return <div className="mt-1.5 flex flex-wrap items-center gap-1">
+      <FlashOfferBadge product={product} className="shrink-0" />
+      {shipping}
     </div>;
   }
-  return <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]">
-    <span className="inline-flex items-center gap-1 rounded-md bg-[#FFE4EA] px-2 py-1 font-bold text-[#C91F4B]"><DiscountIcon />{discountPct(price, original)}% OFF</span>
-    <span className="inline-flex items-center rounded-md bg-teal-soft px-2 py-1 font-semibold text-teal-ink">Frete grátis</span>
+  return <div className="mt-1.5 flex flex-wrap items-center gap-1">
+    <span className="inline-flex min-h-6 shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-md bg-[#FFE4EA] px-1.5 py-1 text-[10px] font-bold leading-none text-[#C91F4B]"><DiscountIcon />{discountPct(price, original)}% OFF</span>
+    {shipping}
   </div>;
 }
 
-function estimateCardReviewCount(sold: string | null): number | null {
-  if (!sold) return null;
-  const normalized = sold.toLowerCase().replace(/\s/g, "");
-  const numeric = normalized.replace(/[^0-9.,]/g, "");
-  const amount = normalized.includes("mil")
-    ? Number.parseFloat(numeric.replace(",", "."))
-    : Number.parseFloat(numeric.replace(/\./g, "").replace(",", "."));
-  if (!Number.isFinite(amount)) return null;
-  const units = normalized.includes("mil") ? amount * 1000 : amount;
-  const variation = ((Math.round(units) % 21) - 10) / 1000;
-  return Math.max(1, Math.round(units * (0.2 + variation)));
-}
-
 export function ProductMetrics({ product }: { product: Product }) {
-  if (product.rating === null && product.sold === null && product.reviews === null) return null;
-  const reviewCount = product.reviews ?? estimateCardReviewCount(product.sold);
-  return <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[11px] leading-snug text-muted-foreground" aria-label={`Avaliação ${product.rating ?? "não informada"} de 5; ${reviewCount ?? 0} avaliações; ${product.sold ?? "vendas não informadas"} vendidos`}>
+  if (product.rating === null && product.sold === null) return null;
+  return <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[11px] leading-snug text-muted-foreground" aria-label={`Avaliação ${product.rating ?? "não informada"} de 5; ${product.sold ?? "vendas não informadas"} vendidos`}>
     {product.rating !== null && <><Star className="h-3.5 w-3.5 shrink-0 fill-gold text-gold" /><span className="shrink-0 font-semibold text-foreground">{product.rating.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}</span></>}
-    {reviewCount !== null && <span className="shrink-0">({reviewCount.toLocaleString("pt-BR")})</span>}
     {product.sold !== null && <><span aria-hidden="true" className="mx-0.5 text-muted-foreground">|</span><span className="min-w-0 truncate">{product.sold} vendidos</span></>}
   </div>;
 }

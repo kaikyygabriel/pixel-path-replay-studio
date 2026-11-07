@@ -137,9 +137,7 @@ function StorePage() {
         {canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
         <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {visibleProducts.map((p, index) => (
-            <ProductCard key={p.id} product={p} className={`w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}`}>
-              <CartAddButton productId={p.id} label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { if (p.variants.length) { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); } else addQuickToCart(p); }} className="mx-auto mt-2" />
-            </ProductCard>
+            <ProductCard key={p.id} product={p} className={`w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}`} />
           ))}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
