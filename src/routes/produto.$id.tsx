@@ -119,6 +119,7 @@ function ProductPage() {
   const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
   const isMondialAirFryer = p.id === "air-fryer-oven-mondial-afon-12l";
+  const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
   const kettleReviewPhotos = isKettle ? [
     { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
     { id: "kettle-review-2", src: "/avalia%C3%A7%C3%A3o%20chaleira%202.png" },
@@ -169,6 +170,17 @@ function ProductPage() {
     { id: "air-fryer-review-8", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-08.png" },
     { id: "air-fryer-review-9", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-09.png" },
     { id: "air-fryer-review-10", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-10.png" }
+  ] : [];
+  const squishyReviewPhotos = isSquishyToy ? [
+    { id: "squishy-review-1", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-01.png", caption: "Modelo verde perolado mostrado fora da embalagem individual." },
+    { id: "squishy-review-2", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-02.png", caption: "Embalagem individual aberta, com o modelo roxo parcialmente visível." },
+    { id: "squishy-review-3", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-03.png", caption: "Modelo rosa apresentado em seu potinho individual." },
+    { id: "squishy-review-4", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-04.png", caption: "Versão azul com acabamento brilhante dentro da embalagem." },
+    { id: "squishy-review-5", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-05.png", caption: "Detalhe da peça azul-clara com acabamento translúcido." },
+    { id: "squishy-review-6", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-06.png", caption: "Modelo lilás com textura mesclada e partículas de brilho." },
+    { id: "squishy-review-7", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-07.png", caption: "Embalagem individual da coleção, com a identificação do brinquedo." },
+    { id: "squishy-review-8", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-08.png", caption: "Versão dourada com brilho apresentada dentro do potinho." },
+    { id: "squishy-review-9", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-09.png", caption: "Modelo verde-claro mostrado dentro da embalagem individual." },
   ] : [];
   const tclReviewPhotos = isTclTv ? [
     { id: "tcl-review-1", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
@@ -277,7 +289,7 @@ function ProductPage() {
     { id: "air-fryer-review-text-11", name: "Bruno M.", date: "há 2 dias", rating: 5, text: "A capacidade faz diferença, consigo adiantar o preparo das refeições sem precisar fazer várias etapas", media: null },
     { id: "air-fryer-review-text-12", name: "Larissa G.", date: "há 9 dias", rating: 5, text: "Gostei muito do cesto e das prateleiras, ficou bem prático para variar os preparos", media: null },
     { id: "air-fryer-review-text-13", name: "Eduardo V.", date: "há 12 dias", rating: 5, text: "A janela iluminada ajuda bastante e o painel é fácil de entender. Estou usando direto", media: null },
-  ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
+  ] : isSquishyToy ? [] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
     id: photo.id,
     name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
     date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
@@ -312,7 +324,10 @@ function ProductPage() {
   ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating }));
+  const reviewMedia = [
+    ...demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating })),
+    ...squishyReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: 0, caption: photo.caption })),
+  ];
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -566,7 +581,7 @@ function ProductPage() {
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
               <img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
-              <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>
+              {review.rating > 0 && <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}{review.caption && <p className="mt-1.5 line-clamp-2 text-[10px] leading-tight text-muted-foreground">{review.caption}</p>}
             </button>)}
           </div>
         </div>}
@@ -588,7 +603,7 @@ function ProductPage() {
             </div>
           </article>)}
         </div>
-        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
+        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{isSquishyToy ? "As fotos compartilhadas por clientes estão disponíveis acima. Relatos escritos individuais serão exibidos quando houver conteúdo original cadastrado." : reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
         {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
       </section>
       <div className="h-10 bg-surface" />
@@ -601,7 +616,7 @@ function ProductPage() {
               <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div></div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{review.rating > 0 && <div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}{review.caption && <p className="mt-1.5 text-[11px] leading-snug text-muted-foreground">{review.caption}</p>}</div>)}</div>
           </div>
         </div>
       )}

@@ -265,7 +265,26 @@ export const products: Product[] = [
     description: "A Fritadeira Air Fryer Oven Mondial AFON-12L-BI reúne capacidade, potência e praticidade para preparar diferentes receitas em casa. Com 12 litros de capacidade total e potência de 2.200 W, oferece espaço para preparar porções maiores de uma só vez.\n\nO painel digital conta com 10 funções predefinidas, que facilitam a escolha do preparo e ajustam automaticamente tempo e temperatura. Durante o funcionamento, é possível regular a temperatura entre 80 °C e 200 °C conforme a receita.\n\nA janela transparente com iluminação interna permite acompanhar os alimentos sem precisar abrir a porta. O conjunto acompanha 3 prateleiras e um cesto de 5 litros com revestimento antiaderente, ampliando as possibilidades de preparo e facilitando a rotina na cozinha.\n\n**Especificações principais:** capacidade total de 12 L · potência de 2.200 W · painel digital · 10 funções predefinidas · temperatura ajustável de 80 °C a 200 °C · janela transparente com iluminação interna · 3 prateleiras · cesto de 5 L com revestimento antiaderente.\n\n**Atenção:** disponível nas versões 127V e 220V. Não é bivolt. Confira a voltagem da sua residência e selecione a opção correspondente antes de finalizar a compra.",
     rating: 4.9, reviews: null, sold: "15.000+",
   },
-];
+  {
+    id: "squishy-surpresa-colecionavel",
+    title: "Squishy Surpresa Colecionável Antiestresse · Modelo Sortido",
+    cardTitle: "Squishy Surpresa Colecionável",
+    checkoutTitle: "Squishy Surpresa Colecionável Antiestresse · 1 Unidade",
+    category: "Brinquedos · Infantil · Presentes · Natal · 25.12 · Mais vendidos · Recomendados",
+    price: 1995,
+    original: 3990,
+    shippingOriginal: 2620,
+    image: "/products/squishy-surpresa-colecionavel/gallery/squishy-capa.png",
+    gallery: [
+      "/products/squishy-surpresa-colecionavel/gallery/squishy-capa.png",
+      "/products/squishy-surpresa-colecionavel/gallery/squishy-carrossel-04.png",
+      "/products/squishy-surpresa-colecionavel/gallery/squishy-carrossel-05.png",
+      "/products/squishy-surpresa-colecionavel/gallery/squishy-carrossel-06.png",
+    ],
+    variants: [],
+    description: "Descubra qual modelo vai chegar! O Squishy Surpresa Colecionável é um brinquedo de apertar, com toque macio, visual divertido e acabamento brilhante. Cada unidade vem em sua própria embalagem individual, e a abertura faz parte da experiência de descobrir a versão recebida.\n\nA coleção reúne diferentes modelos e cores, incluindo algumas versões especiais. O envio é sortido: a cor e o modelo são escolhidos aleatoriamente, sem possibilidade de selecionar uma versão específica e sem garantia de receber uma versão rara.\n\n**O que acompanha:** 1 squishy surpresa em sua embalagem individual.\n\n**Importante:** este anúncio corresponde a uma unidade, não a um kit. As outras cores, modelos e embalagens que aparecem nas imagens servem para apresentar a variedade da coleção; a caixa expositora e as demais unidades não acompanham a compra.",
+    rating: 5.0, reviews: null, sold: "1.000+",
+  },];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
 
