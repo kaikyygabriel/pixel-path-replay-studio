@@ -118,6 +118,7 @@ function ProductPage() {
   const isKarstenTowel = p.id === "jogo-toalhas-karsten";
   const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
+  const isMondialAirFryer = p.id === "air-fryer-oven-mondial-afon-12l";
   const kettleReviewPhotos = isKettle ? [
     { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
     { id: "kettle-review-2", src: "/avalia%C3%A7%C3%A3o%20chaleira%202.png" },
@@ -156,6 +157,18 @@ function ProductPage() {
     { id: "mondial-review-7", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-7.webp" },
     { id: "mondial-review-8", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-8.webp" },
     { id: "mondial-review-9", src: "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-9.webp" },
+  ] : [];
+  const airFryerReviewPhotos = isMondialAirFryer ? [
+    { id: "air-fryer-review-1", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-01.png" },
+    { id: "air-fryer-review-2", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-02.png" },
+    { id: "air-fryer-review-3", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-03.png" },
+    { id: "air-fryer-review-4", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-04.png" },
+    { id: "air-fryer-review-5", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-05.png" },
+    { id: "air-fryer-review-6", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-06.png" },
+    { id: "air-fryer-review-7", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-07.png" },
+    { id: "air-fryer-review-8", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-08.png" },
+    { id: "air-fryer-review-9", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-09.png" },
+    { id: "air-fryer-review-10", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-10.png" }
   ] : [];
   const tclReviewPhotos = isTclTv ? [
     { id: "tcl-review-1", src: "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl%20tv%20avalia%C3%A7%C3%A3o%201.png", caption: "TV instalada e em uso, com a interface de jogos aberta" },
@@ -241,7 +254,30 @@ function ProductPage() {
     rating: 5,
     text: ["Gostei muitoo, bate bem e não ocupa muito espaço aqui na cozinha", "Chegou certinho e já fiz vitamina, gostei bastante", "É simples de usar e tritura bem as frutas", "O liquidificador é bonito e funcionou direitinho aqui", "Já usei pra fazer suco e ficou ótimo", "Gostei do tamanho e da potência, atende bem no dia a dia", "Veio bem embalado e tá funcionando certinho", "Muito bom pelo preço, gostei da compra", "Tô usando bastante pra vitaminas e tá dando conta tranquilo"][i] ?? "",
     media: photo.src,
-  })) : isKettle ? kettleReviewPhotos.map((photo, i) => ({
+  })) : isMondialAirFryer ? [
+    ...airFryerReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R."][i] ?? "",
+      date: ["há 2 dias", "há 3 dias", "há 4 dias", "há 5 dias", "há 6 dias", "há 7 dias", "há 8 dias", "há 10 dias", "há 11 dias", "há 13 dias"][i] ?? "",
+      rating: i === 9 ? 4 : 5,
+      text: [
+        "Amei o espaço interno, consegui preparar tudo de uma vez e ficou ótimo",
+        "Painel bem simples de mexer. As funções prontas ajudam bastante na correria",
+        "Gostei da janela com luz, dá pra acompanhar sem ficar abrindo toda hora",
+        "Usei as prateleiras e o cesto, achei bem versátil pra fazer coisas diferentes",
+        "Esquenta rápido e a capacidade é ótima pra preparar porções maiores",
+        "Muito bonita e espaçosa. Já testei batata e frango e gostei do resultado",
+        "O painel digital é intuitivo, só escolher a função e ajustar se precisar",
+        "Chegou certinho, as peças vieram bem acomodadas e o forno é bem espaçoso",
+        "Gostei bastante, principalmente da iluminação interna e das três prateleiras",
+        "Atendeu bem aqui em casa e tem bastante espaço. Só precisei me acostumar com o tamanho dela na bancada"
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "air-fryer-review-text-11", name: "Bruno M.", date: "há 2 dias", rating: 5, text: "A capacidade faz diferença, consigo adiantar o preparo das refeições sem precisar fazer várias etapas", media: null },
+    { id: "air-fryer-review-text-12", name: "Larissa G.", date: "há 9 dias", rating: 5, text: "Gostei muito do cesto e das prateleiras, ficou bem prático para variar os preparos", media: null },
+    { id: "air-fryer-review-text-13", name: "Eduardo V.", date: "há 12 dias", rating: 5, text: "A janela iluminada ajuda bastante e o painel é fácil de entender. Estou usando direto", media: null },
+  ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
     id: photo.id,
     name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
     date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
