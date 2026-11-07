@@ -309,8 +309,8 @@ function ProductPage() {
       media: photo.src,
     })).filter((review) => review.id !== "squishy-review-3"),
     { id: "squishy-review-text-10", name: "Bruna H.", date: "há 7 dias", rating: 5, text: "Comprei para dar de lembrancinha e achei a proposta muito divertida. A pessoa adorou descobrir o modelo.", media: null },
-    { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Chegou o modelo sortido e gostei da surpresa. É bem bonitinho e tem um brilho que chama atenção.", media: null },
-    { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É daqueles brinquedinhos que dá vontade de ficar apertando enquanto faz outra coisa. Gostei bastante da textura.", media: null },
+    { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Gostei de receber uma cor surpresa! O meu veio bem brilhante e achei o potinho individual uma graça.", media: null },
+    { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É macio para apertar e tem um acabamento muito fofo. Achei uma ideia diferente para presentear.", media: null },
   ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
     id: photo.id,
     name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
