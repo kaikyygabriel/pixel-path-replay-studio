@@ -1,15 +1,16 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import {
-  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Zap, Truck, ShieldCheck, Check, Store,
+  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Truck, ShieldCheck, Check, Store,
   ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Lock, Clock,
 } from "lucide-react";
 import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
-import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
-import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
+import { getProduct, store, brl, unitPrice, type Variant } from "@/lib/catalog";
+import { useCheckout, addToCart, type CartItem } from "@/lib/checkout";
 import { CartAddButton } from "@/components/shop/cart-add-button";
 import { formatEstimatedDelivery } from "@/lib/delivery";
 import { ProductRecommendations } from "@/components/shop/product-recommendations";
+import { FlashOfferBadge, ProductBadges, ReviewMediaRating } from "@/components/shop/product-presentation";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
 const getOptionKind = (variants: Variant[]) => {
@@ -45,11 +46,6 @@ export const Route = createFileRoute("/produto/$id")({
   ),
   component: ProductPage,
 });
-
-function OfferTimer() {
-  const offer = useOfferEnd();
-  return <>{offer.hms}</>;
-}
 
 const strip = ["FRETE GRÁTIS BRASIL", "ESPECIAL 25.12", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
 type DemoReview = { id: string; name: string; date: string; rating: number; text: string; media: string | null };
@@ -93,7 +89,7 @@ function getEstimatedRatingDistribution(total: number, rating: number): Record<n
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
   return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
     const fill = Math.max(0, Math.min(1, rating - (n - 1)));
-    return <span key={n} className={"relative inline-block " + size}><Star className="absolute inset-0 h-full w-full text-border" /><span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: (fill * 100) + "%" }}><Star className="h-full w-full fill-ink text-ink" /></span></span>;
+    return <span key={n} className={"relative inline-block " + size}><Star className="absolute inset-0 h-full w-full text-border" /><span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: (fill * 100) + "%" }}><Star className="h-full w-full fill-[#FFC43B] text-[#FFC43B]" /></span></span>;
   })}</span>;
 }
 
@@ -463,19 +459,23 @@ function ProductPage() {
         </span>
       </div>
 
-      <div className="bg-flash grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 text-primary-foreground">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="shrink-0 rounded-md bg-background/25 px-2 py-0.5 text-[14px] font-bold">-{discountPct(shownPrice, shownOriginal)}%</span>
+      {p.flashOffer ? (
+        <div className="bg-flash grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 text-primary-foreground">
+          <div className="min-w-0">
             <span className="truncate text-[24px] font-extrabold leading-none">{brl(shownPrice)}</span>
+            <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
           </div>
-          <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
+          <FlashOfferBadge product={p} className="justify-end" />
         </div>
-        <div className="text-right text-[12.5px] leading-tight">
-          <div className="flex items-center justify-end gap-1 font-bold"><Zap className="h-4 w-4 fill-current" />Oferta Relâmpago</div>
-          <div className="mt-1">Termina em <b className="tabular-nums"><OfferTimer /></b></div>
+      ) : (
+        <div className="bg-card px-4 py-3">
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-[24px] font-extrabold leading-none text-primary">{brl(shownPrice)}</span>
+            <s className="text-[14px] text-muted-foreground">{brl(shownOriginal)}</s>
+          </div>
+          <ProductBadges product={p} price={shownPrice} original={shownOriginal} />
         </div>
-      </div>
+      )}
 
       <div className="px-4 pt-4">
         <div className="text-[15px] font-semibold text-success">{brl(shownPrice)} no PIX</div>
@@ -628,7 +628,7 @@ function ProductPage() {
               const percent = total ? (count / total) * 100 : 0;
               return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}>
                 <span className="w-3 text-[11px] text-muted-foreground">{stars}</span>
-                <Star className="h-3 w-3 fill-ink text-ink" />
+                <Star className="h-3 w-3 fill-gold text-gold" />
                 <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span>
                 <span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span>
               </button>;
@@ -642,8 +642,7 @@ function ProductPage() {
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
-              {review.rating > 0 && <div className="mt-1.5 flex items-center justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}
+              <div className="relative"><img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><ReviewMediaRating rating={review.rating} /></div>
             </button>)}
           </div>
         </div>}
@@ -679,7 +678,7 @@ function ProductPage() {
               <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{review.rating > 0 && <div className="mt-1.5 flex justify-center"><ReviewStars rating={review.rating} size="h-3.5 w-3.5" /></div>}</div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><ReviewMediaRating rating={review.rating} /></div></div>)}</div>
           </div>
         </div>
       )}

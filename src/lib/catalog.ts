@@ -45,8 +45,8 @@ export type Product = {
   reviews: number | null;
   sold: string | null;
   description?: string;
-  /** Actual merchant-configured deadline (UTC epoch milliseconds); absent = ordinary offer. */
-  flashOffer?: { endsAt: number };
+  /** Explicitly marked flash offer; each product receives its own persisted countdown. */
+  flashOffer?: { endsAt?: number; minDurationSeconds?: number; maxDurationSeconds?: number };
 };
 
 const towelVariants: Variant[] = [

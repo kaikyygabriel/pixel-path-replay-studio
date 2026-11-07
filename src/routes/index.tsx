@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Share2, Ticket, ChevronLeft, ChevronRight } from "lucide-react";
+import { Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import { CartAddButton } from "@/components/shop/cart-add-button";
+import { ProductCard } from "@/components/shop/product-presentation";
 import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
-import { products, store, brl, discountPct, type Product, type Variant } from "@/lib/catalog";
+import { products, store, brl, type Product, type Variant } from "@/lib/catalog";
 import { useCheckout, addToCart } from "@/lib/checkout";
 
 const getOptionKind = (variants: Variant[]) => {
@@ -136,21 +137,9 @@ function StorePage() {
         {canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
         <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {visibleProducts.map((p, index) => (
-            <div key={p.id} className={`relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3 ${index === 0 ? "ml-3.5" : ""}`}>
-              <Link to="/produto/$id" params={{ id: p.id }}>
-                <div className="relative"><img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{/natal|25\\.12/i.test(p.category) && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div>
-                <h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3>
-              </Link>
-              <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
-              <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
-              <div className="relative mt-2 flex min-w-0 items-center gap-1 overflow-hidden text-[11px]" aria-label={`Avaliação ${(p.rating ?? 0).toFixed(1)} de 5; ${p.sold ?? "0"} vendidos`}>
-                <span className="shrink-0 tracking-[-1px] text-black">★★★★★</span>
-                <b className="shrink-0 text-foreground">{(p.rating ?? 0).toFixed(1)}</b>
-                <span className="min-w-0 truncate whitespace-nowrap text-muted-foreground">{p.sold ?? "0"} vendidos</span>
-                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-card to-transparent" />
-              </div>
+            <ProductCard key={p.id} product={p} className={`w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}`}>
               <CartAddButton productId={p.id} label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { if (p.variants.length) { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); } else addQuickToCart(p); }} className="mx-auto mt-2" />
-            </div>
+            </ProductCard>
           ))}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
@@ -176,24 +165,9 @@ function StorePage() {
             </div>
             <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {products.filter((p) => /natal|25\\.12/i.test(p.category)).map((p) => (
-                <div key={p.id} className="relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3">
-                  <Link to="/produto/$id" params={{ id: p.id }}>
-                    <div className="relative">
-                      <img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />
-                      <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>
-                    </div>
-                    <h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3>
-                  </Link>
-                  <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
-                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
-                    <div className="relative mt-2 flex min-w-0 items-center gap-1 overflow-hidden text-[11px]" aria-label={`Avaliação ${(p.rating ?? 0).toFixed(1)} de 5; ${p.sold ?? "0"} vendidos`}>
-                <span className="shrink-0 tracking-[-1px] text-black">★★★★★</span>
-                <b className="shrink-0 text-foreground">{(p.rating ?? 0).toFixed(1)}</b>
-                <span className="min-w-0 truncate whitespace-nowrap text-muted-foreground">{p.sold ?? "0"} vendidos</span>
-                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-card to-transparent" />
-              </div>
+                <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start">
                   <CartAddButton productId={p.id} label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { if (p.variants.length) { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); } else addQuickToCart(p); }} className="mx-auto mt-2" />
-                </div>
+                </ProductCard>
               ))}
             </div>
           </div>
@@ -204,13 +178,9 @@ function StorePage() {
             </div>
             <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {[...products].sort((a, b) => { const sales = (value: string | null) => { if (!value) return 0; const normalized = value.toLowerCase().replace(/\s/g, ""); const inThousands = normalized.includes("mil"); const numeric = normalized.replace(/[^0-9.,]/g, ""); const amount = Number.parseFloat(inThousands ? numeric.replace(",", ".") : numeric.replace(/\./g, "").replace(",", ".")); return Number.isFinite(amount) ? amount * (inThousands ? 1000 : 1) : 0; }; return sales(b.sold) - sales(a.sold); }).map((p) => (
-                <div key={p.id} className="relative flex w-[min(44vw,190px)] shrink-0 snap-start flex-col rounded-lg bg-card p-2.5 pb-3">
-                  <Link to="/produto/$id" params={{ id: p.id }}><div className="relative"><img src={p.image} alt={p.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{/natal/i.test(p.category) && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div><h3 className="mt-1.5 line-clamp-2 text-[14px] leading-snug">{p.cardTitle}</h3></Link>
-                  <div className="mt-3 flex items-baseline gap-1.5"><span className="text-[19px] font-bold"><span className="text-[13px]">R$ </span>{brl(p.price).slice(3)}</span><span className="text-[11px] text-muted-foreground line-through">{brl(p.original)}</span></div>
-                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"><span className="flex items-center gap-0.5 font-bold text-primary"><Ticket className="h-3 w-3" />{discountPct(p.price, p.original)}% OFF</span><span className="rounded bg-teal-soft px-1 font-semibold text-teal-ink">Frete grátis</span></div>
-                  <div className="relative mt-2 flex min-w-0 items-center gap-1 overflow-hidden text-[11px]"><span className="shrink-0 tracking-[-1px] text-black">★★★★★</span><b>{(p.rating ?? 0).toFixed(1)}</b><span className="min-w-0 truncate text-muted-foreground">{p.sold ?? "0"} vendidos</span></div>
+                <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start">
                   <CartAddButton productId={p.id} label={"Adicionar " + p.title + " ao carrinho"} onClick={() => { if (p.variants.length) { setQuickProduct(p); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null); } else addQuickToCart(p); }} className="mx-auto mt-2" />
-                </div>
+                </ProductCard>
               ))}
             </div>
           </div>
