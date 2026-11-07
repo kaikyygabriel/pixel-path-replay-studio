@@ -289,7 +289,29 @@ function ProductPage() {
     { id: "air-fryer-review-text-11", name: "Bruno M.", date: "há 2 dias", rating: 5, text: "A capacidade faz diferença, consigo adiantar o preparo das refeições sem precisar fazer várias etapas", media: null },
     { id: "air-fryer-review-text-12", name: "Larissa G.", date: "há 9 dias", rating: 5, text: "Gostei muito do cesto e das prateleiras, ficou bem prático para variar os preparos", media: null },
     { id: "air-fryer-review-text-13", name: "Eduardo V.", date: "há 12 dias", rating: 5, text: "A janela iluminada ajuda bastante e o painel é fácil de entender. Estou usando direto", media: null },
-  ] : isSquishyToy ? [] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
+  ] : isSquishyToy ? [
+    ...squishyReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Gabriela N.", "Felipe C.", "Bianca L.", "Mateus R.", "Letícia A.", "Renan F.", "Carolina P.", "Aline V.", "Diego M."][i] ?? "",
+      date: ["há 11 dias", "há 2 dias", "há 8 dias", "há 4 dias", "há 13 dias", "há 6 dias", "há 1 dia", "há 10 dias", "há 3 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "O meu veio nesse tom verdinho com brilho, achei muito fofo. A embalagem também é uma graça.",
+        "Veio roxinho e a abertura foi a parte mais divertida, porque eu não sabia qual cor ia aparecer.",
+        "Recebi o rosa e achei lindo! É macio para apertar e o potinho deixa tudo bem bonitinho.",
+        "O azul chegou bem brilhante, gostei de abrir e descobrir qual modelo tinha vindo.",
+        "O meu veio azul clarinho, bem delicado. O brilho aparece bastante quando bate luz.",
+        "Recebi o lilás. A textura é gostosa de apertar e ele fica guardadinho no próprio potinho.",
+        "Gostei da proposta de abrir sem saber qual modelo vem. A surpresa deixa a brincadeira mais divertida.",
+        "Veio douradinho com bastante brilho, achei diferente e muito fofo. Gostei da surpresa.",
+        "Recebi um verdinho e gostei da cor. É fácil de segurar e divertido de apertar.",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "squishy-review-text-10", name: "Bruna H.", date: "há 7 dias", rating: 5, text: "Comprei para dar de lembrancinha e achei a proposta muito divertida. A pessoa adorou descobrir o modelo.", media: null },
+    { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Chegou o modelo sortido e gostei da surpresa. É bem bonitinho e tem um brilho que chama atenção.", media: null },
+    { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É daqueles brinquedinhos que dá vontade de ficar apertando enquanto faz outra coisa. Gostei bastante da textura.", media: null },
+  ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
     id: photo.id,
     name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
     date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
@@ -324,10 +346,14 @@ function ProductPage() {
   ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = [
-    ...demoReviews.filter((review) => review.media).map((review) => ({ id: review.id, media: review.media!, rating: review.rating, caption: null as string | null })),
-    ...squishyReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src, rating: 0, caption: photo.caption })),
-  ];
+  const reviewMedia = demoReviews
+    .filter((review) => review.media)
+    .map((review) => ({
+      id: review.id,
+      media: review.media!,
+      rating: review.rating,
+      caption: isSquishyToy ? squishyReviewPhotos.find((photo) => photo.id === review.id)?.caption ?? null : null,
+    }));
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
