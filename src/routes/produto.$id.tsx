@@ -733,10 +733,7 @@ function ProductPage() {
                   <div className="text-[14px] font-bold leading-snug">
                     {p.title} {variant ? `· ${variant.color}` : ""}
                   </div>
-                  <div className="mt-1.5 flex items-center gap-1.5 text-[12px]">
-                    <span className="flex items-center gap-0.5 rounded bg-primary px-1 font-bold text-primary-foreground"><Zap className="h-3 w-3 fill-current" />Oferta Relâmpago</span>
-                    <span className="font-bold text-primary"><OfferTimer /></span>
-                  </div>
+                  <ProductBadges product={p} price={shownPrice} original={shownOriginal} />
                   <div className="mt-1 flex items-center justify-between">
                     <div className="flex items-baseline gap-1">
                       <span className="text-[20px] font-extrabold text-primary">{brl(shownPrice * qty)}</span>
@@ -747,7 +744,7 @@ function ProductPage() {
                   <div className="flex items-center justify-between">
                     <div className="text-[12px]">
                       <span className="text-muted-foreground line-through">{brl(shownOriginal)}</span>{" "}
-                      <span className="rounded bg-primary-soft px-1 font-bold text-primary">-{discountPct(shownPrice, shownOriginal)}%</span>
+                      
                     </div>
                     <div className="flex items-center rounded-lg border border-border text-[16px]">
                       <button aria-label="Diminuir" onClick={() => setQty(Math.max(1, qty - 1))} className="grid h-9 w-9 place-items-center"><Minus className="h-4 w-4" /></button>
