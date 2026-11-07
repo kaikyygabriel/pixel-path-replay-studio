@@ -110,9 +110,9 @@ function StorePage() {
         </div>
         <hr className="my-3 border-t-2" />
         <p className="text-[14px] leading-snug text-muted-foreground">{store.bio}</p>
-        <div className="mt-3 grid grid-cols-2 items-center gap-3 text-[12px] leading-tight text-muted-foreground">
-          <p><span className="font-semibold text-foreground">100%</span> responde em 24 horas</p>
-          <p className="text-right"><span className="font-semibold text-foreground">99%</span> envios pontuais</p>
+        <div className="mt-3 flex w-full min-w-0 flex-nowrap items-center justify-between gap-1.5 text-[clamp(10px,2.8vw,12px)] leading-tight text-muted-foreground">
+          <p className="whitespace-nowrap"><span className="font-semibold text-foreground">100%</span> responde em 24 horas</p>
+          <p className="whitespace-nowrap text-right"><span className="font-semibold text-foreground">99%</span> envios pontuais</p>
         </div>
       </section>
 
