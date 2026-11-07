@@ -307,7 +307,7 @@ function ProductPage() {
         "Recebi um verdinho e gostei da cor. É fácil de segurar e divertido de apertar.",
       ][i] ?? "",
       media: photo.src,
-    })),
+    })).filter((review) => review.id !== "squishy-review-3"),
     { id: "squishy-review-text-10", name: "Bruna H.", date: "há 7 dias", rating: 5, text: "Comprei para dar de lembrancinha e achei a proposta muito divertida. A pessoa adorou descobrir o modelo.", media: null },
     { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Chegou o modelo sortido e gostei da surpresa. É bem bonitinho e tem um brilho que chama atenção.", media: null },
     { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É daqueles brinquedinhos que dá vontade de ficar apertando enquanto faz outra coisa. Gostei bastante da textura.", media: null },
