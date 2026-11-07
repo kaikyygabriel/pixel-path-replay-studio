@@ -304,7 +304,8 @@ export const products: Product[] = [
     variants: [],
     description: "A Barbie Dreamhouse HMX10 é uma casa de bonecas de três andares, com espaços internos e externos para brincar em 360 graus. São 10 áreas de convivência, incluindo ambientes de lazer, cozinha, sala, quarto, banheiro, varanda e uma piscina com escorregador em espiral de três andares.\n\nA brincadeira fica ainda mais completa com elevador funcional, recursos de luz e som na cozinha e no banheiro, além de áreas especiais para os pets, com elevador, escorregador e piscina próprios. No último andar, o espaço extra se transforma em uma área para festa do pijama, com lugar para até quatro bonecas.\n\nO conjunto acompanha mais de 75 peças e acessórios para personalizar os ambientes, incluindo um cachorrinho. É indicado para crianças a partir de 3 anos. A casa precisa ser montada e utiliza 3 pilhas AA, vendidas separadamente.\n\n**O que acompanha:** 1 Casa dos Sonhos Barbie de três andares e mais de 75 peças, incluindo um cachorrinho.\n\n**Importante:** as bonecas Barbie não estão incluídas. As pilhas AA necessárias para os efeitos de luz e som também são vendidas separadamente. A montagem é necessária; cores e decorações podem variar.",
     rating: 5.0, reviews: null, sold: "500+",
-  },];
+  },
+];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
 
