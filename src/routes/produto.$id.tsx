@@ -9,6 +9,7 @@ import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
 import { CartAddButton } from "@/components/shop/cart-add-button";
 import { formatEstimatedDelivery } from "@/lib/delivery";
+import { ProductRecommendations } from "@/components/shop/product-recommendations";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
 const getOptionKind = (variants: Variant[]) => {
@@ -663,6 +664,7 @@ function ProductPage() {
         {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{isSquishyToy ? "As fotos compartilhadas por clientes estão disponíveis acima. Relatos escritos individuais serão exibidos quando houver conteúdo original cadastrado." : reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
         {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
       </section>
+      <ProductRecommendations key={p.id} productId={p.id} />
       <div className="h-10 bg-surface" />
       <SiteFooter />
 
