@@ -238,6 +238,32 @@ export const products: Product[] = [
     variants: [],
     description: "O Ar-Condicionado Split LG AI Smart Inverter Voice de 9.000 BTUs oferece climatização fria com conectividade e controle inteligente. A tecnologia AI SmartCare ajusta o funcionamento de acordo com os hábitos de uso, enquanto o compressor Inverter ajuda a manter a temperatura com mais estabilidade.\n\nPelo aplicativo LG ThinQ, é possível ligar e desligar o aparelho, programar horários, ajustar funções e acompanhar o consumo à distância. O modelo também é compatível com comandos de voz por Google Assistente e Alexa.\n\nCom operação silenciosa, serpentina de cobre com proteção GoldFin e gás refrigerante R-32, é indicado para ambientes de até aproximadamente 12 m², conforme as condições do local.\n\n**Especificações principais:** 9.000 BTUs · ciclo frio · tecnologia Inverter · Wi-Fi · 220V monofásico · gás R-32 · serpentina de cobre · classificação energética B · consumo informado de 363,4 kWh/ano.\n\n**Atenção:** produto disponível exclusivamente em 220V. Não é bivolt. Verifique a instalação elétrica e as condições do ambiente antes da compra. A instalação deve ser realizada por profissional qualificado.",
     rating: 5, reviews: null, sold: "1.000+",
+  },,
+  {
+    id: "air-fryer-oven-mondial-afon-12l",
+    title: "Fritadeira Air Fryer Oven Mondial 12L Digital 2200W AFON-12L-BI",
+    cardTitle: "Air Fryer Oven Mondial 12L Digital",
+    checkoutTitle: "Fritadeira Air Fryer Oven Mondial AFON-12L-BI 12L 2200W",
+    category: "Mondial · Eletroportáteis · Casa & Utilidades · Eletrônicos · Natal · 25.12 · Mais vendidos · Recomendados",
+    price: 8479,
+    original: 44922,
+    shippingOriginal: 2620,
+    image: "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-capa.png",
+    gallery: [
+      "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-capa.png",
+      "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-2.png",
+      "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-3.png",
+      "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-4.png",
+      "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-5.png",
+      "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-6.png",
+      "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-7.png",
+    ],
+    variants: [
+      { id: "air-fryer-mondial-127v", line: "Voltagem", color: "127V", description: "Air Fryer Oven Mondial AFON-12L-BI · 12L · 2200W · 127V", price: 8479, original: 44922, pieces: 1, image: "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-capa.png" },
+      { id: "air-fryer-mondial-220v", line: "Voltagem", color: "220V", description: "Air Fryer Oven Mondial AFON-12L-BI · 12L · 2200W · 220V", price: 8479, original: 44922, pieces: 1, image: "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-capa.png" },
+    ],
+    description: "A Fritadeira Air Fryer Oven Mondial AFON-12L-BI reúne capacidade, potência e praticidade para preparar diferentes receitas em casa. Com 12 litros de capacidade total e potência de 2.200 W, oferece espaço para preparar porções maiores de uma só vez.\n\nO painel digital conta com 10 funções predefinidas, que facilitam a escolha do preparo e ajustam automaticamente tempo e temperatura. Durante o funcionamento, é possível regular a temperatura entre 80 °C e 200 °C conforme a receita.\n\nA janela transparente com iluminação interna permite acompanhar os alimentos sem precisar abrir a porta. O conjunto acompanha 3 prateleiras e um cesto de 5 litros com revestimento antiaderente, ampliando as possibilidades de preparo e facilitando a rotina na cozinha.\n\n**Especificações principais:** capacidade total de 12 L · potência de 2.200 W · painel digital · 10 funções predefinidas · temperatura ajustável de 80 °C a 200 °C · janela transparente com iluminação interna · 3 prateleiras · cesto de 5 L com revestimento antiaderente.\n\n**Atenção:** disponível nas versões 127V e 220V. Não é bivolt. Confira a voltagem da sua residência e selecione a opção correspondente antes de finalizar a compra.",
+    rating: 4.9, reviews: null, sold: "15.000+",
   },
 ];
 
