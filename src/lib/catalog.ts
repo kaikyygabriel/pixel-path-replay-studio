@@ -332,6 +332,32 @@ export const products: Product[] = [
     reviews: null,
     sold: "8.000+",
   },
+  {
+    id: "brastoy-controle-remoto-k602",
+    title: "Brastoy Controle Remoto Recarregável 1:16 Off-road 4x4 Verde K602",
+    cardTitle: "Carrinho Brastoy Off-road 4x4 RC 1:16",
+    checkoutTitle: "Carrinho Brastoy Controle Remoto 4x4 K602 Verde",
+    category: "Brinquedos · Infantil · Presentes · Natal · 25.12 · Mais vendidos · Recomendados",
+    price: 11732,
+    original: 39285,
+    shippingOriginal: 2620,
+    image: "/products/brastoy-controle-remoto-k602/gallery/brastoy-capa.png",
+    gallery: [
+      "/products/brastoy-controle-remoto-k602/gallery/brastoy-capa.png",
+      "/products/brastoy-controle-remoto-k602/gallery/brastoy-carrossel-1.png",
+      "/products/brastoy-controle-remoto-k602/gallery/brastoy-carrossel-2.png",
+      "/products/brastoy-controle-remoto-k602/gallery/brastoy-carrossel-3.png",
+      "/products/brastoy-controle-remoto-k602/gallery/brastoy-carrossel-4.png",
+      "/products/brastoy-controle-remoto-k602/gallery/brastoy-carrossel-5.png",
+      "/products/brastoy-controle-remoto-k602/gallery/brastoy-carrossel-6.png"
+    ],
+    variants: [],
+    description: "Prepare-se para encarar diferentes terrenos com o Carrinho Off-road Brastoy K602. Em escala 1:16, ele combina tração 4x4, suspensão independente e estrutura resistente para uma brincadeira cheia de ação.\n\n**Desempenho off-road:** sistema 4x4 e suspensão independente, com capacidade informada para enfrentar inclinações de até 30°. A estrutura de proteção foi projetada para resistir a impactos e quedas de até 1 metro.\n\n**Controle preciso:** controle remoto 2.4 GHz com giroscópio inteligente, que ajuda a corrigir a trajetória, e alcance informado de até 80 metros.\n\n**Bateria recarregável:** bateria de íon-lítio de 500 mAh, com autonomia informada de até 35 minutos de uso contínuo, conforme as condições de utilização.\n\n**Construção:** corpo em ABS e alumínio com revestimento antidesgaste. Produto na cor verde.\n\n**Importante:** confira as orientações do fabricante para carregamento e uso. A autonomia e o alcance podem variar conforme o terreno, a intensidade da brincadeira e as condições da bateria.",
+    rating: 4.9,
+    reviews: null,
+    sold: "800+",
+  },
+
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);

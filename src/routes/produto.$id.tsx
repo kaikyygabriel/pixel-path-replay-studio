@@ -129,6 +129,7 @@ function ProductPage() {
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
   const isKettle = p.id === "chaleira-unitermi-atacama";
+  const isBrastoy = p.id === "brastoy-controle-remoto-k602";
   const isKarstenTowel = p.id === "jogo-toalhas-karsten";
   const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
@@ -156,6 +157,16 @@ function ProductPage() {
     { id: "kettle-review-5", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png" },
     { id: "kettle-review-6", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png" },
     { id: "kettle-review-7", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png" },
+  ] : [];
+  const brastoyReviewPhotos = isBrastoy ? [
+    { id: "brastoy-review-1", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-1.png" },
+    { id: "brastoy-review-2", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-2.png" },
+    { id: "brastoy-review-3", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-3.png" },
+    { id: "brastoy-review-4", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-4.png" },
+    { id: "brastoy-review-5", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-5.png" },
+    { id: "brastoy-review-6", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-6.png" },
+    { id: "brastoy-review-7", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-7.png" },
+    { id: "brastoy-review-8", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-8.png" }
   ] : [];
   const christmasTreeReviewPhotos = isChristmasTree ? [
     { id: "christmas-tree-review-1", src: "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-1.png" },
@@ -378,6 +389,28 @@ function ProductPage() {
     { id: "squishy-review-text-10", name: "Bruna H.", date: "há 7 dias", rating: 5, text: "Comprei para dar de lembrancinha e achei a proposta muito divertida. A pessoa adorou descobrir o modelo.", media: null },
     { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Gostei de receber uma cor surpresa! O meu veio bem brilhante e achei o potinho individual uma graça.", media: null },
     { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É macio para apertar e tem um acabamento muito fofo. Achei uma ideia diferente para presentear.", media: null },
+  ] : isBrastoy ? [
+    ...brastoyReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana F.", "Lucas R.", "Camila S.", "Rafael M.", "Bruna T.", "Diego A.", "Patrícia L.", "João V."][i] ?? "",
+      date: ["há 2 dias", "há 4 dias", "há 6 dias", "há 8 dias", "há 10 dias", "há 12 dias", "há 15 dias", "há 18 dias"][i] ?? "",
+      rating: i === 5 ? 4 : 5,
+      text: [
+        "Nossa, carrinho muito bom mesmo! Gostei demais da compra. Só senti falta das três pilhas AA do controle, mas o carrinho é top.",
+        "Muito bom, toooop de verdade! Anda super bem e responde rápido aos comandos.",
+        "Carrinho espetacular! Faz curvas bem rápidas e encara os obstáculos daqui de casa numa boa.",
+        "Gostei bastante, tem força e a tração 4x4 faz diferença quando brinca no quintal.",
+        "Meu filho adorou! A bateria recarregável é prática e a brincadeira rende bastante.",
+        "É rápido e divertido, só precisa de um espaço maior pra aproveitar melhor.",
+        "Chegou certinho e achei a construção bem resistente. Estamos nos divertindo bastante.",
+        "Faz manobras muito legais e o controle responde direitinho. Curti demais!",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "brastoy-review-text-9", name: "Felipe C.", date: "há 3 dias", rating: 5, text: "Pegamos uma rampinha e ele sobe muito bem. Gostei da estabilidade e de como responde nas curvas.", media: null },
+    { id: "brastoy-review-text-10", name: "Ana P.", date: "há 7 dias", rating: 5, text: "É bem divertido de controlar, tem boa velocidade e a bateria segura uma boa sessão de brincadeira.", media: null },
+    { id: "brastoy-review-text-11", name: "Gustavo N.", date: "há 11 dias", rating: 5, text: "Gostei do tamanho e do visual off-road. O controle tem bom alcance e é fácil pegar o jeito.", media: null },
+    { id: "brastoy-review-text-12", name: "Renata D.", date: "há 16 dias", rating: 4, text: "Carrinho muito legal, anda bem e chama atenção. Só recomendo conferir as pilhas do controle antes de começar.", media: null },
   ] : isKettle ? [
     ...kettleReviewPhotos.map((photo, i) => ({
       id: photo.id,
