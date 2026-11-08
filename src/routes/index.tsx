@@ -51,7 +51,6 @@ function StorePage() {
     { label: "Presentes", match: (p) => /presente|natal|brinquedo|infantil/i.test(p.category) },
     { label: "Casa & Utilidades", match: (p) => /cama|mesa|banho|toalha|casa|utilidade/i.test(p.category) },
     { label: "Eletrônicos", match: (p) => /eletr/i.test(p.category) },
-    { label: "Moda", match: (p) => /moda|roupa|calçado|acessório/i.test(p.category) },
     { label: "Recomendados", match: () => true },
   ];
   const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true));
