@@ -127,6 +127,7 @@ function ProductPage() {
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
   const isMondialAirFryer = p.id === "air-fryer-oven-mondial-afon-12l";
   const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
+  const isProjector = p.id === "projetor-hy300-duoseg";
   const projectorReviewPhotos = isProjector ? [
     { id: "projector-review-1", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-01.png" },
     { id: "projector-review-2", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-02.png" },
@@ -140,7 +141,6 @@ function ProductPage() {
     { id: "projector-review-10", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-10.png" },
     { id: "projector-review-11", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-11.png" },
   ] : [];
-  const isProjector = p.id === "projetor-hy300-duoseg";
   const kettleReviewPhotos = isKettle ? [
     { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
     { id: "kettle-review-2", src: "/avalia%C3%A7%C3%A3o%20chaleira%202.png" },
