@@ -656,43 +656,33 @@ function ProductPage() {
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
-{isProjector ? (
-          <div className="mt-4 flex items-center gap-4 rounded-2xl bg-surface p-4">
-            <div className="flex shrink-0 flex-col items-center border-r border-border pr-4 text-center">
-              <strong className="text-[34px] leading-none">{reviewAverage.toFixed(1).replace(".", ",")}</strong>
-              <ReviewStars rating={reviewAverage} size="h-4 w-4" />
-              <span className="mt-1 text-[11px] text-muted-foreground">Nota do produto</span>
-            </div>
-            <div className="min-w-0">
-              <p className="text-[13px] font-semibold">Fotos compartilhadas por clientes</p>
-              <p className="mt-0.5 text-[12px] text-muted-foreground">{projectorReviewPhotos.length} fotos e {demoReviews.length - projectorReviewPhotos.length} avaliações em texto, com relatos sobre configuração, imagem e uso no dia a dia.</p>
-            </div>
-          </div>
-        ) : (
-        <div className="mt-4 grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-2xl bg-surface p-3">
-          <div className="flex flex-col items-center justify-center border-r border-border pr-3 text-center">
-            <strong className="text-[34px] leading-none">{reviewAverage.toFixed(1)}</strong>
+        <div className="mt-4 grid grid-cols-[104px_minmax(0,1fr)] items-center gap-3 rounded-2xl bg-surface p-3 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4 sm:p-4">
+          <div className="flex min-w-0 flex-col items-center justify-center border-r border-border pr-2 text-center sm:pr-4">
+            <strong className="text-[32px] font-extrabold leading-none tabular-nums sm:text-[36px]">{reviewAverage.toFixed(1).replace(".", ",")}</strong>
             <ReviewStars rating={reviewAverage} size="h-4 w-4" />
-            <span className="mt-1 text-[11px] text-muted-foreground">~{estimateReviewCount(p.sold).toLocaleString("pt-BR")} avaliações</span>
+            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">{estimateReviewCount(p.sold).toLocaleString("pt-BR")} avaliações</span>
           </div>
-          <div className="space-y-1.5">
-            {[5,4,3,2,1].map((stars) => {
+          <div className="min-w-0 space-y-2">
+            {[5, 4, 3, 2, 1].map((stars) => {
               const total = estimateReviewCount(p.sold);
               const distribution = p.id === "ar-condicionado-lg-ai-voice-9000"
                 ? { 5: Math.max(0, total - 6), 4: Math.min(6, total), 3: 0, 2: 0, 1: 0 }
                 : getEstimatedRatingDistribution(total, reviewAverage);
               const count = distribution[stars] ?? 0;
-              const percent = total ? (count / total) * 100 : 0;
-              return <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full items-center gap-2 rounded-md px-1 py-0.5 text-left " + (reviewFilter === stars ? "bg-background" : "")}>
-                <span className="w-3 text-[11px] text-muted-foreground">{stars}</span>
-                <Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />
-                <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-border"><span className="block h-full rounded-full bg-ink" style={{ width: percent + "%" }} /></span>
-                <span className="w-4 text-right text-[10px] text-muted-foreground">{count}</span>
-              </button>;
+              const percent = total > 0 ? Math.max(0, Math.min(100, (count / total) * 100)) : 0;
+              return (
+                <button key={stars} type="button" aria-label={`${stars} estrelas: ${count} avaliações`} aria-pressed={reviewFilter === stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full min-w-0 items-center gap-2 rounded-md px-1 py-1 text-left transition-colors " + (reviewFilter === stars ? "bg-background" : "hover:bg-background/60")}>
+                  <span className="w-3 shrink-0 text-right text-[11px] font-medium tabular-nums text-muted-foreground">{stars}</span>
+                  <Star className="h-3 w-3 shrink-0 fill-[#FFC43B] text-[#FFC43B]" />
+                  <span className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-border">
+                    <span className="absolute inset-y-0 left-0 rounded-full bg-ink transition-[width]" style={{ width: `${percent}%` }} />
+                  </span>
+                  <span className="w-8 shrink-0 text-right text-[10px] tabular-nums text-muted-foreground">{count.toLocaleString("pt-BR")}</span>
+                </button>
+              );
             })}
           </div>
         </div>
-        )}
         {(reviewMedia.length > 0 || tclReviewPhotos.length > 0) && <div className="mt-5">
           <div className="mb-2 flex items-center justify-between gap-2">
             <h3 className="text-[15px] font-bold">Fotos e vídeos das avaliações</h3>
