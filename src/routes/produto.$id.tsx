@@ -271,15 +271,13 @@ function ProductPage() {
     { id: "projector-review-text-14", name: "Eduardo V.", date: "há 16 dias", rating: 4, text: "Atendeu ao que eu procurava. A imagem fica melhor com o quarto escuro, e o aparelho é bem compacto.", media: null },
   ] : isKarstenTowel ? [  const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = isProjector
-    ? projectorReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src }))
-    : demoReviews
-        .filter((review) => review.media)
-        .map((review) => ({
-          id: review.id,
-          media: review.media!,
-          rating: review.rating,
-        }));
+  const reviewMedia = demoReviews
+    .filter((review) => review.media)
+    .map((review) => ({
+      id: review.id,
+      media: review.media!,
+      rating: review.rating,
+    }));
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
