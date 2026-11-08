@@ -30,6 +30,7 @@ export const Route = createFileRoute("/")({
 function StorePage() {
   const { state, update } = useCheckout();
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const [catalogView, setCatalogView] = useState<"home" | "all" | "category">("home");
   const [quickProduct, setQuickProduct] = useState<Product | null>(null);
   const [quickVariant, setQuickVariant] = useState<string | null>(null);
   const [quickVoltage, setQuickVoltage] = useState<string | null>(null);
@@ -119,45 +120,52 @@ function StorePage() {
       <div className="px-3.5 pt-7">
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="text-[21px] font-extrabold">Produtos da loja</h2>
-          <button type="button" onClick={() => setActiveCategory("Todos")} className="shrink-0 text-[14px] font-bold text-primary">Ver todos</button>
+          {catalogView !== "home" && <button type="button" onClick={() => { setCatalogView("home"); setActiveCategory("Todos"); }} className="inline-flex shrink-0 items-center gap-1 text-[13px] font-semibold text-primary"><ChevronLeft className="h-4 w-4" />Voltar à vitrine</button>}
         </div>
         <div data-shelf className="-mx-3.5 mb-4 flex gap-6 overflow-x-auto border-b border-border px-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryFilters.map((tab) => (
-            <button key={tab.label} type="button" onClick={() => setActiveCategory(tab.label)} className={"relative min-h-11 shrink-0 whitespace-nowrap text-[14px] font-semibold " + (activeCategory === tab.label ? "text-foreground" : "text-muted-foreground")}>
+            <button key={tab.label} type="button" onClick={() => { setActiveCategory(tab.label); setCatalogView(tab.label === "Todos" ? "home" : "category"); }} className={"relative min-h-11 shrink-0 whitespace-nowrap text-[14px] font-semibold " + (activeCategory === tab.label ? "text-foreground" : "text-muted-foreground")}>
               {tab.label}{activeCategory === tab.label && <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-primary" />}
             </button>
           ))}
         </div>        <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-4 w-1 rounded-full bg-primary" />
-            <h3 className="text-[17px] font-extrabold">{activeCategory === "Natal" ? "Especial de Natal" : activeCategory === "Recomendados" ? "Recomendados para você" : "Todos os produtos"}</h3>
+            <h3 className="text-[17px] font-extrabold">{catalogView === "all" ? "Todos os produtos" : catalogView === "category" ? activeCategory : activeCategory === "Natal" ? "Especial de Natal" : activeCategory === "Recomendados" ? "Recomendados para você" : "Todos os produtos"}</h3>
           </div>
           <span className="text-[12px] text-muted-foreground">{visibleProducts.length} {visibleProducts.length === 1 ? "produto" : "produtos"}</span>
         </div>
       </div>
-      <div className="relative pb-9">
-        {canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface to-transparent" />}
-        {canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
-        <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className={catalogView === "home" ? "relative pb-9" : "px-3.5 pb-9"}>
+        {catalogView === "home" && canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface to-transparent" />}
+        {catalogView === "home" && canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
+        <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className={catalogView === "home" ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "grid grid-cols-2 items-start gap-3"}>
           {visibleProducts.map((p, index) => (
-            <ProductCard key={p.id} product={p} className={`w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}`} />
+            <ProductCard key={p.id} product={p} className={catalogView === "home" ? `w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
+          {catalogView === "home" && activeCategory === "Todos" && visibleProducts.length > 0 && (
+            <button type="button" onClick={() => setCatalogView("all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-primary/40 bg-card px-4 text-center text-primary">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-primary/10"><ChevronRight className="h-5 w-5" /></span>
+              <span className="text-[14px] font-bold">Ver todos</span>
+              <span className="text-[11px] text-muted-foreground">Confira o catálogo completo</span>
+            </button>
+          )}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
               <h3 className="text-[16px] font-bold">{activeCategory === "Natal" ? "Novidades de Natal em breve" : "Nenhum produto encontrado"}</h3>
               <p className="mt-2 text-[13px] text-muted-foreground">{activeCategory === "Natal" ? "Ainda não há produtos cadastrados nesta coleção." : "Tente buscar por outro nome ou categoria."}</p>
-              <button type="button" onClick={() => { setActiveCategory("Todos"); update({ searchTerm: "" }); }} className="mt-4 text-[14px] font-semibold text-primary">Ver todos os produtos</button>
+              <button type="button" onClick={() => { setActiveCategory("Todos"); setCatalogView("home"); update({ searchTerm: "" }); }} className="mt-4 text-[14px] font-semibold text-primary">Ver todos os produtos</button>
             </div>
           )}
         </div>
-        {visibleProducts.length > 1 && (
+        {catalogView === "home" && visibleProducts.length > 1 && (
           <div className="mt-2 flex justify-end gap-2 px-3.5">
             <button type="button" aria-label="Produtos anteriores" disabled={!canScrollLeft} onClick={() => shelfRef.current?.scrollBy({left:-220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card disabled:opacity-30"><ChevronLeft className="h-4 w-4" /></button>
             <button type="button" aria-label="Próximos produtos" disabled={!canScrollRight} onClick={() => shelfRef.current?.scrollBy({left:220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card disabled:opacity-30"><ChevronRight className="h-4 w-4" /></button>
           </div>
         )}
       </div>
-      {activeCategory === "Todos" && (
+      {catalogView === "home" && activeCategory === "Todos" && (
         <>
           <div className="px-3.5 pb-9">
             <div className="mb-3 flex items-center gap-2">
