@@ -134,6 +134,7 @@ function ProductPage() {
   const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
   const isMondialAirFryer = p.id === "air-fryer-oven-mondial-afon-12l";
+  const isMondialAirFryer4L = p.id === "air-fryer-mondial-afn-40-bft";
   const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
   const isProjector = p.id === "projetor-hy300-duoseg";
   const projectorReviewPhotos = isProjector ? [
@@ -209,6 +210,19 @@ function ProductPage() {
     { id: "air-fryer-review-8", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-08.png" },
     { id: "air-fryer-review-9", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-09.png" },
     { id: "air-fryer-review-10", src: "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-10.png" }
+  ] : [];
+  const airFryer4LReviewPhotos = isMondialAirFryer4L ? [
+    { id: "air-fryer-4l-review-1", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-1.png" },
+    { id: "air-fryer-4l-review-2", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-2.png" },
+    { id: "air-fryer-4l-review-3", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-3.png" },
+    { id: "air-fryer-4l-review-4", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-4.png" },
+    { id: "air-fryer-4l-review-5", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-5.png" },
+    { id: "air-fryer-4l-review-6", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-6.png" },
+    { id: "air-fryer-4l-review-7", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-7.png" },
+    { id: "air-fryer-4l-review-8", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-8.png" },
+    { id: "air-fryer-4l-review-9", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-9.png" },
+    { id: "air-fryer-4l-review-10", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-10.png" },
+    { id: "air-fryer-4l-review-11", src: "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-11.png" }
   ] : [];
   const squishyReviewPhotos = isSquishyToy ? [
     { id: "squishy-review-1", src: "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-01.png" },
@@ -389,6 +403,30 @@ function ProductPage() {
     { id: "squishy-review-text-10", name: "Bruna H.", date: "há 7 dias", rating: 5, text: "Comprei para dar de lembrancinha e achei a proposta muito divertida. A pessoa adorou descobrir o modelo.", media: null },
     { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Gostei de receber uma cor surpresa! O meu veio bem brilhante e achei o potinho individual uma graça.", media: null },
     { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É macio para apertar e tem um acabamento muito fofo. Achei uma ideia diferente para presentear.", media: null },
+  ] : isMondialAirFryer4L ? [
+    ...airFryer4LReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana C.", "Rafael P.", "Camila R.", "João M.", "Ana L.", "Patrícia S.", "Lucas F.", "Beatriz A.", "Fernanda T.", "Diego V.", "Juliana B."][i] ?? "",
+      date: ["há 1 dia", "há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 8 dias", "há 10 dias", "há 12 dias", "há 14 dias", "há 16 dias", "há 18 dias"][i] ?? "",
+      rating: i === 9 ? 4 : 5,
+      text: [
+        "Gostei bastante, é compacta e cabe certinho na bancada. Já fiz batata e ficou ótima.",
+        "O cesto quadrado aproveita bem o espaço, consigo acomodar os alimentos sem amontoar.",
+        "Muito prática para o dia a dia. Ajusto a temperatura e o timer e ela desliga sozinha.",
+        "Esquenta rápido e achei fácil de usar. O cesto também é tranquilo de lavar.",
+        "Gostei do tamanho de 4 litros, atende bem aqui em casa e não ocupa tanto espaço.",
+        "Faz pouca sujeira e os alimentos não ficam grudados no cesto. Boa compra.",
+        "Bem simples de mexer, o aviso sonoro ajuda bastante quando termina o tempo.",
+        "Chegou direitinho e funciona muito bem. Já estou usando para várias receitas.",
+        "O antiaderente facilita a limpeza e o formato do cesto ajuda a distribuir melhor os alimentos.",
+        "Atendeu ao que eu precisava. Só é bom conferir a voltagem antes de escolher.",
+        "Gostei muito, é compacta, fácil de limpar e deixa o preparo bem mais prático."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "air-fryer-4l-review-text-12", name: "Bruno G.", date: "há 3 dias", rating: 5, text: "Uso quase todo dia para preparar porções rápidas. O timer e o desligamento automático são bem úteis.", media: null },
+    { id: "air-fryer-4l-review-text-13", name: "Larissa M.", date: "há 9 dias", rating: 5, text: "O cesto é espaçoso para o tamanho dela e a limpeza é simples. Gostei bastante para a rotina.", media: null },
+    { id: "air-fryer-4l-review-text-14", name: "Eduardo R.", date: "há 15 dias", rating: 4, text: "Boa fritadeira, compacta e fácil de regular. O preparo fica prático e não preciso ficar acompanhando o tempo.", media: null },
   ] : isBrastoy ? [
     ...brastoyReviewPhotos.map((photo, i) => ({
       id: photo.id,

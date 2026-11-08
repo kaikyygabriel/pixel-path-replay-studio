@@ -358,6 +358,35 @@ export const products: Product[] = [
     sold: "800+",
   },
 
+  {
+    id: "air-fryer-mondial-afn-40-bft",
+    title: "Fritadeira sem Óleo Air Fryer Mondial 4L 1500W AFN-40-BFT",
+    cardTitle: "Air Fryer Mondial 4L 1500W",
+    checkoutTitle: "Fritadeira sem Óleo Air Fryer Mondial AFN-40-BFT 4L 1500W",
+    category: "Mondial · Eletroportáteis · Casa & Utilidades · Mais vendidos · Recomendados",
+    price: 8960,
+    original: 24980,
+    shippingOriginal: 2620,
+    image: "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-capa.png",
+    gallery: [
+      "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-1.png",
+      "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-2.png",
+      "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-3.png",
+      "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-4.png",
+      "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-5.png",
+      "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-6.png",
+      "/products/air-fryer-mondial-afn-40-bft/gallery/airfryer-afn40-7.png"
+    ],
+    variants: [
+      { id: "mondial-afn40-127v", line: "Voltagem", color: "127V", description: "Air Fryer Mondial AFN-40-BFT · 4L · 1500W · 127V", price: 8960, original: 24980, pieces: 1, image: "/products/air-fryer-mondial-afn-40-bft/variants/airfryer-afn40-capa.png" },
+      { id: "mondial-afn40-220v", line: "Voltagem", color: "220V", description: "Air Fryer Mondial AFN-40-BFT · 4L · 1500W · 220V", price: 8960, original: 24980, pieces: 1, image: "/products/air-fryer-mondial-afn-40-bft/variants/airfryer-afn40-capa.png" },
+    ],
+    description: "Prepare receitas com mais praticidade usando a Air Fryer Mondial AFN-40-BFT. Com capacidade de 4 litros e potência de 1.500 W, ela utiliza circulação de ar quente para preparar os alimentos de maneira rápida, sem precisar adicionar óleo ou manteiga.\n\n**Cesto quadrado de 4L:** oferece ampla área plana para acomodar melhor os alimentos e favorecer um preparo uniforme. O revestimento antiaderente Duraflon ajuda a evitar que os alimentos grudem e facilita a limpeza.\n\n**Temperatura e timer ajustáveis:** escolha a temperatura ideal para cada receita, com ajuste de até 200 °C, e programe o timer de até 60 minutos. Ao final do tempo, a fritadeira emite um aviso sonoro e desliga automaticamente.\n\n**Compacta e fácil de limpar:** o design ocupa pouco espaço na bancada. A cuba e o cesto são removíveis, facilitando a higienização após o uso.\n\n**Especificações principais:** capacidade de 4 litros · potência de 1.500 W · cesto quadrado com antiaderente Duraflon · temperatura ajustável até 200 °C · timer de até 60 minutos · aviso sonoro · desligamento automático.\n\n**Atenção:** disponível exclusivamente nas versões 127V e 220V. Não é bivolt. Confira a voltagem da sua residência e selecione a opção correta antes de finalizar a compra.",
+    rating: 4.9,
+    reviews: null,
+    sold: "5.000+",
+  },
+
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
