@@ -130,6 +130,7 @@ function ProductPage() {
   const isTclTv = p.id === "smart-tv-tcl-55p8k-qled-4k";
   const isKettle = p.id === "chaleira-unitermi-atacama";
   const isBrastoy = p.id === "brastoy-controle-remoto-k602";
+  const isHotWheelsKit = p.id === "hot-wheels-kit-10-mattel-164";
   const isKarstenTowel = p.id === "jogo-toalhas-karsten";
   const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
@@ -158,6 +159,17 @@ function ProductPage() {
     { id: "kettle-review-5", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png" },
     { id: "kettle-review-6", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png" },
     { id: "kettle-review-7", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png" },
+  ] : [];
+  const hotWheelsReviewPhotos = isHotWheelsKit ? [
+    { id: "hotwheels-review-1", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-1.png" },
+    { id: "hotwheels-review-2", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-2.png" },
+    { id: "hotwheels-review-3", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-3.png" },
+    { id: "hotwheels-review-4", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-4.png" },
+    { id: "hotwheels-review-5", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-5.png" },
+    { id: "hotwheels-review-6", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-6.png" },
+    { id: "hotwheels-review-7", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-7.png" },
+    { id: "hotwheels-review-8", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-8.png" },
+    { id: "hotwheels-review-9", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-9.png" }
   ] : [];
   const brastoyReviewPhotos = isBrastoy ? [
     { id: "brastoy-review-1", src: "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-1.png" },
@@ -427,6 +439,29 @@ function ProductPage() {
     { id: "air-fryer-4l-review-text-12", name: "Bruno G.", date: "há 3 dias", rating: 5, text: "Uso quase todo dia para preparar porções rápidas. O timer e o desligamento automático são bem úteis.", media: null },
     { id: "air-fryer-4l-review-text-13", name: "Larissa M.", date: "há 9 dias", rating: 5, text: "O cesto é espaçoso para o tamanho dela e a limpeza é simples. Gostei bastante para a rotina.", media: null },
     { id: "air-fryer-4l-review-text-14", name: "Eduardo R.", date: "há 15 dias", rating: 4, text: "Boa fritadeira, compacta e fácil de regular. O preparo fica prático e não preciso ficar acompanhando o tempo.", media: null },
+  ] : isHotWheelsKit ? [
+    ...hotWheelsReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana P.", "Lucas A.", "Camila R.", "Rafael S.", "Bruna M.", "Diego T.", "Ana C.", "Pedro V.", "Fernanda L."][i] ?? "",
+      date: ["há 1 dia", "há 3 dias", "há 4 dias", "há 6 dias", "há 8 dias", "há 10 dias", "há 13 dias", "há 16 dias", "há 18 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "Kit muito legal! Vieram dez carrinhos diferentes e meu filho já escolheu os favoritos para brincar.",
+        "Gostei da variedade dos modelos. É uma ótima opção para quem está começando uma coleção.",
+        "Os carrinhos são pequenos, bem detalhados e chegaram direitinho. Meu sobrinho adorou.",
+        "Comprei para presentear e foi um sucesso. A graça é justamente descobrir quais modelos vêm.",
+        "Boa seleção de carrinhos, todos diferentes entre si. Já estamos usando nas pistas aqui de casa.",
+        "Curti bastante o kit, tem modelos variados e o tamanho 1:64 é ótimo para colecionar.",
+        "Vieram dez modelos sortidos sem repetição no kit. Achei um presente bem divertido.",
+        "Gostei do acabamento das miniaturas e da variedade. As crianças ficaram empolgadas para abrir.",
+        "Muito bacana para aumentar a coleção. Só lembrando que os modelos são surpresa, não dá para escolher."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "hotwheels-review-text-10", name: "Gustavo N.", date: "há 2 dias", rating: 5, text: "Presenteei meu afilhado e ele ficou animado para descobrir cada carrinho. Vieram modelos variados.", media: null },
+    { id: "hotwheels-review-text-11", name: "Isabela F.", date: "há 7 dias", rating: 5, text: "Gostei para completar a coleção. As miniaturas têm bastante detalhe pelo tamanho.", media: null },
+    { id: "hotwheels-review-text-12", name: "André C.", date: "há 12 dias", rating: 5, text: "Kit divertido, principalmente pela surpresa dos modelos. Bom para brincar e guardar.", media: null },
+    { id: "hotwheels-review-text-13", name: "Letícia M.", date: "há 17 dias", rating: 5, text: "Comprei para dar de presente e achei a proposta ótima. São dez carrinhos sortidos e diferentes.", media: null },
   ] : isBrastoy ? [
     ...brastoyReviewPhotos.map((photo, i) => ({
       id: photo.id,

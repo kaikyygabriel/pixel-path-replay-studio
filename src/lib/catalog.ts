@@ -387,9 +387,34 @@ export const products: Product[] = [
     sold: "5.000+",
   },
 
-];
+  {
+    id: "hot-wheels-kit-10-mattel-164",
+    title: "Kit com 10 Carrinhos Hot Wheels Mattel 2026 · Escala 1:64 · Modelos Sortidos",
+    cardTitle: "Kit 10 Carrinhos Hot Wheels Mattel 1:64",
+    checkoutTitle: "Kit com 10 Carrinhos Hot Wheels Mattel 2026 · Modelos Sortidos",
+    category: "Hot Wheels · Brinquedos · Infantil · Presentes · Colecionáveis · Natal · 25.12 · Mais vendidos · Recomendados",
+    price: 6845,
+    original: 23077,
+    shippingOriginal: 2620,
+    image: "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-1.png",
+    gallery: [
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-1.png",
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-2.png",
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-3.png",
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-4.png",
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-5.png",
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-6.png",
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-7.png",
+      "/products/hot-wheels-kit-10-mattel-164/gallery/hotwheels-carrossel-8.png"
+    ],
+    variants: [],
+    description: "Aumente a coleção ou presenteie alguém especial com este kit de 10 carrinhos Hot Wheels originais Mattel, edição 2026, em escala 1:64. As miniaturas têm visual detalhado e são ótimas para brincar, colecionar e montar pistas.\n\n**Kit com 10 modelos sortidos:** os carrinhos são enviados em modelos variados, sem repetição dentro do kit. A seleção é aleatória, conforme a disponibilidade; não é possível escolher modelos específicos.\n\n**Detalhes:** miniaturas Hot Wheels 2026 · escala 1:64 · estrutura die-cast · rodas livres · modelos variados.\n\n**Para brincar e colecionar:** indicado para crianças, fãs de automobilismo e colecionadores de miniaturas. Também é uma opção divertida para presentear.\n\n**Importante:** por se tratar de um kit sortido, os modelos recebidos podem ser diferentes dos exibidos nas imagens. Não é possível selecionar cores, carros ou modelos específicos.",
+    rating: 5.0,
+    reviews: null,
+    sold: "2.500+",
+  },
 
-export const getProduct = (id: string) => products.find((p) => p.id === id);
+];\n\nexport const getProduct = (id: string) => products.find((p) => p.id === id);
 
 export const brl = (cents: number) =>
   "R$ " +
