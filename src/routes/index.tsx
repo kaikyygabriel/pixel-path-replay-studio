@@ -58,7 +58,7 @@ function StorePage() {
     { label: "Presentes", match: (p) => /presente|natal|brinquedo|infantil/i.test(p.category) },
     { label: "Casa & Utilidades", match: (p) => /cama|mesa|banho|toalha|casa|utilidade|eletroport|air\\s?fryer|fritadeira/i.test(p.category + " " + p.title) },
     { label: "Eletrônicos", match: (p) => /eletr/i.test(p.category) },
-    { label: "Recomendados", match: () => true },
+    { label: "Recomendados", match: (p) => p.category.toLocaleLowerCase("pt-BR").includes("recomendados") },
   ];
   const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true));
   const isMondialBlender = quickProduct?.id === "liquidificador-mondial-l99-fb";
