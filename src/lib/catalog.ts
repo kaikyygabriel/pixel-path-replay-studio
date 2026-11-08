@@ -414,7 +414,9 @@ export const products: Product[] = [
     sold: "2.500+",
   },
 
-];\n\nexport const getProduct = (id: string) => products.find((p) => p.id === id);
+];
+
+export const getProduct = (id: string) => products.find((p) => p.id === id);
 
 export const brl = (cents: number) =>
   "R$ " +
