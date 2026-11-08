@@ -382,7 +382,13 @@ function Accordion({ title, open, onToggle }: { title: string; open: boolean; on
         {title}
         {open ? <Minus className="h-3.5 w-3.5 text-muted-foreground" /> : <Plus className="h-3.5 w-3.5 text-muted-foreground" />}
       </button>
-      {open && content}
+      <div
+        className={`grid transition-[grid-template-rows,opacity] duration-200 ease-in-out motion-reduce:transition-none ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+        aria-hidden={!open}
+        inert={!open}
+      >
+        <div className="min-h-0 overflow-hidden">{content}</div>
+      </div>
     </div>
   );
 }
