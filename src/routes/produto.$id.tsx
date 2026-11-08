@@ -127,6 +127,20 @@ function ProductPage() {
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
   const isMondialAirFryer = p.id === "air-fryer-oven-mondial-afon-12l";
   const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
+  const projectorReviewPhotos = isProjector ? [
+    { id: "projector-review-1", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-01.png" },
+    { id: "projector-review-2", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-02.png" },
+    { id: "projector-review-3", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-03.png" },
+    { id: "projector-review-4", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-04.png" },
+    { id: "projector-review-5", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-05.png" },
+    { id: "projector-review-6", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-06.png" },
+    { id: "projector-review-7", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-07.png" },
+    { id: "projector-review-8", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-08.png" },
+    { id: "projector-review-9", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-09.png" },
+    { id: "projector-review-10", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-10.png" },
+    { id: "projector-review-11", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-11.png" },
+  ] : [];
+  const isProjector = p.id === "projetor-hy300-duoseg";
   const kettleReviewPhotos = isKettle ? [
     { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
     { id: "kettle-review-2", src: "/avalia%C3%A7%C3%A3o%20chaleira%202.png" },
@@ -231,7 +245,31 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isKarstenTowel ? [
+  const demoReviews: DemoReview[] = isProjector ? [
+    ...projectorReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Amanda R.", "Carlos M.", "Juliana P.", "Felipe A.", "Renata S.", "Bruno C.", "Camila T.", "Diego F.", "Patrícia L.", "Marcos V.", "Aline G."][i] ?? "",
+      date: ["há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 8 dias", "há 10 dias", "há 11 dias", "há 12 dias", "há 14 dias", "há 16 dias", "há 18 dias"][i] ?? "",
+      rating: i === 8 ? 4 : 5,
+      text: [
+        "A imagem ficou bem nítida no quarto e a configuração foi tranquila.",
+        "Gostei da rotação, consegui ajustar a projeção na parede sem dificuldade.",
+        "Chegou bem embalado e já consegui conectar no Wi-Fi.",
+        "O tamanho é compacto e o Android facilita bastante para usar.",
+        "Usei à noite e a imagem ficou boa, principalmente com o ambiente mais escuro.",
+        "O ajuste de foco é manual, mas depois de acertar ficou certinho.",
+        "Consegui projetar no teto, a articulação de 180 graus ajuda bastante.",
+        "Gostei do custo-benefício, é pequeno e atende bem para assistir em casa.",
+        "A imagem fica melhor com pouca luz, mas pelo valor gostei bastante.",
+        "O controle ajuda a mexer nas funções e a conexão funcionou direitinho.",
+        "Compacto e fácil de posicionar, estou usando para filmes no quarto.",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "projector-review-text-12", name: "Thiago N.", date: "há 6 dias", rating: 5, text: "Gostei de poder direcionar para o teto sem precisar improvisar outro apoio.", media: null },
+    { id: "projector-review-text-13", name: "Beatriz D.", date: "há 9 dias", rating: 5, text: "A configuração inicial foi simples e o Wi-Fi conectou sem complicação.", media: null },
+    { id: "projector-review-text-14", name: "Eduardo B.", date: "há 17 dias", rating: 4, text: "Para assistir à noite funciona bem; em ambiente claro a imagem perde força.", media: null },
+  ] : isKarstenTowel ? [
     ...towelReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R."][i] ?? "",
