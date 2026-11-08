@@ -41,6 +41,15 @@ export function TopBar({ back = false }: { back?: boolean }) {
     return () => document.removeEventListener("pointerdown", h);
   }, [menu, searchFocused]);
   useEffect(() => {
+    const openSupportForm = () => {
+      setMenu(false);
+      setSearchFocused(false);
+      setInfo("Atendimento");
+    };
+    window.addEventListener("open-tiktok-support", openSupportForm);
+    return () => window.removeEventListener("open-tiktok-support", openSupportForm);
+  }, []);
+  useEffect(() => {
     const fly = (event: Event) => {
       const detail = (event as CustomEvent<{ image: string; source?: { x: number; y: number; width: number; height: number } }>).detail;
       const target = profileButton.current?.getBoundingClientRect();
@@ -329,7 +338,7 @@ const features = [
   { icon: Truck, t: "Frete grátis", s: "Em todos os produtos" },
   { icon: Package, t: "Envio expresso", s: "Embalagem protegida" },
   { icon: ShieldCheck, t: "Compra protegida", s: "Lacrada com nota fiscal" },
-  { icon: CreditCard, t: "Pagamento PIX", s: "ESPECIAL 25.12" },
+  { icon: CreditCard, t: "Pagamento PIX", s: "Pagamento instantâneo" },
   { icon: Lock, t: "Site seguro", s: "Criptografia SSL 256-bit" },
   { icon: Headphones, t: "Suporte 7 dias", s: "Atendimento humanizado" },
 ];
@@ -356,7 +365,17 @@ function Accordion({ title }: { title: string }) {
       <button type="button" onClick={() => window.dispatchEvent(new Event("open-tiktok-support"))} className="rounded-full bg-primary px-5 py-2.5 text-[14px] font-bold text-primary-foreground">Central de ajuda / Falar com suporte</button>
     </div>
   ) : (
-    <p className="px-4 pb-4 text-[14px] text-muted-foreground">As políticas e os termos da loja serão publicados aqui em breve.</p>
+    <div className="px-4 pb-4">
+      <p className="mb-3 text-[14px] text-muted-foreground">Consulte os termos oficiais de uso e venda da TikTok Shop para compradores.</p>
+      <a
+        href="https://seller-br.tiktok.com/university/essay?identity=1&knowledge_id=3268441302714113"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-primary px-5 py-2.5 text-center text-[14px] font-bold text-primary-foreground"
+      >
+        Verificar políticas e termos
+      </a>
+    </div>
   );
   return (
     <div className="border-b border-border">
