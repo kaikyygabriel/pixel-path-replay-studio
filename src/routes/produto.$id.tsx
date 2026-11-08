@@ -149,13 +149,13 @@ function ProductPage() {
     { id: "projector-review-11", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-11.png" },
   ] : [];
   const kettleReviewPhotos = isKettle ? [
-    { id: "kettle-review-1", src: "/avalia%C3%A7%C3%A3o%20chaleira%201.png" },
-    { id: "kettle-review-2", src: "/avalia%C3%A7%C3%A3o%20chaleira%202.png" },
-    { id: "kettle-review-3", src: "/avalia%C3%A7%C3%A3o%20chaleira%203.png" },
-    { id: "kettle-review-4", src: "/avalia%C3%A7%C3%A3o%20chaleira%204.png" },
-    { id: "kettle-review-5", src: "/avalia%C3%A7%C3%A3o%20chaleira%205.png" },
-    { id: "kettle-review-6", src: "/avalia%C3%A7%C3%A3o%20chaleira%206.png" },
-    { id: "kettle-review-7", src: "/avalia%C3%A7%C3%A3o%20chaleira%207.png" },
+    { id: "kettle-review-1", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-1.png" },
+    { id: "kettle-review-2", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-2.png" },
+    { id: "kettle-review-3", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-3.png" },
+    { id: "kettle-review-4", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-4.png" },
+    { id: "kettle-review-5", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png" },
+    { id: "kettle-review-6", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png" },
+    { id: "kettle-review-7", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png" },
   ] : [];
   const christmasTreeReviewPhotos = isChristmasTree ? [
     { id: "christmas-tree-review-1", src: "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-1.png" },
@@ -374,14 +374,18 @@ function ProductPage() {
     { id: "squishy-review-text-10", name: "Bruna H.", date: "há 7 dias", rating: 5, text: "Comprei para dar de lembrancinha e achei a proposta muito divertida. A pessoa adorou descobrir o modelo.", media: null },
     { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Gostei de receber uma cor surpresa! O meu veio bem brilhante e achei o potinho individual uma graça.", media: null },
     { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É macio para apertar e tem um acabamento muito fofo. Achei uma ideia diferente para presentear.", media: null },
-  ] : isKettle ? kettleReviewPhotos.map((photo, i) => ({
-    id: photo.id,
-    name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
-    date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
-    rating: 5,
-    text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
-    media: photo.src,
-  })) : isLgAirConditioner ? [
+  ] : isKettle ? [
+    ...kettleReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
+      date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
+      rating: 5,
+      text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "kettle-review-text-8", name: "Bruna M.", date: "há 4 dias", rating: 5, text: "Uso bastante para preparar chá e café, é prática e não ocupa muito espaço na bancada", media: null },
+    { id: "kettle-review-text-9", name: "Carlos R.", date: "há 12 dias", rating: 4, text: "Aquece rápido e é fácil de limpar. Só senti falta de um aviso sonoro mais discreto", media: null },
+  ] : isLgAirConditioner ? [
     { id: "lg-review-1", name: "Marcos A.", date: "há 2 dias", rating: 5, text: "Pelo aplicativo consigo programar o horário para ligar e desligar, facilita muito minha rotina", media: lgReviewPhotos[0]?.src ?? null },
     { id: "lg-review-2", name: "Juliana R.", date: "há 4 dias", rating: 5, text: "Sem comentários, esse está entre os melhores que já tive", media: lgReviewPhotos[1]?.src ?? null },
     { id: "lg-review-3", name: "Carlos M.", date: "há 5 dias", rating: 5, text: "Produto de qualidade, acabamento muito bom", media: lgReviewPhotos[2]?.src ?? null },
