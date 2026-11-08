@@ -559,20 +559,6 @@ function ProductPage() {
           {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
         </div>
         )}
-        {isProjector ? (
-          <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
-            {projectorReviewPhotos.map((photo, index) => {
-              const captions = ["Aplicativos exibidos na tela projetada", "Projetor, controle remoto e embalagem recebidos", "Imagem reproduzida na parede", "Detalhe frontal e lente do projetor", "Acessórios e manual que acompanham o aparelho", "Projetor e controle remoto após o recebimento", "Projeção em ambiente preparado para assistir", "Detalhe do corpo e do suporte ajustável", "Conexões HDMI, USB e entrada de alimentação", "Conexões e cabo de energia em uso", "Projetor ligado junto à embalagem e ao manual"];
-              return <article key={photo.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-                <img src={photo.src} alt={captions[index]} loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />
-                <div className="p-2.5">
-                  <div className="flex items-center gap-1 text-[12px] font-semibold"><Star className="h-3.5 w-3.5 fill-[#FFC43B] text-[#FFC43B]" />{reviewAverage.toFixed(1).replace(".", ",")} <span className="font-normal text-muted-foreground">· nota do produto</span></div>
-                  <p className="mt-1.5 text-[12px] leading-snug text-muted-foreground">{captions[index]}</p>
-                </div>
-              </article>;
-            })}
-          </div>
-        ) : (
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
@@ -583,13 +569,11 @@ function ProductPage() {
               </div>
               {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
-
             </div>
           </article>)}
         </div>
-        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{isSquishyToy ? "As fotos compartilhadas por clientes estão disponíveis acima. Relatos escritos individuais serão exibidos quando houver conteúdo original cadastrado." : reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
+        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
         {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
-        )}
       </section>
       <ProductRecommendations key={p.id} productId={p.id} />
       <div className="h-10 bg-surface" />
@@ -694,18 +678,24 @@ function ProductPage() {
               ) : optionKind === "voltage" ? (
                 <div className="mt-2.5 flex items-center justify-start gap-2">{p.variants.map((v: Variant) => <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id} className={`inline-flex h-9 min-w-[76px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-bold transition-colors ${picked === v.id ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-foreground"}`}>{v.color}{picked === v.id && <Check className="h-3.5 w-3.5" />}</button>)}</div>
               ) : (
-                <div className="mt-2.5 grid grid-cols-2 gap-2">{p.variants.map((v: Variant) => <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id} className={`flex min-w-0 items-center gap-2 rounded-xl border bg-card p-2 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border"}`}><img src={v.image} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-lg bg-surf        <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
-          {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
-            <div className="flex flex-col p-2.5">
-              <div className="flex items-center gap-2">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
-                <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
+                <div className="mt-2.5 grid grid-cols-2 gap-2">{p.variants.map((v: Variant) => <button key={v.id} type="button" onClick={() => setPicked(v.id)} aria-pressed={picked === v.id} className={`flex min-w-0 items-center gap-2 rounded-xl border bg-card p-2 text-left transition-colors ${picked === v.id ? "border-primary bg-primary/5" : "border-border"}`}><img src={v.image} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-lg bg-surface object-cover" /><span className="min-w-0 flex-1"><span className="block truncate text-[11.5px] font-bold">{v.line}</span><span className="mt-0.5 block line-clamp-2 text-[11px] leading-tight text-muted-foreground">{v.color}</span><span className="mt-1 block text-[12px] font-extrabold">{brl(v.price)}</span></span>{picked === v.id && <Check className="h-3.5 w-3.5 shrink-0 text-primary" />}</button>)}</div>
+              )}
+              <p className="mt-3 text-[13px] text-muted-foreground">{variant ? " " : "Selecione uma opção para continuar."}</p>
+              <div className="mt-4 flex items-baseline justify-between border-t border-border pt-3">
+                <span className="text-[16px] font-bold">Total ({unitCount * qty} itens)</span>
+                <span className="text-[20px] font-extrabold">{brl(shownPrice * qty)}</span>
               </div>
-              {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
-              {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
+              <button
+                disabled={!variant}
+                onClick={sheet === "cart" ? putInCart : go}
+                className="mb-2 mt-2 h-12 w-full rounded-full bg-primary text-[16px] font-extrabold text-primary-foreground disabled:opacity-40"
+              >
+                {sheet === "cart" ? "Adicionar ao carrinho" : "Comprar agora"}
+              </button>
             </div>
-          </article>)}
+          </div>
         </div>
-        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
-        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
+      )}
+    </div>
+  );
+}
