@@ -39,6 +39,12 @@ function StorePage() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const following = state.following;
+  const openCatalogView = (category: string, view: "all" | "category") => {
+    setActiveCategory(category);
+    setCatalogView(view);
+    // Leva a vitrine de volta ao cabeçalho antes de apresentar a grade completa.
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   const normalizedQuery = state.searchTerm.trim().toLocaleLowerCase("pt-BR");
   const searchedProducts = products.filter((product) =>
     [product.title, product.cardTitle, product.category]
@@ -135,7 +141,7 @@ function StorePage() {
           <span className="text-[12px] text-muted-foreground">{visibleProducts.length} {visibleProducts.length === 1 ? "produto" : "produtos"}</span>
         </div>
       </div>
-      <div className={catalogView === "home" ? "relative pb-9" : "px-3.5 pb-9"}>
+      <div key={`${catalogView}-${activeCategory}`} className={catalogView === "home" ? "relative pb-9" : "catalog-grid-enter px-3.5 pb-9"}>
         {catalogView === "home" && canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface to-transparent" />}
         {catalogView === "home" && canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
         <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className={catalogView === "home" ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "grid grid-cols-2 items-start gap-3"}>
@@ -143,7 +149,7 @@ function StorePage() {
             <ProductCard key={p.id} product={p} className={catalogView === "home" ? `w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
           {catalogView === "home" && activeCategory === "Todos" && visibleProducts.length > 0 && (
-            <button type="button" onClick={() => setCatalogView("all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+            <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
               <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
               <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
               <span className="text-[11px] text-muted-foreground">Confira o catálogo completo</span>
@@ -175,7 +181,7 @@ function StorePage() {
               {products.filter((p) => /natal|25\\.12/i.test(p.category)).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
-              <button type="button" onClick={() => { setActiveCategory("Natal"); setCatalogView("category"); }} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+              <button type="button" onClick={() => openCatalogView("Natal", "category")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
                 <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Produtos de Natal</span>
@@ -191,7 +197,7 @@ function StorePage() {
               {[...products].sort((a, b) => { const sales = (value: string | null) => { if (!value) return 0; const normalized = value.toLowerCase().replace(/\s/g, ""); const inThousands = normalized.includes("mil"); const numeric = normalized.replace(/[^0-9.,]/g, ""); const amount = Number.parseFloat(inThousands ? numeric.replace(",", ".") : numeric.replace(/\./g, "").replace(",", ".")); return Number.isFinite(amount) ? amount * (inThousands ? 1000 : 1) : 0; }; return sales(b.sold) - sales(a.sold); }).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
-              <button type="button" onClick={() => { setActiveCategory("Todos"); setCatalogView("all"); }} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+              <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
                 <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
