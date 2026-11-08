@@ -87,8 +87,15 @@ function estimateReviewCount(sold: string | null): number {
 }
 function getEstimatedRatingDistribution(total: number, rating: number): Record<number, number> {
   if (!total) return { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-  const fiveStars = Math.round(total * Math.max(0, Math.min(1, rating - 4)));
-  return { 5: fiveStars, 4: total - fiveStars, 3: 0, 2: 0, 1: 0 };
+  // Mantém a maior concentração em 5 estrelas, mas representa também
+  // avaliações de 4, 3, 2 e 1 estrela no gráfico.
+  const fiveShare = Math.max(0, Math.min(0.98, (rating - 4) + 0.01));
+  const fiveStars = Math.round(total * fiveShare);
+  const threeStars = Math.round(total * 0.01);
+  const twoStars = Math.round(total * 0.005);
+  const oneStar = Math.round(total * 0.005);
+  const fourStars = Math.max(0, total - fiveStars - threeStars - twoStars - oneStar);
+  return { 5: fiveStars, 4: fourStars, 3: threeStars, 2: twoStars, 1: oneStar };
 }
 
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
