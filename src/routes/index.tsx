@@ -144,9 +144,9 @@ function StorePage() {
             <ProductCard key={p.id} product={p} className={catalogView === "home" ? `w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
           {catalogView === "home" && activeCategory === "Todos" && visibleProducts.length > 0 && (
-            <button type="button" onClick={() => setCatalogView("all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/70 bg-white/60 px-4 text-center text-foreground/80 shadow-sm backdrop-blur-sm">
-              <span className="grid h-10 w-10 place-items-center rounded-lg border border-white/80 bg-white/70 text-primary/80"><ChevronRight className="h-5 w-5" /></span>
-              <span className="text-[14px] font-bold">Ver todos</span>
+            <button type="button" onClick={() => setCatalogView("all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
+              <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
               <span className="text-[11px] text-muted-foreground">Confira o catálogo completo</span>
             </button>
           )}
@@ -176,9 +176,9 @@ function StorePage() {
               {products.filter((p) => /natal|25\\.12/i.test(p.category)).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
-              <button type="button" onClick={() => { setActiveCategory("Natal"); setCatalogView("category"); }} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/70 bg-white/60 px-4 text-center text-foreground/80 shadow-sm backdrop-blur-sm">
-                <span className="grid h-10 w-10 place-items-center rounded-lg border border-white/80 bg-white/70 text-primary/80"><ChevronRight className="h-5 w-5" /></span>
-                <span className="text-[14px] font-bold">Ver todos</span>
+              <button type="button" onClick={() => { setActiveCategory("Natal"); setCatalogView("category"); }} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+                <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
+                <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Produtos de Natal</span>
               </button>
             </div>
@@ -192,9 +192,9 @@ function StorePage() {
               {[...products].sort((a, b) => { const sales = (value: string | null) => { if (!value) return 0; const normalized = value.toLowerCase().replace(/\s/g, ""); const inThousands = normalized.includes("mil"); const numeric = normalized.replace(/[^0-9.,]/g, ""); const amount = Number.parseFloat(inThousands ? numeric.replace(",", ".") : numeric.replace(/\./g, "").replace(",", ".")); return Number.isFinite(amount) ? amount * (inThousands ? 1000 : 1) : 0; }; return sales(b.sold) - sales(a.sold); }).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
-              <button type="button" onClick={() => { setActiveCategory("Todos"); setCatalogView("all"); }} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/70 bg-white/60 px-4 text-center text-foreground/80 shadow-sm backdrop-blur-sm">
-                <span className="grid h-10 w-10 place-items-center rounded-lg border border-white/80 bg-white/70 text-primary/80"><ChevronRight className="h-5 w-5" /></span>
-                <span className="text-[14px] font-bold">Ver todos</span>
+              <button type="button" onClick={() => { setActiveCategory("Todos"); setCatalogView("all"); }} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+                <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
+                <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
               </button>
             </div>
