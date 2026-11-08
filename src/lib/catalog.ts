@@ -361,7 +361,7 @@ export const products: Product[] = [
   {
     id: "air-fryer-mondial-afn-40-bft",
     title: "Fritadeira sem Óleo Air Fryer Mondial 4L 1500W AFN-40-BFT",
-    cardTitle: "Air Fryer Mondial 4L 1500W",
+    cardTitle: "Fritadeira Air Fryer Mondial 4L 1500W",
     checkoutTitle: "Fritadeira sem Óleo Air Fryer Mondial AFN-40-BFT 4L 1500W",
     category: "Mondial · Eletroportáteis · Casa & Utilidades · Mais vendidos · Recomendados",
     price: 8960,
