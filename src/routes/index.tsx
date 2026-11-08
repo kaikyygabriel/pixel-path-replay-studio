@@ -130,7 +130,7 @@ function StorePage() {
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="text-[21px] font-extrabold">Produtos da loja</h2>
           {catalogView === "home" ? (
-            <button type="button" onClick={() => openCatalogView(activeCategory, "all")} className="shrink-0 rounded-full border border-[#FE2C55]/25 bg-[#FE2C55]/[0.07] px-3 py-1.5 text-[12px] font-bold leading-none text-[#FE2C55] active:scale-[0.98]">Ver todos</button>
+            <button type="button" onClick={() => openCatalogView(activeCategory, "all")} className="shrink-0 text-[14px] font-bold leading-none text-[#FE2C55] active:opacity-70">Ver todos</button>
           ) : (
             <button type="button" onClick={() => setCatalogView("home")} className="inline-flex shrink-0 items-center gap-1 text-[12px] font-semibold text-[#FE2C55]"><ChevronLeft className="h-4 w-4" />Voltar à vitrine</button>
           )}
