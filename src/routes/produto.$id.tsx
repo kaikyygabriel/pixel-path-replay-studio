@@ -64,7 +64,7 @@ const demoReviewCopy = [
 ];
 // Dados locais de demonstração para uso interno; substituir por avaliações reais antes de publicar em produção.
 function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
-  if (productId === "arvore-natal-kit-87-enfeites" || productId === "liquidificador-mondial-l99-fb") return []; // Não inventar depoimentos textuais sem conteúdo fornecido.
+  if (productId === "arvore-natal-kit-87-enfeites" || productId === "liquidificador-mondial-l99-fb" || productId === "projetor-hy300-duoseg") return []; // Não inventar depoimentos textuais sem conteúdo fornecido.
   const towel = productId === 'jogo-toalhas-karsten';
   const names = ['Mariana S.', 'Rafaela M.', 'Camila R.', 'João P.', 'Ana C.', 'Patrícia L.'];
   const ratings = towel ? [5, 5, 5, 5, 4, 5] : [5, 5, 4, 5, 5, 4];
@@ -245,31 +245,7 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isProjector ? [
-    ...projectorReviewPhotos.map((photo, i) => ({
-      id: photo.id,
-      name: ["Amanda R.", "Carlos M.", "Juliana P.", "Felipe A.", "Renata S.", "Bruno C.", "Camila T.", "Diego F.", "Patrícia L.", "Marcos V.", "Aline G."][i] ?? "",
-      date: ["há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 8 dias", "há 10 dias", "há 11 dias", "há 12 dias", "há 14 dias", "há 16 dias", "há 18 dias"][i] ?? "",
-      rating: i === 8 ? 4 : 5,
-      text: [
-        "A imagem ficou bem nítida no quarto e a configuração foi tranquila.",
-        "Gostei da rotação, consegui ajustar a projeção na parede sem dificuldade.",
-        "Chegou bem embalado e já consegui conectar no Wi-Fi.",
-        "O tamanho é compacto e o Android facilita bastante para usar.",
-        "Usei à noite e a imagem ficou boa, principalmente com o ambiente mais escuro.",
-        "O ajuste de foco é manual, mas depois de acertar ficou certinho.",
-        "Consegui projetar no teto, a articulação de 180 graus ajuda bastante.",
-        "Gostei do custo-benefício, é pequeno e atende bem para assistir em casa.",
-        "A imagem fica melhor com pouca luz, mas pelo valor gostei bastante.",
-        "O controle ajuda a mexer nas funções e a conexão funcionou direitinho.",
-        "Compacto e fácil de posicionar, estou usando para filmes no quarto.",
-      ][i] ?? "",
-      media: photo.src,
-    })),
-    { id: "projector-review-text-12", name: "Thiago N.", date: "há 6 dias", rating: 5, text: "Gostei de poder direcionar para o teto sem precisar improvisar outro apoio.", media: null },
-    { id: "projector-review-text-13", name: "Beatriz D.", date: "há 9 dias", rating: 5, text: "A configuração inicial foi simples e o Wi-Fi conectou sem complicação.", media: null },
-    { id: "projector-review-text-14", name: "Eduardo B.", date: "há 17 dias", rating: 4, text: "Para assistir à noite funciona bem; em ambiente claro a imagem perde força.", media: null },
-  ] : isKarstenTowel ? [
+  const demoReviews: DemoReview[] = isProjector ? [] : isKarstenTowel ? [
     ...towelReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R."][i] ?? "",
@@ -423,13 +399,15 @@ function ProductPage() {
   ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const reviewMedia = demoReviews
-    .filter((review) => review.media)
-    .map((review) => ({
-      id: review.id,
-      media: review.media!,
-      rating: review.rating,
-    }));
+  const reviewMedia = isProjector
+    ? projectorReviewPhotos.map((photo) => ({ id: photo.id, media: photo.src }))
+    : demoReviews
+        .filter((review) => review.media)
+        .map((review) => ({
+          id: review.id,
+          media: review.media!,
+          rating: review.rating,
+        }));
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -686,7 +664,7 @@ function ProductPage() {
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <div className="relative"><img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /><ReviewMediaRating rating={review.rating} /></div>
+              <div className="relative"><img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{"rating" in review && <ReviewMediaRating rating={review.rating} />}</div>
             </button>)}
           </div>
         </div>}
