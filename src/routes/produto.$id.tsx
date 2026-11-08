@@ -444,7 +444,7 @@ function ProductPage() {
   const unitCount = variant ? variant.pieces : 1;
   const shownPrice = variant ? variant.price : p.price;
   const shownOriginal = variant ? variant.original : p.original;
-  const fav = state.favorites.includes(p.id);
+  const fav = Array.isArray(state.favorites) && state.favorites.includes(p.id);
 
   function goTo(i: number) {
     const el = galleryRef.current;
