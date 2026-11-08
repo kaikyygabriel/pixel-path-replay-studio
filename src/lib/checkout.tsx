@@ -50,6 +50,40 @@ const empty: CheckoutState = {
 const KEY = "checkout-state-v2";
 const LEGACY_KEY = "checkout-state-v1";
 
+function normalizeCheckoutState(value: unknown): CheckoutState {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return empty;
+  const saved = value as Partial<CheckoutState>;
+  const cart = Array.isArray(saved.cart)
+    ? saved.cart.filter((item): item is CartItem =>
+        !!item && typeof item.key === "string" && typeof item.productId === "string" &&
+        (typeof item.variantId === "string" || item.variantId === null) &&
+        Number.isFinite(item.qty) && item.qty > 0,
+      )
+    : [];
+  const checkoutItems = Array.isArray(saved.checkoutItems)
+    ? saved.checkoutItems.filter((item): item is CheckoutItem =>
+        !!item && typeof item.productId === "string" &&
+        (typeof item.variantId === "string" || item.variantId === null) &&
+        Number.isFinite(item.qty) && item.qty > 0,
+      )
+    : [];
+  return {
+    ...empty,
+    ...saved,
+    cart,
+    checkoutItems,
+    favorites: Array.isArray(saved.favorites)
+      ? saved.favorites.filter((id): id is string => typeof id === "string")
+      : [],
+    following: typeof saved.following === "boolean" ? saved.following : false,
+    cartOpen: false,
+    searchTerm: typeof saved.searchTerm === "string" ? saved.searchTerm : "",
+    qty: Number.isFinite(saved.qty) && (saved.qty ?? 0) > 0 ? saved.qty! : 1,
+    offerEndsAt: typeof saved.offerEndsAt === "number" && Number.isFinite(saved.offerEndsAt) ? saved.offerEndsAt : null,
+    offerCycleStartedAt: typeof saved.offerCycleStartedAt === "number" && Number.isFinite(saved.offerCycleStartedAt) ? saved.offerCycleStartedAt : null,
+  };
+}
+
 type Ctx = { state: CheckoutState; update: (p: Partial<CheckoutState>) => void; ready: boolean };
 const CheckoutCtx = createContext<Ctx | null>(null);
 
@@ -60,8 +94,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     try {
       const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY) ?? sessionStorage.getItem(LEGACY_KEY);
       if (raw) {
-        const saved = JSON.parse(raw) as Partial<CheckoutState>;
-        setState({ ...empty, ...saved, cartOpen: false });
+        setState(normalizeCheckoutState(JSON.parse(raw)));
       }
     } catch {
       /* ignore invalid or unavailable session storage */
@@ -100,7 +133,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     const sync = (event: StorageEvent) => {
       if (event.key !== KEY || !event.newValue) return;
       try {
-        setState({ ...empty, ...JSON.parse(event.newValue), cartOpen: false });
+        setState(normalizeCheckoutState(JSON.parse(event.newValue)));
       } catch {
         /* Ignore malformed updates from another tab. */
       }
