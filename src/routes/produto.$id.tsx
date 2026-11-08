@@ -667,7 +667,7 @@ function ProductPage() {
           <div className="flex min-w-0 flex-col items-center justify-center border-r border-border pr-2 text-center sm:pr-4">
             <strong className="text-[32px] font-extrabold leading-none tabular-nums sm:text-[36px]">{reviewAverage.toFixed(1).replace(".", ",")}</strong>
             <ReviewStars rating={reviewAverage} size="h-4 w-4" />
-            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">{estimateReviewCount(p.sold).toLocaleString("pt-BR")} avaliações</span>
+            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">~{estimateReviewCount(p.sold).toLocaleString("pt-BR")} avaliações</span>
           </div>
           <div className="min-w-0 space-y-2">
             {[5, 4, 3, 2, 1].map((stars) => {
