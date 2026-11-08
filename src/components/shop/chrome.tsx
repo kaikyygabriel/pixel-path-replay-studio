@@ -351,8 +351,7 @@ function TikTokMark() {
   );
 }
 
-function Accordion({ title }: { title: string }) {
-  const [open, setOpen] = useState(false);
+function Accordion({ title, open, onToggle }: { title: string; open: boolean; onToggle: () => void }) {
   const content = title === "Comece a comprar" ? (
     <ul className="space-y-2 px-4 pb-4 text-[14px] leading-relaxed text-muted-foreground">
       <li><strong className="text-foreground">1.</strong> Explore a vitrine e escolha seu achadinho.</li>
@@ -379,7 +378,7 @@ function Accordion({ title }: { title: string }) {
   );
   return (
     <div className="border-b border-border">
-      <button aria-expanded={open} onClick={() => setOpen(!open)} className="flex w-full items-center justify-between px-4 py-4 text-[16px] font-semibold">
+      <button type="button" aria-expanded={open} onClick={onToggle} className="flex w-full items-center justify-between px-4 py-4 text-[16px] font-semibold">
         {title}
         {open ? <Minus className="h-3.5 w-3.5 text-muted-foreground" /> : <Plus className="h-3.5 w-3.5 text-muted-foreground" />}
       </button>
@@ -390,6 +389,7 @@ function Accordion({ title }: { title: string }) {
 
 export function SiteFooter() {
   const l = store.legal;
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const rows: [string, string | null][] = [
     ["Razão social", l.razaoSocial],
     ["CNPJ", l.cnpj],
@@ -425,9 +425,9 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-border">
-        <Accordion title="Comece a comprar" />
-        <Accordion title="Suporte ao cliente" />
-        <Accordion title="Política e termos" />
+        <Accordion title="Comece a comprar" open={openAccordion === "Comece a comprar"} onToggle={() => setOpenAccordion((current) => current === "Comece a comprar" ? null : "Comece a comprar")} />
+        <Accordion title="Suporte ao cliente" open={openAccordion === "Suporte ao cliente"} onToggle={() => setOpenAccordion((current) => current === "Suporte ao cliente" ? null : "Suporte ao cliente")} />
+        <Accordion title="Política e termos" open={openAccordion === "Política e termos"} onToggle={() => setOpenAccordion((current) => current === "Política e termos" ? null : "Política e termos")} />
       </div>
       <div className="border-b border-border px-4 py-5">
         <div className="mb-1 text-[10px] font-semibold tracking-wide text-muted-foreground">ACOMPANHE O TIKTOK</div>
