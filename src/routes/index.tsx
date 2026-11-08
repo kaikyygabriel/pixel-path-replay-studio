@@ -38,6 +38,7 @@ function StorePage() {
   const shelfRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const shelfFrame = useRef<number | null>(null);
   const following = state.following;
   const openCatalogView = (category: string, view: "all" | "category") => {
     setActiveCategory(category);
@@ -55,7 +56,7 @@ function StorePage() {
     { label: "Natal", match: (p) => p.category.toLocaleLowerCase("pt-BR").includes("natal") },
     { label: "Brinquedos", match: (p) => /brinquedo|infantil|barbie/i.test(p.category + " " + p.title) },
     { label: "Presentes", match: (p) => /presente|natal|brinquedo|infantil/i.test(p.category) },
-    { label: "Casa & Utilidades", match: (p) => /cama|mesa|banho|toalha|casa|utilidade/i.test(p.category) },
+    { label: "Casa & Utilidades", match: (p) => /cama|mesa|banho|toalha|casa|utilidade|eletroport|air\\s?fryer|fritadeira/i.test(p.category + " " + p.title) },
     { label: "Eletrônicos", match: (p) => /eletr/i.test(p.category) },
     { label: "Recomendados", match: () => true },
   ];
@@ -70,20 +71,23 @@ function StorePage() {
     setQuickProduct(null); setQuickVariant(null); setQuickVoltage(null); setQuickColor(null);
   }
   const updateShelfEdges = () => {
-    const el = shelfRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 4);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    if (shelfFrame.current !== null) return;
+    shelfFrame.current = requestAnimationFrame(() => {
+      shelfFrame.current = null;
+      const el = shelfRef.current;
+      if (!el) return;
+      const left = el.scrollLeft > 4;
+      const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 4;
+      setCanScrollLeft((current) => current === left ? current : left);
+      setCanScrollRight((current) => current === right ? current : right);
+    });
   };
-  useEffect(() => { const el = shelfRef.current; if (el) el.scrollLeft = 0; const frame = requestAnimationFrame(updateShelfEdges); return () => cancelAnimationFrame(frame); }, [activeCategory, visibleProducts.length]);
-
   useEffect(() => {
-    const reset = () => document.querySelectorAll<HTMLElement>("[data-shelf]").forEach((el) => { el.scrollTo({ left: 0, behavior: "instant" as ScrollBehavior }); });
-    reset();
-    const f1 = requestAnimationFrame(() => { reset(); updateShelfEdges(); });
-    const t = window.setTimeout(reset, 60);
-    return () => { cancelAnimationFrame(f1); window.clearTimeout(t); };
-  }, []);
+    const el = shelfRef.current;
+    if (el) el.scrollLeft = 0;
+    updateShelfEdges();
+    return () => { if (shelfFrame.current !== null) cancelAnimationFrame(shelfFrame.current); shelfFrame.current = null; };
+  }, [activeCategory, visibleProducts.length, catalogView]);
 
   return (
     <div className="app-frame bg-surface page-enter">
@@ -125,18 +129,23 @@ function StorePage() {
       <div className="px-3.5 pt-7">
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="text-[21px] font-extrabold">Produtos da loja</h2>
-          {catalogView !== "home" && <button type="button" onClick={() => { setCatalogView("home"); setActiveCategory("Todos"); }} className="inline-flex shrink-0 items-center gap-1 text-[13px] font-semibold text-primary"><ChevronLeft className="h-4 w-4" />Voltar à vitrine</button>}
+          {catalogView === "home" ? (
+            <button type="button" onClick={() => openCatalogView(activeCategory, "all")} className="shrink-0 rounded-full border border-[#FE2C55]/25 bg-[#FE2C55]/[0.07] px-3 py-1.5 text-[12px] font-bold leading-none text-[#FE2C55] active:scale-[0.98]">Ver todos</button>
+          ) : (
+            <button type="button" onClick={() => setCatalogView("home")} className="inline-flex shrink-0 items-center gap-1 text-[12px] font-semibold text-[#FE2C55]"><ChevronLeft className="h-4 w-4" />Voltar à vitrine</button>
+          )}
         </div>
         <div data-shelf className="-mx-3.5 mb-4 flex gap-6 overflow-x-auto border-b border-border px-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryFilters.map((tab) => (
-            <button key={tab.label} type="button" onClick={() => { setActiveCategory(tab.label); setCatalogView(tab.label === "Todos" ? "home" : "category"); }} className={"relative min-h-11 shrink-0 whitespace-nowrap text-[14px] font-semibold " + (activeCategory === tab.label ? "text-foreground" : "text-muted-foreground")}>
+            <button key={tab.label} type="button" onClick={() => { setActiveCategory(tab.label); setCatalogView("home"); }} className={"relative min-h-11 shrink-0 whitespace-nowrap text-[14px] font-semibold " + (activeCategory === tab.label ? "text-foreground" : "text-muted-foreground")}>
               {tab.label}{activeCategory === tab.label && <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-primary" />}
             </button>
           ))}
-        </div>        <div className="mb-3 flex items-center justify-between">
+        </div>
+        <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-4 w-1 rounded-full bg-primary" />
-            <h3 className="text-[17px] font-extrabold">{catalogView === "all" ? "Todos os produtos" : catalogView === "category" ? activeCategory : activeCategory === "Natal" ? "Especial de Natal" : activeCategory === "Recomendados" ? "Recomendados para você" : "Todos os produtos"}</h3>
+            <h3 className="text-[17px] font-extrabold">{catalogView === "all" ? (activeCategory === "Todos" ? "Todos os produtos" : activeCategory) : activeCategory === "Natal" ? "Especial de Natal" : activeCategory === "Recomendados" ? "Recomendados para você" : activeCategory === "Todos" ? "Todos os produtos" : activeCategory}</h3>
           </div>
           <span className="text-[12px] text-muted-foreground">{visibleProducts.length} {visibleProducts.length === 1 ? "produto" : "produtos"}</span>
         </div>
@@ -148,13 +157,6 @@ function StorePage() {
           {visibleProducts.map((p, index) => (
             <ProductCard key={p.id} product={p} className={catalogView === "home" ? `w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
-          {catalogView === "home" && activeCategory === "Todos" && visibleProducts.length > 0 && (
-            <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
-              <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
-              <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
-              <span className="text-[11px] text-muted-foreground">Confira o catálogo completo</span>
-            </button>
-          )}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
               <h3 className="text-[16px] font-bold">{activeCategory === "Natal" ? "Novidades de Natal em breve" : "Nenhum produto encontrado"}</h3>
