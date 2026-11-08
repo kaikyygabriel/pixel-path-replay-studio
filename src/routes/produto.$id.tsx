@@ -131,6 +131,7 @@ function ProductPage() {
   const isKettle = p.id === "chaleira-unitermi-atacama";
   const isBrastoy = p.id === "brastoy-controle-remoto-k602";
   const isHotWheelsKit = p.id === "hot-wheels-kit-10-mattel-164";
+  const isCookwareSet = p.id === "conjunto-panelas-antiaderente-10-pecas";
   const isKarstenTowel = p.id === "jogo-toalhas-karsten";
   const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
@@ -159,6 +160,20 @@ function ProductPage() {
     { id: "kettle-review-5", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png" },
     { id: "kettle-review-6", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png" },
     { id: "kettle-review-7", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png" },
+  ] : [];
+  const cookwareReviewPhotos = isCookwareSet ? [
+    { id: "cookware-review-1", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-1.png" },
+    { id: "cookware-review-2", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-2.png" },
+    { id: "cookware-review-3", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-3.png" },
+    { id: "cookware-review-4", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-4.png" },
+    { id: "cookware-review-5", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-5.png" },
+    { id: "cookware-review-6", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-6.png" },
+    { id: "cookware-review-7", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-7.png" },
+    { id: "cookware-review-8", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-8.png" },
+    { id: "cookware-review-9", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-9.png" },
+    { id: "cookware-review-10", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-10.png" },
+    { id: "cookware-review-11", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-11.png" },
+    { id: "cookware-review-12", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-12.png" }
   ] : [];
   const hotWheelsReviewPhotos = isHotWheelsKit ? [
     { id: "hotwheels-review-1", src: "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-1.png" },
@@ -439,6 +454,32 @@ function ProductPage() {
     { id: "air-fryer-4l-review-text-12", name: "Bruno G.", date: "há 3 dias", rating: 5, text: "Uso quase todo dia para preparar porções rápidas. O timer e o desligamento automático são bem úteis.", media: null },
     { id: "air-fryer-4l-review-text-13", name: "Larissa M.", date: "há 9 dias", rating: 5, text: "O cesto é espaçoso para o tamanho dela e a limpeza é simples. Gostei bastante para a rotina.", media: null },
     { id: "air-fryer-4l-review-text-14", name: "Eduardo R.", date: "há 15 dias", rating: 4, text: "Boa fritadeira, compacta e fácil de regular. O preparo fica prático e não preciso ficar acompanhando o tempo.", media: null },
+    ] : isCookwareSet ? [
+    ...cookwareReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Juliana M.", "Renata C.", "Patrícia A.", "Camila R.", "Bruna S.", "Aline F.", "Marcos V.", "Débora L.", "Vanessa P.", "Rafaela T.", "Simone G.", "Carolina N."][i] ?? "",
+      date: ["há 1 dia", "há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 9 dias", "há 10 dias", "há 12 dias", "há 13 dias", "há 15 dias", "há 17 dias", "há 19 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "O conjunto é bem completo e gostei bastante do acabamento. A cor cereja ficou linda na cozinha.",
+        "Chegou tudo certinho. As peças são leves e o antiaderente facilita bastante na hora de lavar.",
+        "Gostei da variedade de tamanhos, dá para preparar desde coisas pequenas até uma refeição maior.",
+        "As panelas são bonitas e vieram bem embaladas. Os acessórios também ajudam bastante no dia a dia.",
+        "Bom custo-benefício pelo tanto de peças. Já usei algumas e a limpeza foi tranquila.",
+        "Escolhi a preta e gostei muito do visual. As tampas de vidro são práticas para acompanhar a comida.",
+        "Conjunto útil para equipar a cozinha. Tem vários tamanhos e não ocupa tanto espaço.",
+        "Gostei muito das panelas, são leves e fáceis de manusear. Vieram conforme a opção escolhida.",
+        "A cor é bonita e o conjunto atende bem às receitas do cotidiano. Fiquei satisfeita com a compra.",
+        "As tampas ajudam bastante e o revestimento parece fácil de limpar. Ótimo ter vários tamanhos.",
+        "Comprei para montar minha cozinha e achei o kit bem completo. Os acessórios vieram sortidos.",
+        "Gostei do conjunto e da variedade de peças. Para o uso diário está sendo bem prático."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "cookware-review-text-13", name: "Michele D.", date: "há 3 dias", rating: 5, text: "Gostei da quantidade de peças e dos tamanhos diferentes. É um conjunto versátil para a rotina.", media: null },
+    { id: "cookware-review-text-14", name: "Eduarda B.", date: "há 8 dias", rating: 5, text: "A panela é fácil de limpar e as tampas de vidro são muito úteis para acompanhar o preparo.", media: null },
+    { id: "cookware-review-text-15", name: "Sônia K.", date: "há 14 dias", rating: 5, text: "Escolhi a versão preto com bege e achei muito bonita. O kit veio completo.", media: null },
+    { id: "cookware-review-text-16", name: "Tatiane H.", date: "há 18 dias", rating: 5, text: "Conjunto prático para o dia a dia, com peças de tamanhos variados. Gostei da compra.", media: null },
   ] : isHotWheelsKit ? [
     ...hotWheelsReviewPhotos.map((photo, i) => ({
       id: photo.id,

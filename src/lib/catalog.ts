@@ -414,9 +414,35 @@ export const products: Product[] = [
     sold: "2.500+",
   },
 
-];
+  {
+    id: "conjunto-panelas-antiaderente-10-pecas",
+    title: "Conjunto de Panelas Antiaderente 10 Peças · 5 Camadas · Várias Cores",
+    cardTitle: "Jogo de Panelas Antiaderente 10 Peças",
+    checkoutTitle: "Conjunto de Panelas Antiaderente 10 Peças · Escolha a Cor",
+    category: "Casa & Utilidades · Cozinha · Panelas · Mais vendidos · Recomendados",
+    price: 14975,
+    original: 29980,
+    shippingOriginal: 2620,
+    image: "/products/conjunto-panelas-antiaderente-10-pecas/gallery/panelas-carrossel-1.png",
+    gallery: [
+      "/products/conjunto-panelas-antiaderente-10-pecas/gallery/panelas-carrossel-1.png",
+      "/products/conjunto-panelas-antiaderente-10-pecas/gallery/panelas-carrossel-2.png",
+      "/products/conjunto-panelas-antiaderente-10-pecas/gallery/panelas-carrossel-3.png",
+      "/products/conjunto-panelas-antiaderente-10-pecas/gallery/panelas-carrossel-4.png",
+      "/products/conjunto-panelas-antiaderente-10-pecas/gallery/panelas-carrossel-5.png"
+    ],
+    variants: [
+      { id: "panelas-cor-cereja", line: "Cor", color: "Cereja", description: "Conjunto de Panelas Antiaderente 10 Peças · Cereja", price: 14975, original: 29980, pieces: 1, image: "/products/conjunto-panelas-antiaderente-10-pecas/variants/panelas-cereja.png" },
+      { id: "panelas-cor-preto", line: "Cor", color: "Preto", description: "Conjunto de Panelas Antiaderente 10 Peças · Preto", price: 14975, original: 29980, pieces: 1, image: "/products/conjunto-panelas-antiaderente-10-pecas/variants/panelas-preto.png" },
+      { id: "panelas-cor-preto-bege", line: "Cor", color: "Preto com Bege", description: "Conjunto de Panelas Antiaderente 10 Peças · Preto com Bege", price: 14975, original: 29980, pieces: 1, image: "/products/conjunto-panelas-antiaderente-10-pecas/variants/panelas-preto-com-bege.png" }
+    ],
+    description: "Renove sua cozinha com um conjunto de 10 peças pensado para deixar o preparo das refeições mais prático. As panelas são feitas em alumínio com 1,2 mm de espessura e revestimento antiaderente de 5 camadas, que ajuda a evitar que os alimentos grudem e facilita a limpeza.\n\n**Mais praticidade no dia a dia:** tampas de vidro temperado com saída de vapor permitem acompanhar o preparo. Os cabos e pegadores em baquelite antitérmico oferecem manuseio mais confortável, enquanto os 3 acessórios de nylon ajudam a preservar o revestimento.\n\n**Conteúdo do conjunto:** 2 panelas, 2 caçarolas, 2 frigideiras fundas, 1 fervedor e 3 acessórios de nylon sortidos. Os acessórios podem variar conforme a disponibilidade.\n\n**Capacidades e medidas:** panela de 2 L (18 cm) e panela de 1,5 L (16 cm); caçarola de 2,7 L (20 cm) e caçarola de 2 L (18 cm); frigideira funda de 1,6 L (20 cm) e frigideira funda de 1,4 L (18 cm); fervedor de 2 L (14 cm). Alturas entre 6 e 12 cm, conforme a peça.\n\n**Material e compatibilidade:** alumínio com 1,2 mm de espessura, revestimento antiaderente de 5 camadas, tampas de vidro temperado e cabos/pegadores de baquelite. Compatível com fogão a gás.\n\n**Escolha sua cor:** Cereja, Preto ou Preto com Bege. Confira a opção selecionada antes de concluir a compra.",
+    rating: 4.9,
+    reviews: null,
+    sold: "3.000+",
+  },
 
-export const getProduct = (id: string) => products.find((p) => p.id === id);
+];\n\nexport const getProduct = (id: string) => products.find((p) => p.id === id);
 
 export const brl = (cents: number) =>
   "R$ " +
