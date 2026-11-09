@@ -52,7 +52,7 @@ function OfferTimer() {
   return <>{offer.hms}</>;
 }
 
-const strip = ["FRETE GRÁTIS BRASIL", "ESPECIAL 25.12", "COMPRA PROTEGIDA", "ATÉ 70% OFF"];
+const strip = ["FRETE GRÁTIS BRASIL", "ESPECIAL 25.12", "COMPRA PROTEGIDA", "ATÉ 90% OFF"];
 type DemoReview = { id: string; name: string; date: string; rating: number; text: string; media: string | null };
 const demoReviewCopy = [
   'Gostei muitoo, é bem bonito e ficou ótimo aqui em casa',
