@@ -142,6 +142,24 @@ function ProductPage() {
   const isProjector = p.id === "projetor-hy300-duoseg";
 
 
+  const isOmoLaundry = p.id === "omo-lavanderia-profissional-7l";
+  const omoReviewPhotos = isOmoLaundry ? [
+    { id: "omo-laundry-review-1", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-1.png" },
+    { id: "omo-laundry-review-2", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-2.png" },
+    { id: "omo-laundry-review-3", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-3.png" },
+    { id: "omo-laundry-review-4", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-4.png" },
+    { id: "omo-laundry-review-5", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-5.png" },
+    { id: "omo-laundry-review-6", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-6.png" },
+    { id: "omo-laundry-review-7", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-7.png" },
+    { id: "omo-laundry-review-8", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-8.png" },
+    { id: "omo-laundry-review-9", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-9.png" },
+    { id: "omo-laundry-review-10", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-10.png" },
+    { id: "omo-laundry-review-11", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-11.png" },
+    { id: "omo-laundry-review-12", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-12.png" },
+    { id: "omo-laundry-review-13", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-13.png" },
+    { id: "omo-laundry-review-14", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-14.png" }
+  ] : [];
+
   const isT900Smartwatch = p.id === "smartwatch-t900-s10-ultra-pro";
   const smartwatchReviewPhotos = isT900Smartwatch ? [
     { id: "t900-smartwatch-review-1", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-1.png" },
@@ -353,7 +371,20 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isT900Smartwatch ? [
+  const demoReviews: DemoReview[] = isOmoLaundry ? [
+    ...omoReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Juliana M.","Patrícia R.","Aline S.","Camila F.","Renata C.","Márcia T.","Fernanda L.","Vanessa P.","Débora A.","Luciana G.","Carolina B.","Elaine D.","Priscila N.","Mariana V."][i],
+      date: ["há 2 dias","há 6 dias","há 1 dia","há 11 dias","há 4 dias","há 15 dias","há 8 dias","há 3 dias","há 18 dias","há 9 dias","há 5 dias","há 13 dias","há 7 dias","há 19 dias"][i],
+      rating: [5,5,5,5,4,5,5,5,5,5,5,4,5,5][i],
+      text: ["Uso na lavanderia de casa e gostei bastante. O galão rende muito.","Comprei para adiantar as lavagens da semana. Limpa bem e a embalagem grande compensa.","Gostei do resultado nas roupas do dia a dia. Chegou tudo certinho.","Tenho bastante roupa para lavar e esse tamanho ajuda demais. Só lembrar de seguir a medida indicada no rótulo.","Produto bom, fez bastante espuma e deixou as peças limpas. O galão é grandinho, então já separa um espaço para guardar.","Já conhecia OMO e resolvi pegar essa versão maior. Para quem lava roupa com frequência, facilita não precisar comprar toda hora.","Usei em roupas claras e coloridas e gostei do resultado. Vou comprar novamente quando acabar.","Chegou bem embalado e sem vazamento. O tamanho de 7 litros é ótimo para quem tem bastante roupa na rotina.","Estou usando na rotina da família e rende bastante. A limpeza me agradou, inclusive nas peças mais pesadas.","Gostei muito, principalmente pelo rendimento. Coloco a quantidade conforme a orientação e tem funcionado bem.","Comprei para a lavanderia do pequeno negócio e está atendendo bem à demanda. Bom custo-benefício pelo tamanho.","Cumpre o que promete na limpeza. Só achei o galão pesado para manusear cheio, mas isso já era esperado pelo volume.","Vale a pena para quem lava bastante roupa. O produto rende e não preciso ficar repondo toda hora.","Gostei da compra. As roupas saíram limpas e o galão veio direitinho, bem fechado."][i],
+      media: photo.src,
+    })),
+    { id: "omo-laundry-review-text-15", name: "Sabrina H.", date: "há 3 dias", rating: 5, text: "O galão é grande mesmo! Para quem lava roupa quase todo dia, achei bem mais prático comprar o de 7 litros.", media: null },
+    { id: "omo-laundry-review-text-16", name: "Andréa K.", date: "há 10 dias", rating: 5, text: "Usei nas roupas de cama e nas peças do trabalho. Gostei da limpeza; estou seguindo a dosagem da embalagem para aproveitar o rendimento.", media: null },
+    { id: "omo-laundry-review-text-17", name: "Mônica E.", date: "há 16 dias", rating: 4, text: "Chegou tudo certo. É uma embalagem pesada para levantar, mas o volume compensa para minha rotina de lavanderia.", media: null },
+    { id: "omo-laundry-review-text-18", name: "Tatiane O.", date: "há 12 dias", rating: 5, text: "Produto que facilita bastante aqui em casa. Rende bem e gostei do resultado nas lavagens do dia a dia.", media: null },
+  ] : isT900Smartwatch ? [
     ...smartwatchReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Larissa M.","Eduardo R.","Priscila A.","Matheus C.","Sônia F.","Gabriel T.","Renata P.","João V.","Camila D.","Rafael N.","Beatriz L.","André C.","Mariana F.","Felipe G."][i],

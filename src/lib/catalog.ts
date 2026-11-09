@@ -520,6 +520,32 @@ export const products: Product[] = [
     reviews: null,
     sold: "1.000+",
   },
+
+  {
+    id: "omo-lavanderia-profissional-7l",
+    title: "Lava Roupas Líquido OMO Lavanderia Profissional 7 L",
+    cardTitle: "OMO Lavanderia Profissional 7 L",
+    checkoutTitle: "Lava Roupas Líquido OMO Lavanderia Profissional 7 L",
+    category: "Casa & Utilidades · Limpeza · Mais vendidos · Recomendados",
+    price: 4385,
+    original: 9238,
+    shippingOriginal: 0,
+    image: "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-1.png",
+    variants: [],
+    gallery: [
+      "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-1.png",
+      "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-2.png",
+      "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-3.png",
+      "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-4.png",
+      "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-5.png",
+      "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-6.png",
+      "/products/omo-lavanderia-profissional-7l/gallery/omo-lavanderia-profissional-7l-7.png"
+    ],
+    description: "O Lava Roupas Líquido OMO Lavanderia Profissional 7 L foi desenvolvido para atender rotinas de lavagem com alta demanda, como lavanderias comerciais, oferecendo rendimento e poder de limpeza em um galão de 7 litros.\n\nSua fórmula de espuma de alta performance ajuda a remover manchas desde a primeira lavagem e foi pensada para cuidar de diferentes tipos de peças, das roupas delicadas às mais pesadas. De acordo com as informações do fabricante, o produto rende até 500 kg de roupas limpas ou aproximadamente 100 lavagens, conforme a dosagem recomendada.\n\nO rendimento pode variar de acordo com a quantidade de produto utilizada, o nível de sujeira e a capacidade da máquina. A referência de até 100 lavagens considera uma máquina com capacidade para 11 kg e roupas com sujeira moderada, seguindo as orientações de uso da embalagem.\n\n**Conteúdo da embalagem:** 1 galão de OMO Lavanderia Profissional com 7 litros.\n\n**Destaques:** embalagem econômica de 7 L · indicado para rotinas de lavagem de alta demanda · espuma de alta performance · ajuda a remover manchas na primeira lavagem · cuidado para roupas delicadas e pesadas · rendimento anunciado de até 500 kg de roupas ou 100 lavagens, conforme dosagem e condições de uso.\n\nPara melhores resultados, siga sempre as instruções de dosagem e uso descritas no rótulo do produto.",
+    rating: 5.0,
+    reviews: null,
+    sold: "8.000+",
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
