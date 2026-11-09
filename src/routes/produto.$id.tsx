@@ -362,6 +362,10 @@ function ProductPage() {
       text: ["Ficou muito bonito no pulso! Já comecei usando a pulseira laranja, achei que deu outra cara pro relógio.","Comprei para acompanhar as notificações e gostei. A configuração inicial pede um pouco de atenção, mas depois fica bem mais simples.","Veio com as três pulseiras mesmo. Eu achei que teria que escolher uma cor, então gostei bastante dessa surpresa.","A tela é grande e fácil de visualizar. Levei um tempinho para me acostumar com os menus, mas no geral gostei.","Presente para minha filha e ela adorou. A laranja foi a favorita dela 😊","Gostei do acabamento e do tamanho. No meu braço ficou confortável, não achei pesado.","Bem legal pelo preço. Uso mais para ver as horas, alarmes e notificações durante o trabalho.","Troquei para a pulseira branca e ficou lindo. Bom poder mudar o visual sem comprar acessório por fora.","Chegou certinho e corresponde ao anúncio. Só precisei olhar o passo a passo para conectar no celular.","Estou usando nas caminhadas para consultar o horário e o cronômetro. Até agora está atendendo ao que eu precisava.","A pulseira preta é discreta e combina com tudo. As outras duas são um bônus que gostei de receber.","Tem bastante função no menu, ainda estou explorando. Para as tarefas básicas do dia a dia está sendo útil.","Gostei mais do que esperava! A tela chama atenção e a pulseira de silicone é macia. A laranja ficou minha preferida.","Relógio bonito, leve e com várias opções. Pelo valor, achei que valeu a compra."][i],
       media: photo.src,
     })),
+
+    { id: "t900-smartwatch-review-text-15", name: "Ana Paula R.", date: "há 2 dias", rating: 5, text: "A pulseira branca ficou linda! Gostei de poder trocar quando quiser.", media: null },
+    { id: "t900-smartwatch-review-text-16", name: "Leandro S.", date: "há 8 dias", rating: 5, text: "Chegou tudo certinho. Ainda estou conhecendo as funções, mas para ver as horas e notificações já está sendo bem útil.", media: null },
+    { id: "t900-smartwatch-review-text-17", name: "Michele B.", date: "há 15 dias", rating: 4, text: "Gostei do relógio, principalmente do visual e das três pulseiras incluídas. A configuração inicial exigiu um pouco de paciência, mas consegui conectar.", media: null },
   ] : isJblBoombox ? [
     ...jblReviewPhotos.map((photo, i) => ({
       id: photo.id,
@@ -972,7 +976,7 @@ function ProductPage() {
         </div>
         )}
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
-          {filteredReviews.slice(0, isT900Smartwatch ? 14 : visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+          {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
             <div className="flex flex-col p-2.5">
               <div className="flex items-center gap-2">
@@ -985,7 +989,7 @@ function ProductPage() {
           </article>)}
         </div>
         {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
-        {!isT900Smartwatch && filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
+        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
       </section>
       <ProductRecommendations key={p.id} productId={p.id} />
       <div className="h-10 bg-surface" />
