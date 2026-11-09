@@ -142,6 +142,19 @@ function ProductPage() {
   const isProjector = p.id === "projetor-hy300-duoseg";
 
 
+  const isMondialFan = p.id === "ventilador-mondial-super-turbo-8-pas-40cm";
+  const mondialFanReviewPhotos = isMondialFan ? [
+    { id: "mondial-fan-review-1", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-1.png" },
+    { id: "mondial-fan-review-2", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-2.png" },
+    { id: "mondial-fan-review-3", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-3.png" },
+    { id: "mondial-fan-review-4", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-4.png" },
+    { id: "mondial-fan-review-5", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-5.png" },
+    { id: "mondial-fan-review-6", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-6.png" },
+    { id: "mondial-fan-review-7", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-7.png" },
+    { id: "mondial-fan-review-8", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-8.png" },
+    { id: "mondial-fan-review-9", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-9.png" }
+  ] : [];
+
   const isXboxWhiteController = p.id === "controle-sem-fio-xbox-branco";
   const xboxControllerReviewPhotos = isXboxWhiteController ? [
     { id: "xbox-controller-review-1", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-1.png" },
@@ -386,7 +399,20 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isXboxWhiteController ? [
+  const demoReviews: DemoReview[] = isMondialFan ? [
+    ...mondialFanReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Patrícia M.","Camila R.","Juliana S.","Fernanda A.","Márcia L.","Renata C.","Aline P.","Débora T.","Vanessa G."][i],
+      date: ["há 2 dias","há 7 dias","há 1 dia","há 12 dias","há 4 dias","há 16 dias","há 9 dias","há 3 dias","há 18 dias"][i],
+      rating: [5,5,5,5,5,4,5,5,5][i],
+      text: ["Ventila muito bem! Coloquei na sala e o vento chega até a cozinha. Gostei bastante.","Comprei para o quarto porque aqui faz muito calor. Na velocidade média já refresca bem e não incomoda tanto para dormir.","Chegou direitinho e foi fácil de montar. O tamanho é ótimo, venta bastante.","Gostei das 8 pás, espalha bem o vento pelo ambiente. Uso mais na sala e estou satisfeita.","É forte mesmo! Na velocidade máxima dá conta dos dias mais quentes. A oscilação ajuda bastante.","Bom ventilador e fácil de limpar. Só achei um pouco grande para o cantinho onde eu queria colocar, então medi melhor e mudei de lugar.","Comprei para minha mãe e ela adorou. A alça facilita levar de um cômodo para o outro.","Fiquei surpresa com a força do vento. Na mínima já fica agradável e na máxima refresca rapidinho.","Gostei do produto, chegou bem embalado e funcionando. A inclinação ajuda a direcionar o ar para a cama."][i],
+      media: photo.src,
+    })),
+    { id: "mondial-fan-review-text-10", name: "Sueli F.", date: "há 5 dias", rating: 5, text: "Aqui em casa somos quatro e o ventilador fica ligado boa parte do dia. Gostei porque distribui bem o ar e é simples de ajustar.", media: null },
+    { id: "mondial-fan-review-text-11", name: "Bruna D.", date: "há 11 dias", rating: 5, text: "O porta-fio é um detalhe que achei muito útil para guardar. O vento é forte e as velocidades fazem diferença.", media: null },
+    { id: "mondial-fan-review-text-12", name: "Elaine V.", date: "há 15 dias", rating: 4, text: "Atendeu ao que eu precisava para a sala. Antes de comprar, confiram direitinho a voltagem da casa para escolher a versão certa.", media: null },
+    { id: "mondial-fan-review-text-13", name: "Carolina B.", date: "há 8 dias", rating: 5, text: "Gostei muito da compra. A montagem foi tranquila e a limpeza parece prática porque dá para remover as grades e a hélice.", media: null },
+  ] : isXboxWhiteController ? [
     ...xboxControllerReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana C.","Rafael M.","Juliana P.","Bruno A.","Camila R.","Diego F.","Patrícia L.","Lucas T.","Fernanda G.","André V.","Beatriz N."][i],

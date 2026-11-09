@@ -571,6 +571,34 @@ export const products: Product[] = [
     reviews: null,
     sold: "800+",
   },
+
+  {
+    id: "ventilador-mondial-super-turbo-8-pas-40cm",
+    title: "Ventilador Super Turbo Mondial 8 Pás 40 cm",
+    cardTitle: "Ventilador Mondial Super Turbo 40 cm",
+    checkoutTitle: "Ventilador Super Turbo Mondial 8 Pás 40 cm",
+    category: "Ventiladores · Eletroportáteis · Casa & Utilidades · Recomendados",
+    price: 6985,
+    original: 24490,
+    shippingOriginal: 0,
+    image: "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-1.png",
+    variants: [
+      { id: "ventilador-mondial-127v", line: "Tensão", color: "127V", description: "Ventilador Mondial Super Turbo 40 cm · 127 V", price: 6985, original: 24490, pieces: 1, image: "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-1.png" },
+      { id: "ventilador-mondial-220v", line: "Tensão", color: "220V", description: "Ventilador Mondial Super Turbo 40 cm · 220 V", price: 6985, original: 24490, pieces: 1, image: "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-1.png" },
+    ],
+    gallery: [
+      "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-1.png",
+      "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-2.png",
+      "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-3.png",
+      "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-4.png",
+      "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-5.png",
+      "/products/ventilador-mondial-super-turbo-8-pas-40cm/gallery/ventilador-mondial-6.png"
+    ],
+    description: "O Ventilador Super Turbo Mondial de 40 cm com 8 pás foi desenvolvido para oferecer ventilação intensa e melhor distribuição do ar, ajudando a deixar os ambientes mais frescos e agradáveis. Seu design aerodinâmico combina uma hélice de alta performance com funcionamento pensado para proporcionar mais conforto no dia a dia.\n\nO sistema oscilante horizontal amplia o alcance do vento pelo ambiente. Se preferir direcionar o fluxo para um ponto específico, basta fixar a oscilação. A inclinação vertical regulável permite ajustar a direção do ar conforme a necessidade.\n\nO ventilador oferece três velocidades — mínima, média e máxima — para adequar a ventilação a diferentes momentos, desde uma brisa mais suave até um fluxo de ar mais intenso. Seu sistema de ventilação foi projetado para funcionar com mais silêncio e conforto.\n\nA limpeza também é prática: as grades frontal e traseira e a hélice são removíveis, facilitando a retirada de poeira. A alça traseira ajuda no transporte entre os cômodos, enquanto o porta-fio embutido permite guardar o cabo após o uso.\n\n**Características**\n- Marca: Mondial\n- Linha: Super Turbo\n- Diâmetro: 40 cm\n- Hélice com 8 pás\n- 3 velocidades: mínima, média e máxima\n- Oscilação horizontal com opção de direcionamento fixo\n- Inclinação vertical regulável\n- Grades e hélice removíveis para facilitar a limpeza\n- Alça para transporte e porta-fio embutido\n- Opções de tensão: 127 V ou 220 V — selecione a voltagem compatível com a instalação do local de uso\n\n**Conteúdo da embalagem:** 1 ventilador Mondial Super Turbo 40 cm com 8 pás.",
+    rating: 5.0,
+    reviews: null,
+    sold: "800+",
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
