@@ -142,6 +142,24 @@ function ProductPage() {
   const isProjector = p.id === "projetor-hy300-duoseg";
 
 
+  const isChandonReserve = p.id === "espumante-chandon-reserve-brut-750ml";
+  const chandonReviewPhotos = isChandonReserve ? [
+    { id: "chandon-review-1", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-1.png" },
+    { id: "chandon-review-2", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-2.png" },
+    { id: "chandon-review-3", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-3.png" },
+    { id: "chandon-review-4", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-4.png" },
+    { id: "chandon-review-5", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-5.png" },
+    { id: "chandon-review-6", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-6.png" },
+    { id: "chandon-review-7", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-7.png" },
+    { id: "chandon-review-8", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-8.png" },
+    { id: "chandon-review-9", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-9.png" },
+    { id: "chandon-review-10", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-10.png" },
+    { id: "chandon-review-11", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-11.png" },
+    { id: "chandon-review-12", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-12.png" },
+    { id: "chandon-review-13", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-13.png" },
+    { id: "chandon-review-14", src: "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-14.png" }
+  ] : [];
+
   const isBasikePowerBank = p.id === "power-bank-basike-10000mah-preto";
   const basikePowerBankReviewPhotos = isBasikePowerBank ? [
     { id: "basike-powerbank-review-1", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-1.png" },
@@ -415,7 +433,20 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isBasikePowerBank ? [
+  const demoReviews: DemoReview[] = isChandonReserve ? [
+    ...chandonReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana F.","Camila R.","Patrícia M.","Juliana A.","Fernanda C.","Renata S.","Aline P.","Bruna L.","Débora T.","Carolina G.","Vanessa B.","Priscila D.","Michele V.","Sabrina H."][i],
+      date: ["há 2 dias","há 7 dias","há 1 dia","há 12 dias","há 4 dias","há 16 dias","há 9 dias","há 3 dias","há 18 dias","há 6 dias","há 14 dias","há 5 dias","há 10 dias","há 8 dias"][i],
+      rating: 5,
+      text: ["Levei para um jantar em família e todo mundo gostou. É leve e bem agradável.","Comprei para comemorar uma data especial. Chegou bem embalado e geladinho depois de colocar na geladeira.","Tem um sabor delicado, sem ficar enjoativo. Servi com petiscos e combinou muito.","Foi para um almoço aqui em casa e fez sucesso. Gostei bastante das borbulhas e do equilíbrio.","Já conhecia o Chandon e comprei novamente para receber uns amigos. Veio tudo certinho.","Usei no brinde do nosso aniversário. Uma opção gostosa para uma ocasião especial.","Gostei bastante, principalmente servido bem gelado. Harmonizou com os frutos do mar.","Comprei para presentear e a pessoa adorou. A embalagem chegou em boas condições.","Espumante leve e fresco, ótimo para acompanhar uma refeição sem pesar.","Foi minha escolha para um jantar de comemoração. Todo mundo elogiou o sabor.","Chegou direitinho. Deixei gelar e servi no fim de semana, combinou super com a ocasião.","Gostei do aroma frutado e do sabor equilibrado. Compraria novamente para uma celebração.","Uma escolha certeira para brindar em casa. Não é muito doce e achei bem agradável.","Comprei para levar em um encontro com amigas e foi aprovado por todas."][i],
+      media: photo.src,
+    })),
+    { id: "chandon-review-text-15", name: "Elaine R.", date: "há 5 dias", rating: 5, text: "Servi com sushi num jantar em casa e achei que combinou muito bem. Bem fresco quando servido gelado.", media: null },
+    { id: "chandon-review-text-16", name: "Lívia N.", date: "há 11 dias", rating: 5, text: "Comprei para presentear meus pais numa comemoração. Eles gostaram bastante e chegou tudo certo.", media: null },
+    { id: "chandon-review-text-17", name: "André P.", date: "há 17 dias", rating: 4, text: "Bom espumante para celebrações. Sabor equilibrado e agradável; recomendo servir bem gelado.", media: null },
+    { id: "chandon-review-text-18", name: "Beatriz K.", date: "há 8 dias", rating: 5, text: "Gostei para um brinde especial, leve e fácil de harmonizar com petiscos e entradas.", media: null },
+  ] : isBasikePowerBank ? [
     ...basikePowerBankReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Carolina M.","Juliana R.","Fernanda P.","Aline C.","Patrícia S.","Bruna T.","Mariana L.","Débora F.","Camila G.","Renata B.","Vanessa D.","Priscila A."][i],

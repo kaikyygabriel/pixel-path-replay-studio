@@ -624,6 +624,29 @@ export const products: Product[] = [
     reviews: null,
     sold: "1.000+",
   },
+
+  {
+    id: "espumante-chandon-reserve-brut-750ml",
+    title: "Espumante Branco Brut Réserve Chandon 750 ml",
+    cardTitle: "Chandon Réserve Brut 750 ml",
+    checkoutTitle: "Espumante Chandon Réserve Brut 750 ml",
+    category: "Bebidas · Espumantes · Vinhos · Recomendados",
+    price: 4970,
+    original: 12490,
+    shippingOriginal: 0,
+    image: "/products/espumante-chandon-reserve-brut-750ml/gallery/chandon-1.png",
+    variants: [],
+    gallery: [
+      "/products/espumante-chandon-reserve-brut-750ml/gallery/chandon-1.png",
+      "/products/espumante-chandon-reserve-brut-750ml/gallery/chandon-2.png",
+      "/products/espumante-chandon-reserve-brut-750ml/gallery/chandon-3.png",
+      "/products/espumante-chandon-reserve-brut-750ml/gallery/chandon-4.png"
+    ],
+    description: "O Chandon Réserve Brut é um espumante brasileiro elaborado na Serra Gaúcha a partir de um assemblage das uvas Chardonnay, Pinot Noir e Riesling Itálico. Apresenta coloração amarelo-dourada, espuma abundante e persistente e borbulhas finas e numerosas.\n\nNo aroma, revela sutilezas de frutas cítricas, maçã verde e frutas secas. No paladar, é leve, fresco e equilibrado, ideal para acompanhar ocasiões especiais e refeições.\n\n**Harmonização:** ostras, sushis, saladas e carnes brancas.\n\n**Informações**\n- Produtor: Casa Chandon\n- País: Brasil\n- Região: Garibaldi, Serra Gaúcha\n- Tipo: Espumante Brut\n- Uvas: Chardonnay, Pinot Noir e Riesling Itálico\n- Volume: 750 ml\n- Graduação alcoólica: 11,8%\n\n**Aviso legal:** venda e consumo proibidos para menores de 18 anos. Beba com moderação.",
+    rating: 5.0,
+    reviews: null,
+    sold: "300+",
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
