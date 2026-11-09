@@ -442,6 +442,34 @@ export const products: Product[] = [
     sold: "3.000+",
   },
 
+
+  {
+    id: "kit-24-bolas-natalinas-5cm",
+    title: "Kit com 24 Bolinhas de Natal 5 cm · Dourado e Vermelho",
+    cardTitle: "Kit 24 Bolinhas de Natal 5 cm",
+    checkoutTitle: "Kit com 24 Bolinhas Natalinas de 5 cm · Escolha a Cor",
+    category: "Natal · Casa & Utilidades · Decoração · Recomendados",
+    price: 2995,
+    original: 5980,
+    shippingOriginal: 2620,
+    image: "/products/kit-24-bolas-natalinas-5cm/gallery/bolas-natalinas-carrossel-1.png",
+    gallery: [
+      "/products/kit-24-bolas-natalinas-5cm/gallery/bolas-natalinas-carrossel-1.png",
+      "/products/kit-24-bolas-natalinas-5cm/gallery/bolas-natalinas-carrossel-2.png",
+      "/products/kit-24-bolas-natalinas-5cm/gallery/bolas-natalinas-carrossel-3.png",
+      "/products/kit-24-bolas-natalinas-5cm/gallery/bolas-natalinas-carrossel-4.png",
+      "/products/kit-24-bolas-natalinas-5cm/gallery/bolas-natalinas-carrossel-5.png"
+    ],
+    variants: [
+      { id: "bolas-natalinas-dourado", line: "Cor", color: "Dourado", description: "Kit com 24 Bolinhas Natalinas de 5 cm · Dourado", price: 2995, original: 5980, pieces: 1, image: "/products/kit-24-bolas-natalinas-5cm/variants/bolas-natalinas-dourado.png" },
+      { id: "bolas-natalinas-vermelho", line: "Cor", color: "Vermelho", description: "Kit com 24 Bolinhas Natalinas de 5 cm · Vermelho", price: 2995, original: 5980, pieces: 1, image: "/products/kit-24-bolas-natalinas-5cm/variants/bolas-natalinas-vermelho.png" }
+    ],
+    description: "Deixe a decoração de Natal ainda mais bonita com este kit de 24 bolinhas natalinas de 5 cm. Com três acabamentos — brilhante, glitter e fosco —, os enfeites ajudam a criar uma árvore harmoniosa, com diferentes pontos de luz e textura.\n\n**Três acabamentos no mesmo kit:** combinação de bolinhas brilhantes, com glitter e foscas para dar mais movimento e profundidade à decoração.\n\n**Leves e fáceis de pendurar:** distribua os enfeites pela árvore e combine com laços, luzes, festões, flores e outros acessórios natalinos.\n\n**Ficha técnica:** 24 unidades · diâmetro de 5 cm · acabamento brilhante, glitter e fosco · indicado para decoração natalina e árvores de diferentes tamanhos.\n\n**Escolha a cor:** Dourado ou Vermelho. O kit é reutilizável e pode ser guardado após as festas para decorar nos próximos Natais.",
+    rating: 5.0,
+    reviews: null,
+    sold: "350+",
+  },
+
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);

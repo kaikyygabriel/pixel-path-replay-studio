@@ -132,6 +132,7 @@ function ProductPage() {
   const isBrastoy = p.id === "brastoy-controle-remoto-k602";
   const isHotWheelsKit = p.id === "hot-wheels-kit-10-mattel-164";
   const isCookwareSet = p.id === "conjunto-panelas-antiaderente-10-pecas";
+  const isChristmasOrnaments = p.id === "kit-24-bolas-natalinas-5cm";
   const isKarstenTowel = p.id === "jogo-toalhas-karsten";
   const isChristmasTree = p.id === "arvore-natal-kit-87-enfeites";
   const isMondialBlender = p.id === "liquidificador-mondial-l99-fb";
@@ -160,6 +161,15 @@ function ProductPage() {
     { id: "kettle-review-5", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png" },
     { id: "kettle-review-6", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png" },
     { id: "kettle-review-7", src: "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png" },
+  ] : [];
+  const christmasOrnamentsReviewPhotos = isChristmasOrnaments ? [
+    { id: "christmas-ornaments-review-1", src: "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-1.png" },
+    { id: "christmas-ornaments-review-2", src: "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-2.png" },
+    { id: "christmas-ornaments-review-3", src: "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-3.png" },
+    { id: "christmas-ornaments-review-4", src: "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-4.png" },
+    { id: "christmas-ornaments-review-5", src: "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-5.png" },
+    { id: "christmas-ornaments-review-6", src: "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-6.png" },
+    { id: "christmas-ornaments-review-7", src: "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-7.png" }
   ] : [];
   const cookwareReviewPhotos = isCookwareSet ? [
     { id: "cookware-review-1", src: "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-1.png" },
@@ -454,6 +464,27 @@ function ProductPage() {
     { id: "air-fryer-4l-review-text-12", name: "Bruno G.", date: "há 3 dias", rating: 5, text: "Uso quase todo dia para preparar porções rápidas. O timer e o desligamento automático são bem úteis.", media: null },
     { id: "air-fryer-4l-review-text-13", name: "Larissa M.", date: "há 9 dias", rating: 5, text: "O cesto é espaçoso para o tamanho dela e a limpeza é simples. Gostei bastante para a rotina.", media: null },
     { id: "air-fryer-4l-review-text-14", name: "Eduardo R.", date: "há 15 dias", rating: 4, text: "Boa fritadeira, compacta e fácil de regular. O preparo fica prático e não preciso ficar acompanhando o tempo.", media: null },
+    ] : isChristmasOrnaments ? [
+    ...christmasOrnamentsReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana C.", "Rafael P.", "Camila S.", "João V.", "Bruna M.", "Lucas A.", "Fernanda R."][i] ?? "",
+      date: ["há 1 dia", "há 3 dias", "há 5 dias", "há 7 dias", "há 10 dias", "há 14 dias", "há 18 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "As bolinhas douradas ficaram lindas na árvore. Gostei da mistura de brilho e glitter.",
+        "Vieram bem bonitas e leves, foi fácil distribuir os enfeites pela árvore.",
+        "Gostei de ter os três acabamentos no kit. Deu um efeito bem bonito com as luzinhas.",
+        "O tamanho ficou ótimo na minha árvore e o dourado combina com os outros enfeites.",
+        "Chegou tudo certinho. As bolinhas são leves e deixaram a decoração mais caprichada.",
+        "Escolhi a versão vermelha e gostei bastante da cor. Ficou linda junto com os festões.",
+        "Kit bem prático para completar a decoração de Natal. Gostei da variedade de acabamentos."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "christmas-ornaments-review-text-8", name: "Patrícia L.", date: "há 4 dias", rating: 5, text: "Usei para completar a decoração da árvore e gostei muito da combinação dos acabamentos.", media: null },
+    { id: "christmas-ornaments-review-text-9", name: "Diego M.", date: "há 9 dias", rating: 5, text: "As 24 unidades ajudam bastante a preencher a árvore. O tamanho é delicado e fácil de combinar.", media: null },
+    { id: "christmas-ornaments-review-text-10", name: "Aline F.", date: "há 13 dias", rating: 5, text: "Gostei do efeito do glitter com as bolinhas foscas. Ficou uma decoração bem bonita.", media: null },
+    { id: "christmas-ornaments-review-text-11", name: "Renata G.", date: "há 17 dias", rating: 5, text: "Comprei a cor dourada e ficou muito elegante na árvore. Vou guardar para usar nos próximos Natais.", media: null },
     ] : isCookwareSet ? [
     ...cookwareReviewPhotos.map((photo, i) => ({
       id: photo.id,
