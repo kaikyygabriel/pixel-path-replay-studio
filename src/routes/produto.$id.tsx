@@ -369,7 +369,7 @@ function ProductPage() {
     { id: "t900-smartwatch-review-text-13", name: "Marcelo D.", date: "há 12 dias", rating: 5, text: "Comprei para usar na academia e achei leve. A pulseira fica firme e gostei de ter outras duas para mudar quando quiser.", media: null },
     { id: "t900-smartwatch-review-text-14", name: "Nathalia O.", date: "há 16 dias", rating: 5, text: "A primeira coisa que fiz foi colocar a pulseira laranja, ficou muito bonita. As funções de alarme e temporizador também estão sendo úteis na rotina.", media: null },
     { id: "t900-smartwatch-review-text-15", name: "Pedro H.", date: "há 18 dias", rating: 5, text: "Pelo valor achei uma boa compra. Tem bastante coisa no menu e ainda estou descobrindo alguns recursos, mas o básico já está funcionando bem para mim.", media: null },
-  : isJblBoombox ? [
+  ] : isJblBoombox ? [
     ...jblReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Marcos A.", "Renata C.", "Felipe M.", "Camila R.", "Diego P.", "Aline S.", "Rafael T.", "Bruna L.", "Lucas F.", "Patrícia V.", "André G.", "Juliana M.", "Gustavo N.", "Fernanda B.", "Caio D."][i] ?? "",
