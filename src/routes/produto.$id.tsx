@@ -141,6 +141,16 @@ function ProductPage() {
   const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
   const isProjector = p.id === "projetor-hy300-duoseg";
 
+
+  const isT900Smartwatch = p.id === "smartwatch-t900-s10-ultra-pro";
+  const smartwatchReviewPhotos = isT900Smartwatch ? [
+    { id: "t900-smartwatch-review-1", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-1.png" },
+    { id: "t900-smartwatch-review-2", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-2.png" },
+    { id: "t900-smartwatch-review-3", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-3.png" },
+    { id: "t900-smartwatch-review-4", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-4.png" },
+    { id: "t900-smartwatch-review-5", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-5.png" }
+  ] : [];
+
   const isJblBoombox = p.id === "jbl-boombox-4";
   const jblReviewPhotos = isJblBoombox ? [
     { id: "jbl-boombox-review-1", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-1.png" },
@@ -334,7 +344,16 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isJblBoombox ? [
+  const demoReviews: DemoReview[] = isT900Smartwatch ? [
+    ...smartwatchReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: "Foto de avaliação",
+      date: "Imagem enviada",
+      rating: 5,
+      text: "Imagem disponibilizada para a avaliação deste produto.",
+      media: photo.src,
+    })),
+  ] : isJblBoombox ? [
     ...jblReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Marcos A.", "Renata C.", "Felipe M.", "Camila R.", "Diego P.", "Aline S.", "Rafael T.", "Bruna L.", "Lucas F.", "Patrícia V.", "André G.", "Juliana M.", "Gustavo N.", "Fernanda B.", "Caio D."][i] ?? "",

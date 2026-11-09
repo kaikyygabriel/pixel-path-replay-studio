@@ -494,6 +494,32 @@ export const products: Product[] = [
     reviews: null,
     sold: "3.800+",
   },
+
+  {
+    id: "smartwatch-t900-s10-ultra-pro",
+    title: "Relógio Inteligente Smartwatch T900 S10 Ultra Pro · 49 mm · 3 Pulseiras",
+    cardTitle: "Smartwatch T900 S10 Ultra Pro",
+    checkoutTitle: "Smartwatch T900 S10 Ultra Pro · 3 Pulseiras",
+    category: "Natal · Eletrônicos · Recomendados",
+    price: 3840,
+    original: 13985,
+    shippingOriginal: 0,
+    image: "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-1.png",
+    variants: [],
+    gallery: [
+      "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-1.png",
+      "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-2.png",
+      "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-3.png",
+      "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-4.png",
+      "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-5.png",
+      "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-6.png",
+      "/products/smartwatch-t900-s10-ultra-pro/gallery/smartwatch-t900-s10-ultra-pro-7.png"
+    ],
+    description: "O Relógio Inteligente Smartwatch T900 S10 Ultra Pro foi pensado para quem quer acompanhar a rotina com mais praticidade no pulso. Com visual esportivo e caixa de 49 mm, ele reúne funções úteis para o dia a dia, treinos e acompanhamento de notificações em um único acessório.\n\nA tela LCD de 49 mm oferece leitura ampla das informações, ajudando na visualização de dados, alertas e recursos rápidos. A estrutura na cor Galaxy, com aro preto em DLC e pulseira esportiva de silicone, traz um aspecto moderno e discreto para diferentes momentos de uso.\n\n**O produto acompanha três pulseiras incluídas: uma laranja, uma preta e uma branca.** Assim, você pode alternar o visual do relógio de acordo com sua preferência, sem precisar comprar as pulseiras separadamente.\n\nEntre os recursos informados para o modelo, estão chamadas via Bluetooth, notificações, bússola, cronômetro, calculadora, temporizador e armazenamento de música. Também são informados Wi-Fi, GPS, NFC e conectividade móvel, recursos cuja disponibilidade pode depender da compatibilidade do aparelho e da configuração utilizada.\n\nPara acompanhar a rotina ativa, o modelo traz resistência à água de até 1 m e bateria de 450 mAh, com autonomia informada de até 30 horas. A memória interna de 1 GB e a RAM de 256 MB contribuem para uma experiência funcional nas tarefas do relógio.\n\n**Especificações informadas:** caixa de 49 mm · tela LCD · aro preto em DLC · estrutura Galaxy · três pulseiras de silicone (laranja, preta e branca) · bateria de 450 mAh · autonomia anunciada de até 30 horas · memória interna de 1 GB · RAM de 256 MB · chamadas Bluetooth · Wi-Fi · GPS · NFC · bússola · cronômetro · calculadora · temporizador e armazenamento de música.\n\n**Conteúdo incluído:** 1 Smartwatch T900 S10 Ultra Pro e 3 pulseiras (laranja, preta e branca).\n\nA autonomia e o funcionamento dos recursos podem variar conforme o uso, o smartphone conectado e a compatibilidade de cada função. A resistência à água informada é de até 1 metro; evite utilizar o relógio em condições além das especificadas pelo fabricante.",
+    rating: 4.9,
+    reviews: null,
+    sold: "1.000+",
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
