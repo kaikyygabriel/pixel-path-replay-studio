@@ -140,6 +140,26 @@ function ProductPage() {
   const isMondialAirFryer4L = p.id === "air-fryer-mondial-afn-40-bft";
   const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
   const isProjector = p.id === "projetor-hy300-duoseg";
+
+  const isJblBoombox = p.id === "jbl-boombox-4";
+  const jblReviewPhotos = isJblBoombox ? [
+    { id: "jbl-boombox-review-1", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-1.png" },
+    { id: "jbl-boombox-review-2", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-2.png" },
+    { id: "jbl-boombox-review-3", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-3.png" },
+    { id: "jbl-boombox-review-4", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-4.png" },
+    { id: "jbl-boombox-review-5", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-5.png" },
+    { id: "jbl-boombox-review-6", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-6.png" },
+    { id: "jbl-boombox-review-7", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-7.png" },
+    { id: "jbl-boombox-review-8", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-8.png" },
+    { id: "jbl-boombox-review-9", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-9.png" },
+    { id: "jbl-boombox-review-10", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-10.png" },
+    { id: "jbl-boombox-review-11", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-11.png" },
+    { id: "jbl-boombox-review-12", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-12.png" },
+    { id: "jbl-boombox-review-13", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-13.png" },
+    { id: "jbl-boombox-review-14", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-14.png" },
+    { id: "jbl-boombox-review-15", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-15.png" }
+  ] : [];
+
   const projectorReviewPhotos = isProjector ? [
     { id: "projector-review-1", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-01.png" },
     { id: "projector-review-2", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-02.png" },
@@ -314,7 +334,36 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isProjector ? [
+  const demoReviews: DemoReview[] = isJblBoombox ? [
+    ...jblReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Marcos A.", "Renata C.", "Felipe M.", "Camila R.", "Diego P.", "Aline S.", "Rafael T.", "Bruna L.", "Lucas F.", "Patrícia V.", "André G.", "Juliana M.", "Gustavo N.", "Fernanda B.", "Caio D."][i] ?? "",
+      date: ["há 1 dia", "há 2 dias", "há 3 dias", "há 4 dias", "há 5 dias", "há 6 dias", "há 8 dias", "há 9 dias", "há 10 dias", "há 12 dias", "há 13 dias", "há 14 dias", "há 16 dias", "há 18 dias", "há 19 dias"][i] ?? "",
+      rating: i === 8 ? 4 : 5,
+      text: [
+        "Já tive a Boombox 3 e gostei muito da evolução. Essa é maior, tem presença e continua fácil de levar.",
+        "O som me surpreendeu, principalmente os graves. Em volume alto continua bem definido aqui.",
+        "A construção passa uma sensação ótima de resistência. O acabamento é bonito e os detalhes são bem feitos.",
+        "Gostei bastante da potência e da clareza. Usei em um encontro com amigos e preencheu bem o ambiente.",
+        "A bateria é um dos pontos que mais gostei. Consigo ouvir música por bastante tempo sem ficar procurando tomada.",
+        "Os graves têm bastante impacto e gostei de poder alternar o Bass Boost conforme o tipo de música.",
+        "Caixa robusta, mas achei mais leve do que imaginava pelo tamanho. O som também tem bastante presença.",
+        "O áudio é limpo e os graves são fortes. Para ouvir em área aberta fez bastante diferença.",
+        "Gostei muito do som e da potência. Só achei o tamanho maior do que eu esperava, então vale conferir as medidas antes.",
+        "Chegou bem protegida e o acabamento me agradou. Já conectei no celular e funcionou sem complicação.",
+        "Usei perto da piscina e gostei da tranquilidade de ter proteção contra água e poeira. Som muito bom.",
+        "O pareamento foi simples e a caixa entrega um som encorpado. Os controles pelo aplicativo ajudam bastante.",
+        "É potente mesmo, os graves aparecem bastante sem deixar a voz sumir. Gostei da experiência.",
+        "Gostei do formato e da alça para transportar. Levei para um espaço aberto e o volume deu conta.",
+        "Produto muito bonito e com ótima qualidade sonora. A diferença nos graves é o que mais chama atenção."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "jbl-boombox-review-text-16", name: "Roberto H.", date: "há 3 dias", rating: 5, text: "O som tem bastante corpo e os graves são fortes. Para ouvir música na área de casa ficou excelente.", media: null },
+    { id: "jbl-boombox-review-text-17", name: "Isabela F.", date: "há 7 dias", rating: 5, text: "Gostei da conexão e dos ajustes pelo aplicativo. É uma caixa grande, mas a alça facilita levar de um lugar para outro.", media: null },
+    { id: "jbl-boombox-review-text-18", name: "Thiago C.", date: "há 11 dias", rating: 5, text: "A potência impressiona e o áudio continua agradável mesmo quando aumento o volume. Compra que me agradou bastante.", media: null },
+    { id: "jbl-boombox-review-text-19", name: "Mônica P.", date: "há 17 dias", rating: 4, text: "Gostei muito da qualidade e da bateria. É um equipamento maior, então é bom ter espaço para guardar.", media: null },
+  ] : isProjector ? [
     ...projectorReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R.", "Juliana T."][i] ?? "",
