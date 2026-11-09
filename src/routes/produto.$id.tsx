@@ -142,6 +142,21 @@ function ProductPage() {
   const isProjector = p.id === "projetor-hy300-duoseg";
 
 
+  const isXboxWhiteController = p.id === "controle-sem-fio-xbox-branco";
+  const xboxControllerReviewPhotos = isXboxWhiteController ? [
+    { id: "xbox-controller-review-1", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-1.png" },
+    { id: "xbox-controller-review-2", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-2.png" },
+    { id: "xbox-controller-review-3", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-3.png" },
+    { id: "xbox-controller-review-4", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-4.png" },
+    { id: "xbox-controller-review-5", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-5.png" },
+    { id: "xbox-controller-review-6", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-6.png" },
+    { id: "xbox-controller-review-7", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-7.png" },
+    { id: "xbox-controller-review-8", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-8.png" },
+    { id: "xbox-controller-review-9", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-9.png" },
+    { id: "xbox-controller-review-10", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-10.png" },
+    { id: "xbox-controller-review-11", src: "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-11.png" }
+  ] : [];
+
   const isOmoLaundry = p.id === "omo-lavanderia-profissional-7l";
   const omoReviewPhotos = isOmoLaundry ? [
     { id: "omo-laundry-review-1", src: "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-1.png" },
@@ -371,7 +386,20 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isOmoLaundry ? [
+  const demoReviews: DemoReview[] = isXboxWhiteController ? [
+    ...xboxControllerReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana C.","Rafael M.","Juliana P.","Bruno A.","Camila R.","Diego F.","Patrícia L.","Lucas T.","Fernanda G.","André V.","Beatriz N."][i],
+      date: ["há 2 dias","há 7 dias","há 1 dia","há 12 dias","há 4 dias","há 16 dias","há 9 dias","há 3 dias","há 18 dias","há 6 dias","há 14 dias"][i],
+      rating: [5,5,5,5,5,4,5,5,5,5,5][i],
+      text: ["Comprei para jogar no PC e gostei bastante. O branco é bonito e o controle ficou confortável na mão.","Dei de presente e a pessoa curtiu muito. Conectou por Bluetooth e já foi jogar.","Chegou certinho, bem embalado. Meu filho gostou bastante e está usando nas partidas depois da escola.","Peguei para jogar no computador sem ficar com fio atravessando a mesa. Até agora a conexão está estável.","Gostei do acabamento e da pegada. Os botões respondem bem nos jogos que costumo jogar.","É confortável e funciona bem, só precisei conferir as configurações do Bluetooth no computador para parear na primeira vez.","Comprei para meu marido e ele aprovou. O controle é bonito e o cabo que acompanha também ajuda quando precisa.","Gostei! O tamanho é bom e não fica escorregando na mão. A vibração deixa os jogos mais legais.","Meu sobrinho queria um controle branco e ficou todo feliz. Foi simples conectar no PC dele.","Uso para jogar nas horas vagas. O controle é leve, tem boa pegada e não fico preso ao cabo.","Boa compra pelo preço. Veio com o cabo e consegui fazer a conexão seguindo as instruções do computador."][i],
+      media: photo.src,
+    })),
+    { id: "xbox-controller-review-text-12", name: "Aline D.", date: "há 5 dias", rating: 5, text: "Comprei para jogar com meu irmão e foi tranquilo de configurar. O branco é ainda mais bonito pessoalmente.", media: null },
+    { id: "xbox-controller-review-text-13", name: "Thiago B.", date: "há 11 dias", rating: 5, text: "Boa opção para quem quer jogar no PC sem fio. A pegada é confortável até depois de algumas partidas.", media: null },
+    { id: "xbox-controller-review-text-14", name: "Renata S.", date: "há 17 dias", rating: 4, text: "Presente para meu filho. Ele gostou bastante; só tivemos que conferir a compatibilidade e ajustar o pareamento no computador.", media: null },
+    { id: "xbox-controller-review-text-15", name: "Gustavo H.", date: "há 8 dias", rating: 5, text: "Chegou tudo certo e o cabo de 1 metro veio junto. Atendeu ao que eu estava procurando.", media: null },
+  ] : isOmoLaundry ? [
     ...omoReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Juliana M.","Patrícia R.","Aline S.","Camila F.","Renata C.","Márcia T.","Fernanda L.","Vanessa P.","Débora A.","Luciana G.","Carolina B.","Elaine D.","Priscila N.","Mariana V."][i],

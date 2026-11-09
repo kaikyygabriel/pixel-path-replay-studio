@@ -546,6 +546,31 @@ export const products: Product[] = [
     reviews: null,
     sold: "8.000+",
   },
+
+  {
+    id: "controle-sem-fio-xbox-branco",
+    title: "Controle Sem Fio Xbox Series X|S, Xbox One e PC Bluetooth Branco",
+    cardTitle: "Controle Xbox Sem Fio Branco",
+    checkoutTitle: "Controle Sem Fio Xbox Branco Bluetooth",
+    category: "Games · Acessórios Gamer · Eletrônicos · Recomendados",
+    price: 10783,
+    original: 46580,
+    shippingOriginal: 0,
+    image: "/products/controle-sem-fio-xbox-branco/gallery/controle-xbox-branco-1.png",
+    variants: [],
+    gallery: [
+      "/products/controle-sem-fio-xbox-branco/gallery/controle-xbox-branco-1.png",
+      "/products/controle-sem-fio-xbox-branco/gallery/controle-xbox-branco-2.png",
+      "/products/controle-sem-fio-xbox-branco/gallery/controle-xbox-branco-3.png",
+      "/products/controle-sem-fio-xbox-branco/gallery/controle-xbox-branco-4.png",
+      "/products/controle-sem-fio-xbox-branco/gallery/controle-xbox-branco-5.png",
+      "/products/controle-sem-fio-xbox-branco/gallery/controle-xbox-branco-6.png"
+    ],
+    description: "Tenha mais liberdade para jogar com o Controle Sem Fio Xbox Branco. Com design ergonômico, formato confortável e conexão Bluetooth, ele permite jogar sem deixar cabos atrapalhando a sua experiência.\n\nA conexão sem fio oferece praticidade para utilizar o controle em dispositivos compatíveis, incluindo computadores com Bluetooth. O sinal estável e a tecnologia anti-interferência ajudam a manter a conexão durante as partidas, sem depender de aplicativos de terceiros.\n\nO controle conta com sistema de vibração incorporado para deixar os jogos mais imersivos. Também acompanha cabo de 1 metro, oferecendo uma alternativa de conexão ou alimentação conforme a compatibilidade do dispositivo.\n\n**Informações do produto**\n- Quantidade: 1 controle\n- Cor: branco\n- Conectividade: Bluetooth e sem fio\n- Compatibilidade informada: Xbox Series X|S, Xbox One e PC; confirme a compatibilidade do dispositivo e do sistema antes da compra\n- Vibração incorporada\n- Cabo incluso com 1 metro de comprimento\n- Design ergonômico para maior conforto durante as partidas\n\n**Conteúdo da embalagem:** 1 controle sem fio branco e 1 cabo de 1 metro.",
+    rating: 5.0,
+    reviews: null,
+    sold: "800+",
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
