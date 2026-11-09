@@ -481,6 +481,7 @@ export const products: Product[] = [
     original: 218405,
     shippingOriginal: 2620,
     image: "/products/jbl-boombox-4/gallery/jbl-boombox-4-carrossel-1.png",
+    variants: [],
     gallery: [
       "/products/jbl-boombox-4/gallery/jbl-boombox-4-carrossel-1.png",
       "/products/jbl-boombox-4/gallery/jbl-boombox-4-carrossel-2.png",
