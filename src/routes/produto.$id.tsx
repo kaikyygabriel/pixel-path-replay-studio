@@ -347,13 +347,23 @@ function ProductPage() {
   const demoReviews: DemoReview[] = isT900Smartwatch ? [
     ...smartwatchReviewPhotos.map((photo, i) => ({
       id: photo.id,
-      name: "Foto de avaliação",
-      date: "Imagem enviada",
-      rating: 5,
-      text: "Imagem disponibilizada para a avaliação deste produto.",
+      name: ["Lucas M.", "Camila R.", "Rafael S.", "Bruna A.", "Diego P."][i] ?? "Cliente",
+      date: ["há 2 dias", "há 4 dias", "há 6 dias", "há 9 dias", "há 12 dias"][i] ?? "recentemente",
+      rating: i === 3 ? 4 : 5,
+      text: [
+        "Relógio bonito e bem leve no pulso. Gostei de já virem as três pulseiras, a laranja ficou muito bonita.",
+        "Chegou direitinho e gostei bastante do visual. Trocar a pulseira é fácil e as três cores dão opções para combinar.",
+        "A pulseira laranja chamou minha atenção e ficou ótima. O relógio tem uma tela grande e é bem prático para olhar as notificações.",
+        "Gostei do relógio e dos acessórios. A configuração levou um tempinho, mas depois consegui usar as funções que precisava.",
+        "Pelo valor, achei bem completo. As três pulseiras incluídas são um diferencial e dá para mudar o estilo sem comprar outras."
+      ][i] ?? "",
       media: photo.src,
     })),
-  ] : isJblBoombox ? [
+    { id: "t900-smartwatch-review-text-6", name: "Mariana L.", date: "há 3 dias", rating: 5, text: "Gostei muito de receber as pulseiras preta, branca e laranja no mesmo pacote. Assim consigo variar conforme a roupa." , media: null },
+    { id: "t900-smartwatch-review-text-7", name: "André F.", date: "há 5 dias", rating: 5, text: "O tamanho da tela ajuda bastante para visualizar as informações. Para consultar notificações e usar as funções básicas, está atendendo bem.", media: null },
+    { id: "t900-smartwatch-review-text-8", name: "Patrícia C.", date: "há 10 dias", rating: 5, text: "Achei o relógio bonito e confortável. A pulseira preta fica mais discreta, mas gostei de ter também a branca e a laranja.", media: null },
+    { id: "t900-smartwatch-review-text-9", name: "Felipe G.", date: "há 15 dias", rating: 4, text: "Tem bastante recurso para o dia a dia e o visual é bonito. É importante conferir a compatibilidade do celular com as funções antes de configurar.", media: null },
+  ]: isJblBoombox ? [
     ...jblReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Marcos A.", "Renata C.", "Felipe M.", "Camila R.", "Diego P.", "Aline S.", "Rafael T.", "Bruna L.", "Lucas F.", "Patrícia V.", "André G.", "Juliana M.", "Gustavo N.", "Fernanda B.", "Caio D."][i] ?? "",
