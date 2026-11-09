@@ -142,6 +142,22 @@ function ProductPage() {
   const isProjector = p.id === "projetor-hy300-duoseg";
 
 
+  const isBasikePowerBank = p.id === "power-bank-basike-10000mah-preto";
+  const basikePowerBankReviewPhotos = isBasikePowerBank ? [
+    { id: "basike-powerbank-review-1", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-1.png" },
+    { id: "basike-powerbank-review-2", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-2.png" },
+    { id: "basike-powerbank-review-3", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-3.png" },
+    { id: "basike-powerbank-review-4", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-4.png" },
+    { id: "basike-powerbank-review-5", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-5.png" },
+    { id: "basike-powerbank-review-6", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-6.png" },
+    { id: "basike-powerbank-review-7", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-7.png" },
+    { id: "basike-powerbank-review-8", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-8.png" },
+    { id: "basike-powerbank-review-9", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-9.png" },
+    { id: "basike-powerbank-review-10", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-10.png" },
+    { id: "basike-powerbank-review-11", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-11.png" },
+    { id: "basike-powerbank-review-12", src: "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-12.png" }
+  ] : [];
+
   const isMondialFan = p.id === "ventilador-mondial-super-turbo-8-pas-40cm";
   const mondialFanReviewPhotos = isMondialFan ? [
     { id: "mondial-fan-review-1", src: "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-1.png" },
@@ -399,7 +415,20 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
-  const demoReviews: DemoReview[] = isMondialFan ? [
+  const demoReviews: DemoReview[] = isBasikePowerBank ? [
+    ...basikePowerBankReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Carolina M.","Juliana R.","Fernanda P.","Aline C.","Patrícia S.","Bruna T.","Mariana L.","Débora F.","Camila G.","Renata B.","Vanessa D.","Priscila A."][i],
+      date: ["há 2 dias","há 7 dias","há 1 dia","há 12 dias","há 4 dias","há 16 dias","há 9 dias","há 3 dias","há 18 dias","há 6 dias","há 14 dias","há 5 dias"][i],
+      rating: [5,5,5,5,5,4,5,5,5,5,5,5][i],
+      text: ["Salvou minha vida no passeio! Fiquei o dia todo fora e consegui carregar o celular sem precisar procurar tomada.","É pequeno e cabe direitinho na bolsa. Já deixei como item fixo para quando saio.","Carrega rápido e veio com os cabos que aparecem nas fotos. Gostei bastante pela praticidade.","Comprei para uma viagem e foi muito útil no aeroporto. Não achei pesado para levar na mochila.","Gostei porque já tem as opções de cabo, então não preciso ficar procurando um monte de fio. Até agora está funcionando direitinho.","Produto bom, tamanho compacto e acabamento bonito. Só precisa lembrar de carregar o power bank antes de sair, claro.","Uso no trabalho quando fico longe da tomada. Consigo dar uma carga no celular e continuar usando.","Chegou bem embalado e carregado o suficiente para testar. A entrada USB-C facilitou bastante para mim.","Comprei para deixar na bolsa e adorei. É discreto, não ocupa muito espaço e quebra um galho enorme.","Meu celular estava sempre ficando sem bateria no meio da rua. Agora levo esse comigo e fico bem mais tranquila.","Gostei do custo-benefício. Os cabos integrados ajudam muito, principalmente quando estou com pressa.","É prático para viagens e para o dia a dia. O peso é ok considerando que é uma bateria portátil."][i],
+      media: photo.src,
+    })),
+    { id: "basike-powerbank-review-text-13", name: "Larissa V.", date: "há 5 dias", rating: 5, text: "Deixei um na bolsa e outro em casa para não esquecer. Para mim, o melhor é não depender de levar cabo separado.", media: null },
+    { id: "basike-powerbank-review-text-14", name: "Michele H.", date: "há 11 dias", rating: 5, text: "Usei durante um fim de semana fora e foi bem útil. A recarga pelo USB-C foi tranquila com meu carregador compatível.", media: null },
+    { id: "basike-powerbank-review-text-15", name: "Sabrina E.", date: "há 17 dias", rating: 4, text: "Gostei do produto e da praticidade dos cabos. Só confiram se a potência e as conexões atendem ao modelo do celular de vocês.", media: null },
+    { id: "basike-powerbank-review-text-16", name: "Elaine K.", date: "há 8 dias", rating: 5, text: "Pequeno, bonito e útil. Já virou companhia na bolsa, principalmente nos dias em que passo muitas horas fora.", media: null },
+  ] : isMondialFan ? [
     ...mondialFanReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Patrícia M.","Camila R.","Juliana S.","Fernanda A.","Márcia L.","Renata C.","Aline P.","Débora T.","Vanessa G."][i],

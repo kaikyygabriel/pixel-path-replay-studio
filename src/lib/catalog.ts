@@ -599,6 +599,31 @@ export const products: Product[] = [
     reviews: null,
     sold: "500+",
   },
+
+  {
+    id: "power-bank-basike-10000mah-preto",
+    title: "Power Bank Basike 10.000 mAh 22,5 W Preto",
+    cardTitle: "Power Bank Basike 10.000 mAh",
+    checkoutTitle: "Power Bank Basike 10.000 mAh Preto",
+    category: "Power Banks · Acessórios para Celular · Eletrônicos · Recomendados",
+    price: 2798,
+    original: 8985,
+    shippingOriginal: 0,
+    image: "/products/power-bank-basike-10000mah-preto/gallery/powerbank-basike-1.png",
+    variants: [],
+    gallery: [
+      "/products/power-bank-basike-10000mah-preto/gallery/powerbank-basike-1.png",
+      "/products/power-bank-basike-10000mah-preto/gallery/powerbank-basike-2.png",
+      "/products/power-bank-basike-10000mah-preto/gallery/powerbank-basike-3.png",
+      "/products/power-bank-basike-10000mah-preto/gallery/powerbank-basike-4.png",
+      "/products/power-bank-basike-10000mah-preto/gallery/powerbank-basike-5.png",
+      "/products/power-bank-basike-10000mah-preto/gallery/powerbank-basike-6.png"
+    ],
+    description: "O Power Bank Basike 10.000 mAh é uma bateria portátil compacta, ideal para manter seus dispositivos carregados durante passeios, viagens, deslocamentos e a rotina do dia a dia. Com potência máxima de até 22,5 W e conexões USB-C e USB-A, oferece opções práticas para recarregar aparelhos compatíveis.\n\nO modelo POW078 possui bateria de 10.000 mAh (37 Wh), corpo em ABS e plástico resistente e acabamento preto. Seu formato compacto mede aproximadamente 15 × 7 × 1,5 cm e pesa cerca de 250 g, facilitando o transporte na bolsa ou mochila.\n\nA entrada USB-C aceita recarga de até 20 W. Nas saídas, o aparelho oferece USB-C de até 20 W, USB-A de até 22,5 W, cabo integrado USB-C de até 22,5 W e cabo Lightning de até 10 W, conforme os perfis de tensão e corrente indicados pelo fornecedor. A recarga completa é informada em aproximadamente 3 horas usando carregador USB-C de 20 W compatível.\n\n**Especificações**\n- Marca: Basike\n- Modelo: POW078\n- Cor deste anúncio: preto\n- Capacidade da bateria: 10.000 mAh (37 Wh)\n- Potência máxima de saída: até 22,5 W\n- Entrada USB-C: 5 V⎓3 A, 9 V⎓2 A ou 12 V⎓1,5 A (até 20 W)\n- Saída USB-C: até 20 W\n- Saída USB-A: até 22,5 W\n- Cabo USB-C integrado: até 22,5 W\n- Cabo Lightning integrado: até 10 W\n- Tempo de recarga informado: aproximadamente 3 horas com carregador USB-C de 20 W\n- Dimensões: aproximadamente 15 × 7 × 1,5 cm\n- Peso: aproximadamente 250 g\n- Material: ABS e plástico resistente\n\n**Conteúdo da embalagem:** 1 power bank, 1 cabo USB-C e 1 manual de segurança. A velocidade de carregamento e a compatibilidade dependem do aparelho, do cabo e da fonte utilizados.",
+    rating: 4.9,
+    reviews: null,
+    sold: "1.000+",
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
