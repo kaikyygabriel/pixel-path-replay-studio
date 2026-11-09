@@ -148,7 +148,16 @@ function ProductPage() {
     { id: "t900-smartwatch-review-2", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-2.png" },
     { id: "t900-smartwatch-review-3", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-3.png" },
     { id: "t900-smartwatch-review-4", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-4.png" },
-    { id: "t900-smartwatch-review-5", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-5.png" }
+    { id: "t900-smartwatch-review-5", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-5.png" },
+    { id: "t900-smartwatch-review-6", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-6.png" },
+    { id: "t900-smartwatch-review-7", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-7.png" },
+    { id: "t900-smartwatch-review-8", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-8.png" },
+    { id: "t900-smartwatch-review-9", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-9.png" },
+    { id: "t900-smartwatch-review-10", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-10.png" },
+    { id: "t900-smartwatch-review-11", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-11.png" },
+    { id: "t900-smartwatch-review-12", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-12.png" },
+    { id: "t900-smartwatch-review-13", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-13.png" },
+    { id: "t900-smartwatch-review-14", src: "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-14.png" }
   ] : [];
 
   const isJblBoombox = p.id === "jbl-boombox-4";
@@ -347,28 +356,12 @@ function ProductPage() {
   const demoReviews: DemoReview[] = isT900Smartwatch ? [
     ...smartwatchReviewPhotos.map((photo, i) => ({
       id: photo.id,
-      name: ["Larissa M.", "Eduardo R.", "Priscila A.", "Matheus C.", "Sônia F."][i],
-      date: ["há 2 dias", "há 5 dias", "há 8 dias", "há 11 dias", "há 14 dias"][i],
-      rating: i === 3 ? 4 : 5,
-      text: [
-        "Eu queria um relógio mais arrumadinho, mas sem gastar muito. O laranja veio junto e ficou lindo no pulso, já usei bem mais do que esperava.",
-        "Comprei mais pela praticidade das notificações. A conexão com meu celular foi tranquila depois que segui as etapas do aplicativo. As pulseiras extras foram uma surpresa boa.",
-        "A tela é grandinha, dá pra bater o olho e ver as informações sem ficar apertando toda hora. O relógio ficou confortável no meu braço.",
-        "O relógio é bonito e veio com os acessórios certinhos. Demorei um pouco para entender a configuração inicial, mas depois ficou mais fácil de mexer.",
-        "Presenteei meu marido e ele gostou. A pulseira preta é a que ele mais usa, mas achou legal ter a branca e a laranja também."
-      ][i],
+      name: ["Larissa M.","Eduardo R.","Priscila A.","Matheus C.","Sônia F.","Gabriel T.","Renata P.","João V.","Camila D.","Rafael N.","Beatriz L.","André C.","Mariana F.","Felipe G."][i],
+      date: ["há 1 dia","há 4 dias","há 2 dias","há 7 dias","há 5 dias","há 11 dias","há 3 dias","há 9 dias","há 6 dias","há 14 dias","há 8 dias","há 17 dias","há 12 dias","há 19 dias"][i],
+      rating: [5,5,5,4,5,5,5,5,4,5,5,5,5,5][i],
+      text: ["Ficou muito bonito no pulso! Já comecei usando a pulseira laranja, achei que deu outra cara pro relógio.","Comprei para acompanhar as notificações e gostei. A configuração inicial pede um pouco de atenção, mas depois fica bem mais simples.","Veio com as três pulseiras mesmo. Eu achei que teria que escolher uma cor, então gostei bastante dessa surpresa.","A tela é grande e fácil de visualizar. Levei um tempinho para me acostumar com os menus, mas no geral gostei.","Presente para minha filha e ela adorou. A laranja foi a favorita dela 😊","Gostei do acabamento e do tamanho. No meu braço ficou confortável, não achei pesado.","Bem legal pelo preço. Uso mais para ver as horas, alarmes e notificações durante o trabalho.","Troquei para a pulseira branca e ficou lindo. Bom poder mudar o visual sem comprar acessório por fora.","Chegou certinho e corresponde ao anúncio. Só precisei olhar o passo a passo para conectar no celular.","Estou usando nas caminhadas para consultar o horário e o cronômetro. Até agora está atendendo ao que eu precisava.","A pulseira preta é discreta e combina com tudo. As outras duas são um bônus que gostei de receber.","Tem bastante função no menu, ainda estou explorando. Para as tarefas básicas do dia a dia está sendo útil.","Gostei mais do que esperava! A tela chama atenção e a pulseira de silicone é macia. A laranja ficou minha preferida.","Relógio bonito, leve e com várias opções. Pelo valor, achei que valeu a compra."][i],
       media: photo.src,
     })),
-    { id: "t900-smartwatch-review-text-06", name: "Bianca T.", date: "há 1 dia", rating: 5, text: "As três pulseiras vêm no pacote mesmo, não precisa escolher uma só. Já deixei a branca para usar durante o dia e a preta para sair à noite.", media: null },
-    { id: "t900-smartwatch-review-text-07", name: "Carlos E.", date: "há 3 dias", rating: 5, text: "Achei bem bonito pessoalmente. Uso mais para ver as notificações e controlar as funções básicas, que era justamente o que eu queria.", media: null },
-    { id: "t900-smartwatch-review-text-08", name: "Débora N.", date: "há 4 dias", rating: 5, text: "Fiquei na dúvida por causa do preço, mas gostei do que chegou. O relógio tem presença no pulso e a pulseira de silicone não incomodou até agora.", media: null },
-    { id: "t900-smartwatch-review-text-09", name: "Vinícius B.", date: "há 6 dias", rating: 4, text: "Visual bonito e várias funções para explorar. Precisei consultar o manual para fazer o primeiro pareamento, mas depois consegui usar normalmente.", media: null },
-    { id: "t900-smartwatch-review-text-10", name: "Aline G.", date: "há 7 dias", rating: 5, text: "O que mais gostei foi poder trocar a cor da pulseira. A laranja dá um destaque legal e a branca fica bem delicada.", media: null },
-    { id: "t900-smartwatch-review-text-11", name: "Rogério P.", date: "há 9 dias", rating: 5, text: "Chegou tudo junto e bem organizado. Estou usando para olhar as horas, notificações e cronômetro nas caminhadas. Até aqui está atendendo.", media: null },
-    { id: "t900-smartwatch-review-text-12", name: "Jéssica V.", date: "há 10 dias", rating: 5, text: "Gostei do tamanho da tela, principalmente para ler as mensagens rápidas. Não substitui meu celular, claro, mas quebra um galho enorme no trabalho.", media: null },
-    { id: "t900-smartwatch-review-text-13", name: "Marcelo D.", date: "há 12 dias", rating: 5, text: "Comprei para usar na academia e achei leve. A pulseira fica firme e gostei de ter outras duas para mudar quando quiser.", media: null },
-    { id: "t900-smartwatch-review-text-14", name: "Nathalia O.", date: "há 16 dias", rating: 5, text: "A primeira coisa que fiz foi colocar a pulseira laranja, ficou muito bonita. As funções de alarme e temporizador também estão sendo úteis na rotina.", media: null },
-    { id: "t900-smartwatch-review-text-15", name: "Pedro H.", date: "há 18 dias", rating: 5, text: "Pelo valor achei uma boa compra. Tem bastante coisa no menu e ainda estou descobrindo alguns recursos, mas o básico já está funcionando bem para mim.", media: null },
   ] : isJblBoombox ? [
     ...jblReviewPhotos.map((photo, i) => ({
       id: photo.id,
@@ -979,7 +972,7 @@ function ProductPage() {
         </div>
         )}
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
-          {filteredReviews.slice(0, isT900Smartwatch ? 15 : visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+          {filteredReviews.slice(0, isT900Smartwatch ? 14 : visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
             <div className="flex flex-col p-2.5">
               <div className="flex items-center gap-2">
