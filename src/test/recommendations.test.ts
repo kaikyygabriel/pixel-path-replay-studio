@@ -6,7 +6,7 @@ describe("product recommendations", () => {
   it("puts the four editorially related products first", () => {
     for (const current of products) {
       const result = recommendedProducts(current.id, () => 0);
-      expect(result.slice(0, 4).map((p) => p.id).sort()).toEqual([...relatedProductIds[current.id]].sort());
+      expect(result.slice(0, 4).map((p) => p.id).sort()).toEqual([...(relatedProductIds[current.id] ?? [])].sort());
     }
   });
   it("shows six distinct products and never recommends the current product", () => {
