@@ -81,8 +81,8 @@ function useFlashDeadline(product: Product) {
   return state;
 }
 
-export function FlashIcon({ className = "h-[13px] w-[13px]" }: { className?: string }) {
-  return <img src="/flash-lightning-white.png" alt="" aria-hidden="true" draggable={false} className={`object-contain ${className}`} />;
+export function FlashIcon({ className = "h-[14px] w-[12px]" }: { className?: string }) {
+  return <img src="/flash-lightning-white-v2.svg" alt="" aria-hidden="true" draggable={false} width={12} height={14} className={`block shrink-0 object-contain ${className}`} />;
 }
 
 function DiscountIcon() {
