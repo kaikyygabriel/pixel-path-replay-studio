@@ -1069,7 +1069,7 @@ function ProductPage() {
       </div>
 
       <div className="border-t-8 border-surface px-4 py-5">
-        <h2 className="mb-3 text-[19px] font-extrabold">Sobre este produto</h2>
+        <h2 className="mb-5 text-[19px] font-extrabold">Sobre este produto</h2>
         <div>
           <h3 className="mb-2 text-[16px] font-semibold">Descrição do produto</h3>
           <div className="relative">
@@ -1086,7 +1086,7 @@ function ProductPage() {
           <button
             type="button"
             onClick={() => setDescriptionExpanded((expanded) => !expanded)}
-            className="mt-2 text-[14px] font-semibold text-primary"
+            className="mt-2 block w-full py-1.5 text-center text-[15px] font-bold text-primary"
             aria-expanded={descriptionExpanded}
           >
             {descriptionExpanded ? "Ver menos" : "Ver mais"}
