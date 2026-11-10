@@ -63,16 +63,20 @@ function Resumo() {
         <span className="text-muted-foreground">Forma de pagamento</span>
         <span className="flex items-center gap-1 font-bold"><PixIcon className="h-4 w-4" />PIX</span>
       </div>
-      <Section className="px-3.5 py-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border border-success/20 bg-success-soft px-3 py-2 text-[14px] font-bold text-success shadow-sm"><span className="grid h-7 w-7 place-items-center rounded-full bg-background/80"><Truck className="h-4 w-4" /></span>Frete grátis</span>
-          <span className="text-[14px] font-semibold">com rastreio · Entrega estimada</span>
+      <div className="px-3.5 py-3">
+        <div className="rounded-lg bg-teal-soft px-3 py-3 text-[13px]">
+          <div className="flex items-center gap-2 text-teal-ink">
+            <Truck className="h-4 w-4 shrink-0" />
+            <span className="font-bold">Frete grátis</span>
+            <span className="text-teal-ink/80">· com rastreio · Entrega estimada</span>
+          </div>
+          <p className="mt-1.5 pl-6 text-[13px] capitalize text-foreground">Chega {formatEstimatedDelivery()} via Correios (SEDEX)</p>
         </div>
-        <p className="mt-3 text-[14px] capitalize">Chega {formatEstimatedDelivery()} via Correios (SEDEX)</p>
-        <div className="mt-3 flex items-center gap-2 rounded-lg bg-success-soft px-3 py-2.5 text-[13px] text-success">
-          <Package className="h-4 w-4" />Embalagem reforçada com proteção anti-impacto
+        <div className="mt-2 flex items-center gap-2 px-1 text-[12px] text-teal-ink">
+          <Package className="h-4 w-4 shrink-0" />
+          <span>Embalagem reforçada com proteção anti-impacto</span>
         </div>
-      </Section>
+      </div>
       <OrderSummary order={order} />
       <Protections />
       <LockNote>Confirme seus dados antes de finalizar a compra.</LockNote>
