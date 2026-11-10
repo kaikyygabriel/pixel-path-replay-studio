@@ -1196,14 +1196,14 @@ function ProductPage() {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-1/2 z-40 grid w-full max-w-[480px] -translate-x-1/2 grid-cols-[auto_auto_48px_minmax(0,1fr)] items-center gap-3 border-t border-border bg-background px-3 pt-2.5 pb-safe">
+      <div className="fixed bottom-0 left-1/2 z-40 grid w-full max-w-[480px] -translate-x-1/2 grid-cols-[auto_auto_68px_minmax(0,1fr)] items-center gap-2 border-t border-border bg-background px-3 pt-2.5 pb-safe">
         <Link to="/" className="flex flex-col items-center gap-0.5 text-[12px]"><Store className="h-6 w-6" />Loja</Link>
         <button onClick={() => update({ cartOpen: true })} className="relative flex flex-col items-center gap-0.5 text-[12px]">
           <ShoppingCart className="h-6 w-6" />Carrinho
           {cartCount(state.cart) > 0 && <span className="absolute -right-2 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[11px] font-bold text-primary-foreground">{cartCount(state.cart)}</span>}
         </button>
-        <CartAddButton productId={p.id} label="Adicionar ao carrinho" onClick={startCart} />
-        <button onClick={startBuy} className="h-12 rounded-full bg-primary text-primary-foreground shadow-[0_6px_18px_color-mix(in_oklab,var(--primary)_35%,transparent)]">
+        <CartAddButton productId={p.id} label="Adicionar ao carrinho" onClick={startCart} className="h-12 w-full" />
+        <button onClick={startBuy} className="h-12 min-w-0 rounded-full bg-primary px-1.5 text-primary-foreground shadow-[0_6px_18px_color-mix(in_oklab,var(--primary)_35%,transparent)]">
           <div className="text-[16px] font-extrabold leading-tight">Comprar agora</div>
           <div className="text-[12px] leading-tight opacity-90">{brl(shownPrice)} | Frete grátis</div>
         </button>
