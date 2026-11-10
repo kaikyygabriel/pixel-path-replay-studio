@@ -153,7 +153,7 @@ function shuffle<T>(items: T[], random: () => number): T[] {
 
 export function recommendedProducts(currentId: string, random: () => number = Math.random): Product[] {
   const available = products.filter((product) => product.id !== currentId);
-  const byId = new Map(available.map((product) => [product.id, product]));
+  const byId = new Map<string, Product>(available.map((product) => [product.id, product] as const));
   const related = (relatedProductIds[currentId] ?? []).map((id) => byId.get(id)).filter((product): product is Product => Boolean(product));
   const relatedIds = new Set(related.map((product) => product.id));
   const remaining = shuffle(available.filter((product) => !relatedIds.has(product.id)), random);
