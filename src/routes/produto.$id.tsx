@@ -935,7 +935,7 @@ function ProductPage() {
       <div className="bg-flash grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 text-primary-foreground">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="shrink-0 rounded-[5px] bg-white px-[7.5px] py-[1.5px] text-[13.5px] font-bold text-[#D9164B]">-{discountPct(shownPrice, shownOriginal)}%</span>
+            <span className="shrink-0 rounded-[6px] bg-white px-[7.5px] py-[1.5px] text-[13.5px] font-bold text-[#D9164B]">-{discountPct(shownPrice, shownOriginal)}%</span>
             <span className="truncate text-[24px] font-extrabold leading-none">{brl(shownPrice)}</span>
           </div>
           <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
