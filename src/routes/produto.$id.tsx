@@ -127,7 +127,7 @@ function ProductPage() {
   const [pickedVoltage, setPickedVoltage] = useState<string | null>(null);
   const [pickedColor, setPickedColor] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
-  const [opened, setOpened] = useState<string | null>(null);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [added, setAdded] = useState(false);
   const [protect, setProtect] = useState(false);
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
@@ -1069,15 +1069,29 @@ function ProductPage() {
       </div>
 
       <div className="border-t-8 border-surface px-4 py-5">
-        <h2 className="mb-2 text-[19px] font-extrabold">Sobre este produto</h2>
-        {["Detalhes", "Descrição do produto"].map((t) => (
-          <div key={t} className="border-b border-border">
-            <button onClick={() => setOpened(opened === t ? null : t)} className="flex w-full items-center justify-between py-4 text-[16px] font-semibold">
-              {t}<ChevronDown className={`h-5 w-5 transition-transform ${opened === t ? "rotate-180" : ""}`} />
-            </button>
-            {opened === t && <p className="whitespace-pre-line pb-4 text-[14px] leading-relaxed text-muted-foreground">{p.description ?? p.title}</p>}
+        <h2 className="mb-3 text-[19px] font-extrabold">Sobre este produto</h2>
+        <div>
+          <h3 className="mb-2 text-[16px] font-semibold">Descrição do produto</h3>
+          <div className="relative">
+            <p
+              className="whitespace-pre-line text-[14px] leading-relaxed text-muted-foreground"
+              style={descriptionExpanded ? undefined : { maxHeight: "16.25em", overflow: "hidden" }}
+            >
+              {p.description ?? p.title}
+            </p>
+            {!descriptionExpanded && (
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-background to-transparent" />
+            )}
           </div>
-        ))}
+          <button
+            type="button"
+            onClick={() => setDescriptionExpanded((expanded) => !expanded)}
+            className="mt-2 text-[14px] font-semibold text-primary"
+            aria-expanded={descriptionExpanded}
+          >
+            {descriptionExpanded ? "Ver menos" : "Ver mais"}
+          </button>
+        </div>
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
