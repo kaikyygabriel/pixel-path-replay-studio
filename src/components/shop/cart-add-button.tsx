@@ -36,12 +36,7 @@ export function CartAddButton({ productId, onClick, className = "", label = "Adi
       className={`grid h-12 w-full min-w-0 shrink-0 place-items-center rounded-full bg-[#FFF0F3] text-[#D9164B] transition-all duration-200 active:scale-95 ${confirmed ? "bg-[#FFE1E8] text-[#C81045]" : ""} ${className}`}
     >
       {confirmed ? <Check className="h-6 w-6 animate-[cart-check-pop_220ms_ease-out]" strokeWidth={3} /> : (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[30px] w-[30px]" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M2.5 4.5h2.2l2.1 10.1a1.8 1.8 0 001.8 1.4h9.1a1.8 1.8 0 001.7-1.3L21 8H6" />
-          <path d="M13.5 3v6M10.5 6h6" />
-          <circle cx="9" cy="19.2" r="1.1" fill="currentColor" stroke="none" />
-          <circle cx="17.2" cy="19.2" r="1.1" fill="currentColor" stroke="none" />
-        </svg>
+        <img src="/cart-add-icon.png" alt="" aria-hidden="true" draggable={false} className="h-[34px] w-[34px] object-contain" />
       )}
     </button>
   );
