@@ -6,6 +6,16 @@ import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
 import { products, store, brl, type Product, type Variant } from "@/lib/catalog";
 import { useCheckout, addToCart } from "@/lib/checkout";
 
+const salesCount = (value: string | null) => {
+  if (!value) return 0;
+  const normalized = value.toLowerCase().replace(/\\s/g, "");
+  const inThousands = normalized.includes("mil");
+  const numeric = normalized.replace(/[^0-9.,]/g, "");
+  const amount = Number.parseFloat(inThousands ? numeric.replace(",", ".") : numeric.replace(/\\./g, "").replace(",", "."));
+  return Number.isFinite(amount) ? amount * (inThousands ? 1000 : 1) : 0;
+};
+const hasCategory = (product: Product, category: string) => product.category.split("·").some((item) => item.trim().toLocaleLowerCase("pt-BR") === category.toLocaleLowerCase("pt-BR"));
+
 const getOptionKind = (variants: Variant[]) => {
   if (variants.length && variants.every((v) => /^(127|220)\s?V$/i.test(v.color.trim()))) return "voltage";
   const colorPattern = /branco|preto|azul|vermelho|verde|amarelo|rosa|roxo|lil[aá]s|cinza|bege|marrom|dourado|prata|cobre|transparente|inox|creme|off.?white|grafite|turquesa|colorido/i;
@@ -53,14 +63,22 @@ function StorePage() {
   );
   const categoryFilters: { label: string; match: (p: Product) => boolean }[] = [
     { label: "Todos", match: () => true },
-    { label: "Natal", match: (p) => p.category.toLocaleLowerCase("pt-BR").includes("natal") },
-    { label: "Brinquedos", match: (p) => /brinquedo|infantil|barbie/i.test(p.category + " " + p.title) },
-    { label: "Presentes", match: (p) => /presente|natal|brinquedo|infantil/i.test(p.category) },
-    { label: "Casa & Utilidades", match: (p) => /cama|mesa|banho|toalha|casa|utilidade|eletroport|air\\s?fryer|fritadeira/i.test(p.category + " " + p.title) },
-    { label: "Eletrônicos", match: (p) => /eletr/i.test(p.category) },
-    { label: "Recomendados", match: (p) => p.category.toLocaleLowerCase("pt-BR").includes("recomendados") },
+    { label: "Natal", match: (p) => hasCategory(p, "Natal") },
+    { label: "Casa & Utilidades", match: (p) => hasCategory(p, "Casa & Utilidades") },
+    { label: "Cozinha", match: (p) => hasCategory(p, "Cozinha") },
+    { label: "Cama, Mesa e Banho", match: (p) => hasCategory(p, "Cama, Mesa e Banho") },
+    { label: "Eletroportáteis", match: (p) => hasCategory(p, "Eletroportáteis") },
+    { label: "Climatização", match: (p) => hasCategory(p, "Climatização") },
+    { label: "Eletrônicos", match: (p) => hasCategory(p, "Eletrônicos") },
+    { label: "Brinquedos", match: (p) => hasCategory(p, "Brinquedos") },
+    { label: "Games", match: (p) => hasCategory(p, "Games") },
+    { label: "Decoração", match: (p) => hasCategory(p, "Decoração") },
+    { label: "Limpeza", match: (p) => hasCategory(p, "Limpeza") },
+    { label: "Bebidas", match: (p) => hasCategory(p, "Bebidas") },
+    { label: "Presentes", match: (p) => hasCategory(p, "Presentes") },
+    { label: "Recomendados", match: (p) => hasCategory(p, "Recomendados") },
   ];
-  const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true));
+  const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true)).sort((a, b) => salesCount(b.sold) - salesCount(a.sold));
   const isMondialBlender = quickProduct?.id === "liquidificador-mondial-l99-fb";
   const quickColorVariants = isMondialBlender ? quickProduct!.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const selectedVariant = quickProduct ? (isMondialBlender ? quickProduct.variants.find((v) => v.line === quickVoltage && v.color === quickColor) ?? null : quickProduct.variants.find((v) => v.id === quickVariant) ?? null) : null;
@@ -180,7 +198,7 @@ function StorePage() {
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
             <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {products.filter((p) => /natal|25\\.12/i.test(p.category)).map((p) => (
+              {products.filter((p) => hasCategory(p, "Natal")).sort((a, b) => salesCount(b.sold) - salesCount(a.sold)).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
               <button type="button" onClick={() => openCatalogView("Natal", "category")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
@@ -196,7 +214,7 @@ function StorePage() {
               <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
             </div>
             <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {[...products].sort((a, b) => { const sales = (value: string | null) => { if (!value) return 0; const normalized = value.toLowerCase().replace(/\s/g, ""); const inThousands = normalized.includes("mil"); const numeric = normalized.replace(/[^0-9.,]/g, ""); const amount = Number.parseFloat(inThousands ? numeric.replace(",", ".") : numeric.replace(/\./g, "").replace(",", ".")); return Number.isFinite(amount) ? amount * (inThousands ? 1000 : 1) : 0; }; return sales(b.sold) - sales(a.sold); }).map((p) => (
+              {products.filter((p) => hasCategory(p, "Mais vendidos")).sort((a, b) => salesCount(b.sold) - salesCount(a.sold)).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
               <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
