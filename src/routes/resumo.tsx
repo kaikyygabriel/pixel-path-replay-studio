@@ -63,12 +63,15 @@ function Resumo() {
         <span className="text-muted-foreground">Forma de pagamento</span>
         <span className="flex items-center gap-1 font-bold"><PixIcon className="h-4 w-4" />PIX</span>
       </div>
-      <div className="bg-background px-3.5 py-3">
+      <div className="border-y border-border bg-background px-3.5 py-3">
         <div className="rounded-lg bg-teal-soft px-3 py-3 text-[13px]">
-          <div className="flex items-center gap-2 text-teal-ink">
-            <Truck className="h-4 w-4 shrink-0" />
-            <span className="font-bold">Frete grátis</span>
-            <span className="text-teal-ink/80">· com rastreio · Entrega estimada</span>
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2 text-teal-ink">
+              <Truck className="h-4 w-4 shrink-0" />
+              <span className="shrink-0 font-bold">Frete grátis</span>
+              <span className="min-w-0 text-teal-ink/80">· com rastreio · Entrega estimada</span>
+            </div>
+            <s className="shrink-0 whitespace-nowrap text-[12px] text-muted-foreground">R$ 26,20</s>
           </div>
           <p className="mt-1.5 pl-6 text-[13px] capitalize text-foreground">Chega {formatEstimatedDelivery()} via Correios (SEDEX)</p>
         </div>
