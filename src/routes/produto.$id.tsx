@@ -1196,7 +1196,7 @@ function ProductPage() {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-1/2 z-40 grid w-full max-w-[480px] -translate-x-1/2 grid-cols-[auto_auto_84px_minmax(0,1fr)] items-center gap-2 border-t border-border bg-background px-3 pt-2.5 pb-safe">
+      <div className="fixed bottom-0 left-1/2 z-40 grid w-full max-w-[480px] -translate-x-1/2 grid-cols-[auto_auto_68px_minmax(0,1fr)] items-center gap-2 border-t border-border bg-background px-3 pt-2.5 pb-safe">
         <Link to="/" className="flex flex-col items-center gap-0.5 text-[12px]"><Store className="h-6 w-6" />Loja</Link>
         <button onClick={() => update({ cartOpen: true })} className="relative flex flex-col items-center gap-0.5 text-[12px]">
           <ShoppingCart className="h-6 w-6" />Carrinho
