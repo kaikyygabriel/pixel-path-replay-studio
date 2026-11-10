@@ -146,12 +146,31 @@ function shuffle<T>(items: T[], random: () => number): T[] {
   const result = [...items];
   for (let index = result.length - 1; index > 0; index -= 1) {
     const swap = Math.floor(random() * (index + 1));
-    [result[index], result[swap]] = [result[swap], result[index]];
+    const current = result[index] as T;
+    result[index] = result[swap] as T;
+    result[swap] = current;
   }
   return result;
 }
 
-export function recommendedProducts(currentId: string, random: () => number = Math.random): Product[] {
+/** Ordem estável por produto: servidor e cliente precisam calcular a mesma lista. */
+function seededRandom(seed: string): () => number {
+  let hash = 2166136261;
+  for (let index = 0; index < seed.length; index += 1) {
+    hash ^= seed.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  let state = hash >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let mixed = state;
+    mixed = Math.imul(mixed ^ (mixed >>> 15), mixed | 1);
+    mixed ^= mixed + Math.imul(mixed ^ (mixed >>> 7), mixed | 61);
+    return ((mixed ^ (mixed >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export function recommendedProducts(currentId: string, random: () => number = seededRandom(currentId)): Product[] {
   const available = products.filter((product) => product.id !== currentId);
   const byId = new Map<string, Product>(available.map((product) => [product.id, product] as const));
   const related = (relatedProductIds[currentId] ?? []).map((id) => byId.get(id)).filter((product): product is Product => Boolean(product));
