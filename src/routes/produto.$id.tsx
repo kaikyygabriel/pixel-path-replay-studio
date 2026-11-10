@@ -1202,7 +1202,7 @@ function ProductPage() {
           <ShoppingCart className="h-6 w-6" />Carrinho
           {cartCount(state.cart) > 0 && <span className="absolute -right-2 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[11px] font-bold text-primary-foreground">{cartCount(state.cart)}</span>}
         </button>
-        <CartAddButton productId={p.id} label="Adicionar ao carrinho" onClick={startCart} className="h-12 w-12 rounded-2xl" />
+        <CartAddButton productId={p.id} label="Adicionar ao carrinho" onClick={startCart} />
         <button onClick={startBuy} className="h-12 rounded-full bg-primary text-primary-foreground shadow-[0_6px_18px_color-mix(in_oklab,var(--primary)_35%,transparent)]">
           <div className="text-[16px] font-extrabold leading-tight">Comprar agora</div>
           <div className="text-[12px] leading-tight opacity-90">{brl(shownPrice)} | Frete grátis</div>
