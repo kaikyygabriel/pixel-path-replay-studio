@@ -8,10 +8,10 @@ import { useCheckout, addToCart } from "@/lib/checkout";
 
 const salesCount = (value: string | null) => {
   if (!value) return 0;
-  const normalized = value.toLowerCase().replace(/\\s/g, "");
+  const normalized = value.toLowerCase().replace(/\s/g, "");
   const inThousands = normalized.includes("mil");
   const numeric = normalized.replace(/[^0-9.,]/g, "");
-  const amount = Number.parseFloat(inThousands ? numeric.replace(",", ".") : numeric.replace(/\\./g, "").replace(",", "."));
+  const amount = Number.parseFloat(inThousands ? numeric.replace(",", ".") : numeric.replace(/\./g, "").replace(",", "."));
   return Number.isFinite(amount) ? amount * (inThousands ? 1000 : 1) : 0;
 };
 const hasCategory = (product: Product, category: string) => product.category.split("·").some((item) => item.trim().toLocaleLowerCase("pt-BR") === category.toLocaleLowerCase("pt-BR"));
