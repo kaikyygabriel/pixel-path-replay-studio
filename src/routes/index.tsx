@@ -207,6 +207,7 @@ function StorePage() {
                 <span className="text-[11px] text-muted-foreground">Produtos de Natal</span>
               </button>
             </div><div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
+            </div>
           </div>
           <div className="px-3.5 pb-9">
             <div className="mb-3 flex items-center gap-2">
@@ -223,6 +224,7 @@ function StorePage() {
                 <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
               </button>
             </div><div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
+            </div>
           </div>
         </>
       )}
