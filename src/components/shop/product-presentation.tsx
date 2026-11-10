@@ -82,7 +82,7 @@ function useFlashDeadline(product: Product) {
   return state;
 }
 
-export function FlashIcon({ className = "h-[1.25em]" }: { className?: string }) {
+export function FlashIcon({ className = "h-[1.6em]" }: { className?: string }) {
   return <img src={flashIconAsset.url} alt="" aria-hidden="true" draggable={false} width={1159} height={1357} className={`block shrink-0 w-auto object-contain ${className}`} />;
 }
 

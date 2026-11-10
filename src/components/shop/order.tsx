@@ -61,7 +61,7 @@ export function ItemCard({ order, right }: { order: Order; right?: ReactNode }) 
             <div className="min-w-0">
               <div className="text-[13.5px] font-semibold leading-snug">{item.title}</div>
               <div className="mt-1 flex items-center gap-1.5 text-[10px]">
-                <span className="flex items-center gap-0.5 rounded-sm bg-primary px-1.5 py-0.5 font-semibold text-primary-foreground"><FlashIcon className="h-2.5" />Oferta Relâmpago</span>
+                <span className="flex items-center gap-0 rounded-sm bg-primary px-1.5 py-0.5 font-semibold text-primary-foreground"><FlashIcon className="h-3.5" />Oferta Relâmpago</span>
                 <span className="rounded-sm bg-primary-soft px-1.5 py-0.5 text-primary">{offer.mm}:{offer.ss}</span>
               </div>
               <div className="mt-1 flex items-baseline justify-between text-[14px]">
