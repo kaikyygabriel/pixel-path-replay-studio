@@ -941,7 +941,7 @@ function ProductPage() {
           <div className="mt-1.5 text-[13px] opacity-90">De <s>{brl(shownOriginal)}</s></div>
         </div>
         <div className="text-right text-[12.5px] leading-tight">
-          <div className="flex items-center justify-end gap-0 font-bold"><FlashIcon className="h-[18px]" />Oferta Relâmpago</div>
+          <div className="flex items-center justify-end gap-0.5 font-bold"><FlashIcon className="h-[18px]" />Oferta Relâmpago</div>
           <div className="mt-1">Termina em <b className="tabular-nums"><OfferTimer /></b></div>
         </div>
       </div>
@@ -1223,7 +1223,7 @@ function ProductPage() {
                     {p.title} {variant ? `· ${variant.color}` : ""}
                   </div>
                   <div className="mt-1.5 flex items-center gap-1.5 text-[12px]">
-                    <span className="flex items-center gap-0 rounded bg-primary px-1 font-bold text-primary-foreground"><FlashIcon className="h-[14px]" />Oferta Relâmpago</span>
+                    <span className="flex items-center gap-0.5 rounded bg-primary px-1 font-bold text-primary-foreground"><FlashIcon className="h-[14px]" />Oferta Relâmpago</span>
                     <span className="font-bold text-primary"><OfferTimer /></span>
                   </div>
                   <div className="mt-1 flex items-center justify-between">
