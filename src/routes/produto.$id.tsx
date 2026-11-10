@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   ChevronLeft, ChevronRight, ChevronDown, Bookmark, Truck, ShieldCheck, Check, Store,
   ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Lock, Clock,
@@ -116,6 +116,12 @@ function ProductPage() {
   const { state, update } = useCheckout();
   const [idx, setIdx] = useState(0);
   const galleryRef = useRef<HTMLDivElement>(null);
+
+  // Cada nova abertura (ou troca) de produto começa sempre pela primeira foto.
+  useLayoutEffect(() => {
+    setIdx(0);
+    if (galleryRef.current) galleryRef.current.scrollLeft = 0;
+  }, [p.id]);
   const [sheet, setSheet] = useState<null | "buy" | "cart">(null);
   const [picked, setPicked] = useState<string | null>(null);
   const [pickedVoltage, setPickedVoltage] = useState<string | null>(null);
