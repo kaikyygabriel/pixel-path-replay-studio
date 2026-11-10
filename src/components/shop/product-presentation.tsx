@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { brl, discountPct, type Product } from "@/lib/catalog";
-import flashIconAsset from "@/assets/flash-lightning-white.png.asset.json";
+import flashIconAsset from "@/assets/flash-lightning-original.png.asset.json";
 
 type FlashTimerState = { deadline: number; cycle: number };
 const flashTimerMemory = new Map<string, FlashTimerState>();
@@ -83,7 +83,7 @@ function useFlashDeadline(product: Product) {
 }
 
 export function FlashIcon({ className = "h-[1.25em]" }: { className?: string }) {
-  return <img src={flashIconAsset.url} alt="" aria-hidden="true" draggable={false} width={80} height={96} className={`block shrink-0 w-auto object-contain ${className}`} />;
+  return <img src={flashIconAsset.url} alt="" aria-hidden="true" draggable={false} width={1159} height={1357} className={`block shrink-0 w-auto object-contain ${className}`} />;
 }
 
 function DiscountIcon() {
