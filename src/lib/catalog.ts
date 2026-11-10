@@ -93,7 +93,7 @@ export const products: Product[] = [
       "/products/jogo-toalhas-karsten/gallery/towel-16.png",
     ],
     variants: towelVariants,
-    description: "Jogo de toalhas Karsten Bosco com 4 peças, em uma combinação elegante de tons Vanilla e Marrom. O conjunto inclui 2 toalhas de banho de 135 × 70 cm e 2 toalhas de rosto, unindo praticidade, conforto e um visual clássico para o banheiro. Uma escolha versátil para renovar o dia a dia e proporcionar uma agradável sensação de bem-estar após o banho.",
+    description: "O jogo de toalhas Karsten reúne 4 peças pensadas para trazer mais conforto, praticidade e harmonia à rotina. O conjunto é composto por 2 toalhas de banho de 135 × 70 cm e 2 toalhas de rosto, oferecendo opções para diferentes momentos do cuidado diário. Produzidas em 100% algodão, as peças combinam um toque agradável com um visual elegante, deixando o banheiro mais bonito e acolhedor. A composição coordenada facilita a organização e cria uma apresentação caprichada no ambiente, seja para renovar o enxoval da casa ou complementar a decoração do banheiro. Versátil e funcional, é aquele conjunto que une beleza e utilidade em um só produto, tornando os momentos depois do banho ainda mais agradáveis. As diferentes opções de cores permitem escolher a combinação que mais combina com seu espaço e seu estilo.",
     rating: 4.8, reviews: null, sold: "7,8 mil",
   },
   {
