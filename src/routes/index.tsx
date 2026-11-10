@@ -155,7 +155,7 @@ function StorePage() {
         </div>
         <div data-shelf className="-mx-3.5 mb-4 flex gap-6 overflow-x-auto border-b border-border px-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {categoryFilters.map((tab) => (
-            <button key={tab.label} type="button" onClick={() => { setActiveCategory(tab.label); setCatalogView("home"); }} className={"relative min-h-11 shrink-0 whitespace-nowrap text-[14px] font-semibold " + (activeCategory === tab.label ? "text-foreground" : "text-muted-foreground")}>
+            <button key={tab.label} type="button" onClick={() => { setActiveCategory(tab.label); setCatalogView("category"); }} className={"relative min-h-11 shrink-0 whitespace-nowrap text-[14px] font-semibold " + (activeCategory === tab.label ? "text-foreground" : "text-muted-foreground")}>
               {tab.label}{activeCategory === tab.label && <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-primary" />}
             </button>
           ))}
@@ -197,32 +197,32 @@ function StorePage() {
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
-            <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {products.filter((p) => hasCategory(p, "Natal")).sort((a, b) => salesCount(b.sold) - salesCount(a.sold)).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
-              <button type="button" onClick={() => openCatalogView("Natal", "category")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+              <button type="button" onClick={() => openCatalogView("Natal", "category")} className="flex min-h-[190px] w-[min(28vw,112px)] shrink-0 snap-start flex-col items-center justify-center gap-2 px-1 text-center text-[#FE2C55] transition-opacity active:opacity-60">
                 <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Produtos de Natal</span>
               </button>
-            </div>
+            </div><div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
           </div>
           <div className="px-3.5 pb-9">
             <div className="mb-3 flex items-center gap-2">
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
             </div>
-            <div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {products.filter((p) => hasCategory(p, "Mais vendidos")).sort((a, b) => salesCount(b.sold) - salesCount(a.sold)).map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
-              <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(44vw,190px)] shrink-0 snap-start flex-col items-center justify-center gap-2 rounded-xl border border-white/55 bg-white/35 px-4 text-center text-[#FE2C55] shadow-sm backdrop-blur-md">
+              <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(28vw,112px)] shrink-0 snap-start flex-col items-center justify-center gap-2 px-1 text-center text-[#FE2C55] transition-opacity active:opacity-60">
                 <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
               </button>
-            </div>
+            </div><div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
           </div>
         </>
       )}
