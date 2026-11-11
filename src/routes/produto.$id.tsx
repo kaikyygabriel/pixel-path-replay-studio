@@ -10,7 +10,7 @@ import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checko
 import { CartAddButton } from "@/components/shop/cart-add-button";
 import { formatEstimatedDelivery } from "@/lib/delivery";
 import { ProductRecommendations } from "@/components/shop/product-recommendations";
-import { FlashIcon } from "@/components/shop/product-presentation";
+import { FlashIcon, ReviewMediaRating } from "@/components/shop/product-presentation";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
 const getOptionKind = (variants: Variant[]) => {
@@ -468,7 +468,7 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const legacyDemoReviews: DemoReview[] = isBedsheetSet
+  const demoReviews: DemoReview[] = isBedsheetSet
     ? makeStructuredDemoReviews(
         bedsheetReviewPhotos,
         ["Mariana C.", "Rafaela M.", "Camila R.", "João P.", "Ana L.", "Patrícia S.", "Bruna F.", "Diego A."],
@@ -574,158 +574,7 @@ function ProductPage() {
     { id: "chandon-review-text-16", name: "Lívia N.", date: "há 11 dias", rating: 5, text: "Comprei para presentear meus pais numa comemoração. Eles gostaram bastante e chegou tudo certo.", media: null },
     { id: "chandon-review-text-17", name: "André P.", date: "há 17 dias", rating: 4, text: "Bom espumante para celebrações. Sabor equilibrado e agradável; recomendo servir bem gelado.", media: null },
     { id: "chandon-review-text-18", name: "Beatriz K.", date: "há 8 dias", rating: 5, text: "Gostei para um brinde especial, leve e fácil de harmonizar com petiscos e entradas.", media: null },
-  ] : makeDemoReviews(p.id, p.gallery);;
-  // Textos de exemplo, escritos para cada produto. Não são relatos de compradores.
-  const demoReviewTexts: Record<string, string[]> = {
-    "jogo-toalhas-karsten": [
-      "O que mais gostei foi a absorção. Depois do banho a toalha não fica só espalhando água, sabe?",
-      "As peças têm uma aparência bonita e deixam o banheiro com cara de arrumado. Gostei do conjunto.",
-      "bem macias mesmo, principalmente depois de lavar. achei uma boa opção pra renovar as toalhas"
-    ],
-    "chaleira-unitermi-atacama": [
-      "O visual é bonito e a proposta é prática. Deixar a água pronta para o café sem ocupar muito espaço é o que chama atenção.",
-      "Gostei do formato, parece combinar bem com uma cozinha mais compacta. É aquele tipo de item útil na rotina.",
-      "Acho interessante para quem prepara chá ou café várias vezes ao dia. Simples, sem muita complicação."
-    ],
-    "arvore-natal-kit-87-enfeites": [
-      "O kit ajuda bastante a montar uma decoração de Natal mais completa sem precisar escolher cada enfeite separado.",
-      "Tem bastante variedade para brincar com a composição. Dá para deixar a árvore com uma aparência bem mais preenchida.",
-      "Para quem gosta de montar a decoração em família, esse conjunto já rende um bom começo."
-    ],
-    "smart-tv-tcl-55p8k-qled-4k": [
-      "Uma tela desse tamanho muda bastante a experiência de assistir filme. A proposta QLED 4K é o grande atrativo aqui.",
-      "Gostei de ver um conjunto de recursos tão completo numa TV de 55 polegadas. Boa opção para montar uma sala de entretenimento.",
-      "Pra jogar e assistir séries, tela grande faz diferença. O design também fica bem discreto no ambiente."
-    ],
-    "liquidificador-mondial-l99-fb": [
-      "O legal desse modelo é ter potência para preparos do cotidiano sem ocupar o espaço de um aparelho enorme.",
-      "É aquele eletrodoméstico que acaba sendo usado para várias coisas: suco, vitamina, massa leve e por aí vai.",
-      "Gostei da proposta mais direta. Para equipar a cozinha com um liquidificador funcional, faz sentido."
-    ],
-    "micro-ondas-philco-pmo31s": [
-      "O tamanho de 31 litros é interessante para quem usa travessas maiores e quer mais espaço interno.",
-      "Visual limpo e funções que ajudam na rotina. É um aparelho que combina com uma cozinha prática.",
-      "Pra esquentar refeições e resolver as tarefas do dia a dia, a capacidade é um ponto que chama atenção."
-    ],
-    "ar-condicionado-lg-ai-voice-9000": [
-      "A integração com comandos inteligentes é um diferencial interessante, principalmente para quem já usa automação em casa.",
-      "Um aparelho de 9.000 BTUs pode ser uma alternativa para ambientes compatíveis. Vale conferir a metragem antes de escolher.",
-      "Gostei da proposta de controlar funções pelo celular e por voz. Tecnologia útil quando facilita a rotina."
-    ],
-    "air-fryer-oven-mondial-afon-12l": [
-      "O formato oven e a capacidade de 12 litros dão mais possibilidades do que uma fritadeira compacta tradicional.",
-      "Achei interessante ter espaço para preparar porções maiores e visualizar o preparo pela porta.",
-      "Para quem gosta de variar as receitas, o formato com várias funções parece bem versátil."
-    ],
-    "squishy-surpresa-colecionavel": [
-      "É uma lembrancinha divertida para quem gosta de itens surpresa e colecionáveis. A graça está justamente em descobrir o modelo.",
-      "bem fofinho e com aquela proposta de apertar e brincar. parece uma opção legal pra presentear",
-      "A ideia de surpresa deixa a brincadeira mais interessante, principalmente para quem curte colecionar personagens."
-    ],
-    "barbie-casa-dos-sonhos-hmx10": [
-      "É um presente de impacto para quem gosta de brincar de casinha. Os ambientes dão bastante espaço para inventar histórias.",
-      "A quantidade de detalhes é o que chama atenção. É daquelas peças que viram o centro da brincadeira.",
-      "Uma casa grande abre muitas possibilidades de brincadeira com outras bonecas e acessórios."
-    ],
-    "projetor-hy300-duoseg": [
-      "A proposta portátil é interessante para montar uma sessão de filmes em diferentes cômodos. Só vale planejar bem a iluminação.",
-      "Gostei da ideia de ter uma tela maior sem precisar de uma TV ocupando espaço na parede.",
-      "Para assistir vídeos de vez em quando ou levar em uma viagem, o formato compacto chama atenção."
-    ],
-    "brastoy-controle-remoto-k602": [
-      "Um controle extra pode ser bem útil para substituir um que parou de funcionar. O importante é conferir a compatibilidade.",
-      "A proposta é simples e resolve uma necessidade específica. Bom lembrar de verificar o modelo do aparelho antes.",
-      "Para quem perdeu o controle original, ter uma opção de reposição facilita bastante."
-    ],
-    "air-fryer-mondial-afn-40-bft": [
-      "A capacidade de 4 litros atende bem quem prepara porções menores ou médias e quer praticidade na cozinha.",
-      "É um eletrodoméstico que ajuda a variar o preparo dos alimentos sem depender tanto de óleo.",
-      "Gostei do tamanho mais compacto. Parece uma escolha interessante para cozinhas com pouco espaço na bancada."
-    ],
-    "hot-wheels-kit-10-mattel-164": [
-      "Dez carrinhos no mesmo kit é um começo ótimo para montar uma coleção ou ampliar uma que já existe.",
-      "Presente fácil de agradar quem curte carrinhos. Cada modelo dá margem para inventar uma corrida diferente.",
-      "O conjunto é interessante tanto para brincar quanto para guardar os modelos na coleção."
-    ],
-    "conjunto-panelas-antiaderente-10-pecas": [
-      "Um conjunto com várias peças ajuda a deixar a cozinha mais equipada de uma vez. O acabamento também conta na escolha.",
-      "Gostei da variedade de tamanhos para alternar entre preparos rápidos e refeições maiores.",
-      "Para montar a cozinha ou substituir panelas antigas, ter as peças combinando é um ponto positivo."
-    ],
-    "kit-24-bolas-natalinas-5cm": [
-      "As 24 unidades ajudam a preencher a árvore sem misturar muitos tipos diferentes de enfeite.",
-      "O tamanho de 5 cm é versátil para distribuir entre galhos e combinar com outros detalhes da decoração.",
-      "Uma forma simples de dar unidade à decoração de Natal. Fica fácil combinar com luzes e outros enfeites."
-    ],
-    "jbl-boombox-4": [
-      "Esse é um produto para quem realmente valoriza som potente. O porte já deixa claro que a proposta é animar ambientes.",
-      "A ideia de levar uma caixa desse tamanho para encontros e áreas externas é muito boa. O visual também chama atenção.",
-      "Não é só uma caixinha para ouvir música baixinho: a proposta aqui é presença sonora e graves marcantes."
-    ],
-    "smartwatch-t900-s10-ultra-pro": [
-      "O visual de relógio inteligente chama atenção e combina com quem gosta de acompanhar informações direto no pulso.",
-      "Curti a proposta de reunir notificações e funções do dia a dia num acessório só. Antes de comprar, vale conferir a compatibilidade com o celular.",
-      "É um acessório que complementa o visual e pode deixar algumas tarefas rápidas mais práticas."
-    ],
-    "omo-lavanderia-profissional-7l": [
-      "A embalagem de 7 litros é interessante para quem tem bastante roupa para lavar e prefere comprar em maior volume.",
-      "Produto de lavanderia é aquele item de reposição da rotina. O tamanho maior pode ser conveniente para famílias.",
-      "Gostei da proposta econômica de ter uma quantidade maior disponível, especialmente em uma casa com lavagem frequente."
-    ],
-    "controle-sem-fio-xbox-branco": [
-      "Para quem joga bastante, um controle extra é sempre bem-vindo. O acabamento branco também fica muito bonito no setup.",
-      "O formato familiar e a conexão sem fio são os pontos que mais pesam para quem quer jogar com conforto.",
-      "Presente certeiro para quem tem Xbox ou joga no PC compatível. Só conferir a compatibilidade com o dispositivo."
-    ],
-    "ventilador-mondial-super-turbo-8-pas-40cm": [
-      "O diâmetro de 40 cm e as oito pás chamam atenção para quem procura uma ventilação mais ampla no ambiente.",
-      "Gostei de poder escolher entre três velocidades e ajustar a direção do vento conforme o cômodo.",
-      "A grade removível facilita pensar na limpeza periódica. Um detalhe importante para um aparelho de uso frequente."
-    ],
-    "power-bank-basike-10000mah-preto": [
-      "Ter bateria extra na mochila dá tranquilidade em dias longos fora de casa. A capacidade de 10.000 mAh é o destaque.",
-      "O formato portátil é o que mais me agrada na proposta. Dá para levar junto sem precisar carregar uma bateria enorme.",
-      "Interessante ter diferentes opções de conexão e cabos integrados. Só lembrar que a velocidade depende do aparelho compatível."
-    ],
-    "espumante-chandon-reserve-brut-750ml": [
-      "Uma opção para brindar em datas especiais. O perfil Brut e as notas frutadas combinam com quem prefere espumantes menos doces.",
-      "Gosto da versatilidade para acompanhar entradas, frutos do mar e momentos de comemoração. Servir bem gelado faz diferença.",
-      "A combinação de Chardonnay, Pinot Noir e Riesling Itálico dá personalidade ao rótulo. Boa ideia para uma ocasião especial."
-    ],
-    "purificador-electrolux-pa26g": [
-      "Ter água natural e gelada no mesmo aparelho deixa a rotina mais simples. O painel touch também dá um visual moderno.",
-      "O alerta de troca do filtro é um detalhe útil para lembrar da manutenção. Importante conferir a pressão da água na instalação.",
-      "Gostei da proposta de controlar a quantidade de água e retirar a bandeja para limpar. São detalhes práticos no uso diário."
-    ],
-    "jogo-facas-tramontina-plenus-9-pecas": [
-      "Ter facas de formatos diferentes ajuda bastante na preparação dos alimentos. O suporte também mantém tudo mais organizado.",
-      "O conjunto de nove peças é uma boa forma de equipar a cozinha sem comprar cada faca separadamente.",
-      "Visual discreto e proposta funcional. Para o preparo cotidiano, a variedade de lâminas é o que mais chama atenção."
-    ],
-    "camera-intelbras-im5-plus": [
-      "A possibilidade de acompanhar a área pelo celular é o principal atrativo. A conexão de 2,4 GHz precisa ser considerada na instalação.",
-      "Full Color, áudio bidirecional e proteção IP67 formam um conjunto interessante para monitoramento externo.",
-      "Gostei de ver opções de gravação e alertas ajustáveis. É importante escolher um ponto com bom sinal de rede."
-    ],
-    "jogo-lencol-casal-400-fios": [
-      "O lençol com elástico em toda a volta é um detalhe que ajuda a manter a cama arrumada. As fronhas com ponto palito completam o conjunto.",
-      "A combinação de tecido leve e secagem prática é interessante para a rotina. O visual fica delicado sem exagero.",
-      "Gostei da proposta de renovar o enxoval com três peças coordenadas. Só conferir a altura do colchão para garantir o ajuste."
-    ],
-  };
-  const selectedReviewTexts = demoReviewTexts[p.id] ?? [
-    "Uma opção interessante para quem procura praticidade e quer comparar os recursos antes de escolher.",
-    "O destaque fica na proposta do produto e em como ele pode se encaixar na rotina.",
-    "Vale conferir as características e medidas para ver se atende exatamente ao que você precisa."
-  ];
-  const demoReviews: DemoReview[] = selectedReviewTexts.map((text, index) => ({
-    id: `sample-${p.id}-${index + 1}`,
-    name: "Exemplo ilustrativo",
-    date: "Conteúdo demonstrativo",
-    rating: index === 2 ? 4 : 5,
-    text,
-    media: legacyDemoReviews[index]?.media ?? null,
-  }));
+  ] : makeDemoReviews(p.id, p.gallery);
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const ratedReviews = demoReviews.filter((review) => review.rating > 0);
@@ -734,7 +583,6 @@ function ProductPage() {
     distribution[review.rating] = (distribution[review.rating] ?? 0) + 1;
     return distribution;
   }, { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
-  const hasRatedReviews = ratedReviews.length > 0;
   const reviewMedia = demoReviews
     .filter((review) => review.media)
     .map((review) => ({
@@ -742,6 +590,7 @@ function ProductPage() {
       media: review.media!,
       rating: review.rating,
     }));
+  const hasRatedReviews = ratedReviews.length > 0;
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -982,25 +831,24 @@ function ProductPage() {
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
-        <p className="mt-1 text-[11px] text-muted-foreground">Exemplos de opiniões para apresentação da vitrine; não são avaliações enviadas por compradores.</p>
         <div className="mt-4 grid grid-cols-[104px_minmax(0,1fr)] items-center gap-3 rounded-2xl bg-surface p-3 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4 sm:p-4">
           <div className="flex min-w-0 flex-col items-center justify-center border-r border-border pr-2 text-center sm:pr-4">
             <strong className="text-[32px] font-extrabold leading-none tabular-nums sm:text-[36px]">{reviewAverage.toFixed(1).replace(".", ",")}</strong>
             <ReviewStars rating={reviewAverage} size="h-4 w-4" />
-            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">nota ilustrativa</span>
+            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">{reviewCount.toLocaleString("pt-BR")} avaliações</span>
           </div>
           <div className="min-w-0 space-y-2">
             {[5, 4, 3, 2, 1].map((stars) => {
               const count = reviewDistribution[stars] ?? 0;
               const percent = reviewCount > 0 ? (count / reviewCount) * 100 : 0;
               return (
-                <button key={stars} type="button" aria-label={`${stars} estrelas: ${count} exemplos`} aria-pressed={reviewFilter === stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full min-w-0 items-center gap-2 rounded-md px-1 py-1 text-left transition-colors " + (reviewFilter === stars ? "bg-background" : "hover:bg-background/60")}>
+                <button key={stars} type="button" aria-label={`${stars} estrelas: ${count} avaliações`} aria-pressed={reviewFilter === stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full min-w-0 items-center gap-2 rounded-md px-1 py-1 text-left transition-colors " + (reviewFilter === stars ? "bg-background" : "hover:bg-background/60")}>
                   <span className="w-3 shrink-0 text-right text-[11px] font-medium tabular-nums text-muted-foreground">{stars}</span>
                   <Star className="h-3 w-3 shrink-0 fill-[#FFC43B] text-[#FFC43B]" />
                   <span className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-border">
                     <span className="absolute inset-y-0 left-0 rounded-full bg-ink transition-[width]" style={{ width: `${percent}%` }} />
                   </span>
-                  <span className="w-8 shrink-0 text-right text-[10px] tabular-nums text-muted-foreground">{count}</span>
+                  <span className="w-8 shrink-0 text-right text-[10px] tabular-nums text-muted-foreground">{count.toLocaleString("pt-BR")}</span>
                 </button>
               );
             })}
@@ -1008,36 +856,37 @@ function ProductPage() {
         </div>
         {(reviewMedia.length > 0 || tclReviewPhotos.length > 0) && <div className="mt-5">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <h3 className="text-[15px] font-bold">Imagens do produto</h3>
+            <h3 className="text-[15px] font-bold">Fotos e vídeos das avaliações</h3>
             <button onClick={() => setShowAllReviewMedia(true)} className="shrink-0 text-[12px] font-bold text-primary">Ver tudo <ChevronRight className="inline h-4 w-4" /></button>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <img src={review.media!} alt="Imagem do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
+              <div className="relative"><img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{"rating" in review && <ReviewMediaRating rating={review.rating} />}</div>
+              {"rating" in review ? <span className="mt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{review.rating.toFixed(1).replace(".", ",")}</span> : isProjector ? <span className="mt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{reviewAverage.toFixed(1).replace(".", ",")}</span> : null}
             </button>)}
           </div>
         </div>}
-        {!isProjector && hasRatedReviews && (
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>
-            {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
-          </div>
+{!isProjector && hasRatedReviews && (
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>
+          {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
+        </div>
         )}
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            {review.media && <img src={review.media} alt="Imagem do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
-            <div className="flex flex-col p-2.5">
-              <div className="mb-1 flex items-center justify-between gap-1">
-                <span className="text-[10px] font-semibold text-muted-foreground">Opinião ilustrativa</span>
-                <span className="flex shrink-0 items-center gap-0.5 text-[11px] font-bold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{review.rating.toFixed(1).replace(".", ",")}</span>
+            {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
+            {(review.rating > 0 || review.text || review.date) && <div className="flex flex-col p-2.5">
+              <div className="flex items-center gap-2">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
+                <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
               </div>
-              <ReviewStars rating={review.rating} size="h-3 w-3" />
+              {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
-            </div>
+            </div>}
           </article>)}
         </div>
-        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">Nenhum exemplo nesta faixa de estrelas.</p>}
-        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais opiniões</button>}
+        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
+        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
       </section>
       <ProductRecommendations key={p.id} productId={p.id} />
       <div className="h-10 bg-surface" />
@@ -1045,12 +894,12 @@ function ProductPage() {
 
       {showAllReviewMedia && (
         <div className="fixed inset-0 z-[70] flex items-end justify-center bg-overlay sm:items-center" onClick={() => setShowAllReviewMedia(false)}>
-          <div role="dialog" aria-modal="true" aria-label="Galeria de imagens ilustrativas" className="relative max-h-[90dvh] w-full max-w-[560px] overflow-y-auto rounded-t-3xl bg-background p-4 sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
+          <div role="dialog" aria-modal="true" aria-label="Fotos e vídeos das avaliações" className="relative max-h-[90dvh] w-full max-w-[560px] overflow-y-auto rounded-t-3xl bg-background p-4 sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between gap-3">
-              <div><h2 className="text-[18px] font-extrabold">Galeria de imagens ilustrativas</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} imagens</p></div>
+              <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Imagem do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /></div></div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{"rating" in review && <ReviewMediaRating rating={review.rating} />}</div><span className="mt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{("rating" in review ? review.rating : reviewAverage).toFixed(1).replace(".", ",")}</span></div>)}</div>
           </div>
         </div>
       )}
