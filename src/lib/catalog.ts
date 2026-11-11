@@ -646,7 +646,20 @@ export const products: Product[] = [
     rating: 5.0,
     reviews: null,
     sold: "300+",
-  },
+  },,
+  {
+    id: "purificador-electrolux-pa26g",
+    title: "Purificador de Água Electrolux PA26G Prata · Bivolt",
+    cardTitle: "Purificador Electrolux PA26G Bivolt",
+    checkoutTitle: "Purificador de Água Electrolux PA26G Prata Bivolt",
+    category: "Casa & Utilidades · Cozinha · Eletroportáteis · Recomendados",
+    price: 11785, original: 87391, shippingOriginal: 0,
+    image: "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-1.webp",
+    gallery: ["/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-1.webp", "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-2.webp", "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-3.webp", "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-4.webp", "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-5.webp", "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-6.webp", "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-7.webp", "/products/purificador-electrolux-pa26g/gallery/bebedouro-eletrolux-carrossel-8.webp"],
+    variants: [],
+    description: "O Purificador de Água Electrolux PA26G combina design moderno, praticidade e filtragem eficiente para acompanhar a rotina da família. Com acabamento prata e painel Blue Touch sensível ao toque, permite selecionar a quantidade de água e escolher entre as opções natural e gelada, além de oferecer fluxo contínuo ou controlado.\n\nSeu sistema Acqua Clean conta com dois estágios de purificação, incluindo carvão ativado e ultrafiltragem (UF), ajudando a reduzir impurezas, cloro e odores. O filtro possui longa duração e o aparelho emite um alerta luminoso quando chega o momento da troca.\n\nA refrigeração eletrônica disponibiliza água gelada com praticidade. A bandeja flexível e removível facilita o uso com diferentes recipientes e a limpeza. O modelo é bivolt, portanto não exige seleção de voltagem na compra.\n\n**Especificações:** cor prata · bivolt · refrigeração eletrônica · água natural e gelada · 2 estágios de purificação (carvão ativado e ultrafiltragem UF) · painel Blue Touch · controle de porções · fluxo contínuo ou controlado · alerta de troca do filtro · bandeja removível · suportes para parede · pés antiderrapantes.\n\n**Atenção à instalação:** a pressão da água deve estar entre 4 e 40 mca, respeitando o mínimo recomendado de 4 mca. Verifique as condições hidráulicas do local antes da instalação.",
+    rating: 4.9, reviews: null, sold: "150+",
+  }
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);

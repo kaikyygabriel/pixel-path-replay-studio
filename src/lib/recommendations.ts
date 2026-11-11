@@ -2,6 +2,8 @@ import { products, type Product } from "@/lib/catalog";
 
 /** Quatro produtos relacionados escolhidos editorialmente para cada página. */
 export const relatedProductIds: Record<string, string[]> = {
+  "purificador-electrolux-pa26g": ["chaleira-unitermi-atacama", "liquidificador-mondial-l99-fb", "micro-ondas-philco-pmo31s", "conjunto-panelas-antiaderente-10-pecas"],
+
   "jogo-toalhas-karsten": [
     "omo-lavanderia-profissional-7l",
     "conjunto-panelas-antiaderente-10-pecas",
@@ -11,6 +13,7 @@ export const relatedProductIds: Record<string, string[]> = {
   "chaleira-unitermi-atacama": [
     "liquidificador-mondial-l99-fb",
     "micro-ondas-philco-pmo31s",
+    "purificador-electrolux-pa26g",
     "conjunto-panelas-antiaderente-10-pecas",
     "air-fryer-oven-mondial-afon-12l"
   ],
