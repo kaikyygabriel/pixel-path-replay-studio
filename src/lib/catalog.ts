@@ -646,7 +646,7 @@ export const products: Product[] = [
     rating: 5.0,
     reviews: null,
     sold: "300+",
-  },,
+  },
   {
     id: "purificador-electrolux-pa26g",
     title: "Purificador de Água Electrolux PA26G Prata · Bivolt",
