@@ -480,9 +480,14 @@ function ProductPage() {
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
   const demoReviews: DemoReview[] = isBedsheetSet ? bedsheetReviewPhotos.map((photo) => ({
-    id: photo.id, name: "Registro de imagem", date: "", rating: 0,
-    text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
-  })) : isTramontinaKnives ? [
+    id: photo.id, name: "Imagem do produto", date: "", rating: 0, text: "", media: photo.src,
+  })) : isTramontinaKnives ? tramontinaKnifeReviewPhotos.map((photo) => ({
+    id: photo.id, name: "Imagem do produto", date: "", rating: 0, text: "", media: photo.src,
+  })) : isIntelbrasCamera ? intelbrasReviewPhotos.map((photo) => ({
+    id: photo.id, name: "Imagem do produto", date: "", rating: 0, text: "", media: photo.src,
+  })) : isPurifierElectrolux ? purifierReviewPhotos.map((photo) => ({
+    id: photo.id, name: "Imagem do produto", date: "", rating: 0, text: "", media: photo.src,
+  })) : isChandonReserve ? [
     ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i],
@@ -500,19 +505,7 @@ function ProductPage() {
     { id: "tramontina-knives-text-6", name: "Eduardo C.", date: "há 9 dias", rating: 5, text: "Chegou bem acondicionado. As peças parecem resistentes e já usei algumas para cortar legumes, carnes e pão.", media: null },
     { id: "tramontina-knives-text-7", name: "Lívia P.", date: "há 13 dias", rating: 4, text: "É um kit prático para quem está montando a cozinha. Eu só recomendo conferir o espaço disponível para guardar todas as peças.", media: null },
     { id: "tramontina-knives-text-8", name: "Marcelo G.", date: "há 7 dias", rating: 5, text: "Comprei para substituir facas antigas e gostei da variedade. Para os preparos do dia a dia, está atendendo muito bem.", media: null },
-  ] : isIntelbrasCamera ? intelbrasReviewPhotos.map((photo) => ({
-    id: photo.id, name: "Registro de imagem", date: "", rating: 0,
-    text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
-  })) : isPurifierElectrolux ? [
-    ...purifierReviewPhotos.map((photo, i) => ({
-      id: photo.id, name: ["Mariana C.","Rafael M.","Camila S.","André P.","Juliana R.","Fernanda L.","Bruno T.","Patrícia A.","Lucas M.","Renata F.","Diego C.","Aline V.","Marcelo G.","Beatriz N.","Carolina D."][i], date: ["há 2 dias","há 5 dias","há 1 dia","há 8 dias","há 4 dias","há 11 dias","há 6 dias","há 3 dias","há 13 dias","há 7 dias","há 15 dias","há 9 dias","há 12 dias","há 16 dias","há 10 dias"][i],
-      rating: [5,5,5,5,5,4,5,5,5,5,5,4,5,5,5][i], text: ["A água sai bem gelada e o painel é simples de usar. O acabamento prata ficou bonito na cozinha.","Gostei bastante do purificador. A opção de água natural e gelada facilita muito no dia a dia.","Instalei na cozinha e ficou ótimo. A bandeja ajuda a apoiar o copo e é fácil de retirar para limpar.","O painel touch responde bem e achei prático escolher a quantidade de água.","Chegou certinho e está funcionando direitinho. A água gelada é ótima para os dias quentes.","Produto bonito e compacto para o espaço que eu tinha. Só precisei conferir a pressão da água antes da instalação.","Gostei da praticidade do fluxo contínuo e da opção de controlar a quantidade servida.","O acabamento é bonito e combina com os outros eletrodomésticos. Até agora, tudo certo com o funcionamento.","A água fica em uma temperatura agradável e o painel é bem intuitivo. Foi uma boa escolha para casa.","Achei fácil de usar e gostei do aviso luminoso para lembrar da troca do filtro.","Instalado e funcionando. A opção bivolt ajudou porque não precisei escolher tensão na compra.","Gostei do design e da filtragem. A instalação exigiu atenção à pressão da água, então vale conferir isso antes.","O purificador atende bem nossa rotina. A bandeja removível facilita bastante a limpeza.","Muito prático para encher garrafas e copos. O fluxo contínuo ajuda quando preciso de mais água.","Ficou bonito na bancada e a água gelada sai bem. Gostei da experiência até aqui."][i], media: photo.src,
-    })),
-    { id: "purifier-review-text-16", name: "Elaine M.", date: "há 4 dias", rating: 5, text: "O painel é fácil de entender e gostei de poder escolher a quantidade de água. Está sendo bem útil na rotina.", media: null },
-    { id: "purifier-review-text-17", name: "Thiago R.", date: "há 9 dias", rating: 5, text: "O acabamento prata é bonito e a água gelada funciona bem. Antes de instalar, conferi a pressão da água como recomendado.", media: null },
-    { id: "purifier-review-text-18", name: "Sônia P.", date: "há 14 dias", rating: 4, text: "Gostei do produto e da praticidade. A bandeja sai para limpar e o alerta do filtro é um detalhe importante.", media: null },
-    { id: "purifier-review-text-19", name: "Gabriel A.", date: "há 6 dias", rating: 5, text: "Boa opção para ter água natural ou gelada sem ocupar muito espaço. O uso pelo painel touch é simples.", media: null },
-  ] : isChandonReserve ? [
+    ] : isChandonReserve ? [
     ...chandonReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana F.","Camila R.","Patrícia M.","Juliana A.","Fernanda C.","Renata S.","Aline P.","Bruna L.","Débora T.","Carolina G.","Vanessa B.","Priscila D.","Michele V.","Sabrina H."][i] ?? "",
@@ -928,6 +921,7 @@ function ProductPage() {
       media: review.media!,
       rating: review.rating,
     }));
+  const hasRatedReviews = demoReviews.some((review) => review.rating > 0);
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -1168,32 +1162,16 @@ function ProductPage() {
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
         <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
-        <div className="mt-4 grid grid-cols-[104px_minmax(0,1fr)] items-center gap-3 rounded-2xl bg-surface p-3 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4 sm:p-4">
-          <div className="flex min-w-0 flex-col items-center justify-center border-r border-border pr-2 text-center sm:pr-4">
-            <strong className="text-[32px] font-extrabold leading-none tabular-nums sm:text-[36px]">{reviewAverage.toFixed(1).replace(".", ",")}</strong>
-            <ReviewStars rating={reviewAverage} size="h-4 w-4" />
-            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">~{estimateReviewCount(p.sold).toLocaleString("pt-BR")} avaliações</span>
-          </div>
-          <div className="min-w-0 space-y-2">
-            {[5, 4, 3, 2, 1].map((stars) => {
-              const total = estimateReviewCount(p.sold);
-              const distribution = p.id === "ar-condicionado-lg-ai-voice-9000"
-                ? { 5: Math.max(0, total - 6), 4: Math.min(6, total), 3: 0, 2: 0, 1: 0 }
-                : getEstimatedRatingDistribution(total, reviewAverage);
-              const count = distribution[stars] ?? 0;
-              const percent = total > 0 ? Math.max(0, Math.min(100, (count / total) * 100)) : 0;
-              return (
-                <button key={stars} type="button" aria-label={`${stars} estrelas: ${count} avaliações`} aria-pressed={reviewFilter === stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full min-w-0 items-center gap-2 rounded-md px-1 py-1 text-left transition-colors " + (reviewFilter === stars ? "bg-background" : "hover:bg-background/60")}>
-                  <span className="w-3 shrink-0 text-right text-[11px] font-medium tabular-nums text-muted-foreground">{stars}</span>
-                  <Star className="h-3 w-3 shrink-0 fill-[#FFC43B] text-[#FFC43B]" />
-                  <span className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-border">
-                    <span className="absolute inset-y-0 left-0 rounded-full bg-ink transition-[width]" style={{ width: `${percent}%` }} />
-                  </span>
-                  <span className="w-8 shrink-0 text-right text-[10px] tabular-nums text-muted-foreground">{count.toLocaleString("pt-BR")}</span>
-                </button>
-              );
-            })}
-          </div>
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-2xl bg-surface p-4">
+          {p.rating !== null ? (
+            <div className="flex items-center gap-2">
+              <strong className="text-[30px] font-extrabold leading-none tabular-nums">{p.rating.toFixed(1).replace(".", ",")}</strong>
+              <div><ReviewStars rating={p.rating} size="h-4 w-4" /><p className="mt-0.5 text-[10px] text-muted-foreground">Nota informada do produto</p></div>
+            </div>
+          ) : <p className="text-[13px] text-muted-foreground">Nota do produto ainda não cadastrada.</p>}
+          {p.reviews !== null
+            ? <p className="text-[12px] text-muted-foreground">{p.reviews.toLocaleString("pt-BR")} avaliações cadastradas</p>
+            : <p className="text-[12px] text-muted-foreground">Quantidade de avaliações não informada.</p>}
         </div>
         {(reviewMedia.length > 0 || tclReviewPhotos.length > 0) && <div className="mt-5">
           <div className="mb-2 flex items-center justify-between gap-2">
@@ -1207,7 +1185,7 @@ function ProductPage() {
             </button>)}
           </div>
         </div>}
-{!isProjector && (
+{!isProjector && hasRatedReviews && (
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>
           {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
@@ -1216,14 +1194,14 @@ function ProductPage() {
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
-            <div className="flex flex-col p-2.5">
+            {(review.rating > 0 || review.text || review.date) && <div className="flex flex-col p-2.5">
               <div className="flex items-center gap-2">
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
                 <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
               </div>
               {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
-            </div>
+            </div>}
           </article>)}
         </div>
         {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
