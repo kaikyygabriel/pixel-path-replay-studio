@@ -2,7 +2,7 @@ import { products, type Product } from "@/lib/catalog";
 
 /** Quatro produtos relacionados escolhidos editorialmente para cada página. */
 export const relatedProductIds: Record<string, string[]> = {\n  "camera-intelbras-im5-plus": ["smartwatch-t900-s10-ultra-pro", "power-bank-basike-10000mah-preto", "ar-condicionado-lg-ai-voice-9000", "purificador-electrolux-pa26g"],
-  "purificador-electrolux-pa26g": ["chaleira-unitermi-atacama", "liquidificador-mondial-l99-fb", "micro-ondas-philco-pmo31s", "conjunto-panelas-antiaderente-10-pecas"],\n  "camera-intelbras-im5-plus": ["smartwatch-t900-s10-ultra-pro", "power-bank-basike-10000mah-preto", "ar-condicionado-lg-ai-voice-9000", "purificador-electrolux-pa26g"],
+  "purificador-electrolux-pa26g": ["chaleira-unitermi-atacama", "liquidificador-mondial-l99-fb", "micro-ondas-philco-pmo31s", "conjunto-panelas-antiaderente-10-pecas"],\n  ,
 
   "jogo-toalhas-karsten": [
     "omo-lavanderia-profissional-7l",
