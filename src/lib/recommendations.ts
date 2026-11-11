@@ -91,6 +91,7 @@ export const relatedProductIds: Record<string, string[]> = {
     "kit-24-bolas-natalinas-5cm"
   ],
   "conjunto-panelas-antiaderente-10-pecas": [
+    "jogo-facas-tramontina-plenus-9-pecas",
     "air-fryer-oven-mondial-afon-12l",
     "air-fryer-mondial-afn-40-bft",
     "micro-ondas-philco-pmo31s",
