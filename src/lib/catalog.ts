@@ -703,7 +703,7 @@ export const products: Product[] = [
     rating: null,
     reviews: null,
     sold: null,
-  },,
+  },
 
   {
     id: "jogo-lencol-casal-400-fios",
