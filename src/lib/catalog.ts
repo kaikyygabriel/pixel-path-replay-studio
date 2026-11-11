@@ -660,6 +660,30 @@ export const products: Product[] = [
     description: "O Purificador de Água Electrolux PA26G combina design moderno, praticidade e filtragem eficiente para acompanhar a rotina da família. Com acabamento prata e painel Blue Touch sensível ao toque, permite selecionar a quantidade de água e escolher entre as opções natural e gelada, além de oferecer fluxo contínuo ou controlado.\n\nSeu sistema Acqua Clean conta com dois estágios de purificação, incluindo carvão ativado e ultrafiltragem (UF), ajudando a reduzir impurezas, cloro e odores. O filtro possui longa duração e o aparelho emite um alerta luminoso quando chega o momento da troca.\n\nA refrigeração eletrônica disponibiliza água gelada com praticidade. A bandeja flexível e removível facilita o uso com diferentes recipientes e a limpeza. O modelo é bivolt, portanto não exige seleção de voltagem na compra.\n\n**Especificações:** cor prata · bivolt · refrigeração eletrônica · água natural e gelada · 2 estágios de purificação (carvão ativado e ultrafiltragem UF) · painel Blue Touch · controle de porções · fluxo contínuo ou controlado · alerta de troca do filtro · bandeja removível · suportes para parede · pés antiderrapantes.\n\n**Atenção à instalação:** a pressão da água deve estar entre 4 e 40 mca, respeitando o mínimo recomendado de 4 mca. Verifique as condições hidráulicas do local antes da instalação.",
     rating: 4.9, reviews: null, sold: "150+",
   }
+
+  {
+    id: "camera-intelbras-im5-plus",
+    title: "Câmera de Segurança Intelbras iM5+ Full HD Wi-Fi Full Color",
+    cardTitle: "Câmera Intelbras iM5+ Full HD Wi-Fi",
+    checkoutTitle: "Câmera de Segurança Intelbras iM5+ Full HD Wi-Fi",
+    category: "Segurança e Monitoramento · Câmeras de Segurança · Eletrônicos · Casa & Utilidades · Recomendados",
+    price: 7983,
+    original: 23760,
+    shippingOriginal: 0,
+    image: "/products/camera-intelbras-im5-plus/gallery/camera-carrossel-1.png",
+    gallery: [
+      "/products/camera-intelbras-im5-plus/gallery/camera-carrossel-1.png",
+      "/products/camera-intelbras-im5-plus/gallery/camera-carrossel-2.png",
+      "/products/camera-intelbras-im5-plus/gallery/camera-carrossel-3.png",
+      "/products/camera-intelbras-im5-plus/gallery/camera-carrossel-4.png",
+      "/products/camera-intelbras-im5-plus/gallery/camera-carrossel-5.png"
+    ],
+    variants: [],
+    description: "A Intelbras iM5+ é uma câmera Wi-Fi Full HD desenvolvida para acompanhar o que acontece dentro e fora de casa, com recursos que ajudam a manter o ambiente sob observação mesmo quando você está longe. A tecnologia Full Color permite visualizar imagens coloridas à noite, enquanto o conjunto de infravermelho inteligente e holofote auxilia na captura de imagens em locais com pouca luz.\n\nPelo smartphone, é possível acompanhar a transmissão, receber notificações e controlar funções da câmera. O áudio bidirecional permite conversar com quem estiver próximo ao equipamento, e a sirene interna de 90 dB pode ser acionada manualmente como recurso adicional de alerta. Também conta com detecção ajustável de movimento e de pessoas, além de zoom digital de até 16x.\n\nProjetada para instalação externa, possui proteção IP67 contra poeira e água. A conexão pode ser feita por Wi-Fi de 2,4 GHz ou cabo de rede RJ45. Para armazenar as gravações, oferece suporte a cartão microSD, gravadores DVR/NVR compatíveis com Onvif e serviço em nuvem Mibo Cloud.\n\n**Características principais**\n- Resolução Full HD: 1920 × 1080 pixels (2 MP)\n- Tecnologia Full Color para imagens coloridas à noite\n- Lente de 2,8 mm e ângulo de visão horizontal de 102°\n- Infravermelho com alcance aproximado de 30 m e holofote de até 25 m\n- Áudio bidirecional e sirene de 90 dB\n- Detecção ajustável de movimento e pessoas\n- Zoom digital de até 16x\n- Wi-Fi 2,4 GHz e conexão cabeada RJ45\n- Compressão de vídeo H.264 e compatibilidade Onvif Perfil S\n- Proteção IP67 para uso externo\n- Alimentação por fonte 12 V inclusa\n- Dimensões: 147,7 × 74,2 × 74,2 mm\n- Temperatura de operação: -30 °C a 60 °C\n\n**Conteúdo da embalagem:** 1 câmera Intelbras iM5+, 1 fonte de alimentação bivolt, 1 kit de instalação e 1 guia de instalação.\n\n**Atenção:** a câmera utiliza rede Wi-Fi de 2,4 GHz. A fonte é bivolt; para instalação, verifique a cobertura da rede no local e siga o guia do fabricante.",
+    rating: null,
+    reviews: null,
+    sold: null,
+  },
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
