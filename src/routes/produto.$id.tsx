@@ -722,12 +722,19 @@ function ProductPage() {
     id: `sample-${p.id}-${index + 1}`,
     name: "Exemplo ilustrativo",
     date: "Conteúdo demonstrativo",
-    rating: 0,
+    rating: index === 2 ? 4 : 5,
     text,
     media: legacyDemoReviews[index]?.media ?? null,
   }));
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
+  const ratedReviews = demoReviews.filter((review) => review.rating > 0);
+  const reviewCount = ratedReviews.length;
+  const reviewDistribution = ratedReviews.reduce<Record<number, number>>((distribution, review) => {
+    distribution[review.rating] = (distribution[review.rating] ?? 0) + 1;
+    return distribution;
+  }, { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+  const hasRatedReviews = ratedReviews.length > 0;
   const ratedReviews = demoReviews.filter((review) => review.rating > 0);
   const reviewMedia = demoReviews
     .filter((review) => review.media)
@@ -976,39 +983,63 @@ function ProductPage() {
         </div>
       </div>
       <section className="mt-5 border-t-8 border-surface px-4 py-5" aria-label="Avaliações do produto">
-        <h2 className="text-[19px] font-extrabold">Conteúdo demonstrativo do produto</h2>\n        <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">Exemplos ilustrativos para apresentar o produto na vitrine. Não são avaliações reais nem relatos de compradores.</p>
-        <div className="mt-3 rounded-xl bg-surface px-3 py-2.5 text-[12px] leading-relaxed text-muted-foreground">
-          A nota exibida na identificação do produto é apenas uma referência visual de demonstração. Não corresponde a uma média de avaliações recebidas.
+        <h2 className="text-[19px] font-extrabold">Avaliações do produto</h2>
+        <p className="mt-1 text-[11px] text-muted-foreground">Exemplos de opiniões para apresentação da vitrine; não são avaliações enviadas por compradores.</p>
+        <div className="mt-4 grid grid-cols-[104px_minmax(0,1fr)] items-center gap-3 rounded-2xl bg-surface p-3 sm:grid-cols-[120px_minmax(0,1fr)] sm:gap-4 sm:p-4">
+          <div className="flex min-w-0 flex-col items-center justify-center border-r border-border pr-2 text-center sm:pr-4">
+            <strong className="text-[32px] font-extrabold leading-none tabular-nums sm:text-[36px]">{reviewAverage.toFixed(1).replace(".", ",")}</strong>
+            <ReviewStars rating={reviewAverage} size="h-4 w-4" />
+            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">nota ilustrativa</span>
+          </div>
+          <div className="min-w-0 space-y-2">
+            {[5, 4, 3, 2, 1].map((stars) => {
+              const count = reviewDistribution[stars] ?? 0;
+              const percent = reviewCount > 0 ? (count / reviewCount) * 100 : 0;
+              return (
+                <button key={stars} type="button" aria-label={`${stars} estrelas: ${count} exemplos`} aria-pressed={reviewFilter === stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full min-w-0 items-center gap-2 rounded-md px-1 py-1 text-left transition-colors " + (reviewFilter === stars ? "bg-background" : "hover:bg-background/60")}>
+                  <span className="w-3 shrink-0 text-right text-[11px] font-medium tabular-nums text-muted-foreground">{stars}</span>
+                  <Star className="h-3 w-3 shrink-0 fill-[#FFC43B] text-[#FFC43B]" />
+                  <span className="relative h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-border">
+                    <span className="absolute inset-y-0 left-0 rounded-full bg-ink transition-[width]" style={{ width: `${percent}%` }} />
+                  </span>
+                  <span className="w-8 shrink-0 text-right text-[10px] tabular-nums text-muted-foreground">{count}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
         {(reviewMedia.length > 0 || tclReviewPhotos.length > 0) && <div className="mt-5">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <h3 className="text-[15px] font-bold">Imagens ilustrativas do produto</h3>
+            <h3 className="text-[15px] font-bold">Imagens do produto</h3>
             <button onClick={() => setShowAllReviewMedia(true)} className="shrink-0 text-[12px] font-bold text-primary">Ver tudo <ChevronRight className="inline h-4 w-4" /></button>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <div className="relative"><img src={review.media!} alt="Imagem ilustrativa do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /></div>
-              
+              <img src={review.media!} alt="Imagem do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />
             </button>)}
           </div>
         </div>}
-{!isProjector && hasRatedReviews && (
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>
-          {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
-        </div>
+        {!isProjector && hasRatedReviews && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>
+            {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
+          </div>
         )}
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            {review.media && <img src={review.media} alt="Imagem ilustrativa do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
-            {(review.rating > 0 || review.text || review.date) && <div className="flex flex-col p-2.5">
-              <div className="inline-flex w-fit rounded-full bg-secondary px-2 py-1 text-[10px] font-semibold text-muted-foreground">Exemplo ilustrativo</div>
+            {review.media && <img src={review.media} alt="Imagem do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
+            <div className="flex flex-col p-2.5">
+              <div className="mb-1 flex items-center justify-between gap-1">
+                <span className="text-[10px] font-semibold text-muted-foreground">Opinião ilustrativa</span>
+                <span className="flex shrink-0 items-center gap-0.5 text-[11px] font-bold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{review.rating.toFixed(1).replace(".", ",")}</span>
+              </div>
+              <ReviewStars rating={review.rating} size="h-3 w-3" />
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
-            </div>}
+            </div>
           </article>)}
         </div>
-        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
-        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais avaliações</button>}
+        {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">Nenhum exemplo nesta faixa de estrelas.</p>}
+        {filteredReviews.length > visibleReviews && <button onClick={() => setVisibleReviews((count) => count + 3)} className="mt-2 w-full rounded-full border border-border py-3 text-[13px] font-bold">Ver mais opiniões</button>}
       </section>
       <ProductRecommendations key={p.id} productId={p.id} />
       <div className="h-10 bg-surface" />
@@ -1021,7 +1052,7 @@ function ProductPage() {
               <div><h2 className="text-[18px] font-extrabold">Galeria de imagens ilustrativas</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} imagens</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Imagem ilustrativa do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /></div></div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Imagem do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /></div></div>)}</div>
           </div>
         </div>
       )}
