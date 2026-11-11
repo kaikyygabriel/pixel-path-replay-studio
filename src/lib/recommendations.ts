@@ -6,7 +6,6 @@ export const relatedProductIds: Record<string, string[]> = {
   "jogo-facas-tramontina-plenus-9-pecas": ["conjunto-panelas-antiaderente-10-pecas", "chaleira-unitermi-atacama", "air-fryer-mondial-afn-40-bft", "micro-ondas-philco-pmo31s"],
   "camera-intelbras-im5-plus": ["smartwatch-t900-s10-ultra-pro", "power-bank-basike-10000mah-preto", "ar-condicionado-lg-ai-voice-9000", "purificador-electrolux-pa26g"],
   "purificador-electrolux-pa26g": ["chaleira-unitermi-atacama", "liquidificador-mondial-l99-fb", "micro-ondas-philco-pmo31s", "conjunto-panelas-antiaderente-10-pecas"],
-  ,
 
   "jogo-toalhas-karsten": [
     "omo-lavanderia-profissional-7l",
