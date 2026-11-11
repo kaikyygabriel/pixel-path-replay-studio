@@ -1042,7 +1042,7 @@ function ProductPage() {
           style={{ touchAction: "pan-x pan-y" }}
         >
           {p.gallery.map((src, i) => (
-            <img key={src + i} src={src} alt={i === 0 ? p.title : ""} loading="eager" fetchPriority={i === 0 ? "high" : "low"} decoding="async" draggable={false} width={600} height={600} className="aspect-square w-full shrink-0 snap-center object-contain p-4" />
+            <img key={src + i} src={src} alt={i === 0 ? p.title : ""} loading={i < 2 ? "eager" : "lazy"} fetchPriority={i === 0 ? "high" : "low"} decoding="async" draggable={false} width={600} height={600} className="aspect-square w-full shrink-0 snap-center object-contain p-4" />
           ))}
         </div>
         {p.gallery.length > 1 && (
