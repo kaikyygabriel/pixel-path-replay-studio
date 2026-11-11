@@ -574,7 +574,8 @@ function ProductPage() {
     { id: "chandon-review-text-16", name: "Lívia N.", date: "há 11 dias", rating: 5, text: "Comprei para presentear meus pais numa comemoração. Eles gostaram bastante e chegou tudo certo.", media: null },
     { id: "chandon-review-text-17", name: "André P.", date: "há 17 dias", rating: 4, text: "Bom espumante para celebrações. Sabor equilibrado e agradável; recomendo servir bem gelado.", media: null },
     { id: "chandon-review-text-18", name: "Beatriz K.", date: "há 8 dias", rating: 5, text: "Gostei para um brinde especial, leve e fácil de harmonizar com petiscos e entradas.", media: null },
-  ] : isBasikePowerBank ? [  const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
+  ] : makeDemoReviews(p.id, p.gallery);
+  const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const ratedReviews = demoReviews.filter((review) => review.rating > 0);
   const reviewCount = ratedReviews.length;
