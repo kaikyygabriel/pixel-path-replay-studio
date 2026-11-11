@@ -128,6 +128,10 @@ function ProductPage() {
   const [pickedColor, setPickedColor] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  // Ao navegar entre produtos, a descrição sempre volta ao estado recolhido.
+  useLayoutEffect(() => {
+    setDescriptionExpanded(false);
+  }, [p.id]);
   const [added, setAdded] = useState(false);
   const [protect, setProtect] = useState(false);
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
