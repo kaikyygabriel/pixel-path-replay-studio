@@ -442,6 +442,14 @@ function ProductPage() {
     { id: "barbie-review-7", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-07.png" },
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
+  // Mídias e textos demonstrativos do produto; não representam avaliações verificadas de compradores.
+  const isTramontinaKnives = p.id === "jogo-facas-tramontina-plenus-9-pecas";
+  const tramontinaKnifeReviewPhotos = isTramontinaKnives ? [
+    { id: "tramontina-knives-review-1", src: "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-1.png" },
+    { id: "tramontina-knives-review-2", src: "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-2.png" },
+    { id: "tramontina-knives-review-4", src: "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-4.png" },
+    { id: "tramontina-knives-review-5", src: "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-5.png" }
+  ] : [];
   // Oito registros demonstrativos para validar o layout: cinco fotos 5★, duas notas 4★ e uma nota 5★.
   const isIntelbrasCamera = p.id === "camera-intelbras-im5-plus";
   const intelbrasReviewPhotos = isIntelbrasCamera ? [
@@ -460,7 +468,25 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const demoReviews: DemoReview[] = isIntelbrasCamera ? intelbrasReviewPhotos.map((photo) => ({
+  const demoReviews: DemoReview[] = isTramontinaKnives ? [
+    ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i],
+      date: ["há 2 dias", "há 6 dias", "há 11 dias", "há 4 dias"][i],
+      rating: [5, 5, 4, 5][i],
+      text: [
+        "O conjunto é bem completo para a rotina. Deixei as peças mais usadas no suporte e ficou tudo organizado na cozinha.",
+        "Comprei pensando nos churrascos de domingo. Gostei de ter facas diferentes à mão, sem precisar improvisar com as que uso para outras coisas.",
+        "As lâminas têm bom acabamento e os cabos são confortáveis de segurar. Pelo tamanho do conjunto, achei uma compra interessante.",
+        "Visual simples e bonito, combina com a cozinha. As facas cortam bem os alimentos que preparei até agora."
+      ][i],
+      media: photo.src,
+    })),
+    { id: "tramontina-knives-text-5", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "Gostei de ter várias opções para cada preparo. O cabo preto tem aparência discreta e o conjunto fica bonito guardado.", media: null },
+    { id: "tramontina-knives-text-6", name: "Eduardo C.", date: "há 9 dias", rating: 5, text: "Chegou bem acondicionado. As peças parecem resistentes e já usei algumas para cortar legumes, carnes e pão.", media: null },
+    { id: "tramontina-knives-text-7", name: "Lívia P.", date: "há 13 dias", rating: 4, text: "É um kit prático para quem está montando a cozinha. Eu só recomendo conferir o espaço disponível para guardar todas as peças.", media: null },
+    { id: "tramontina-knives-text-8", name: "Marcelo G.", date: "há 7 dias", rating: 5, text: "Comprei para substituir facas antigas e gostei da variedade. Para os preparos do dia a dia, está atendendo muito bem.", media: null },
+  ] : isIntelbrasCamera ? intelbrasReviewPhotos.map((photo) => ({
     id: photo.id, name: "Registro de imagem", date: "", rating: 0,
     text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
   })) : isPurifierElectrolux ? [

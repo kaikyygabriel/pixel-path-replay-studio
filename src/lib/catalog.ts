@@ -662,6 +662,27 @@ export const products: Product[] = [
   }
 
   {
+    id: "jogo-facas-tramontina-plenus-9-pecas",
+    title: "Jogo de Facas Plenus Tramontina · 9 Peças · Aço Inox",
+    cardTitle: "Jogo de Facas Tramontina Plenus · 9 Peças",
+    checkoutTitle: "Jogo de Facas Plenus Tramontina 9 Peças em Aço Inox",
+    category: "Casa & Utilidades · Cozinha · Utensílios de Cozinha · Recomendados",
+    price: 5835,
+    original: 9290,
+    shippingOriginal: 0,
+    image: "/products/jogo-facas-tramontina-plenus/gallery/facas-tramontina-1.png",
+    gallery: [
+      "/products/jogo-facas-tramontina-plenus/gallery/facas-tramontina-1.png",
+      "/products/jogo-facas-tramontina-plenus/gallery/facas-tramontina-3.png",
+      "/products/jogo-facas-tramontina-plenus/gallery/facas-tramontina-4.png"
+    ],
+    variants: [],
+    description: "O Jogo de Facas Plenus Tramontina com 9 peças reúne opções versáteis para facilitar o preparo das refeições e os diferentes cortes do dia a dia. Com visual clássico e cabos pretos, o conjunto combina com diversos estilos de cozinha e também é uma ótima escolha para churrascos e encontros com a família e os amigos.\n\nAs lâminas são produzidas em aço inox e recebem tratamento térmico, característica que contribui para a resistência e a qualidade do corte. Os cabos em polipropileno oferecem uma pegada prática para o uso cotidiano.\n\n**Características do produto**\n- Marca: Tramontina\n- Linha: Plenus\n- Quantidade: 9 peças\n- Lâminas em aço inox com tratamento térmico\n- Cabos em polipropileno na cor preta\n- Conjunto indicado para diferentes tipos de cortes e preparos\n\n**Dimensões e peso do produto na embalagem**\n- Altura: 42,7 cm\n- Largura: 2,2 cm\n- Comprimento: 44,5 cm\n- Peso: 725 g",
+    rating: 4.9,
+    reviews: null,
+    sold: "100",
+  },
+  {
     id: "camera-intelbras-im5-plus",
     title: "Câmera de Segurança Intelbras iM5+ Full HD Wi-Fi Full Color",
     cardTitle: "Câmera Intelbras iM5+ Full HD Wi-Fi",
