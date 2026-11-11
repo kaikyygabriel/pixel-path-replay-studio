@@ -480,39 +480,93 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const demoReviews: DemoReview[] = isBedsheetSet ? bedsheetReviewPhotos.map((photo) => ({
-    id: photo.id, name: "Registro de imagem", date: "", rating: 0,
-    text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
-  })) : isTramontinaKnives ? [
-    ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
+  const demoReviews: DemoReview[] = isBedsheetSet ? [
+    ...bedsheetReviewPhotos.map((photo, i) => ({
       id: photo.id,
-      name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i] ?? "",
-      date: ["há 2 dias", "há 6 dias", "há 11 dias", "há 4 dias"][i] ?? "",
-      rating: [5, 5, 4, 5][i] ?? 5,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Bruna T.", "Lucas F."][i] ?? "Cliente",
+      date: ["há 2 dias", "há 5 dias", "há 1 semana", "há 3 dias", "há 9 dias", "há 12 dias", "há 4 dias", "há 15 dias"][i] ?? "há alguns dias",
+      rating: [5, 5, 5, 5, 4, 5, 5, 5][i] ?? 5,
       text: [
-        "O conjunto é bem completo para a rotina. Deixei as peças mais usadas no suporte e ficou tudo organizado na cozinha.",
-        "Comprei pensando nos churrascos de domingo. Gostei de ter facas diferentes à mão, sem precisar improvisar com as que uso para outras coisas.",
-        "As lâminas têm bom acabamento e os cabos são confortáveis de segurar. Pelo tamanho do conjunto, achei uma compra interessante.",
-        "Visual simples e bonito, combina com a cozinha. As facas cortam bem os alimentos que preparei até agora."
+        "O tecido é bem gostoso, ficou certinho na cama.",
+        "Gostei da cor! Chegou como eu esperava.",
+        "Ficou bonito no quarto e o lençol com elástico veste bem o colchão.",
+        "Bem macio. Já lavei uma vez e continuou legal.",
+        "É um pouco mais fino do que imaginei, mas pelo preço gostei.",
+        "A cama ficou arrumadinha, gostei bastante do conjunto.",
+        "Chegou direitinho e veio tudo certo, sem surpresa.",
+        "Comprei pra trocar o jogo antigo e atendeu bem."
       ][i] ?? "",
       media: photo.src,
     })),
-    { id: "tramontina-knives-text-5", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "Gostei de ter várias opções para cada preparo. O cabo preto tem aparência discreta e o conjunto fica bonito guardado.", media: null },
-    { id: "tramontina-knives-text-6", name: "Eduardo C.", date: "há 9 dias", rating: 5, text: "Chegou bem acondicionado. As peças parecem resistentes e já usei algumas para cortar legumes, carnes e pão.", media: null },
-    { id: "tramontina-knives-text-7", name: "Lívia P.", date: "há 13 dias", rating: 4, text: "É um kit prático para quem está montando a cozinha. Eu só recomendo conferir o espaço disponível para guardar todas as peças.", media: null },
-    { id: "tramontina-knives-text-8", name: "Marcelo G.", date: "há 7 dias", rating: 5, text: "Comprei para substituir facas antigas e gostei da variedade. Para os preparos do dia a dia, está atendendo muito bem.", media: null },
-  ] : isIntelbrasCamera ? intelbrasReviewPhotos.map((photo) => ({
-    id: photo.id, name: "Registro de imagem", date: "", rating: 0,
-    text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
-  })) : isPurifierElectrolux ? [
-    ...purifierReviewPhotos.map((photo, i) => ({
-      id: photo.id, name: ["Mariana C.","Rafael M.","Camila S.","André P.","Juliana R.","Fernanda L.","Bruno T.","Patrícia A.","Lucas M.","Renata F.","Diego C.","Aline V.","Marcelo G.","Beatriz N.","Carolina D."][i] ?? "", date: ["há 2 dias","há 5 dias","há 1 dia","há 8 dias","há 4 dias","há 11 dias","há 6 dias","há 3 dias","há 13 dias","há 7 dias","há 15 dias","há 9 dias","há 12 dias","há 16 dias","há 10 dias"][i] ?? "",
-      rating: [5,5,5,5,5,4,5,5,5,5,5,4,5,5,5][i] ?? 5, text: ["A água sai bem gelada e o painel é simples de usar. O acabamento prata ficou bonito na cozinha.","Gostei bastante do purificador. A opção de água natural e gelada facilita muito no dia a dia.","Instalei na cozinha e ficou ótimo. A bandeja ajuda a apoiar o copo e é fácil de retirar para limpar.","O painel touch responde bem e achei prático escolher a quantidade de água.","Chegou certinho e está funcionando direitinho. A água gelada é ótima para os dias quentes.","Produto bonito e compacto para o espaço que eu tinha. Só precisei conferir a pressão da água antes da instalação.","Gostei da praticidade do fluxo contínuo e da opção de controlar a quantidade servida.","O acabamento é bonito e combina com os outros eletrodomésticos. Até agora, tudo certo com o funcionamento.","A água fica em uma temperatura agradável e o painel é bem intuitivo. Foi uma boa escolha para casa.","Achei fácil de usar e gostei do aviso luminoso para lembrar da troca do filtro.","Instalado e funcionando. A opção bivolt ajudou porque não precisei escolher tensão na compra.","Gostei do design e da filtragem. A instalação exigiu atenção à pressão da água, então vale conferir isso antes.","O purificador atende bem nossa rotina. A bandeja removível facilita bastante a limpeza.","Muito prático para encher garrafas e copos. O fluxo contínuo ajuda quando preciso de mais água.","Ficou bonito na bancada e a água gelada sai bem. Gostei da experiência até aqui."][i] ?? "", media: photo.src,
+  ] : isTramontinaKnives ? [
+    ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i] ?? "Cliente",
+      date: ["há 2 dias", "há 6 dias", "há 11 dias", "há 4 dias"][i] ?? "há alguns dias",
+      rating: [5, 5, 4, 5][i] ?? 5,
+      text: [
+        "O suporte ficou ótimo na bancada. Uso quase todas no dia a dia.",
+        "Cortam bem e chegaram todas certinhas. Gostei do kit.",
+        "São leves e práticas. Para uso em casa, achei que valeu.",
+        "Gostei da variedade, principalmente da faca de pão. Bem útil."
+      ][i] ?? "",
+      media: photo.src,
     })),
-    { id: "purifier-review-text-16", name: "Elaine M.", date: "há 4 dias", rating: 5, text: "O painel é fácil de entender e gostei de poder escolher a quantidade de água. Está sendo bem útil na rotina.", media: null },
-    { id: "purifier-review-text-17", name: "Thiago R.", date: "há 9 dias", rating: 5, text: "O acabamento prata é bonito e a água gelada funciona bem. Antes de instalar, conferi a pressão da água como recomendado.", media: null },
-    { id: "purifier-review-text-18", name: "Sônia P.", date: "há 14 dias", rating: 4, text: "Gostei do produto e da praticidade. A bandeja sai para limpar e o alerta do filtro é um detalhe importante.", media: null },
-    { id: "purifier-review-text-19", name: "Gabriel A.", date: "há 6 dias", rating: 5, text: "Boa opção para ter água natural ou gelada sem ocupar muito espaço. O uso pelo painel touch é simples.", media: null },
+    { id: "tramontina-knives-text-5", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "Bonitas e funcionais. Já estão na minha rotina.", media: null },
+    { id: "tramontina-knives-text-6", name: "Eduardo C.", date: "há 9 dias", rating: 5, text: "Chegou bem embalado. As facas cortam direitinho.", media: null },
+    { id: "tramontina-knives-text-7", name: "Lívia P.", date: "há 13 dias", rating: 4, text: "Gostei, só precisei reorganizar a gaveta para guardar tudo.", media: null },
+    { id: "tramontina-knives-text-8", name: "Marcelo G.", date: "há 7 dias", rating: 5, text: "Kit completo e bom para ter em casa. Recomendo.", media: null },
+  ] : isIntelbrasCamera ? [
+    ...intelbrasReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Bruno T.", "Patrícia L.", "Lucas F.", "Fernanda G.", "Diego A.", "Aline M.", "Renata C."][i] ?? "Cliente",
+      date: ["há 2 dias", "há 4 dias", "há 1 semana", "há 3 dias", "há 9 dias", "há 5 dias", "há 12 dias", "há 2 semanas", "há 6 dias", "há 10 dias", "há 15 dias", "há 8 dias"][i] ?? "há alguns dias",
+      rating: 5,
+      text: [
+        "Imagem bem nítida, até à noite. Gostei bastante.",
+        "Instalei na entrada e consigo acompanhar pelo celular. Era o que eu precisava.",
+        "A configuração foi tranquila e a imagem é boa.",
+        "Pegou bem o espaço da garagem. Funcionando direitinho.",
+        "Gostei da visão noturna colorida, faz diferença aqui.",
+        "Chegou tudo certo. A instalação levou um tempinho, mas deu certo.",
+        "Uso para olhar o quintal quando estou fora. Muito prática.",
+        "Boa imagem e o aplicativo é fácil de mexer depois que configura.",
+        "Ficou ótima na área externa. Até agora sem problemas.",
+        "Atendeu bem. Consigo ver as notificações no celular.",
+        "A câmera é compacta e a imagem me surpreendeu.",
+        "Instalei seguindo o manual e está funcionando normalmente."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+  ] : isPurifierElectrolux ? [
+    ...purifierReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana C.", "Rafael M.", "Camila S.", "André P.", "Juliana R.", "Fernanda L.", "Bruno T.", "Patrícia A.", "Lucas M.", "Renata F.", "Diego C.", "Aline V.", "Marcelo G.", "Beatriz N.", "Carolina D."][i] ?? "Cliente",
+      date: ["há 2 dias", "há 5 dias", "há 1 dia", "há 8 dias", "há 4 dias", "há 11 dias", "há 6 dias", "há 3 dias", "há 13 dias", "há 7 dias", "há 15 dias", "há 9 dias", "há 12 dias", "há 16 dias", "há 10 dias"][i] ?? "há alguns dias",
+      rating: [5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 4, 5, 5, 5][i] ?? 5,
+      text: [
+        "A água sai bem gelada. Gostei!",
+        "Ficou bonito na cozinha e é simples de usar.",
+        "A bandeja sai fácil para limpar, ponto positivo.",
+        "O painel responde bem. Aqui em casa estamos gostando.",
+        "Chegou certinho e já está instalado.",
+        "Ocupa pouco espaço. Só atenção à pressão da água na instalação.",
+        "Muito prático para encher garrafinha durante o dia.",
+        "O acabamento prata é bonito, combinou com a cozinha.",
+        "A água gelada funciona bem e o uso é bem intuitivo.",
+        "Gostei do aviso do filtro, ajuda a lembrar da troca.",
+        "Instalação feita e tudo funcionando normalmente.",
+        "Produto bom, mas vale conferir a pressão antes de instalar.",
+        "A bandeja removível facilita bastante na hora de limpar.",
+        "Uso várias vezes ao dia. Está atendendo super bem.",
+        "Gostei da compra, ficou ótimo na bancada."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "purifier-review-text-16", name: "Elaine M.", date: "há 4 dias", rating: 5, text: "O painel é fácil, não tem segredo.", media: null },
+    { id: "purifier-review-text-17", name: "Thiago R.", date: "há 9 dias", rating: 5, text: "Água gelada de verdade. Gostei bastante.", media: null },
+    { id: "purifier-review-text-18", name: "Sônia P.", date: "há 14 dias", rating: 4, text: "Bonito e prático. A instalação precisa de atenção à pressão da água.", media: null },
+    { id: "purifier-review-text-19", name: "Gabriel A.", date: "há 6 dias", rating: 5, text: "Atendeu bem aqui em casa, recomendo.", media: null },
   ] : isChandonReserve ? [
     ...chandonReviewPhotos.map((photo, i) => ({
       id: photo.id,
