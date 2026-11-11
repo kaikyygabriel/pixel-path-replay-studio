@@ -10,7 +10,7 @@ import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checko
 import { CartAddButton } from "@/components/shop/cart-add-button";
 import { formatEstimatedDelivery } from "@/lib/delivery";
 import { ProductRecommendations } from "@/components/shop/product-recommendations";
-import { FlashIcon, ReviewMediaRating } from "@/components/shop/product-presentation";
+import { FlashIcon } from "@/components/shop/product-presentation";
 
 const cartCount = (c: CartItem[]) => c.reduce((n, i) => n + i.qty, 0);
 const getOptionKind = (variants: Variant[]) => {
@@ -729,11 +729,6 @@ function ProductPage() {
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
   const ratedReviews = demoReviews.filter((review) => review.rating > 0);
-  const reviewCount = ratedReviews.length;
-  const reviewDistribution = ratedReviews.reduce<Record<number, number>>((distribution, review) => {
-    distribution[review.rating] = (distribution[review.rating] ?? 0) + 1;
-    return distribution;
-  }, { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
   const reviewMedia = demoReviews
     .filter((review) => review.media)
     .map((review) => ({
