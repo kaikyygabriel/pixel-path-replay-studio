@@ -703,7 +703,37 @@ export const products: Product[] = [
     rating: null,
     reviews: null,
     sold: null,
+  },,
+
+  {
+    id: "jogo-lencol-casal-400-fios",
+    title: "Jogo de Lençol Casal Padrão 400 Fios · 3 Peças",
+    cardTitle: "Jogo de Lençol Casal 400 Fios · 3 Peças",
+    checkoutTitle: "Jogo de Lençol Casal Padrão 400 Fios com Elástico · 3 Peças",
+    category: "Cama, Mesa e Banho · Casa & Utilidades · Mais vendidos · Recomendados",
+    price: 2690,
+    original: 5190,
+    shippingOriginal: 0,
+    image: "/products/jogo-lencol-casal-400-fios/gallery/lencol-casal-capa.png",
+    gallery: [
+      "/products/jogo-lencol-casal-400-fios/gallery/lencol-casal-capa.png",
+      "/products/jogo-lencol-casal-400-fios/variants/lencol-bege.png",
+      "/products/jogo-lencol-casal-400-fios/variants/lencol-cinza.png",
+      "/products/jogo-lencol-casal-400-fios/variants/lencol-rosa.png",
+      "/products/jogo-lencol-casal-400-fios/variants/lencol-verde.png"
+    ],
+    variants: [
+      { id: "lencol-casal-bege", line: "Cor", color: "Bege", description: "Jogo de lençol casal padrão 400 fios · Bege · 3 peças", price: 2690, original: 5190, pieces: 1, image: "/products/jogo-lencol-casal-400-fios/variants/lencol-bege.png" },
+      { id: "lencol-casal-verde", line: "Cor", color: "Verde", description: "Jogo de lençol casal padrão 400 fios · Verde · 3 peças", price: 2690, original: 5190, pieces: 1, image: "/products/jogo-lencol-casal-400-fios/variants/lencol-verde.png" },
+      { id: "lencol-casal-cinza", line: "Cor", color: "Cinza", description: "Jogo de lençol casal padrão 400 fios · Cinza · 3 peças", price: 2690, original: 5190, pieces: 1, image: "/products/jogo-lencol-casal-400-fios/variants/lencol-cinza.png" },
+      { id: "lencol-casal-rosa", line: "Cor", color: "Rosa", description: "Jogo de lençol casal padrão 400 fios · Rosa · 3 peças", price: 2690, original: 5190, pieces: 1, image: "/products/jogo-lencol-casal-400-fios/variants/lencol-rosa.png" }
+    ],
+    description: "Renove a cama com um jogo de lençol casal padrão de visual delicado e toque macio. Confeccionado em micropercal 100% poliéster, com indicação de 400 fios, o conjunto combina praticidade para o dia a dia com um acabamento em ponto palito que acrescenta um detalhe elegante ao enxoval.\n\nO tecido de poliéster é fácil de cuidar, seca com praticidade e oferece boa resistência ao uso frequente. O lençol com elástico em toda a volta ajuda a manter a peça ajustada ao colchão, enquanto as duas fronhas completam a composição.\n\n**O conjunto contém 3 peças**\n- 1 lençol de baixo com elástico em toda a volta\n- 2 fronhas de 50 × 70 cm com acabamento em ponto palito\n\n**Medidas e composição**\n- Indicado para colchão casal padrão de até 1,58 m × 1,98 m × 30 cm de altura\n- Tecido: micropercal\n- Composição: 100% poliéster\n- Informação de tecido: 400 fios\n- Cores disponíveis: bege, verde, cinza e rosa\n\n**Atenção:** confira as medidas do colchão antes da compra para garantir o ajuste adequado.",
+    rating: 5.0,
+    reviews: null,
+    sold: "200",
   },
+
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);

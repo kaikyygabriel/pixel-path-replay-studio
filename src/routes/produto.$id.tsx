@@ -443,6 +443,17 @@ function ProductPage() {
     { id: "barbie-review-8", src: "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png" },
   ] : [];
   // Mídias e textos demonstrativos do produto; não representam avaliações verificadas de compradores.
+  const isBedsheetSet = p.id === "jogo-lencol-casal-400-fios";
+  const bedsheetReviewPhotos = isBedsheetSet ? [
+    { id: "bedsheet-review-1", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-1.png" },
+    { id: "bedsheet-review-2", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-2.png" },
+    { id: "bedsheet-review-3", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-3.png" },
+    { id: "bedsheet-review-4", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-4.png" },
+    { id: "bedsheet-review-5", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-5.png" },
+    { id: "bedsheet-review-6", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-6.png" },
+    { id: "bedsheet-review-7", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-7.png" },
+    { id: "bedsheet-review-8", src: "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-8.png" }
+  ] : [];
   const isTramontinaKnives = p.id === "jogo-facas-tramontina-plenus-9-pecas";
   const tramontinaKnifeReviewPhotos = isTramontinaKnives ? [
     { id: "tramontina-knives-review-1", src: "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-1.png" },
@@ -468,7 +479,10 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const demoReviews: DemoReview[] = isTramontinaKnives ? [
+  const demoReviews: DemoReview[] = isBedsheetSet ? bedsheetReviewPhotos.map((photo) => ({
+    id: photo.id, name: "Registro de imagem", date: "", rating: 0,
+    text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
+  })) : isTramontinaKnives ? [
     ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i],
