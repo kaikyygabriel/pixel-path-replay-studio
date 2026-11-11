@@ -54,22 +54,6 @@ function OfferTimer() {
 
 const strip = ["FRETE GRÁTIS BRASIL", "ESPECIAL 25.12", "COMPRA PROTEGIDA", "ATÉ 90% OFF"];
 type DemoReview = { id: string; name: string; date: string; rating: number; text: string; media: string | null };
-function makeStructuredDemoReviews(
-  photos: { id: string; src: string }[],
-  names: string[],
-  dates: string[],
-  ratings: number[],
-  texts: string[],
-): DemoReview[] {
-  return photos.map((photo, index) => ({
-    id: photo.id,
-    name: names[index % names.length],
-    date: dates[index % dates.length],
-    rating: ratings[index % ratings.length],
-    text: texts[index % texts.length],
-    media: photo.src,
-  }));
-}
 const demoReviewCopy = [
   'Gostei muitoo, é bem bonito e ficou ótimo aqui em casa',
   'Chegou direitinho e bem embalado, gostei da qualidade',
@@ -87,6 +71,33 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
   return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 3 dias', 'há 5 dias', 'há 1 semana', 'há 10 dias', 'há 2 semanas'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
 }
 function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${product.sold} vendidos` : ""; }
+function estimateReviewCount(sold: string | null): number {
+  if (!sold) return 0;
+  const normalized = sold.toLowerCase().replace(/\s/g, "");
+  const numeric = normalized.replace(/[^0-9.,]/g, "");
+  // "1.000+" usa ponto de milhar; "7,8 mil" usa vírgula decimal.
+  const amount = normalized.includes("mil")
+    ? Number.parseFloat(numeric.replace(",", "."))
+    : Number.parseFloat(numeric.replace(/\./g, "").replace(",", "."));
+  if (!Number.isFinite(amount)) return 0;
+  const units = normalized.includes("mil") ? amount * 1000 : amount;
+  // Cerca de 20% das vendas, com pequena variação e sem arredondar em dezenas/centenas.
+  const variation = ((Math.round(units) % 21) - 10) / 1000;
+  return Math.max(1, Math.round(units * (0.2 + variation)));
+}
+function getEstimatedRatingDistribution(total: number, rating: number): Record<number, number> {
+  if (!total) return { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  // Mantém a maior concentração em 5 estrelas, mas representa também
+  // avaliações de 4, 3, 2 e 1 estrela no gráfico.
+  const fiveShare = Math.max(0, Math.min(0.98, (rating - 4) + 0.01));
+  const fiveStars = Math.round(total * fiveShare);
+  const threeStars = Math.round(total * 0.01);
+  const twoStars = Math.round(total * 0.005);
+  const oneStar = Math.round(total * 0.005);
+  const fourStars = Math.max(0, total - fiveStars - threeStars - twoStars - oneStar);
+  return { 5: fiveStars, 4: fourStars, 3: threeStars, 2: twoStars, 1: oneStar };
+}
+
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
   return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
     const fill = Math.max(0, Math.min(1, rating - (n - 1)));
@@ -468,100 +479,40 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const baseDemoReviews: DemoReview[] = isBedsheetSet
-    ? makeStructuredDemoReviews(
-        bedsheetReviewPhotos,
-        ["Mariana C.", "Rafaela M.", "Camila R.", "João P.", "Ana L.", "Patrícia S.", "Bruna F.", "Diego A."],
-        ["há 1 dia", "há 3 dias", "há 5 dias", "há 1 semana", "há 8 dias", "há 10 dias", "há 12 dias", "há 2 semanas"],
-        [5, 5, 5, 5, 5, 5, 5, 5],
-        [
-          "O tecido é bem macio ao toque e o lençol ficou firme no colchão. Gostei do acabamento das fronhas.",
-          "A cor veio como eu esperava e o conjunto deixou a cama bem arrumada. Pelo preço, gostei bastante.",
-          "As fronhas têm um acabamento delicado e o lençol com elástico veste bem o colchão.",
-          "Comprei para renovar o quarto. É leve, seca rápido e ficou bonito na cama.",
-          "Gostei da textura e da praticidade para colocar e retirar. As medidas atenderam ao meu colchão.",
-          "O conjunto é simples e bonito. O ponto palito dá um detalhe legal nas fronhas.",
-          "Chegou bem embalado e a cor ficou muito bonita pessoalmente. Estou satisfeita com a compra.",
-          "Bom para o uso diário. O elástico ajuda a manter o lençol no lugar durante a noite.",
-        ],
-      )
-    : isTramontinaKnives
-      ? [
-          ...makeStructuredDemoReviews(
-            tramontinaKnifeReviewPhotos,
-            ["Marcos A.", "Juliana R.", "Camila F.", "Rogério P."],
-            ["há 2 dias", "há 4 dias", "há 1 semana", "há 9 dias"],
-            [5, 5, 5, 4],
-            [
-              "O conjunto é bem completo para a rotina. As peças têm bom acabamento e ficam organizadas na cozinha.",
-              "Gostei da variedade de facas. Os cabos são confortáveis e as lâminas cortam bem os alimentos do dia a dia.",
-              "Comprei pensando nos preparos de fim de semana. É prático ter tamanhos diferentes no mesmo conjunto.",
-              "Visual bonito e conjunto útil. Para cortes mais delicados, escolho a faca adequada entre as peças.",
-            ],
-          ),
-          { id: "tramontina-text-5", name: "Patrícia M.", date: "há 5 dias", rating: 5, text: "As facas são leves e fáceis de manusear. O suporte ajuda a deixar tudo no mesmo lugar.", media: null },
-          { id: "tramontina-text-6", name: "Eduardo T.", date: "há 8 dias", rating: 5, text: "Gostei do custo-benefício e da quantidade de peças. Já usei para legumes, pão e carnes.", media: null },
-          { id: "tramontina-text-7", name: "Lívia C.", date: "há 11 dias", rating: 5, text: "Conjunto prático para quem está montando a cozinha. As peças têm aparência discreta.", media: null },
-          { id: "tramontina-text-8", name: "André V.", date: "há 2 semanas", rating: 5, text: "Chegou tudo certo e bem acondicionado. Atendeu ao que eu procurava para o uso diário.", media: null },
-        ]
-      : isIntelbrasCamera
-        ? [
-            ...makeStructuredDemoReviews(
-              intelbrasReviewPhotos,
-              ["Rafael M.", "Camila S.", "Bruno A.", "Fernanda L.", "Diego R.", "Mariana P.", "Lucas T.", "Patrícia G.", "André C.", "Juliana F.", "Renata B.", "Thiago V."],
-              ["há 1 dia", "há 2 dias", "há 4 dias", "há 5 dias", "há 1 semana", "há 8 dias", "há 9 dias", "há 11 dias", "há 12 dias", "há 2 semanas", "há 15 dias", "há 18 dias"],
-              [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-              [
-                "A imagem fica nítida e a instalação foi tranquila seguindo o guia. O acesso pelo celular facilita bastante.",
-                "Gostei da visão noturna colorida. Consigo acompanhar o quintal pelo aplicativo mesmo à noite.",
-                "A câmera tem boa definição e o áudio ajuda a ouvir e falar pelo aplicativo. Atendeu ao que precisava.",
-                "Instalei na área externa e a conexão ficou estável no ponto onde coloquei. A imagem é bem definida.",
-                "O alerta de movimento é útil e gostei de poder ajustar as notificações pelo celular.",
-                "A imagem Full HD atende bem para monitorar a entrada. O aplicativo tem várias opções de configuração.",
-                "Boa câmera para acompanhar a área externa. A proteção IP67 foi um dos pontos que considerei na compra.",
-                "O holofote ajuda bastante quando escurece. A imagem fica clara e consigo acompanhar pelo telefone.",
-                "A configuração inicial exigiu atenção ao Wi-Fi de 2,4 GHz, mas depois ficou funcionando direitinho.",
-                "Gostei da possibilidade de gravar no cartão de memória e consultar as imagens quando preciso.",
-                "O áudio bidirecional é um recurso interessante. Consigo falar pelo celular quando alguém está perto da câmera.",
-                "Produto bem acabado e com bons recursos para monitoramento residencial. A instalação ficou discreta.",
-              ],
-            ),
-            { id: "intelbras-text-13", name: "Aline D.", date: "há 3 dias", rating: 5, text: "A detecção de pessoas ajuda a filtrar os avisos. Ajustei a sensibilidade conforme o movimento da rua.", media: null },
-            { id: "intelbras-text-14", name: "Gustavo N.", date: "há 7 dias", rating: 5, text: "Gostei do zoom e da qualidade da imagem. Vale conferir o sinal do Wi-Fi no local antes de instalar.", media: null },
-            { id: "intelbras-text-15", name: "Sônia R.", date: "há 10 dias", rating: 5, text: "Uso para acompanhar o corredor externo. O aplicativo é prático para consultar a câmera quando estou fora.", media: null },
-            { id: "intelbras-text-16", name: "Felipe H.", date: "há 16 dias", rating: 5, text: "Chegou com os acessórios de instalação e a fonte. Funcionou bem depois de conectar à rede 2,4 GHz.", media: null },
-          ]
-        : isPurifierElectrolux
-          ? [
-              ...makeStructuredDemoReviews(
-                purifierReviewPhotos,
-                ["Mariana F.", "Camila R.", "Patrícia M.", "Juliana A.", "Fernanda C.", "Renata S.", "Aline P.", "Bruna L.", "Débora T.", "Carolina G.", "Vanessa B.", "Priscila D.", "Michele V.", "Sabrina H.", "Elaine R."],
-                ["há 1 dia", "há 2 dias", "há 3 dias", "há 5 dias", "há 6 dias", "há 1 semana", "há 8 dias", "há 9 dias", "há 10 dias", "há 12 dias", "há 2 semanas", "há 15 dias", "há 16 dias", "há 18 dias", "há 3 semanas"],
-                [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5],
-                [
-                  "A água gelada sai na temperatura que eu gosto e o painel é simples de usar. O acabamento prata ficou bonito na cozinha.",
-                  "Gostei de poder escolher água natural ou gelada. A bandeja removível também facilita a limpeza.",
-                  "O purificador ficou ótimo na bancada e a seleção de porções é prática para encher garrafas.",
-                  "A instalação foi tranquila depois de conferir a pressão da água. O alerta do filtro é um detalhe útil.",
-                  "O painel touch responde bem e o fluxo de água é fácil de controlar. Atendeu à rotina da família.",
-                  "Gostei do visual e da praticidade. Ter água gelada sem precisar de garrafas na geladeira ajuda bastante.",
-                  "O aparelho é silencioso para o ambiente em que está instalado. A água sai com bom fluxo.",
-                  "A bandeja flexível ajuda com copos de tamanhos diferentes. Achei fácil manter a área limpa.",
-                  "A opção de água natural e gelada atende bem aqui em casa. O acabamento combina com os eletros.",
-                  "Produto bonito e funcional. Só é importante verificar a pressão da água antes de instalar, como orienta o fabricante.",
-                  "Gostei do painel e da facilidade para selecionar a quantidade. Ficou prático para o uso diário.",
-                  "A filtragem em dois estágios e o alerta de troca foram pontos que pesaram na minha escolha.",
-                  "Chegou bem embalado e o aparelho funciona como esperado. O visual prata é discreto.",
-                  "Gostei do produto, mas precisei ajustar o ponto de instalação para respeitar a pressão mínima indicada.",
-                  "O purificador deixou a rotina mais prática. A água gelada e o controle de porções são os recursos que mais uso.",
-                ],
-              ),
-              { id: "purifier-text-16", name: "Roberto L.", date: "há 4 dias", rating: 5, text: "O painel é intuitivo e a bandeja sai para lavar. Foi uma boa escolha para a cozinha.", media: null },
-              { id: "purifier-text-17", name: "Tatiane O.", date: "há 8 dias", rating: 5, text: "Uso várias vezes ao dia e gosto de não precisar ocupar espaço com garrafas de água na geladeira.", media: null },
-              { id: "purifier-text-18", name: "André P.", date: "há 13 dias", rating: 4, text: "O produto atende bem. Vale conferir a pressão da rede hidráulica e o espaço para instalação antes da compra.", media: null },
-              { id: "purifier-text-19", name: "Beatriz K.", date: "há 17 dias", rating: 5, text: "Gostei do acabamento e da praticidade de ter água natural ou gelada com um toque.", media: null },
-            ]
-          : isChandonReserve ? [
+  const demoReviews: DemoReview[] = isBedsheetSet ? bedsheetReviewPhotos.map((photo) => ({
+    id: photo.id, name: "Registro de imagem", date: "", rating: 0,
+    text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
+  })) : isTramontinaKnives ? [
+    ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i],
+      date: ["há 2 dias", "há 6 dias", "há 11 dias", "há 4 dias"][i],
+      rating: [5, 5, 4, 5][i],
+      text: [
+        "O conjunto é bem completo para a rotina. Deixei as peças mais usadas no suporte e ficou tudo organizado na cozinha.",
+        "Comprei pensando nos churrascos de domingo. Gostei de ter facas diferentes à mão, sem precisar improvisar com as que uso para outras coisas.",
+        "As lâminas têm bom acabamento e os cabos são confortáveis de segurar. Pelo tamanho do conjunto, achei uma compra interessante.",
+        "Visual simples e bonito, combina com a cozinha. As facas cortam bem os alimentos que preparei até agora."
+      ][i],
+      media: photo.src,
+    })),
+    { id: "tramontina-knives-text-5", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "Gostei de ter várias opções para cada preparo. O cabo preto tem aparência discreta e o conjunto fica bonito guardado.", media: null },
+    { id: "tramontina-knives-text-6", name: "Eduardo C.", date: "há 9 dias", rating: 5, text: "Chegou bem acondicionado. As peças parecem resistentes e já usei algumas para cortar legumes, carnes e pão.", media: null },
+    { id: "tramontina-knives-text-7", name: "Lívia P.", date: "há 13 dias", rating: 4, text: "É um kit prático para quem está montando a cozinha. Eu só recomendo conferir o espaço disponível para guardar todas as peças.", media: null },
+    { id: "tramontina-knives-text-8", name: "Marcelo G.", date: "há 7 dias", rating: 5, text: "Comprei para substituir facas antigas e gostei da variedade. Para os preparos do dia a dia, está atendendo muito bem.", media: null },
+  ] : isIntelbrasCamera ? intelbrasReviewPhotos.map((photo) => ({
+    id: photo.id, name: "Registro de imagem", date: "", rating: 0,
+    text: "Imagem disponibilizada na pasta de mídias do produto.", media: photo.src,
+  })) : isPurifierElectrolux ? [
+    ...purifierReviewPhotos.map((photo, i) => ({
+      id: photo.id, name: ["Mariana C.","Rafael M.","Camila S.","André P.","Juliana R.","Fernanda L.","Bruno T.","Patrícia A.","Lucas M.","Renata F.","Diego C.","Aline V.","Marcelo G.","Beatriz N.","Carolina D."][i], date: ["há 2 dias","há 5 dias","há 1 dia","há 8 dias","há 4 dias","há 11 dias","há 6 dias","há 3 dias","há 13 dias","há 7 dias","há 15 dias","há 9 dias","há 12 dias","há 16 dias","há 10 dias"][i],
+      rating: [5,5,5,5,5,4,5,5,5,5,5,4,5,5,5][i], text: ["A água sai bem gelada e o painel é simples de usar. O acabamento prata ficou bonito na cozinha.","Gostei bastante do purificador. A opção de água natural e gelada facilita muito no dia a dia.","Instalei na cozinha e ficou ótimo. A bandeja ajuda a apoiar o copo e é fácil de retirar para limpar.","O painel touch responde bem e achei prático escolher a quantidade de água.","Chegou certinho e está funcionando direitinho. A água gelada é ótima para os dias quentes.","Produto bonito e compacto para o espaço que eu tinha. Só precisei conferir a pressão da água antes da instalação.","Gostei da praticidade do fluxo contínuo e da opção de controlar a quantidade servida.","O acabamento é bonito e combina com os outros eletrodomésticos. Até agora, tudo certo com o funcionamento.","A água fica em uma temperatura agradável e o painel é bem intuitivo. Foi uma boa escolha para casa.","Achei fácil de usar e gostei do aviso luminoso para lembrar da troca do filtro.","Instalado e funcionando. A opção bivolt ajudou porque não precisei escolher tensão na compra.","Gostei do design e da filtragem. A instalação exigiu atenção à pressão da água, então vale conferir isso antes.","O purificador atende bem nossa rotina. A bandeja removível facilita bastante a limpeza.","Muito prático para encher garrafas e copos. O fluxo contínuo ajuda quando preciso de mais água.","Ficou bonito na bancada e a água gelada sai bem. Gostei da experiência até aqui."][i], media: photo.src,
+    })),
+    { id: "purifier-review-text-16", name: "Elaine M.", date: "há 4 dias", rating: 5, text: "O painel é fácil de entender e gostei de poder escolher a quantidade de água. Está sendo bem útil na rotina.", media: null },
+    { id: "purifier-review-text-17", name: "Thiago R.", date: "há 9 dias", rating: 5, text: "O acabamento prata é bonito e a água gelada funciona bem. Antes de instalar, conferi a pressão da água como recomendado.", media: null },
+    { id: "purifier-review-text-18", name: "Sônia P.", date: "há 14 dias", rating: 4, text: "Gostei do produto e da praticidade. A bandeja sai para limpar e o alerta do filtro é um detalhe importante.", media: null },
+    { id: "purifier-review-text-19", name: "Gabriel A.", date: "há 6 dias", rating: 5, text: "Boa opção para ter água natural ou gelada sem ocupar muito espaço. O uso pelo painel touch é simples.", media: null },
+  ] : isChandonReserve ? [
     ...chandonReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana F.","Camila R.","Patrícia M.","Juliana A.","Fernanda C.","Renata S.","Aline P.","Bruna L.","Débora T.","Carolina G.","Vanessa B.","Priscila D.","Michele V.","Sabrina H."][i] ?? "",
@@ -574,54 +525,402 @@ function ProductPage() {
     { id: "chandon-review-text-16", name: "Lívia N.", date: "há 11 dias", rating: 5, text: "Comprei para presentear meus pais numa comemoração. Eles gostaram bastante e chegou tudo certo.", media: null },
     { id: "chandon-review-text-17", name: "André P.", date: "há 17 dias", rating: 4, text: "Bom espumante para celebrações. Sabor equilibrado e agradável; recomendo servir bem gelado.", media: null },
     { id: "chandon-review-text-18", name: "Beatriz K.", date: "há 8 dias", rating: 5, text: "Gostei para um brinde especial, leve e fácil de harmonizar com petiscos e entradas.", media: null },
+  ] : isBasikePowerBank ? [
+    ...basikePowerBankReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Carolina M.","Juliana R.","Fernanda P.","Aline C.","Patrícia S.","Bruna T.","Mariana L.","Débora F.","Camila G.","Renata B.","Vanessa D.","Priscila A."][i] ?? "",
+      date: ["há 2 dias","há 7 dias","há 1 dia","há 12 dias","há 4 dias","há 16 dias","há 9 dias","há 3 dias","há 18 dias","há 6 dias","há 14 dias","há 5 dias"][i] ?? "",
+      rating: [5,5,5,5,5,4,5,5,5,5,5,5][i] ?? 5,
+      text: ["Salvou minha vida no passeio! Fiquei o dia todo fora e consegui carregar o celular sem precisar procurar tomada.","É pequeno e cabe direitinho na bolsa. Já deixei como item fixo para quando saio.","Carrega rápido e veio com os cabos que aparecem nas fotos. Gostei bastante pela praticidade.","Comprei para uma viagem e foi muito útil no aeroporto. Não achei pesado para levar na mochila.","Gostei porque já tem as opções de cabo, então não preciso ficar procurando um monte de fio. Até agora está funcionando direitinho.","Produto bom, tamanho compacto e acabamento bonito. Só precisa lembrar de carregar o power bank antes de sair, claro.","Uso no trabalho quando fico longe da tomada. Consigo dar uma carga no celular e continuar usando.","Chegou bem embalado e carregado o suficiente para testar. A entrada USB-C facilitou bastante para mim.","Comprei para deixar na bolsa e adorei. É discreto, não ocupa muito espaço e quebra um galho enorme.","Meu celular estava sempre ficando sem bateria no meio da rua. Agora levo esse comigo e fico bem mais tranquila.","Gostei do custo-benefício. Os cabos integrados ajudam muito, principalmente quando estou com pressa.","É prático para viagens e para o dia a dia. O peso é ok considerando que é uma bateria portátil."][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "basike-powerbank-review-text-13", name: "Larissa V.", date: "há 5 dias", rating: 5, text: "Deixei um na bolsa e outro em casa para não esquecer. Para mim, o melhor é não depender de levar cabo separado.", media: null },
+    { id: "basike-powerbank-review-text-14", name: "Michele H.", date: "há 11 dias", rating: 5, text: "Usei durante um fim de semana fora e foi bem útil. A recarga pelo USB-C foi tranquila com meu carregador compatível.", media: null },
+    { id: "basike-powerbank-review-text-15", name: "Sabrina E.", date: "há 17 dias", rating: 4, text: "Gostei do produto e da praticidade dos cabos. Só confiram se a potência e as conexões atendem ao modelo do celular de vocês.", media: null },
+    { id: "basike-powerbank-review-text-16", name: "Elaine K.", date: "há 8 dias", rating: 5, text: "Pequeno, bonito e útil. Já virou companhia na bolsa, principalmente nos dias em que passo muitas horas fora.", media: null },
+  ] : isMondialFan ? [
+    ...mondialFanReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Patrícia M.","Camila R.","Juliana S.","Fernanda A.","Márcia L.","Renata C.","Aline P.","Débora T.","Vanessa G."][i] ?? "",
+      date: ["há 2 dias","há 7 dias","há 1 dia","há 12 dias","há 4 dias","há 16 dias","há 9 dias","há 3 dias","há 18 dias"][i] ?? "",
+      rating: [5,5,5,5,5,4,5,5,5][i] ?? 5,
+      text: ["Ventila muito bem! Coloquei na sala e o vento chega até a cozinha. Gostei bastante.","Comprei para o quarto porque aqui faz muito calor. Na velocidade média já refresca bem e não incomoda tanto para dormir.","Chegou direitinho e foi fácil de montar. O tamanho é ótimo, venta bastante.","Gostei das 8 pás, espalha bem o vento pelo ambiente. Uso mais na sala e estou satisfeita.","É forte mesmo! Na velocidade máxima dá conta dos dias mais quentes. A oscilação ajuda bastante.","Bom ventilador e fácil de limpar. Só achei um pouco grande para o cantinho onde eu queria colocar, então medi melhor e mudei de lugar.","Comprei para minha mãe e ela adorou. A alça facilita levar de um cômodo para o outro.","Fiquei surpresa com a força do vento. Na mínima já fica agradável e na máxima refresca rapidinho.","Gostei do produto, chegou bem embalado e funcionando. A inclinação ajuda a direcionar o ar para a cama."][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "mondial-fan-review-text-10", name: "Sueli F.", date: "há 5 dias", rating: 5, text: "Aqui em casa somos quatro e o ventilador fica ligado boa parte do dia. Gostei porque distribui bem o ar e é simples de ajustar.", media: null },
+    { id: "mondial-fan-review-text-11", name: "Bruna D.", date: "há 11 dias", rating: 5, text: "O porta-fio é um detalhe que achei muito útil para guardar. O vento é forte e as velocidades fazem diferença.", media: null },
+    { id: "mondial-fan-review-text-12", name: "Elaine V.", date: "há 15 dias", rating: 4, text: "Atendeu ao que eu precisava para a sala. Antes de comprar, confiram direitinho a voltagem da casa para escolher a versão certa.", media: null },
+    { id: "mondial-fan-review-text-13", name: "Carolina B.", date: "há 8 dias", rating: 5, text: "Gostei muito da compra. A montagem foi tranquila e a limpeza parece prática porque dá para remover as grades e a hélice.", media: null },
+  ] : isXboxWhiteController ? [
+    ...xboxControllerReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana C.","Rafael M.","Juliana P.","Bruno A.","Camila R.","Diego F.","Patrícia L.","Lucas T.","Fernanda G.","André V.","Beatriz N."][i] ?? "",
+      date: ["há 2 dias","há 7 dias","há 1 dia","há 12 dias","há 4 dias","há 16 dias","há 9 dias","há 3 dias","há 18 dias","há 6 dias","há 14 dias"][i] ?? "",
+      rating: [5,5,5,5,5,4,5,5,5,5,5][i] ?? 5,
+      text: ["Comprei para jogar no PC e gostei bastante. O branco é bonito e o controle ficou confortável na mão.","Dei de presente e a pessoa curtiu muito. Conectou por Bluetooth e já foi jogar.","Chegou certinho, bem embalado. Meu filho gostou bastante e está usando nas partidas depois da escola.","Peguei para jogar no computador sem ficar com fio atravessando a mesa. Até agora a conexão está estável.","Gostei do acabamento e da pegada. Os botões respondem bem nos jogos que costumo jogar.","É confortável e funciona bem, só precisei conferir as configurações do Bluetooth no computador para parear na primeira vez.","Comprei para meu marido e ele aprovou. O controle é bonito e o cabo que acompanha também ajuda quando precisa.","Gostei! O tamanho é bom e não fica escorregando na mão. A vibração deixa os jogos mais legais.","Meu sobrinho queria um controle branco e ficou todo feliz. Foi simples conectar no PC dele.","Uso para jogar nas horas vagas. O controle é leve, tem boa pegada e não fico preso ao cabo.","Boa compra pelo preço. Veio com o cabo e consegui fazer a conexão seguindo as instruções do computador."][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "xbox-controller-review-text-12", name: "Aline D.", date: "há 5 dias", rating: 5, text: "Comprei para jogar com meu irmão e foi tranquilo de configurar. O branco é ainda mais bonito pessoalmente.", media: null },
+    { id: "xbox-controller-review-text-13", name: "Thiago B.", date: "há 11 dias", rating: 5, text: "Boa opção para quem quer jogar no PC sem fio. A pegada é confortável até depois de algumas partidas.", media: null },
+    { id: "xbox-controller-review-text-14", name: "Renata S.", date: "há 17 dias", rating: 4, text: "Presente para meu filho. Ele gostou bastante; só tivemos que conferir a compatibilidade e ajustar o pareamento no computador.", media: null },
+    { id: "xbox-controller-review-text-15", name: "Gustavo H.", date: "há 8 dias", rating: 5, text: "Chegou tudo certo e o cabo de 1 metro veio junto. Atendeu ao que eu estava procurando.", media: null },
+  ] : isOmoLaundry ? [
+    ...omoReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Juliana M.","Patrícia R.","Aline S.","Camila F.","Renata C.","Márcia T.","Fernanda L.","Vanessa P.","Débora A.","Luciana G.","Carolina B.","Elaine D.","Priscila N.","Mariana V."][i] ?? "",
+      date: ["há 2 dias","há 6 dias","há 1 dia","há 11 dias","há 4 dias","há 15 dias","há 8 dias","há 3 dias","há 18 dias","há 9 dias","há 5 dias","há 13 dias","há 7 dias","há 19 dias"][i] ?? "",
+      rating: [5,5,5,5,4,5,5,5,5,5,5,4,5,5][i] ?? 5,
+      text: ["Uso na lavanderia de casa e gostei bastante. O galão rende muito.","Comprei para adiantar as lavagens da semana. Limpa bem e a embalagem grande compensa.","Gostei do resultado nas roupas do dia a dia. Chegou tudo certinho.","Tenho bastante roupa para lavar e esse tamanho ajuda demais. Só lembrar de seguir a medida indicada no rótulo.","Produto bom, fez bastante espuma e deixou as peças limpas. O galão é grandinho, então já separa um espaço para guardar.","Já conhecia OMO e resolvi pegar essa versão maior. Para quem lava roupa com frequência, facilita não precisar comprar toda hora.","Usei em roupas claras e coloridas e gostei do resultado. Vou comprar novamente quando acabar.","Chegou bem embalado e sem vazamento. O tamanho de 7 litros é ótimo para quem tem bastante roupa na rotina.","Estou usando na rotina da família e rende bastante. A limpeza me agradou, inclusive nas peças mais pesadas.","Gostei muito, principalmente pelo rendimento. Coloco a quantidade conforme a orientação e tem funcionado bem.","Comprei para a lavanderia do pequeno negócio e está atendendo bem à demanda. Bom custo-benefício pelo tamanho.","Cumpre o que promete na limpeza. Só achei o galão pesado para manusear cheio, mas isso já era esperado pelo volume.","Vale a pena para quem lava bastante roupa. O produto rende e não preciso ficar repondo toda hora.","Gostei da compra. As roupas saíram limpas e o galão veio direitinho, bem fechado."][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "omo-laundry-review-text-15", name: "Sabrina H.", date: "há 3 dias", rating: 5, text: "O galão é grande mesmo! Para quem lava roupa quase todo dia, achei bem mais prático comprar o de 7 litros.", media: null },
+    { id: "omo-laundry-review-text-16", name: "Andréa K.", date: "há 10 dias", rating: 5, text: "Usei nas roupas de cama e nas peças do trabalho. Gostei da limpeza; estou seguindo a dosagem da embalagem para aproveitar o rendimento.", media: null },
+    { id: "omo-laundry-review-text-17", name: "Mônica E.", date: "há 16 dias", rating: 4, text: "Chegou tudo certo. É uma embalagem pesada para levantar, mas o volume compensa para minha rotina de lavanderia.", media: null },
+    { id: "omo-laundry-review-text-18", name: "Tatiane O.", date: "há 12 dias", rating: 5, text: "Produto que facilita bastante aqui em casa. Rende bem e gostei do resultado nas lavagens do dia a dia.", media: null },
+  ] : isT900Smartwatch ? [
+    ...smartwatchReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Larissa M.","Eduardo R.","Priscila A.","Matheus C.","Sônia F.","Gabriel T.","Renata P.","João V.","Camila D.","Rafael N.","Beatriz L.","André C.","Mariana F.","Felipe G."][i] ?? "",
+      date: ["há 1 dia","há 4 dias","há 2 dias","há 7 dias","há 5 dias","há 11 dias","há 3 dias","há 9 dias","há 6 dias","há 14 dias","há 8 dias","há 17 dias","há 12 dias","há 19 dias"][i] ?? "",
+      rating: [5,5,5,4,5,5,5,5,4,5,5,5,5,5][i] ?? 5,
+      text: ["Ficou muito bonito no pulso! Já comecei usando a pulseira laranja, achei que deu outra cara pro relógio.","Comprei para acompanhar as notificações e gostei. A configuração inicial pede um pouco de atenção, mas depois fica bem mais simples.","Veio com as três pulseiras mesmo. Eu achei que teria que escolher uma cor, então gostei bastante dessa surpresa.","A tela é grande e fácil de visualizar. Levei um tempinho para me acostumar com os menus, mas no geral gostei.","Presente para minha filha e ela adorou. A laranja foi a favorita dela 😊","Gostei do acabamento e do tamanho. No meu braço ficou confortável, não achei pesado.","Bem legal pelo preço. Uso mais para ver as horas, alarmes e notificações durante o trabalho.","Troquei para a pulseira branca e ficou lindo. Bom poder mudar o visual sem comprar acessório por fora.","Chegou certinho e corresponde ao anúncio. Só precisei olhar o passo a passo para conectar no celular.","Estou usando nas caminhadas para consultar o horário e o cronômetro. Até agora está atendendo ao que eu precisava.","A pulseira preta é discreta e combina com tudo. As outras duas são um bônus que gostei de receber.","Tem bastante função no menu, ainda estou explorando. Para as tarefas básicas do dia a dia está sendo útil.","Gostei mais do que esperava! A tela chama atenção e a pulseira de silicone é macia. A laranja ficou minha preferida.","Relógio bonito, leve e com várias opções. Pelo valor, achei que valeu a compra."][i] ?? "",
+      media: photo.src,
+    })),
+
+    { id: "t900-smartwatch-review-text-15", name: "Ana Paula R.", date: "há 2 dias", rating: 5, text: "A pulseira branca ficou linda! Gostei de poder trocar quando quiser.", media: null },
+    { id: "t900-smartwatch-review-text-16", name: "Leandro S.", date: "há 8 dias", rating: 5, text: "Chegou tudo certinho. Ainda estou conhecendo as funções, mas para ver as horas e notificações já está sendo bem útil.", media: null },
+    { id: "t900-smartwatch-review-text-17", name: "Michele B.", date: "há 15 dias", rating: 4, text: "Gostei do relógio, principalmente do visual e das três pulseiras incluídas. A configuração inicial exigiu um pouco de paciência, mas consegui conectar.", media: null },
+  ] : isJblBoombox ? [
+    ...jblReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Marcos A.", "Renata C.", "Felipe M.", "Camila R.", "Diego P.", "Aline S.", "Rafael T.", "Bruna L.", "Lucas F.", "Patrícia V.", "André G.", "Juliana M.", "Gustavo N.", "Fernanda B.", "Caio D."][i] ?? "",
+      date: ["há 1 dia", "há 2 dias", "há 3 dias", "há 4 dias", "há 5 dias", "há 6 dias", "há 8 dias", "há 9 dias", "há 10 dias", "há 12 dias", "há 13 dias", "há 14 dias", "há 16 dias", "há 18 dias", "há 19 dias"][i] ?? "",
+      rating: i === 8 ? 4 : 5,
+      text: [
+        "Já tive a Boombox 3 e gostei muito da evolução. Essa é maior, tem presença e continua fácil de levar.",
+        "O som me surpreendeu, principalmente os graves. Em volume alto continua bem definido aqui.",
+        "A construção passa uma sensação ótima de resistência. O acabamento é bonito e os detalhes são bem feitos.",
+        "Gostei bastante da potência e da clareza. Usei em um encontro com amigos e preencheu bem o ambiente.",
+        "A bateria é um dos pontos que mais gostei. Consigo ouvir música por bastante tempo sem ficar procurando tomada.",
+        "Os graves têm bastante impacto e gostei de poder alternar o Bass Boost conforme o tipo de música.",
+        "Caixa robusta, mas achei mais leve do que imaginava pelo tamanho. O som também tem bastante presença.",
+        "O áudio é limpo e os graves são fortes. Para ouvir em área aberta fez bastante diferença.",
+        "Gostei muito do som e da potência. Só achei o tamanho maior do que eu esperava, então vale conferir as medidas antes.",
+        "Chegou bem protegida e o acabamento me agradou. Já conectei no celular e funcionou sem complicação.",
+        "Usei perto da piscina e gostei da tranquilidade de ter proteção contra água e poeira. Som muito bom.",
+        "O pareamento foi simples e a caixa entrega um som encorpado. Os controles pelo aplicativo ajudam bastante.",
+        "É potente mesmo, os graves aparecem bastante sem deixar a voz sumir. Gostei da experiência.",
+        "Gostei do formato e da alça para transportar. Levei para um espaço aberto e o volume deu conta.",
+        "Produto muito bonito e com ótima qualidade sonora. A diferença nos graves é o que mais chama atenção."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "jbl-boombox-review-text-16", name: "Roberto H.", date: "há 3 dias", rating: 5, text: "O som tem bastante corpo e os graves são fortes. Para ouvir música na área de casa ficou excelente.", media: null },
+    { id: "jbl-boombox-review-text-17", name: "Isabela F.", date: "há 7 dias", rating: 5, text: "Gostei da conexão e dos ajustes pelo aplicativo. É uma caixa grande, mas a alça facilita levar de um lugar para outro.", media: null },
+    { id: "jbl-boombox-review-text-18", name: "Thiago C.", date: "há 11 dias", rating: 5, text: "A potência impressiona e o áudio continua agradável mesmo quando aumento o volume. Compra que me agradou bastante.", media: null },
+    { id: "jbl-boombox-review-text-19", name: "Mônica P.", date: "há 17 dias", rating: 4, text: "Gostei muito da qualidade e da bateria. É um equipamento maior, então é bom ter espaço para guardar.", media: null },
+  ] : isProjector ? [
+    ...projectorReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R.", "Juliana T."][i] ?? "",
+      date: ["há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 8 dias", "há 10 dias", "há 12 dias", "há 13 dias", "há 15 dias", "há 17 dias", "há 19 dias"][i] ?? "",
+      rating: i === 8 ? 4 : 5,
+      text: [
+        "A imagem fica bem legal no quarto, principalmente com a luz apagada. Já usei para assistir séries.",
+        "Chegou tudo certinho, veio com controle e os cabos. Consegui configurar o Wi-Fi sem dificuldade.",
+        "Gostei bastante para assistir filme na parede. O ajuste de foco ajuda a deixar a imagem mais nítida.",
+        "É compacto e fácil de mudar de lugar. A rotação ajuda bastante para posicionar a projeção.",
+        "Veio com os acessórios e manual. Conectei e consegui começar a usar seguindo as instruções.",
+        "A imagem ficou boa para assistir à noite e os aplicativos deixam tudo mais prático.",
+        "Gostei do tamanho, não ocupa muito espaço e consigo levar para outros cômodos.",
+        "O projetor é bem prático. Ajustei a posição e consegui deixar a tela do tamanho que queria.",
+        "Funciona direitinho, mas precisei deixar o ambiente mais escuro para aproveitar melhor a imagem.",
+        "Conectei no Wi-Fi e já consegui abrir os aplicativos. Para assistir no quarto está ótimo.",
+        "Gostei da experiência, principalmente por poder projetar direto na parede e usar o controle.",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "projector-review-text-12", name: "Bruno M.", date: "há 3 dias", rating: 5, text: "Muito prático para assistir alguma coisa antes de dormir. A configuração foi tranquila por aqui.", media: null },
+    { id: "projector-review-text-13", name: "Larissa G.", date: "há 11 dias", rating: 5, text: "Gostei bastante do tamanho e da possibilidade de ajustar a posição. Já virou companhia para os filmes.", media: null },
+    { id: "projector-review-text-14", name: "Eduardo V.", date: "há 16 dias", rating: 4, text: "Atendeu ao que eu procurava. A imagem fica melhor com o quarto escuro, e o aparelho é bem compacto.", media: null },
+  ] : isKarstenTowel ? [
+    ...towelReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R."][i] ?? "",
+      date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 6 dias", "há 8 dias", "há 10 dias", "há 12 dias", "há 14 dias", "há 16 dias", "há 18 dias"][i] ?? "",
+      rating: i === 8 ? 4 : 5,
+      text: [
+        "As toalhas são bem macias e vieram do jeitinho que eu esperava",
+        "Gostei bastante da qualidade, são bonitas e têm um toque muito bom",
+        "O jogo chegou certinho, as peças são bonitas e parecem bem resistentes",
+        "São macias e têm um tamanho ótimo para usar no dia a dia",
+        "A cor é linda pessoalmente e o tecido é bem gostoso",
+        "Gostei do acabamento, ficaram lindas no meu banheiro",
+        "Boa absorção e um toque bem agradável, compraria novamente",
+        "Chegaram bem embaladas e são ainda mais bonitas de perto",
+        "Gostei do conjunto, só achei a textura um pouco diferente do que imaginei",
+        "Produto muito bonito, as toalhas têm uma qualidade ótima",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "karsten-review-text-11", name: "Bruno M.", date: "há 4 dias", rating: 5, text: "O conjunto ficou lindo no banheiro, gostei muito das cores e do toque", media: null },
+    { id: "karsten-review-text-12", name: "Larissa G.", date: "há 9 dias", rating: 4, text: "São bonitas e macias, atenderam bem o que eu precisava", media: null },
+    { id: "karsten-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 5, text: "Gostei da compra, as quatro peças vieram certinhas e bem embaladas", media: null },
+  ] : isChristmasTree ? [
+    ...christmasTreeReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Gabriela M.", "Renato P.", "Camila F.", "Bruno A.", "Larissa C."][i] ?? "",
+      date: ["há 2 dias", "há 4 dias", "há 6 dias", "há 9 dias", "há 12 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "Ficou linda montada aqui em casa, deu um charme especial na sala",
+        "Veio tudo certinho e os enfeites deixaram a árvore bem bonita",
+        "Gostei do tamanho, ficou perfeita no cantinho que eu tinha separado",
+        "A montagem foi tranquila e depois de enfeitada ficou uma graça",
+        "Adorei o conjunto, os enfeites dão um efeito bem bonito na decoração",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "christmas-tree-review-text-6", name: "Mariana R.", date: "há 3 dias", rating: 5, text: "Montei no fim de semana e ficou muito bonita, gostei bastante do resultado", media: null },
+    { id: "christmas-tree-review-text-7", name: "Felipe S.", date: "há 8 dias", rating: 5, text: "O kit já vem bem completo e facilitou bastante na hora de decorar", media: null },
+    { id: "christmas-tree-review-text-8", name: "Aline T.", date: "há 13 dias", rating: 5, text: "É compacta e ficou ótima na minha sala, os enfeites deram o toque final", media: null },
+  ] : isTclTv ? [
+    ...tclReviewPhotos.map((photo, i) => ({ id: photo.id, name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C."][i] ?? "", date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 2 semanas"][i] ?? "", rating: 5, text: ["Gostei muitoo, já tô aproveitando pra jogar e a imagem ficou linda", "Chegou bem embaladinha e tudo certinho, adorei", "Na primeira configuração foi bem tranquilo, já comecei a usar", "Já tô assistindo meus conteúdos e a imagem tá muito boa", "Usei pra jogar e ficou muito bom, gostei demais"][i] ?? "", media: photo.src })),
+    { id: "tcl-review-text-6", name: "Patrícia L.", date: "há 10 dias", rating: 4, text: "Imagem muito bonita e o sistema é bem fácil de mexer, gostei bastante", media: null },
+    { id: "tcl-review-text-7", name: "Lucas F.", date: "há 2 semanas", rating: 4, text: "Chegou bem embalada e a televisão é muito boa, gostei da compra", media: null },
+    { id: "tcl-review-text-8", name: "Beatriz M.", date: "há 12 dias", rating: 5, text: "A imagem é linda, já tô aproveitando pra assistir meus filmes", media: null },
+  ] : isMondialBlender ? [
+    ...mondialReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A."][i] ?? "",
+      date: ["há 1 dia", "há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 9 dias", "há 10 dias", "há 12 dias", "há 13 dias"][i] ?? "",
+      rating: 5,
+      text: ["Gostei muitoo, bate bem e não ocupa muito espaço aqui na cozinha", "Chegou certinho e já fiz vitamina, gostei bastante", "É simples de usar e tritura bem as frutas", "O liquidificador é bonito e funcionou direitinho aqui", "Já usei pra fazer suco e ficou ótimo", "Gostei do tamanho e da potência, atende bem no dia a dia", "Veio bem embalado e tá funcionando certinho", "Muito bom pelo preço, gostei da compra", "Tô usando bastante pra vitaminas e tá dando conta tranquilo"][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "mondial-review-text-10", name: "Bruno A.", date: "há 3 dias", rating: 5, text: "Uso quase todo dia para vitaminas, bate rápido e é bem simples de lavar", media: null },
+    { id: "mondial-review-text-11", name: "Letícia C.", date: "há 14 dias", rating: 4, text: "Gostei bastante, tritura bem e o tamanho fica bom na bancada. Faz um pouco de barulho, mas nada fora do esperado", media: null },
+  ] : isMondialAirFryer ? [
+    ...airFryerReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F.", "Beatriz M.", "Fernanda A.", "Diego R."][i] ?? "",
+      date: ["há 2 dias", "há 3 dias", "há 4 dias", "há 5 dias", "há 6 dias", "há 7 dias", "há 8 dias", "há 10 dias", "há 11 dias", "há 13 dias"][i] ?? "",
+      rating: i === 9 ? 4 : 5,
+      text: [
+        "Amei o espaço interno, consegui preparar tudo de uma vez e ficou ótimo",
+        "Painel bem simples de mexer. As funções prontas ajudam bastante na correria",
+        "Gostei da janela com luz, dá pra acompanhar sem ficar abrindo toda hora",
+        "Usei as prateleiras e o cesto, achei bem versátil pra fazer coisas diferentes",
+        "Esquenta rápido e a capacidade é ótima pra preparar porções maiores",
+        "Muito bonita e espaçosa. Já testei batata e frango e gostei do resultado",
+        "O painel digital é intuitivo, só escolher a função e ajustar se precisar",
+        "Chegou certinho, as peças vieram bem acomodadas e o forno é bem espaçoso",
+        "Gostei bastante, principalmente da iluminação interna e das três prateleiras",
+        "Atendeu bem aqui em casa e tem bastante espaço. Só precisei me acostumar com o tamanho dela na bancada"
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "air-fryer-review-text-11", name: "Bruno M.", date: "há 2 dias", rating: 5, text: "A capacidade faz diferença, consigo adiantar o preparo das refeições sem precisar fazer várias etapas", media: null },
+    { id: "air-fryer-review-text-12", name: "Larissa G.", date: "há 9 dias", rating: 5, text: "Gostei muito do cesto e das prateleiras, ficou bem prático para variar os preparos", media: null },
+    { id: "air-fryer-review-text-13", name: "Eduardo V.", date: "há 12 dias", rating: 5, text: "A janela iluminada ajuda bastante e o painel é fácil de entender. Estou usando direto", media: null },
+  ] : isSquishyToy ? [
+    ...squishyReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Gabriela N.", "Felipe C.", "Bianca L.", "Mateus R.", "Letícia A.", "Renan F.", "Carolina P.", "Aline V.", "Diego M."][i] ?? "",
+      date: ["há 11 dias", "há 2 dias", "há 8 dias", "há 4 dias", "há 13 dias", "há 6 dias", "há 1 dia", "há 10 dias", "há 3 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "O meu veio nesse tom verdinho com brilho, achei muito fofo. A embalagem também é uma graça.",
+        "Veio roxinho e a abertura foi a parte mais divertida, porque eu não sabia qual cor ia aparecer.",
+        "",
+        "O azul chegou bem brilhante, gostei de abrir e descobrir qual modelo tinha vindo.",
+        "O meu veio azul clarinho, bem delicado. O brilho aparece bastante quando bate luz.",
+        "Recebi o lilás. A textura é gostosa de apertar e ele fica guardadinho no próprio potinho.",
+        "Gostei da proposta de abrir sem saber qual modelo vem. A surpresa deixa a brincadeira mais divertida.",
+        "Veio douradinho com bastante brilho, achei diferente e muito fofo. Gostei da surpresa.",
+        "Recebi um verdinho e gostei da cor. É fácil de segurar e divertido de apertar.",
+      ][i] ?? "",
+      media: photo.src,
+    })).filter((review) => review.id !== "squishy-review-3"),
+    { id: "squishy-review-text-10", name: "Bruna H.", date: "há 7 dias", rating: 5, text: "Comprei para dar de lembrancinha e achei a proposta muito divertida. A pessoa adorou descobrir o modelo.", media: null },
+    { id: "squishy-review-text-11", name: "Gustavo E.", date: "há 12 dias", rating: 5, text: "Gostei de receber uma cor surpresa! O meu veio bem brilhante e achei o potinho individual uma graça.", media: null },
+    { id: "squishy-review-text-12", name: "Júlia D.", date: "há 5 dias", rating: 5, text: "É macio para apertar e tem um acabamento muito fofo. Achei uma ideia diferente para presentear.", media: null },
+  ] : isMondialAirFryer4L ? [
+    ...airFryer4LReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana C.", "Rafael P.", "Camila R.", "João M.", "Ana L.", "Patrícia S.", "Lucas F.", "Beatriz A.", "Fernanda T.", "Diego V.", "Juliana B."][i] ?? "",
+      date: ["há 1 dia", "há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 8 dias", "há 10 dias", "há 12 dias", "há 14 dias", "há 16 dias", "há 18 dias"][i] ?? "",
+      rating: i === 9 ? 4 : 5,
+      text: [
+        "Gostei bastante, é compacta e cabe certinho na bancada. Já fiz batata e ficou ótima.",
+        "O cesto quadrado aproveita bem o espaço, consigo acomodar os alimentos sem amontoar.",
+        "Muito prática para o dia a dia. Ajusto a temperatura e o timer e ela desliga sozinha.",
+        "Esquenta rápido e achei fácil de usar. O cesto também é tranquilo de lavar.",
+        "Gostei do tamanho de 4 litros, atende bem aqui em casa e não ocupa tanto espaço.",
+        "Faz pouca sujeira e os alimentos não ficam grudados no cesto. Boa compra.",
+        "Bem simples de mexer, o aviso sonoro ajuda bastante quando termina o tempo.",
+        "Chegou direitinho e funciona muito bem. Já estou usando para várias receitas.",
+        "O antiaderente facilita a limpeza e o formato do cesto ajuda a distribuir melhor os alimentos.",
+        "Atendeu ao que eu precisava. Só é bom conferir a voltagem antes de escolher.",
+        "Gostei muito, é compacta, fácil de limpar e deixa o preparo bem mais prático."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "air-fryer-4l-review-text-12", name: "Bruno G.", date: "há 3 dias", rating: 5, text: "Uso quase todo dia para preparar porções rápidas. O timer e o desligamento automático são bem úteis.", media: null },
+    { id: "air-fryer-4l-review-text-13", name: "Larissa M.", date: "há 9 dias", rating: 5, text: "O cesto é espaçoso para o tamanho dela e a limpeza é simples. Gostei bastante para a rotina.", media: null },
+    { id: "air-fryer-4l-review-text-14", name: "Eduardo R.", date: "há 15 dias", rating: 4, text: "Boa fritadeira, compacta e fácil de regular. O preparo fica prático e não preciso ficar acompanhando o tempo.", media: null },
+    ] : isChristmasOrnaments ? [
+    ...christmasOrnamentsReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana C.", "Rafael P.", "Camila S.", "João V.", "Bruna M.", "Lucas A.", "Fernanda R."][i] ?? "",
+      date: ["há 1 dia", "há 3 dias", "há 5 dias", "há 7 dias", "há 10 dias", "há 14 dias", "há 18 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "As bolinhas douradas ficaram lindas na árvore. Gostei da mistura de brilho e glitter.",
+        "Vieram bem bonitas e leves, foi fácil distribuir os enfeites pela árvore.",
+        "Gostei de ter os três acabamentos no kit. Deu um efeito bem bonito com as luzinhas.",
+        "O tamanho ficou ótimo na minha árvore e o dourado combina com os outros enfeites.",
+        "Chegou tudo certinho. As bolinhas são leves e deixaram a decoração mais caprichada.",
+        "Escolhi a versão vermelha e gostei bastante da cor. Ficou linda junto com os festões.",
+        "Kit bem prático para completar a decoração de Natal. Gostei da variedade de acabamentos."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "christmas-ornaments-review-text-8", name: "Patrícia L.", date: "há 4 dias", rating: 5, text: "Usei para completar a decoração da árvore e gostei muito da combinação dos acabamentos.", media: null },
+    { id: "christmas-ornaments-review-text-9", name: "Diego M.", date: "há 9 dias", rating: 5, text: "As 24 unidades ajudam bastante a preencher a árvore. O tamanho é delicado e fácil de combinar.", media: null },
+    { id: "christmas-ornaments-review-text-10", name: "Aline F.", date: "há 13 dias", rating: 5, text: "Gostei do efeito do glitter com as bolinhas foscas. Ficou uma decoração bem bonita.", media: null },
+    { id: "christmas-ornaments-review-text-11", name: "Renata G.", date: "há 17 dias", rating: 5, text: "Comprei a cor dourada e ficou muito elegante na árvore. Vou guardar para usar nos próximos Natais.", media: null },
+    ] : isCookwareSet ? [
+    ...cookwareReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Juliana M.", "Renata C.", "Patrícia A.", "Camila R.", "Bruna S.", "Aline F.", "Marcos V.", "Débora L.", "Vanessa P.", "Rafaela T.", "Simone G.", "Carolina N."][i] ?? "",
+      date: ["há 1 dia", "há 2 dias", "há 4 dias", "há 5 dias", "há 7 dias", "há 9 dias", "há 10 dias", "há 12 dias", "há 13 dias", "há 15 dias", "há 17 dias", "há 19 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "O conjunto é bem completo e gostei bastante do acabamento. A cor cereja ficou linda na cozinha.",
+        "Chegou tudo certinho. As peças são leves e o antiaderente facilita bastante na hora de lavar.",
+        "Gostei da variedade de tamanhos, dá para preparar desde coisas pequenas até uma refeição maior.",
+        "As panelas são bonitas e vieram bem embaladas. Os acessórios também ajudam bastante no dia a dia.",
+        "Bom custo-benefício pelo tanto de peças. Já usei algumas e a limpeza foi tranquila.",
+        "Escolhi a preta e gostei muito do visual. As tampas de vidro são práticas para acompanhar a comida.",
+        "Conjunto útil para equipar a cozinha. Tem vários tamanhos e não ocupa tanto espaço.",
+        "Gostei muito das panelas, são leves e fáceis de manusear. Vieram conforme a opção escolhida.",
+        "A cor é bonita e o conjunto atende bem às receitas do cotidiano. Fiquei satisfeita com a compra.",
+        "As tampas ajudam bastante e o revestimento parece fácil de limpar. Ótimo ter vários tamanhos.",
+        "Comprei para montar minha cozinha e achei o kit bem completo. Os acessórios vieram sortidos.",
+        "Gostei do conjunto e da variedade de peças. Para o uso diário está sendo bem prático."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "cookware-review-text-13", name: "Michele D.", date: "há 3 dias", rating: 5, text: "Gostei da quantidade de peças e dos tamanhos diferentes. É um conjunto versátil para a rotina.", media: null },
+    { id: "cookware-review-text-14", name: "Eduarda B.", date: "há 8 dias", rating: 5, text: "A panela é fácil de limpar e as tampas de vidro são muito úteis para acompanhar o preparo.", media: null },
+    { id: "cookware-review-text-15", name: "Sônia K.", date: "há 14 dias", rating: 5, text: "Escolhi a versão preto com bege e achei muito bonita. O kit veio completo.", media: null },
+    { id: "cookware-review-text-16", name: "Tatiane H.", date: "há 18 dias", rating: 5, text: "Conjunto prático para o dia a dia, com peças de tamanhos variados. Gostei da compra.", media: null },
+  ] : isHotWheelsKit ? [
+    ...hotWheelsReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana P.", "Lucas A.", "Camila R.", "Rafael S.", "Bruna M.", "Diego T.", "Ana C.", "Pedro V.", "Fernanda L."][i] ?? "",
+      date: ["há 1 dia", "há 3 dias", "há 4 dias", "há 6 dias", "há 8 dias", "há 10 dias", "há 13 dias", "há 16 dias", "há 18 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "Kit muito legal! Vieram dez carrinhos diferentes e meu filho já escolheu os favoritos para brincar.",
+        "Gostei da variedade dos modelos. É uma ótima opção para quem está começando uma coleção.",
+        "Os carrinhos são pequenos, bem detalhados e chegaram direitinho. Meu sobrinho adorou.",
+        "Comprei para presentear e foi um sucesso. A graça é justamente descobrir quais modelos vêm.",
+        "Boa seleção de carrinhos, todos diferentes entre si. Já estamos usando nas pistas aqui de casa.",
+        "Curti bastante o kit, tem modelos variados e o tamanho 1:64 é ótimo para colecionar.",
+        "Vieram dez modelos sortidos sem repetição no kit. Achei um presente bem divertido.",
+        "Gostei do acabamento das miniaturas e da variedade. As crianças ficaram empolgadas para abrir.",
+        "Muito bacana para aumentar a coleção. Só lembrando que os modelos são surpresa, não dá para escolher."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "hotwheels-review-text-10", name: "Gustavo N.", date: "há 2 dias", rating: 5, text: "Presenteei meu afilhado e ele ficou animado para descobrir cada carrinho. Vieram modelos variados.", media: null },
+    { id: "hotwheels-review-text-11", name: "Isabela F.", date: "há 7 dias", rating: 5, text: "Gostei para completar a coleção. As miniaturas têm bastante detalhe pelo tamanho.", media: null },
+    { id: "hotwheels-review-text-12", name: "André C.", date: "há 12 dias", rating: 5, text: "Kit divertido, principalmente pela surpresa dos modelos. Bom para brincar e guardar.", media: null },
+    { id: "hotwheels-review-text-13", name: "Letícia M.", date: "há 17 dias", rating: 5, text: "Comprei para dar de presente e achei a proposta ótima. São dez carrinhos sortidos e diferentes.", media: null },
+  ] : isBrastoy ? [
+    ...brastoyReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana F.", "Lucas R.", "Camila S.", "Rafael M.", "Bruna T.", "Diego A.", "Patrícia L.", "João V."][i] ?? "",
+      date: ["há 2 dias", "há 4 dias", "há 6 dias", "há 8 dias", "há 10 dias", "há 12 dias", "há 15 dias", "há 18 dias"][i] ?? "",
+      rating: i === 5 ? 4 : 5,
+      text: [
+        "Nossa, carrinho muito bom mesmo! Gostei demais da compra. Só senti falta das três pilhas AA do controle, mas o carrinho é top.",
+        "Muito bom, toooop de verdade! Anda super bem e responde rápido aos comandos.",
+        "Carrinho espetacular! Faz curvas bem rápidas e encara os obstáculos daqui de casa numa boa.",
+        "Gostei bastante, tem força e a tração 4x4 faz diferença quando brinca no quintal.",
+        "Meu filho adorou! A bateria recarregável é prática e a brincadeira rende bastante.",
+        "É rápido e divertido, só precisa de um espaço maior pra aproveitar melhor.",
+        "Chegou certinho e achei a construção bem resistente. Estamos nos divertindo bastante.",
+        "Faz manobras muito legais e o controle responde direitinho. Curti demais!",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "brastoy-review-text-9", name: "Felipe C.", date: "há 3 dias", rating: 5, text: "Pegamos uma rampinha e ele sobe muito bem. Gostei da estabilidade e de como responde nas curvas.", media: null },
+    { id: "brastoy-review-text-10", name: "Ana P.", date: "há 7 dias", rating: 5, text: "É bem divertido de controlar, tem boa velocidade e a bateria segura uma boa sessão de brincadeira.", media: null },
+    { id: "brastoy-review-text-11", name: "Gustavo N.", date: "há 11 dias", rating: 5, text: "Gostei do tamanho e do visual off-road. O controle tem bom alcance e é fácil pegar o jeito.", media: null },
+    { id: "brastoy-review-text-12", name: "Renata D.", date: "há 16 dias", rating: 4, text: "Carrinho muito legal, anda bem e chama atenção. Só recomendo conferir as pilhas do controle antes de começar.", media: null },
+  ] : isKettle ? [
+    ...kettleReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Lucas F."][i] ?? "",
+      date: ["há 2 dias", "há 3 dias", "há 5 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias"][i] ?? "",
+      rating: 5,
+      text: ["Gostei muitoo, esquenta rapidinho e já tô usando todo dia", "Muito prática pra fazer meu café, gostei bastante", "É bem bonita e funciona direitinho, adorei", "Uso pra preparar chá e facilita muito minha rotina", "Chegou tudo certinho e tô gostando bastante", "Esquenta bem rapidinho, valeu muito a pena", "Tô usando direto aqui em casa, gostei demais"][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "kettle-review-text-8", name: "Bruna M.", date: "há 4 dias", rating: 5, text: "Uso bastante para preparar chá e café, é prática e não ocupa muito espaço na bancada", media: null },
+    { id: "kettle-review-text-9", name: "Carlos R.", date: "há 12 dias", rating: 4, text: "Aquece rápido e é fácil de limpar. Só senti falta de um aviso sonoro mais discreto", media: null },
+  ] : isLgAirConditioner ? [
+    { id: "lg-review-1", name: "Marcos A.", date: "há 2 dias", rating: 5, text: "Pelo aplicativo consigo programar o horário para ligar e desligar, facilita muito minha rotina", media: lgReviewPhotos[0]?.src ?? null },
+    { id: "lg-review-2", name: "Juliana R.", date: "há 4 dias", rating: 5, text: "Sem comentários, esse está entre os melhores que já tive", media: lgReviewPhotos[1]?.src ?? null },
+    { id: "lg-review-3", name: "Carlos M.", date: "há 5 dias", rating: 5, text: "Produto de qualidade, acabamento muito bom", media: lgReviewPhotos[2]?.src ?? null },
+    { id: "lg-review-4", name: "Fernanda S.", date: "há 7 dias", rating: 5, text: "Produto excelente e muito econômico, gostei bastante", media: lgReviewPhotos[3]?.src ?? null },
+    { id: "lg-review-5", name: "André P.", date: "há 8 dias", rating: 5, text: "O ar gela bem e o controle pelo celular é muito prático", media: lgReviewPhotos[4]?.src ?? null },
+    { id: "lg-review-6", name: "Camila T.", date: "há 9 dias", rating: 5, text: "Bem silencioso e mantém o quarto numa temperatura agradável", media: lgReviewPhotos[5]?.src ?? null },
+    { id: "lg-review-7", name: "Roberto L.", date: "há 11 dias", rating: 5, text: "Gostei da função inverter e de poder ajustar tudo pelo app", media: lgReviewPhotos[6]?.src ?? null },
+    { id: "lg-review-8", name: "Patrícia F.", date: "há 13 dias", rating: 5, text: "Instalado e funcionando direitinho, atende muito bem", media: lgReviewPhotos[7]?.src ?? null },
+    { id: "lg-review-9", name: "Diego C.", date: "há 15 dias", rating: 5, text: "Ótimo aparelho, gostei principalmente da conexão Wi-Fi", media: lgReviewPhotos[8]?.src ?? null },
+    { id: "lg-review-10", name: "Renata B.", date: "há 18 dias", rating: 5, text: "Gela rápido e é fácil de programar pelo celular", media: lgReviewPhotos[9]?.src ?? null },
+    { id: "lg-review-text-11", name: "Thiago N.", date: "há 3 dias", rating: 5, text: "Muito bom, funciona bem e quase não faz barulho", media: null },
+    { id: "lg-review-text-12", name: "Aline G.", date: "há 10 dias", rating: 5, text: "Gostei da praticidade e do conforto que ele proporciona", media: null },
+    { id: "lg-review-text-13", name: "Eduardo V.", date: "há 17 dias", rating: 5, text: "Atendeu minhas expectativas, resfria o ambiente direitinho", media: null },
+  ] : isBarbieDreamhouse ? [
+    ...barbieReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Camila R.", "Fernanda M.", "Juliana P.", "Rafaela C.", "Aline S.", "Bruna T.", "Patrícia L.", "Mariana F."][i] ?? "",
+      date: ["há 12 dias", "há 4 dias", "há 9 dias", "há 2 dias", "há 13 dias", "há 6 dias", "há 1 dia", "há 10 dias"][i] ?? "",
+      rating: 5,
+      text: [
+        "A casinha é linda!! Minha filha ficou encantada quando viu tudo montado. A piscina e o escorregador já viraram os favoritos kkkk.",
+        "Ela é enorme mesmo, precisei separar um cantinho pra montar. Depois de pronta fica maravilhosa e tem bastante espaço pra brincar.",
+        "Levamos um tempinho na montagem, mas seguindo o manual deu certo. Minha pequena ficou toda animada quando viu a casa pronta.",
+        "Os detalhes dos cômodos são muito bonitos, tem vários espaços pra inventar histórias. Gostei bastante do resultado.",
+        "Minha menina amou!! O escorregador e a piscininha fizeram sucesso por aqui. Ficou linda montada.",
+        "Veio com bastante acessório e a casa fica bem grandona. Dá pra brincar de vários jeitos.",
+        "O elevador e o escorregador são muito legais, deixam a brincadeira mais completa. Minha filha adorou.",
+        "Foi um presentão, ficou linda depois de montada. Só recomendo deixar um espaço reservado porque ela é grande.",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "barbie-review-text-9", name: "Débora A.", date: "há 7 dias", rating: 5, text: "Chegou bem embalada e com as peças organizadas. A montagem exige um pouco de paciência, mas o resultado fica lindo.", media: null },
+    { id: "barbie-review-text-10", name: "Renata V.", date: "há 3 dias", rating: 5, text: "Minha sobrinha ficou apaixonada pela casa! Ela tem muitos cantinhos e acessórios pra imaginar várias brincadeiras.", media: null },
+    { id: "barbie-review-text-11", name: "Priscila G.", date: "há 11 dias", rating: 5, text: "Gostei muito da casa, só é importante lembrar que a boneca não acompanha. No restante, é bem completa.", media: null },
+  ] : isPhilcoMicrowave ? [
+    { id: "philco-review-1", name: "Mariana S.", date: "há 2 dias", rating: 5, text: "Chegou direitinho e ficou ótimo na minha cozinha, gostei bastante", media: philcoReviewPhotos[0]?.src ?? null },
+    { id: "philco-review-2", name: "Rafael M.", date: "há 4 dias", rating: 5, text: "É bem espaçoso por dentro e achei fácil de mexer", media: philcoReviewPhotos[1]?.src ?? null },
+    { id: "philco-review-3", name: "Camila R.", date: "há 6 dias", rating: 5, text: "O design é bonito e esquenta super bem, atendeu ao que eu precisava", media: philcoReviewPhotos[2]?.src ?? null },
+    { id: "philco-review-4", name: "João P.", date: "há 8 dias", rating: 5, text: "Gostei das funções e principalmente do tira odor, bem prático", media: philcoReviewPhotos[3]?.src ?? null },
+    { id: "philco-review-5", name: "Ana C.", date: "há 10 dias", rating: 5, text: "Muito bonito, fácil de limpar e chegou bem embalado", media: philcoReviewPhotos[4]?.src ?? null },
+    { id: "philco-review-6", name: "Fernanda L.", date: "há 13 dias", rating: 4, text: "Bom tamanho e várias opções de uso, estou gostando", media: philcoReviewPhotos[5]?.src ?? null },
+    { id: "philco-review-7", name: "Lucas A.", date: "há 16 dias", rating: 5, text: "Funcionou certinho desde que chegou, recomendo conferir a voltagem antes", media: philcoReviewPhotos[6]?.src ?? null },
+    { id: "philco-review-text-8", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "O espaço interno é ótimo e o painel é simples de entender", media: null },
+    { id: "philco-review-text-9", name: "Bruno F.", date: "há 11 dias", rating: 4, text: "Atendeu bem aqui em casa, gostei do aquecimento e do acabamento", media: null },
+    { id: "philco-review-text-10", name: "Juliana M.", date: "há 18 dias", rating: 5, text: "Gostei bastante das funções, principalmente para o dia a dia", media: null },
   ] : makeDemoReviews(p.id, p.gallery);
-  // Recupera as fotos de avaliação já existentes no repositório para cada produto.
-  const reviewPhotosByProduct: Record<string, string[]> = {
-    "air-fryer-mondial-afn-40-bft": ["/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-1.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-2.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-3.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-4.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-5.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-6.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-7.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-8.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-9.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-10.png", "/products/air-fryer-mondial-afn-40-bft/reviews/avaliacao-airfryer-afn40-11.png"],
-    "air-fryer-oven-mondial-afon-12l": ["/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-01.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-02.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-03.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-04.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-05.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-06.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-07.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-08.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-09.png", "/products/air-fryer-oven-mondial-afon-12l/reviews/avaliacao-air-fryer-mondial-10.png"],
-    "ar-condicionado-lg-ai-voice-9000": ["/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-1.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-2.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-3.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-4.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-5.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-6.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-7.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-8.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-9.png", "/products/ar-condicionado-lg-ai-voice-9000/reviews/avaliacao-lg-ar-10.png"],
-    "arvore-natal-kit-87-enfeites": ["/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-1.png", "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-2.png", "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-3.png", "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-4.png", "/products/arvore-natal-kit-87-enfeites/reviews/avaliacao-arvore-natal-5.png"],
-    "barbie-casa-dos-sonhos-hmx10": ["/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-01.png", "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-02.png", "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-03.png", "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-04.png", "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-05.png", "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-06.png", "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-07.png", "/products/barbie-casa-dos-sonhos/reviews/avaliacao-barbie-08.png"],
-    "brastoy-controle-remoto-k602": ["/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-1.png", "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-2.png", "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-3.png", "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-4.png", "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-5.png", "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-6.png", "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-7.png", "/products/brastoy-controle-remoto-k602/reviews/avaliacao-brastoy-8.png"],
-    "camera-intelbras-im5-plus": ["/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-1.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-2.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-3.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-4.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-5.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-6.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-7.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-8.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-9.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-10.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-11.png", "/products/camera-intelbras-im5-plus/reviews/camera-avaliacao-12.png"],
-    "chaleira-unitermi-atacama": ["/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-1.png", "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-2.png", "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-3.png", "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-4.png", "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-5.png", "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-6.png", "/products/chaleira-unitermi-atacama/reviews/avaliacao-chaleira-7.png"],
-    "conjunto-panelas-antiaderente-10-pecas": ["/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-1.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-2.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-3.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-4.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-5.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-6.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-7.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-8.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-9.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-10.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-11.png", "/products/conjunto-panelas-antiaderente-10-pecas/reviews/avaliacao-panelas-12.png"],
-    "controle-sem-fio-xbox-branco": ["/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-1.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-2.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-3.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-4.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-5.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-6.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-7.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-8.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-9.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-10.png", "/products/controle-sem-fio-xbox-branco/reviews/avaliacao-controle-xbox-11.png"],
-    "espumante-chandon-reserve-brut-750ml": ["/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-1.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-2.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-3.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-4.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-5.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-6.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-7.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-8.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-9.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-10.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-11.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-12.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-13.png", "/products/espumante-chandon-reserve-brut-750ml/reviews/avaliacao-chandon-14.png"],
-    "hot-wheels-kit-10-mattel-164": ["/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-1.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-2.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-3.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-4.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-5.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-6.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-7.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-8.png", "/products/hot-wheels-kit-10-mattel-164/reviews/avaliacao-hotwheels-9.png"],
-    "jbl-boombox-4": ["/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-1.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-2.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-3.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-4.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-5.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-6.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-7.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-8.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-9.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-10.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-11.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-12.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-13.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-14.png", "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-15.png"],
-    "jogo-facas-tramontina-plenus-9-pecas": ["/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-1.png", "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-2.png", "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-4.png", "/products/jogo-facas-tramontina-plenus/reviews/avaliacao-facas-tramontina-5.png"],
-    "jogo-lencol-casal-400-fios": ["/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-1.png", "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-2.png", "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-3.png", "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-4.png", "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-5.png", "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-6.png", "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-7.png", "/products/jogo-lencol-casal-400-fios/reviews/avaliacao-lencol-8.png"],
-    "jogo-toalhas-karsten": ["/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-01.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-02.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-03.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-04.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-05.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-06.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-07.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-08.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-09.png", "/products/jogo-toalhas-karsten/reviews/avaliacao-toalha-10.png"],
-    "kit-24-bolas-natalinas-5cm": ["/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-1.png", "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-2.png", "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-3.png", "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-4.png", "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-5.png", "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-6.png", "/products/kit-24-bolas-natalinas-5cm/reviews/avaliacao-bolas-natalinas-7.png"],
-    "liquidificador-mondial-l99-fb": ["/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-1.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-2.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-3.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-4.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-5.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-6.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-7.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-8.webp", "/products/liquidificador-mondial-l99-fb/reviews/avaliacao-liquidificador-mondial-9.webp"],
-    "micro-ondas-philco-pmo31s": ["/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-1.png", "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-2.png", "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-3.png", "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-4.png", "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-5.png", "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-6.png", "/products/micro-ondas-philco-pmo31s/reviews/avaliacao-micro-ondas-philco-7.png"],
-    "omo-lavanderia-profissional-7l": ["/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-1.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-2.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-3.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-4.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-5.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-6.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-7.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-8.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-9.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-10.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-11.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-12.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-13.png", "/products/omo-lavanderia-profissional-7l/reviews/avaliacao-omo-14.png"],
-    "power-bank-basike-10000mah-preto": ["/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-1.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-2.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-3.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-4.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-5.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-6.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-7.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-8.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-9.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-10.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-11.png", "/products/power-bank-basike-10000mah-preto/reviews/avaliacao-powerbank-12.png"],
-    "projetor-hy300-duoseg": ["/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-01.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-02.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-03.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-04.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-05.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-06.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-07.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-08.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-09.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-10.png", "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-11.png"],
-    "purificador-electrolux-pa26g": ["/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp", "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp"],
-    "smart-tv-tcl-55p8k-qled-4k": ["/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl tv avaliação 1.png", "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl tv avaliação 2.png", "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl tv avaliação 3.png", "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl tv avaliação 4.png", "/products/smart-tv-tcl-55p8k-qled-4k/reviews/tcl tv avaliação 5.png"],
-    "smartwatch-t900-s10-ultra-pro": ["/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-1.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-2.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-3.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-4.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-5.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-6.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-7.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-8.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-9.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-10.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-11.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-12.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-13.png", "/products/smartwatch-t900-s10-ultra-pro/reviews/avaliacao-smartwatch-14.png"],
-    "squishy-surpresa-colecionavel": ["/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-01.png", "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-02.png", "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-04.png", "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-05.png", "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-06.png", "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-07.png", "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-08.png", "/products/squishy-surpresa-colecionavel/reviews/avaliacao-squishy-09.png"],
-    "ventilador-mondial-super-turbo-8-pas-40cm": ["/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-1.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-2.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-3.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-4.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-5.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-6.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-7.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-8.png", "/products/ventilador-mondial-super-turbo-8-pas-40cm/reviews/avaliacao-ventilador-mondial-9.png"],
-  };
-  const productReviewPhotos = reviewPhotosByProduct[p.id] ?? [];
-  const demoReviews: DemoReview[] = productReviewPhotos.length
-    ? productReviewPhotos.map((media, index) => {
-        const existing = baseDemoReviews[index];
-        return existing
-          ? { ...existing, media }
-          : { id: `${p.id}-review-photo-${index + 1}`, name: "", date: "", rating: 0, text: "", media };
-      })
-    : baseDemoReviews;
   const filteredReviews = reviewFilter == null ? demoReviews : demoReviews.filter((review) => review.rating === reviewFilter);
   const reviewAverage = p.rating ?? 0;
-  const ratedReviews = demoReviews.filter((review) => review.rating > 0);
-  const reviewCount = ratedReviews.length;
-  const reviewDistribution = ratedReviews.reduce<Record<number, number>>((distribution, review) => {
-    distribution[review.rating] = (distribution[review.rating] ?? 0) + 1;
-    return distribution;
-  }, { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
   const reviewMedia = demoReviews
     .filter((review) => review.media)
     .map((review) => ({
@@ -629,7 +928,6 @@ function ProductPage() {
       media: review.media!,
       rating: review.rating,
     }));
-  const hasRatedReviews = ratedReviews.length > 0;
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
@@ -874,12 +1172,16 @@ function ProductPage() {
           <div className="flex min-w-0 flex-col items-center justify-center border-r border-border pr-2 text-center sm:pr-4">
             <strong className="text-[32px] font-extrabold leading-none tabular-nums sm:text-[36px]">{reviewAverage.toFixed(1).replace(".", ",")}</strong>
             <ReviewStars rating={reviewAverage} size="h-4 w-4" />
-            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">{reviewCount.toLocaleString("pt-BR")} avaliações</span>
+            <span className="mt-1 text-[10px] leading-tight text-muted-foreground">~{estimateReviewCount(p.sold).toLocaleString("pt-BR")} avaliações</span>
           </div>
           <div className="min-w-0 space-y-2">
             {[5, 4, 3, 2, 1].map((stars) => {
-              const count = reviewDistribution[stars] ?? 0;
-              const percent = reviewCount > 0 ? (count / reviewCount) * 100 : 0;
+              const total = estimateReviewCount(p.sold);
+              const distribution = p.id === "ar-condicionado-lg-ai-voice-9000"
+                ? { 5: Math.max(0, total - 6), 4: Math.min(6, total), 3: 0, 2: 0, 1: 0 }
+                : getEstimatedRatingDistribution(total, reviewAverage);
+              const count = distribution[stars] ?? 0;
+              const percent = total > 0 ? Math.max(0, Math.min(100, (count / total) * 100)) : 0;
               return (
                 <button key={stars} type="button" aria-label={`${stars} estrelas: ${count} avaliações`} aria-pressed={reviewFilter === stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"flex w-full min-w-0 items-center gap-2 rounded-md px-1 py-1 text-left transition-colors " + (reviewFilter === stars ? "bg-background" : "hover:bg-background/60")}>
                   <span className="w-3 shrink-0 text-right text-[11px] font-medium tabular-nums text-muted-foreground">{stars}</span>
@@ -905,7 +1207,7 @@ function ProductPage() {
             </button>)}
           </div>
         </div>}
-{!isProjector && hasRatedReviews && (
+{!isProjector && (
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <button onClick={() => { setReviewFilter(null); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter == null ? "border-ink bg-ink text-ink-foreground" : "border-border")}>Todas</button>
           {[5,4,3,2,1].map((stars) => <button key={stars} onClick={() => { setReviewFilter(reviewFilter === stars ? null : stars); setVisibleReviews(3); }} className={"rounded-full border px-3 py-1.5 text-[12px] font-semibold " + (reviewFilter === stars ? "border-ink bg-ink text-ink-foreground" : "border-border")}>{stars} estrelas</button>)}
@@ -914,14 +1216,14 @@ function ProductPage() {
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
-            {(review.rating > 0 || review.text || review.date) && <div className="flex flex-col p-2.5">
+            <div className="flex flex-col p-2.5">
               <div className="flex items-center gap-2">
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
                 <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
               </div>
               {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
-            </div>}
+            </div>
           </article>)}
         </div>
         {filteredReviews.length === 0 && <p className="py-6 text-center text-[13px] text-muted-foreground">{reviewFilter == null ? "Nenhuma avaliação individual cadastrada para este produto." : "Nenhuma avaliação nesta faixa de estrelas."}</p>}
