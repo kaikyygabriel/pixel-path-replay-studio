@@ -735,7 +735,6 @@ function ProductPage() {
     return distribution;
   }, { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
   const hasRatedReviews = ratedReviews.length > 0;
-  const ratedReviews = demoReviews.filter((review) => review.rating > 0);
   const reviewMedia = demoReviews
     .filter((review) => review.media)
     .map((review) => ({
@@ -743,7 +742,6 @@ function ProductPage() {
       media: review.media!,
       rating: review.rating,
     }));
-  const hasRatedReviews = ratedReviews.length > 0;
   const colorVariants = isMondialBlender ? p.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const variant = isMondialBlender ? p.variants.find((v) => v.line === pickedVoltage && v.color === pickedColor) ?? null : p.variants.find((v: Variant) => v.id === picked) ?? null;
   const hasVariants = p.variants.length > 0;
