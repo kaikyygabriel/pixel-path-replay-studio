@@ -1,3 +1,4 @@
+import { formatSales } from "@/lib/sales";
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useLayoutEffect, useRef, useState } from "react";
 import {
@@ -70,7 +71,7 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
   const ratings = towel ? [5, 5, 5, 5, 4, 5] : [5, 5, 4, 5, 5, 4];
   return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 3 dias', 'há 5 dias', 'há 1 semana', 'há 10 dias', 'há 2 semanas'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
 }
-function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${product.sold} vendidos` : ""; }
+function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${formatSales(product.sold)} vendidos` : ""; }
 function estimateReviewCount(sold: string | null): number {
   if (!sold) return 0;
   const normalized = sold.toLowerCase().replace(/\s/g, "");

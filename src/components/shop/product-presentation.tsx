@@ -1,3 +1,4 @@
+import { formatSales } from "@/lib/sales";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
@@ -117,9 +118,9 @@ export function ProductBadges({ product, price = product.price, original = produ
 
 export function ProductMetrics({ product }: { product: Product }) {
   if (product.rating === null && product.sold === null) return null;
-  return <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[11px] leading-snug text-muted-foreground" aria-label={`Avaliação ${product.rating ?? "não informada"} de 5; ${product.sold ?? "vendas não informadas"} vendidos`}>
+  return <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[11px] leading-snug text-muted-foreground" aria-label={`Avaliação ${product.rating ?? "não informada"} de 5; ${formatSales(product.sold) ?? "vendas não informadas"} vendidos`}>
     {product.rating !== null && <><Star className="h-3.5 w-3.5 shrink-0 fill-gold text-gold" /><span className="shrink-0 font-semibold text-foreground">{product.rating.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}</span></>}
-    {product.sold !== null && <><span aria-hidden="true" className="mx-0.5 text-muted-foreground">|</span><span className="min-w-0 truncate">{product.sold} vendidos</span></>}
+    {product.sold !== null && <><span aria-hidden="true" className="mx-0.5 text-muted-foreground">|</span><span className="min-w-0 truncate">{formatSales(product.sold)} vendidos</span></>}
   </div>;
 }
 export function ProductCard({ product, className = "", children }: { product: Product; className?: string; children?: ReactNode }) {
