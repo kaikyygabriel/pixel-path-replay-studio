@@ -258,6 +258,14 @@ function CartSheet() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>(state.cart.map((item) => item.key));
   const [couponOpen, setCouponOpen] = useState(false);
+  useEffect(() => {
+    const currentKeys = state.cart.map((item) => item.key);
+    setSelected((current) => {
+      const retained = current.filter((key) => currentKeys.includes(key));
+      const added = currentKeys.filter((key) => !current.includes(key));
+      return [...retained, ...added];
+    });
+  }, [state.cart]);
   const close = () => update({ cartOpen: false });
   const rows = state.cart.map((i) => {
     const p = getProduct(i.productId);
