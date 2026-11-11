@@ -485,15 +485,15 @@ function ProductPage() {
   })) : isTramontinaKnives ? [
     ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
       id: photo.id,
-      name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i],
-      date: ["há 2 dias", "há 6 dias", "há 11 dias", "há 4 dias"][i],
-      rating: [5, 5, 4, 5][i],
+      name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i] ?? "",
+      date: ["há 2 dias", "há 6 dias", "há 11 dias", "há 4 dias"][i] ?? "",
+      rating: [5, 5, 4, 5][i] ?? 5,
       text: [
         "O conjunto é bem completo para a rotina. Deixei as peças mais usadas no suporte e ficou tudo organizado na cozinha.",
         "Comprei pensando nos churrascos de domingo. Gostei de ter facas diferentes à mão, sem precisar improvisar com as que uso para outras coisas.",
         "As lâminas têm bom acabamento e os cabos são confortáveis de segurar. Pelo tamanho do conjunto, achei uma compra interessante.",
         "Visual simples e bonito, combina com a cozinha. As facas cortam bem os alimentos que preparei até agora."
-      ][i],
+      ][i] ?? "",
       media: photo.src,
     })),
     { id: "tramontina-knives-text-5", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "Gostei de ter várias opções para cada preparo. O cabo preto tem aparência discreta e o conjunto fica bonito guardado.", media: null },
