@@ -71,33 +71,6 @@ function makeDemoReviews(productId: string, gallery: string[]): DemoReview[] {
   return names.map((name, i) => ({ id: 'demo-' + productId + '-' + i, name, date: ['há 2 dias', 'há 3 dias', 'há 5 dias', 'há 1 semana', 'há 10 dias', 'há 2 semanas'][i] ?? '', rating: ratings[i] ?? 5, text: demoReviewCopy[(i + (towel ? 0 : 2)) % demoReviewCopy.length] ?? '', media: i < Math.min(2, gallery.length) ? gallery[i % gallery.length] ?? null : null }));
 }
 function formatDemoSales(product: { id: string; sold: string | null }) { return product.sold ? `${product.sold} vendidos` : ""; }
-function estimateReviewCount(sold: string | null): number {
-  if (!sold) return 0;
-  const normalized = sold.toLowerCase().replace(/\s/g, "");
-  const numeric = normalized.replace(/[^0-9.,]/g, "");
-  // "1.000+" usa ponto de milhar; "7,8 mil" usa vírgula decimal.
-  const amount = normalized.includes("mil")
-    ? Number.parseFloat(numeric.replace(",", "."))
-    : Number.parseFloat(numeric.replace(/\./g, "").replace(",", "."));
-  if (!Number.isFinite(amount)) return 0;
-  const units = normalized.includes("mil") ? amount * 1000 : amount;
-  // Cerca de 20% das vendas, com pequena variação e sem arredondar em dezenas/centenas.
-  const variation = ((Math.round(units) % 21) - 10) / 1000;
-  return Math.max(1, Math.round(units * (0.2 + variation)));
-}
-function getEstimatedRatingDistribution(total: number, rating: number): Record<number, number> {
-  if (!total) return { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-  // Mantém a maior concentração em 5 estrelas, mas representa também
-  // avaliações de 4, 3, 2 e 1 estrela no gráfico.
-  const fiveShare = Math.max(0, Math.min(0.98, (rating - 4) + 0.01));
-  const fiveStars = Math.round(total * fiveShare);
-  const threeStars = Math.round(total * 0.01);
-  const twoStars = Math.round(total * 0.005);
-  const oneStar = Math.round(total * 0.005);
-  const fourStars = Math.max(0, total - fiveStars - threeStars - twoStars - oneStar);
-  return { 5: fiveStars, 4: fourStars, 3: threeStars, 2: twoStars, 1: oneStar };
-}
-
 function ReviewStars({ rating, size = "h-3.5 w-3.5" }: { rating: number; size?: string }) {
   return <span className="inline-flex items-center" aria-label={rating.toFixed(1) + " de 5 estrelas"}>{[1,2,3,4,5].map((n) => {
     const fill = Math.max(0, Math.min(1, rating - (n - 1)));
@@ -488,24 +461,6 @@ function ProductPage() {
   })) : isPurifierElectrolux ? purifierReviewPhotos.map((photo) => ({
     id: photo.id, name: "Imagem do produto", date: "", rating: 0, text: "", media: photo.src,
   })) : isChandonReserve ? [
-    ...tramontinaKnifeReviewPhotos.map((photo, i) => ({
-      id: photo.id,
-      name: ["Marina T.", "Rogério A.", "Camila F.", "Sérgio M."][i],
-      date: ["há 2 dias", "há 6 dias", "há 11 dias", "há 4 dias"][i],
-      rating: [5, 5, 4, 5][i],
-      text: [
-        "O conjunto é bem completo para a rotina. Deixei as peças mais usadas no suporte e ficou tudo organizado na cozinha.",
-        "Comprei pensando nos churrascos de domingo. Gostei de ter facas diferentes à mão, sem precisar improvisar com as que uso para outras coisas.",
-        "As lâminas têm bom acabamento e os cabos são confortáveis de segurar. Pelo tamanho do conjunto, achei uma compra interessante.",
-        "Visual simples e bonito, combina com a cozinha. As facas cortam bem os alimentos que preparei até agora."
-      ][i],
-      media: photo.src,
-    })),
-    { id: "tramontina-knives-text-5", name: "Patrícia R.", date: "há 5 dias", rating: 5, text: "Gostei de ter várias opções para cada preparo. O cabo preto tem aparência discreta e o conjunto fica bonito guardado.", media: null },
-    { id: "tramontina-knives-text-6", name: "Eduardo C.", date: "há 9 dias", rating: 5, text: "Chegou bem acondicionado. As peças parecem resistentes e já usei algumas para cortar legumes, carnes e pão.", media: null },
-    { id: "tramontina-knives-text-7", name: "Lívia P.", date: "há 13 dias", rating: 4, text: "É um kit prático para quem está montando a cozinha. Eu só recomendo conferir o espaço disponível para guardar todas as peças.", media: null },
-    { id: "tramontina-knives-text-8", name: "Marcelo G.", date: "há 7 dias", rating: 5, text: "Comprei para substituir facas antigas e gostei da variedade. Para os preparos do dia a dia, está atendendo muito bem.", media: null },
-    ] : isChandonReserve ? [
     ...chandonReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana F.","Camila R.","Patrícia M.","Juliana A.","Fernanda C.","Renata S.","Aline P.","Bruna L.","Débora T.","Carolina G.","Vanessa B.","Priscila D.","Michele V.","Sabrina H."][i] ?? "",
