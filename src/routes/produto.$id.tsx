@@ -1000,13 +1000,9 @@ function ProductPage() {
         )}
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
+            {review.media && <img src={review.media} alt="Imagem ilustrativa do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
             {(review.rating > 0 || review.text || review.date) && <div className="flex flex-col p-2.5">
-              <div className="flex items-center gap-2">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
-                <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
-              </div>
-              {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
+              <div className="inline-flex w-fit rounded-full bg-secondary px-2 py-1 text-[10px] font-semibold text-muted-foreground">Exemplo ilustrativo</div>
               {review.text && <p className="mt-2 text-[12px] leading-snug">{review.text}</p>}
             </div>}
           </article>)}
@@ -1022,7 +1018,7 @@ function ProductPage() {
         <div className="fixed inset-0 z-[70] flex items-end justify-center bg-overlay sm:items-center" onClick={() => setShowAllReviewMedia(false)}>
           <div role="dialog" aria-modal="true" aria-label="Galeria de imagens ilustrativas" className="relative max-h-[90dvh] w-full max-w-[560px] overflow-y-auto rounded-t-3xl bg-background p-4 sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between gap-3">
-              <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
+              <div><h2 className="text-[18px] font-extrabold">Galeria de imagens ilustrativas</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} imagens</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Imagem ilustrativa do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" /></div></div>)}</div>
