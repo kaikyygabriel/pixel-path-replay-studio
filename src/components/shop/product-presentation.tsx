@@ -123,10 +123,10 @@ export function ProductMetrics({ product }: { product: Product }) {
     {product.sold !== null && <><span aria-hidden="true" className="mx-0.5 text-muted-foreground">|</span><span className="min-w-0 truncate">{formatSales(product.sold)} vendidos</span></>}
   </div>;
 }
-export function ProductCard({ product, className = "", children }: { product: Product; className?: string; children?: ReactNode }) {
+export function ProductCard({ product, className = "", children, priority = false }: { product: Product; className?: string; children?: ReactNode; priority?: boolean }) {
   return <article data-product-card={product.id} data-cart-product={product.id} className={`relative flex min-w-0 flex-col rounded-lg bg-card p-2.5 pb-3 ${className}`}>
     <Link to="/produto/$id" params={{ id: product.id }} preload="intent" className="block focus-visible:outline-2 focus-visible:outline-ring">
-      <div className="relative"><img src={product.image} alt={product.title} loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{/natal/i.test(product.category) && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div>
+      <div className="relative"><img src={product.image} alt={product.title} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : "low"} decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{/natal/i.test(product.category) && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div>
       <h3 className="mt-1.5 line-clamp-2 min-h-10 text-[14px] leading-snug">{product.cardTitle}</h3>
     </Link>
     <div className="mt-3 flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
