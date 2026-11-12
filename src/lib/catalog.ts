@@ -734,6 +734,31 @@ export const products: Product[] = [
     sold: "200",
   },
 
+
+  {
+    id: "playstation-5-slim-1tb",
+    title: "PlayStation 5 Slim com Leitor de Disco 1 TB + ASTRO BOT e Gran Turismo 7",
+    cardTitle: "PlayStation 5 Slim 1 TB + ASTRO BOT e Gran Turismo 7",
+    checkoutTitle: "Console PlayStation 5 Slim Edição com Leitor de Disco 1 TB + ASTRO BOT e Gran Turismo 7",
+    category: "Natal · Eletrônicos · Games · Presentes · Recomendados · 25.12",
+    price: 285390,
+    original: 484490,
+    shippingOriginal: 0,
+    image: "/products/playstation-5-slim-1tb/gallery/ps5-carrossel-1.png",
+    gallery: [
+      "/products/playstation-5-slim-1tb/gallery/ps5-carrossel-1.png",
+      "/products/playstation-5-slim-1tb/gallery/ps5-carrossel-2.png",
+      "/products/playstation-5-slim-1tb/gallery/ps5-carrossel-3.png",
+      "/products/playstation-5-slim-1tb/gallery/ps5-carrossel-4.png",
+      "/products/playstation-5-slim-1tb/gallery/ps5-carrossel-5.png"
+    ],
+    variants: [],
+    description: "O Console PlayStation 5 Slim com leitor de disco combina desempenho de nova geração com um design mais compacto e elegante. Com SSD ultrarrápido de 1 TB, oferece carregamentos ágeis e espaço para instalar seus jogos e aproveitar uma experiência de entretenimento envolvente.\n\nEste pacote acompanha dois jogos: ASTRO BOT, uma aventura divertida e cheia de descobertas, e Gran Turismo 7, para quem gosta de velocidade e corridas cheias de emoção. Aproveite gráficos detalhados, jogabilidade fluida e uma biblioteca de títulos para diferentes estilos de jogador.\n\nO console conta com conectividade Wi-Fi e rede Ethernet, saída HDMI para conexão à TV e um controle sem fio ergonômico, desenvolvido para oferecer conforto e precisão durante as partidas. Seu formato compacto facilita a integração ao espaço de entretenimento.\n\n**Informações do produto**\n- Modelo: PlayStation 5 Slim com leitor de disco\n- Armazenamento SSD: 1 TB\n- Alimentação: bivolt (100–240 V)\n- Conectividade: Wi-Fi e Ethernet\n- Conexão de vídeo: HDMI\n- Jogos incluídos: ASTRO BOT e Gran Turismo 7\n- Acompanha: console e controle sem fio\n\nProduto com opção única de armazenamento (1 TB), sem necessidade de selecionar variação.",
+    rating: 5.0,
+    reviews: null,
+    sold: "1,7 mil+",
+  },
+
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
