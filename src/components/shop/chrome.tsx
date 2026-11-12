@@ -16,7 +16,7 @@ export function Verified({ className = "h-4 w-4" }: { className?: string }) {
 export function BrandMark({ small }: { small?: boolean }) {
   return (
     <span className="flex min-w-0 items-center gap-1.5">
-      <img src={store.logo} alt="" className={`${small ? "h-5 w-5" : "h-7 w-7"} shrink-0 rounded-md`} />
+      <img src={store.logo} alt="" loading="lazy" decoding="async" width={28} height={28} className={`${small ? "h-5 w-5" : "h-7 w-7"} shrink-0 rounded-md`} />
       <span className={`truncate font-bold leading-tight ${small ? "text-[11px]" : "text-[13px]"}`}>
         {store.brandName}
       </span>
@@ -97,7 +97,7 @@ export function TopBar({ back = false }: { back?: boolean }) {
             const matches = products.filter((product) => [product.title, product.cardTitle, product.category].some((value) => normalize(value).includes(query))).slice(0, 6);
             return <div role="listbox" aria-label="Sugestões de produtos" className="absolute left-0 right-0 top-[46px] z-[55] max-h-[min(65vh,420px)] overflow-y-auto rounded-xl border border-border bg-popover p-1.5 shadow-xl">
               {matches.length ? matches.map((product) => <button key={product.id} type="button" role="option" aria-selected="false" onMouseDown={(event) => event.preventDefault()} onClick={() => { setSearchFocused(false); update({ searchTerm: "" }); navigate({ to: "/produto/$id", params: { id: product.id } }); }} className="flex w-full items-center gap-3 rounded-lg p-2 text-left hover:bg-secondary">
-                <img src={product.image} alt="" className="h-12 w-12 shrink-0 rounded-lg bg-secondary object-contain" />
+                <img src={product.image} alt="" loading="lazy" decoding="async" width={48} height={48} className="h-12 w-12 shrink-0 rounded-lg bg-secondary object-contain" />
                 <span className="min-w-0 flex-1"><span className="block line-clamp-2 text-[13px] font-semibold">{product.title}</span><span className="mt-0.5 block text-[12px] text-muted-foreground">{brl(product.price)}</span></span>
               </button>) : <p className="px-3 py-4 text-center text-[13px] text-muted-foreground">Nenhum produto encontrado na loja.</p>}
             </div>;
