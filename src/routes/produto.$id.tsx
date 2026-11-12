@@ -1183,7 +1183,7 @@ function ProductPage() {
 
       <div className="mt-5 border-t-8 border-surface p-4">
         <div className="grid grid-cols-[52px_minmax(0,1fr)_auto] items-center gap-3">
-          <img src={store.logo} alt="" className="h-[52px] w-[52px] rounded-full" />
+          <img src={store.logo} alt="" loading="lazy" decoding="async" width={52} height={52} className="h-[52px] w-[52px] rounded-full" />
           <div className="min-w-0">
             <div className="flex items-center gap-1 text-[16px] font-extrabold"><span className="truncate">{store.name}</span><Verified className="h-4 w-4" /></div>
             <p className="line-clamp-2 text-[13px] leading-snug text-muted-foreground">{store.bio}</p>
@@ -1257,7 +1257,7 @@ function ProductPage() {
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {reviewMedia.slice(0, 15).map((review) => <button key={review.id} onClick={() => setShowAllReviewMedia(true)} className="w-[104px] shrink-0 text-left">
-              <div className="relative"><img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{"rating" in review && <ReviewMediaRating rating={review.rating} />}</div>
+              <div className="relative"><img src={review.media!} alt="Foto enviada junto à avaliação do produto" loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full rounded-xl bg-surface object-cover" />{"rating" in review && <ReviewMediaRating rating={review.rating} />}</div>
               {"rating" in review ? <span className="mt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{review.rating.toFixed(1).replace(".", ",")}</span> : isProjector ? <span className="mt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{reviewAverage.toFixed(1).replace(".", ",")}</span> : null}
             </button>)}
           </div>
@@ -1270,7 +1270,7 @@ function ProductPage() {
         )}
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
           {filteredReviews.slice(0, visibleReviews).map((review) => <article key={review.id} id={review.id} className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" className="aspect-[4/3] w-full bg-surface object-cover" />}
+            {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" decoding="async" width={600} height={450} className="aspect-[4/3] w-full bg-surface object-cover" />}
             <div className="flex flex-col p-2.5">
               <div className="flex items-center gap-2">
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
@@ -1295,7 +1295,7 @@ function ProductPage() {
               <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" className="aspect-square w-full rounded-xl bg-surface object-cover" />{"rating" in review && <ReviewMediaRating rating={review.rating} />}</div><span className="mt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{("rating" in review ? review.rating : reviewAverage).toFixed(1).replace(".", ",")}</span></div>)}</div>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{reviewMedia.map((review) => <div key={review.id} className="min-w-0"><div className="relative"><img src={review.media!} alt="Mídia enviada junto à avaliação do produto" loading="lazy" decoding="async" width={600} height={600} className="aspect-square w-full rounded-xl bg-surface object-cover" />{"rating" in review && <ReviewMediaRating rating={review.rating} />}</div><span className="mt-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold"><Star className="h-3 w-3 fill-[#FFC43B] text-[#FFC43B]" />{("rating" in review ? review.rating : reviewAverage).toFixed(1).replace(".", ",")}</span></div>)}</div>
           </div>
         </div>
       )}
@@ -1345,7 +1345,7 @@ function ProductPage() {
             </button>
             <div className="max-h-[80dvh] overflow-y-auto rounded-t-3xl bg-background px-4 pb-safe pt-4">
               <div className="flex gap-2.5">
-                <img src={(variant ?? p.variants[0])?.image} alt="" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
+                <img src={(variant ?? p.variants[0])?.image} alt="" decoding="async" width={80} height={80} className="h-20 w-20 shrink-0 rounded-xl object-cover" />
                 <div className="min-w-0 flex-1">
                   <div className="text-[14px] font-bold leading-snug">
                     {p.title} {variant ? `· ${variant.color}` : ""}
