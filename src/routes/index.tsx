@@ -15,6 +15,17 @@ const salesCount = (value: string | null) => {
   return Number.isFinite(amount) ? amount * (inThousands ? 1000 : 1) : 0;
 };
 const hasCategory = (product: Product, category: string) => product.category.split("·").some((item) => item.trim().toLocaleLowerCase("pt-BR") === category.toLocaleLowerCase("pt-BR"));
+const HOME_FEATURED_IDS = [
+  "air-fryer-oven-mondial-afon-12l",
+  "jogo-toalhas-karsten",
+  "playstation-5-slim-1tb",
+  "omo-lavanderia-profissional-7l",
+  "camera-intelbras-im5-plus",
+  "barbie-casa-dos-sonhos-hmx10",
+  "chaleira-unitermi-atacama",
+  "jogo-facas-tramontina-plenus-9-pecas",
+];
+
 
 const getOptionKind = (variants: Variant[]) => {
   if (variants.length && variants.every((v) => /^(127|220)\s?V$/i.test(v.color.trim()))) return "voltage";
@@ -79,6 +90,12 @@ function StorePage() {
     { label: "Recomendados", match: (p) => hasCategory(p, "Recomendados") },
   ];
   const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true)).sort((a, b) => salesCount(b.sold) - salesCount(a.sold));
+  const homeFeaturedProducts = HOME_FEATURED_IDS.map((id) => products.find((product) => product.id === id)).filter((product): product is Product => Boolean(product));
+  const homeFeaturedIdSet = new Set(homeFeaturedProducts.map((product) => product.id));
+  const homeNatalProducts = products.filter((product) => hasCategory(product, "Natal") && !homeFeaturedIdSet.has(product.id)).sort((a, b) => salesCount(b.sold) - salesCount(a.sold));
+  const homeNatalIdSet = new Set(homeNatalProducts.map((product) => product.id));
+  const homeBestSellerProducts = products.filter((product) => hasCategory(product, "Mais vendidos") && !homeFeaturedIdSet.has(product.id) && !homeNatalIdSet.has(product.id)).sort((a, b) => salesCount(b.sold) - salesCount(a.sold));
+  const homeShelfProducts = catalogView === "home" && activeCategory === "Todos" ? homeFeaturedProducts : visibleProducts;
   const isMondialBlender = quickProduct?.id === "liquidificador-mondial-l99-fb";
   const quickColorVariants = isMondialBlender ? quickProduct!.variants.filter((v, i, all) => all.findIndex((item) => item.color === v.color) === i) : [];
   const selectedVariant = quickProduct ? (isMondialBlender ? quickProduct.variants.find((v) => v.line === quickVoltage && v.color === quickColor) ?? null : quickProduct.variants.find((v) => v.id === quickVariant) ?? null) : null;
@@ -205,7 +222,7 @@ function StorePage() {
         {catalogView === "home" && canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface to-transparent" />}
         {catalogView === "home" && canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
         <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className={catalogView === "home" ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "grid grid-cols-2 items-start gap-3"}>
-          {visibleProducts.map((p, index) => (
+          {homeShelfProducts.map((p, index) => (
             <ProductCard key={p.id} product={p} priority={index < 2} className={catalogView === "home" ? `w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
           {visibleProducts.length === 0 && (
@@ -231,7 +248,7 @@ function StorePage() {
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
             <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {products.filter((p) => hasCategory(p, "Natal")).sort((a, b) => salesCount(b.sold) - salesCount(a.sold)).map((p) => (
+              {homeNatalProducts.map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
               <button type="button" onClick={() => openCatalogView("Natal", "category")} className="flex min-h-[190px] w-[min(28vw,112px)] shrink-0 snap-start flex-col items-center justify-center gap-2 px-1 text-center text-[#FE2C55] transition-opacity active:opacity-60">
@@ -239,7 +256,7 @@ function StorePage() {
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Produtos de Natal</span>
               </button>
-            </div><div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
+            </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
             </div>
           </div>
           <div className="px-3.5 pb-9">
@@ -248,7 +265,7 @@ function StorePage() {
               <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
             </div>
             <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {products.filter((p) => hasCategory(p, "Mais vendidos")).sort((a, b) => salesCount(b.sold) - salesCount(a.sold)).map((p) => (
+              {homeBestSellerProducts.map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
               ))}
               <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(28vw,112px)] shrink-0 snap-start flex-col items-center justify-center gap-2 px-1 text-center text-[#FE2C55] transition-opacity active:opacity-60">
@@ -256,7 +273,7 @@ function StorePage() {
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
               </button>
-            </div><div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
+            </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
             </div>
           </div>
         </>
