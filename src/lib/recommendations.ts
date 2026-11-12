@@ -27,6 +27,7 @@ export const relatedProductIds: Record<string, string[]> = {
     "squishy-surpresa-colecionavel"
   ],
   "smart-tv-tcl-55p8k-qled-4k": [
+    "playstation-5-slim-1tb",
     "projetor-hy300-duoseg",
     "jbl-boombox-4",
     "controle-sem-fio-xbox-branco",
@@ -69,6 +70,7 @@ export const relatedProductIds: Record<string, string[]> = {
     "kit-24-bolas-natalinas-5cm"
   ],
   "projetor-hy300-duoseg": [
+    "playstation-5-slim-1tb",
     "smart-tv-tcl-55p8k-qled-4k",
     "jbl-boombox-4",
     "controle-sem-fio-xbox-branco",
@@ -124,6 +126,7 @@ export const relatedProductIds: Record<string, string[]> = {
     "air-fryer-mondial-afn-40-bft"
   ],
   "controle-sem-fio-xbox-branco": [
+    "playstation-5-slim-1tb",
     "smart-tv-tcl-55p8k-qled-4k",
     "projetor-hy300-duoseg",
     "jbl-boombox-4",
@@ -146,7 +149,13 @@ export const relatedProductIds: Record<string, string[]> = {
     "conjunto-panelas-antiaderente-10-pecas",
     "kit-24-bolas-natalinas-5cm",
     "smartwatch-t900-s10-ultra-pro"
-  ]
+  ],
+  "playstation-5-slim-1tb": [
+    "smart-tv-tcl-55p8k-qled-4k",
+    "controle-sem-fio-xbox-branco",
+    "jbl-boombox-4",
+    "projetor-hy300-duoseg"
+  ],
 };
 
 function shuffle<T>(items: T[], random: () => number): T[] {
