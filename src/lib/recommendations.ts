@@ -193,5 +193,11 @@ export function recommendedProducts(currentId: string, random: () => number = se
   const related = (relatedProductIds[currentId] ?? []).map((id) => byId.get(id)).filter((product): product is Product => Boolean(product));
   const relatedIds = new Set(related.map((product) => product.id));
   const remaining = shuffle(available.filter((product) => !relatedIds.has(product.id)), random);
-  return [...shuffle(related, random), ...remaining].slice(0, 6);
+  // Complemento de compra prioritário: o DualSense acompanha o PS5 e vice-versa.
+  // Mantém esse primeiro item fixo; os demais relacionados continuam variando.
+  const priorityPair = currentId === "playstation-5-slim-1tb" || currentId === "dualsense-ps5-branco";
+  const orderedRelated = priorityPair && related.length > 0
+    ? [related[0] as Product, ...shuffle(related.slice(1), random)]
+    : shuffle(related, random);
+  return [...orderedRelated, ...remaining].slice(0, 6);
 }
