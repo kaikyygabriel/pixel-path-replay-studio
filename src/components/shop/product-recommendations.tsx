@@ -9,7 +9,7 @@ export function ProductRecommendations({ productId }: { productId: string }) {
   const cartProductIds = state.cart.map((item) => item.productId);
   const cartKey = cartProductIds.slice().sort().join("|");
   const recommendations = useMemo(
-    () => recommendedProducts(productId, cartProductIds),
+    () => recommendedProducts(productId, cartKey ? cartKey.split("|") : []),
     [productId, cartKey],
   );
   const [visibleCount, setVisibleCount] = useState(6);
