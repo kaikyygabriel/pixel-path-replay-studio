@@ -168,7 +168,7 @@ export const products: Product[] = [
     ],
     variants: [],
     description: "Tenha uma experiência de entretenimento imersiva com a Smart TV TCL 55P8K. Tela QLED 4K de 55 polegadas, painel HVA e frequência real de 144 Hz para imagens nítidas, cores vibrantes e movimentos fluidos.\n\nCom Google TV, Google Assistente, Google Cast, Wi-Fi Dual Band e Bluetooth 5.4, oferece acesso prático aos principais aplicativos de streaming. Conta ainda com HDR10+, Dolby Vision e sistema de áudio 2.1 canais com subwoofer e Dolby Audio.\n\nPossui 4 entradas HDMI, 2 USB, HDMI 2.1, eARC e padrão VESA 300 × 300 mm. Alimentação automática de 100–240 V.\n\nDimensões com pedestal: 77,5 × 122,6 × 28,9 cm. Peso: 11,5 kg. Acompanha controle remoto e manual.",
-    rating: 4.9, reviews: null, sold: "10 mil+",
+    rating: 4.9, reviews: null, sold: null,
   },
   {
     id: "liquidificador-mondial-l99-fb",
@@ -189,7 +189,7 @@ export const products: Product[] = [
     ],
     variants: mondialVariants,
     description: "Liquidificador Turbo Power Mondial L-99 FB com potência de 550W, disponível nas cores preto, branco e vermelho. Escolha primeiro a voltagem compatível com sua residência e depois a cor desejada. As versões 127V e 220V são opções distintas, não bivolt.",
-    rating: 4.9, reviews: null, sold: "12,5 mil",
+    rating: 4.9, reviews: null, sold: null,
   },
   {
     id: "micro-ondas-philco-pmo31s",
@@ -265,7 +265,7 @@ export const products: Product[] = [
       { id: "air-fryer-mondial-220v", line: "Voltagem", color: "220V", description: "Air Fryer Oven Mondial AFON-12L-BI · 12L · 2200W · 220V", price: 8479, original: 44922, pieces: 1, image: "/products/air-fryer-oven-mondial-afon-12l/gallery/air-fryer-mondial-capa.png" },
     ],
     description: "A Fritadeira Air Fryer Oven Mondial AFON-12L-BI reúne capacidade, potência e praticidade para preparar diferentes receitas em casa. Com 12 litros de capacidade total e potência de 2.200 W, oferece espaço para preparar porções maiores de uma só vez.\n\nO painel digital conta com 10 funções predefinidas, que facilitam a escolha do preparo e ajustam automaticamente tempo e temperatura. Durante o funcionamento, é possível regular a temperatura entre 80 °C e 200 °C conforme a receita.\n\nA janela transparente com iluminação interna permite acompanhar os alimentos sem precisar abrir a porta. O conjunto acompanha 3 prateleiras e um cesto de 5 litros com revestimento antiaderente, ampliando as possibilidades de preparo e facilitando a rotina na cozinha.\n\n**Especificações principais:** capacidade total de 12 L · potência de 2.200 W · painel digital · 10 funções predefinidas · temperatura ajustável de 80 °C a 200 °C · janela transparente com iluminação interna · 3 prateleiras · cesto de 5 L com revestimento antiaderente.\n\n**Atenção:** disponível nas versões 127V e 220V. Não é bivolt. Confira a voltagem da sua residência e selecione a opção correspondente antes de finalizar a compra.",
-    rating: 4.9, reviews: null, sold: "15.000+",
+    rating: 4.9, reviews: null, sold: null,
   },
   {
     id: "squishy-surpresa-colecionavel",
@@ -330,7 +330,7 @@ export const products: Product[] = [
     description: "Leve sua experiência de entretenimento para diferentes ambientes com o Projetor Smart HY300 DUOSEG. Seu corpo com rotação de 180° permite direcionar a projeção para a parede ou para o teto, enquanto a correção automática de keystone e o ajuste eletrônico ajudam a alinhar a imagem. O foco é manual.\n\nCom Android 11 integrado, o projetor oferece uma interface inteligente. A conexão Wi-Fi de banda dupla e o Bluetooth 5.0 ampliam as possibilidades de conexão. Também conta com entrada HDMI, USB e saída de áudio.\n\n**Imagem e projeção:** tamanho informado de 40 a 130 polegadas · distância de projeção de 1,2 a 4 metros · distância indicada como ideal de 1,68 metro · proporções 16:9 e 4:3 · contraste informado de 1500:1 · brilho informado de 200 lúmens ANSI e 8000 lm. Para melhor resultado, prefira ambientes com pouca luz; a imagem perde intensidade em locais muito iluminados.\n\n**Sistema e desempenho:** Android 11 · processador Allwinner H713 · GPU Mali-G31 com suporte informado a OpenGL ES 3.2, Vulkan 1.1 e OpenCL 2.0 · memória RAM de 1 GB · armazenamento interno de 8 GB · suporte a vários idiomas. A ficha informa suporte à decodificação de determinados formatos de vídeo em até 4K a 30 fps. Isso não significa necessariamente resolução nativa 4K: a resolução nativa não foi informada na ficha técnica.\n\n**Conexões:** Wi-Fi de banda dupla (módulo AW869A; a ficha do fornecedor menciona especificação Wi-Fi 6) · Bluetooth 5.0 · HDMI · USB · saída de áudio.\n\n**Formatos informados:** áudio MP3, WMA e AAC; imagens JPG, BMP e PNG; reprodução de vídeo com decodificação HEVC, VP9, AVS2 e AVC em até 4K a 30 fps, além de MPEG1, MPEG2 e AV1 em até 1080p a 60 fps, conforme compatibilidade do arquivo.\n\n**Outras especificações:** ruído informado de 25 dB · temperatura de cor aproximada de 8000 K (±1000 K) · alimentação AC indicada na ficha como 90–260 V, 50/60 Hz. Como a mesma ficha também menciona 110–220 V, confira a etiqueta do aparelho antes de conectar à tomada.\n\n**Conteúdo da embalagem:** 1 projetor · 1 controle remoto · 1 cabo de alimentação · 1 manual.\n\n**Atenção:** não desligue o projetor diretamente da tomada. Utilize o procedimento de desligamento pelo sistema antes de interromper a alimentação. As informações de brilho, compatibilidade e desempenho são as declaradas na ficha do produto e podem variar conforme o ambiente, a fonte de imagem e as condições de uso.\n\n**Termos relacionados:** projetor portátil · mini projetor smart · HY300 · projetor Android 11 · projetor Wi-Fi · projetor Bluetooth · projetor HDMI para notebook.",
     rating: 4.9,
     reviews: null,
-    sold: "8.000+",
+    sold: null,
   },
   {
     id: "brastoy-controle-remoto-k602",
