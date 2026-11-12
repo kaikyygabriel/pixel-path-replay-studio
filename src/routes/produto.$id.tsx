@@ -151,6 +151,7 @@ function ProductPage() {
   const isMondialAirFryer4L = p.id === "air-fryer-mondial-afn-40-bft";
   const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
   const isProjector = p.id === "projetor-hy300-duoseg";
+  const isPS5 = p.id === "playstation-5-slim-1tb";
 
 
   const isChandonReserve = p.id === "espumante-chandon-reserve-brut-750ml";
@@ -270,6 +271,17 @@ function ProductPage() {
     { id: "jbl-boombox-review-15", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-15.png" }
   ] : [];
 
+  const ps5ReviewPhotos = isPS5 ? [
+    { id: "ps5-review-1", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-1.png" },
+    { id: "ps5-review-2", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-2.png" },
+    { id: "ps5-review-3", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-3.png" },
+    { id: "ps5-review-4", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-4.png" },
+    { id: "ps5-review-5", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-5.png" },
+    { id: "ps5-review-6", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-6.png" },
+    { id: "ps5-review-7", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-7.png" },
+    { id: "ps5-review-8", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-8.png" },
+    { id: "ps5-review-9", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-9.png" },
+  ] : [];
   const projectorReviewPhotos = isProjector ? [
     { id: "projector-review-1", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-01.png" },
     { id: "projector-review-2", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-02.png" },
@@ -480,7 +492,26 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const demoReviews: DemoReview[] = isBedsheetSet ? [
+  const demoReviews: DemoReview[] = isPS5 ? [
+    ...ps5ReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Lucas F.", "Fernanda L.", "Bruno A.", "Patrícia G."][i] ?? "Cliente",
+      date: ["há 2 dias", "há 4 dias", "há 6 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias", "há 16 dias", "há 18 dias"][i] ?? "há alguns dias",
+      rating: 5,
+      text: [
+        "O console é muito bonito e ocupa menos espaço do que eu imaginava. Gostei bastante.",
+        "Chegou bem embalado e funcionando certinho. A imagem nos jogos é incrível.",
+        "O SSD faz diferença nos carregamentos. Estou aproveitando bastante os jogos.",
+        "Gostei muito do pacote, ASTRO BOT é divertido e Gran Turismo ficou ótimo na TV.",
+        "O controle é confortável e os recursos deixam a experiência bem imersiva.",
+        "A versão com leitor foi a escolha certa pra mim. Tudo funcionando direitinho.",
+        "Console rápido, silencioso e com ótimo acabamento. Estou muito satisfeito.",
+        "O tamanho Slim ficou ótimo no meu espaço e a configuração foi tranquila.",
+        "Veio completo e os dois jogos são um ótimo começo para aproveitar o PS5.",
+      ][i] ?? "",
+      media: photo.src,
+    })),
+  ] : isBedsheetSet ? [
     ...bedsheetReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Patrícia L.", "Bruna T.", "Lucas F."][i] ?? "Cliente",
