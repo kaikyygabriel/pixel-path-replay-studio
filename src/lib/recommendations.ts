@@ -187,17 +187,68 @@ function seededRandom(seed: string): () => number {
   };
 }
 
-export function recommendedProducts(currentId: string, random: () => number = seededRandom(currentId)): Product[] {
+const GENERIC_CATEGORY_TAGS = new Set([
+  "casa & utilidades", "presentes", "natal", "25.12", "recomendados", "mais vendidos",
+]);
+
+function categoryTags(product: Product): Set<string> {
+  return new Set(product.category.split("·").map((tag) => tag.trim().toLocaleLowerCase("pt-BR")).filter((tag) => tag && !GENERIC_CATEGORY_TAGS.has(tag)));
+}
+
+function overlapScore(a: Set<string>, b: Set<string>): number {
+  let score = 0;
+  for (const tag of a) if (b.has(tag)) score += 1;
+  return score;
+}
+
+/**
+ * Recomenda primeiro produtos editorialmente complementares e itens da mesma
+ * família/categoria. Itens relacionados ao carrinho entram como complemento
+ * secundário, em aproximadamente 1 a cada 10 posições quando disponíveis.
+ */
+export function recommendedProducts(
+  currentId: string,
+  cartProductIds: string[] = [],
+  random: () => number = seededRandom(currentId + ":" + cartProductIds.slice().sort().join("|")),
+): Product[] {
   const available = products.filter((product) => product.id !== currentId);
   const byId = new Map<string, Product>(available.map((product) => [product.id, product] as const));
-  const related = (relatedProductIds[currentId] ?? []).map((id) => byId.get(id)).filter((product): product is Product => Boolean(product));
-  const relatedIds = new Set(related.map((product) => product.id));
-  const remaining = shuffle(available.filter((product) => !relatedIds.has(product.id)), random);
-  // Complemento de compra prioritário: o DualSense acompanha o PS5 e vice-versa.
-  // Mantém esse primeiro item fixo; os demais relacionados continuam variando.
-  const priorityPair = currentId === "playstation-5-slim-1tb" || currentId === "dualsense-ps5-branco";
-  const orderedRelated = priorityPair && related.length > 0
-    ? [related[0] as Product, ...shuffle(related.slice(1), random)]
-    : shuffle(related, random);
-  return [...orderedRelated, ...remaining].slice(0, 6);
+  const editorialIds = relatedProductIds[currentId] ?? [];
+  const editorial = editorialIds.map((id) => byId.get(id)).filter((product): product is Product => Boolean(product));
+  const included = new Set(editorial.map((product) => product.id));
+  const currentTags = categoryTags(products.find((product) => product.id === currentId) ?? available[0]!);
+
+  const categoryRelated = available
+    .filter((product) => !included.has(product.id))
+    .map((product) => ({ product, score: overlapScore(currentTags, categoryTags(product)) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || random() - 0.5)
+    .map((entry) => entry.product);
+
+  const cartIds = new Set(cartProductIds.filter((id) => id !== currentId));
+  const cartTags = new Set<string>();
+  for (const id of cartIds) {
+    const product = products.find((candidate) => candidate.id === id);
+    if (product) for (const tag of categoryTags(product)) cartTags.add(tag);
+  }
+
+  const productRelated = [...editorial, ...categoryRelated];
+  const productRelatedIds = new Set(productRelated.map((product) => product.id));
+  const cartRelated = available
+    .filter((product) => !productRelatedIds.has(product.id))
+    .map((product) => ({ product, score: overlapScore(cartTags, categoryTags(product)) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || random() - 0.5)
+    .map((entry) => entry.product);
+
+  const cartSet = new Set(cartRelated.map((product) => product.id));
+  const remaining = shuffle(available.filter((product) => !productRelatedIds.has(product.id) && !cartSet.has(product.id)), random);
+  const result: Product[] = [];
+  let cartIndex = 0;
+  productRelated.forEach((product, index) => {
+    result.push(product);
+    if ((index + 1) % 10 === 0 && cartIndex < cartRelated.length) result.push(cartRelated[cartIndex++]!);
+  });
+  result.push(...cartRelated.slice(cartIndex), ...remaining);
+  return result;
 }
