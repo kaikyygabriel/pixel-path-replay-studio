@@ -759,6 +759,29 @@ export const products: Product[] = [
     sold: "1,7 mil+",
   },
 
+  {
+    id: "dualsense-ps5-branco",
+    title: "Controle Sem Fio Sony DualSense para PlayStation 5 — Branco",
+    cardTitle: "Controle DualSense PS5 Branco",
+    checkoutTitle: "Controle Sem Fio Sony DualSense PlayStation 5 Cor Branco",
+    category: "Natal · Eletrônicos · Games · Presentes · Recomendados · 25.12",
+    price: 14990,
+    original: 44990,
+    shippingOriginal: 0,
+    image: "/products/dualsense-ps5-branco/gallery/dualsense-carrossel-1.png",
+    gallery: [
+      "/products/dualsense-ps5-branco/gallery/dualsense-carrossel-1.png",
+      "/products/dualsense-ps5-branco/gallery/dualsense-carrossel-2.png",
+      "/products/dualsense-ps5-branco/gallery/dualsense-carrossel-3.png",
+      "/products/dualsense-ps5-branco/gallery/dualsense-carrossel-4.png"
+    ],
+    variants: [],
+    description: "Leve sua experiência no PlayStation 5 a outro nível com o controle sem fio Sony DualSense na cor branca. Desenvolvido para ampliar a imersão nos jogos, ele combina resposta tátil e gatilhos adaptáveis, que reproduzem sensações e diferentes níveis de resistência de acordo com as ações realizadas durante a partida.\n\nO controle também oferece microfone integrado com botão dedicado para silenciar, alto-falante embutido em jogos compatíveis e entrada P2 de 3,5 mm para conectar seu headset. Com o botão Criar, você pode capturar, gravar e compartilhar momentos das suas partidas.\n\nA bateria recarregável integrada é alimentada pela porta USB-C. A conexão pode ser feita por Bluetooth ou cabo USB-C, e o controle também é compatível com computadores Windows e Mac, conforme o suporte do jogo e do sistema utilizado.\n\n**Principais características**\n- Resposta tátil para sensações mais detalhadas durante o jogo\n- Gatilhos adaptáveis com níveis variáveis de tensão e resistência\n- Microfone integrado com botão para silenciar\n- Entrada para fone de ouvido P2 de 3,5 mm\n- Botão Criar para capturar, gravar e transmitir partidas\n- Alto-falante integrado para efeitos sonoros em jogos compatíveis\n- Bateria recarregável integrada com conexão USB-C\n- Conexão sem fio Bluetooth ou por cabo USB-C\n- Compatibilidade com PlayStation 5, Windows e Mac, conforme o jogo e a configuração",
+    rating: 5.0,
+    reviews: null,
+    sold: "100+",
+  },
+
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);
