@@ -152,8 +152,8 @@ export const relatedProductIds: Record<string, string[]> = {
   ],
   "dualsense-ps5-branco": ["playstation-5-slim-1tb", "controle-sem-fio-xbox-branco", "smart-tv-tcl-55p8k-qled-4k", "jbl-boombox-4"],
   "playstation-5-slim-1tb": [
+    "dualsense-ps5-branco",
     "smart-tv-tcl-55p8k-qled-4k",
-    "controle-sem-fio-xbox-branco",
     "jbl-boombox-4",
     "projetor-hy300-duoseg"
   ],
