@@ -152,6 +152,7 @@ function ProductPage() {
   const isSquishyToy = p.id === "squishy-surpresa-colecionavel";
   const isProjector = p.id === "projetor-hy300-duoseg";
   const isPS5 = p.id === "playstation-5-slim-1tb";
+  const isDualSenseController = p.id === "dualsense-ps5-branco";
 
 
   const isChandonReserve = p.id === "espumante-chandon-reserve-brut-750ml";
@@ -281,6 +282,18 @@ function ProductPage() {
     { id: "ps5-review-7", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-7.png" },
     { id: "ps5-review-8", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-8.png" },
     { id: "ps5-review-9", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-9.png" },
+  ] : [];
+  const dualSenseReviewPhotos = isDualSenseController ? [
+    { id: "dualsense-review-1", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-1.png" },
+    { id: "dualsense-review-2", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-2.png" },
+    { id: "dualsense-review-3", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-3.png" },
+    { id: "dualsense-review-4", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-4.png" },
+    { id: "dualsense-review-5", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-5.png" },
+    { id: "dualsense-review-6", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-6.png" },
+    { id: "dualsense-review-7", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-7.png" },
+    { id: "dualsense-review-8", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-8.png" },
+    { id: "dualsense-review-9", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-9.png" },
+    { id: "dualsense-review-10", src: "/products/dualsense-ps5-branco/reviews/avaliacao-dualsense-10.png" }
   ] : [];
   const projectorReviewPhotos = isProjector ? [
     { id: "projector-review-1", src: "/products/projetor-hy300-duoseg/reviews/avaliacao-projetor-hy300-01.png" },
@@ -492,7 +505,31 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const demoReviews: DemoReview[] = isPS5 ? [
+  const demoReviews: DemoReview[] = isDualSenseController ? [
+    ...dualSenseReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Lucas F.", "Fernanda L.", "Bruno A.", "Patrícia G.", "Diego R."][i] ?? "Cliente",
+      date: ["há 2 dias", "há 4 dias", "há 6 dias", "há 1 semana", "há 9 dias", "há 11 dias", "há 13 dias", "há 16 dias", "há 18 dias", "há 3 dias"][i] ?? "há alguns dias",
+      rating: 5,
+      text: [
+        "O controle é muito confortável e a resposta dos gatilhos faz diferença nos jogos.",
+        "Chegou certinho, conectou no PS5 rapidinho. O acabamento branco é muito bonito.",
+        "Gostei bastante da vibração, dá outra sensação durante as partidas.",
+        "Pegada ótima e os botões respondem muito bem. Valeu a compra.",
+        "Comprei para jogar no fim de semana e estou gostando bastante. Tudo funcionando.",
+        "O microfone quebra um galho nas conversas e o botão de silenciar é prático.",
+        "Controle leve, bonito e confortável. A conexão foi simples.",
+        "Os gatilhos adaptáveis são o destaque para mim. A experiência fica mais imersiva.",
+        "Veio bem embalado e sem detalhes. Já estou usando normalmente.",
+        "Gostei da possibilidade de conectar no computador também. Funcionou conforme esperado."
+      ][i] ?? "",
+      media: photo.src,
+    })),
+    { id: "dualsense-review-text-11", name: "Aline M.", date: "há 5 dias", rating: 5, text: "O USB-C facilita para carregar e a bateria está atendendo bem minha rotina de jogo.", media: null },
+    { id: "dualsense-review-text-12", name: "Thiago B.", date: "há 8 dias", rating: 5, text: "Muito bom para jogar no PS5. A resposta tátil deixa alguns jogos bem mais interessantes.", media: null },
+    { id: "dualsense-review-text-13", name: "Renata C.", date: "há 12 dias", rating: 5, text: "Comprei para dar de presente. A pessoa gostou muito, principalmente da cor e do conforto.", media: null },
+    { id: "dualsense-review-text-14", name: "Gustavo H.", date: "há 15 dias", rating: 5, text: "Também testei no notebook e funcionou em jogo compatível. Gostei da versatilidade.", media: null },
+  ] : isPS5 ? [
     ...ps5ReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Lucas F.", "Fernanda L.", "Bruno A.", "Patrícia G."][i] ?? "Cliente",
