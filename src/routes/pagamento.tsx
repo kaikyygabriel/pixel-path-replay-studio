@@ -131,11 +131,8 @@ function Pagamento() {
         <style>{`
           @keyframes confirmation-truck-drive {
             0%, 8% { transform: translateX(0); }
-            58%, 70% { transform: translateX(112px); }
+            58%, 70% { transform: translateX(158px); }
             100% { transform: translateX(0); }
-          }
-          @keyframes confirmation-wheel-spin {
-            to { transform: rotate(360deg); }
           }
           @keyframes confirmation-smoke {
             0% { opacity: 0; transform: translate(0, 0) scale(.55); }
