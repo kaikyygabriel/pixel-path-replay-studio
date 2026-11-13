@@ -143,7 +143,7 @@ function Pagamento() {
         <style>{`
           @keyframes confirmation-truck-drive {
             0%, 8% { transform: translateX(0); }
-            58%, 70% { transform: translateX(176px); }
+            58%, 70% { transform: translateX(204px); }
             100% { transform: translateX(0); }
           }
           @keyframes confirmation-route-progress {
@@ -180,18 +180,18 @@ function Pagamento() {
             Recebemos seu pagamento e seu pedido já está a caminho.
           </p>
 
-          <div className="relative my-10 h-[100px] w-[220px]" aria-label="Progresso da entrega: do ponto 1 ao ponto 2">
-            <House className="absolute right-0 top-0 h-11 w-11 text-[#25bde5]" strokeWidth={1.8} />
-            <div className="confirmation-truck absolute left-0 top-0 h-11 w-11 text-[#fe2c55]">
-              <Truck className="h-11 w-11" strokeWidth={1.8} />
-              <Cloud className="confirmation-smoke absolute -left-3 bottom-0 h-[19px] w-[19px] text-[#999]" strokeWidth={2.5} />
-              <Cloud className="confirmation-smoke confirmation-smoke-delay absolute -left-1 bottom-2 h-4 w-4 text-[#aaa]" strokeWidth={2.5} />
+          <div className="relative my-10 h-[116px] w-[320px] max-w-full" aria-label="Progresso da entrega: do ponto 1 ao ponto 2">
+            <House className="absolute right-0 top-0 h-14 w-14 text-[#25bde5]" strokeWidth={1.9} />
+            <div className="confirmation-truck absolute left-0 top-0 h-14 w-14 text-[#fe2c55]">
+              <Truck className="h-14 w-14" strokeWidth={1.9} />
+              <Cloud className="confirmation-smoke absolute -left-4 bottom-0 h-6 w-6 text-[#999]" strokeWidth={2.7} />
+              <Cloud className="confirmation-smoke confirmation-smoke-delay absolute -left-2 bottom-3 h-5 w-5 text-[#aaa]" strokeWidth={2.7} />
             </div>
-            <div className="absolute left-[22px] right-[22px] top-[66px] h-[4px] overflow-hidden rounded-full bg-[#e8e8e8]">
+            <div className="absolute left-[28px] right-[28px] top-[78px] h-[5px] overflow-hidden rounded-full bg-[#e8e8e8]">
               <div className="confirmation-route-fill h-full w-full rounded-full bg-gradient-to-r from-[#fe2c55] to-[#25bde5]" />
             </div>
-            <span className="absolute left-[10px] top-[56px] grid h-6 w-6 place-items-center rounded-full border-2 border-[#fe2c55] bg-white text-[11px] font-extrabold text-[#fe2c55]">1</span>
-            <span className="absolute right-[10px] top-[56px] grid h-6 w-6 place-items-center rounded-full border-2 border-[#25bde5] bg-white text-[11px] font-extrabold text-[#159fc5]">2</span>
+            <span className="absolute left-[14px] top-[66px] grid h-7 w-7 place-items-center rounded-full bg-[#fe2c55] text-[13px] font-extrabold text-white shadow-sm">1</span>
+            <span className="absolute right-[14px] top-[66px] grid h-7 w-7 place-items-center rounded-full bg-[#25bde5] text-[13px] font-extrabold text-white shadow-sm">2</span>
           </div>
 
           <div className="w-full rounded-2xl border border-[#f2dce4] bg-[#fff8fb] px-5 py-5 text-left">
