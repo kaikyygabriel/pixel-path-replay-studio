@@ -1,5 +1,5 @@
 import { createFileRoute, Navigate, useRouter } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { ArrowLeft, Clock, Copy, Check, ArrowDown, Smartphone, Landmark, Share2, ShieldCheck, AlertTriangle, Truck, House, Cloud, Mail } from "lucide-react";
 import { useOrder } from "@/components/shop/order";
@@ -36,6 +36,18 @@ function Pagamento() {
   const expiryHandled = useRef(false);
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("pending");
   const [paidAt, setPaidAt] = useState<number | null>(null);
+  const [previewPaid, setPreviewPaid] = useState(false);
+  const previewPaidRef = useRef(false);
+
+  useLayoutEffect(() => {
+    const enabled = new URLSearchParams(window.location.search).get("preview") === "paid";
+    if (enabled) {
+      previewPaidRef.current = true;
+      setPreviewPaid(true);
+      setPaymentStatus("paid");
+      setPaidAt(Date.now());
+    }
+  }, []);
   const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -55,7 +67,7 @@ function Pagamento() {
   const requestKey = paymentData ? getPixRequestKey(paymentData) : null;
 
   useEffect(() => {
-    if (!paymentData || !requestKey) return;
+    if (previewPaidRef.current || !paymentData || !requestKey) return;
     let active = true;
     createPixPaymentOnce(requestKey, paymentData)
       .then((paymentResult) => { if (active) setResult(paymentResult); })
@@ -80,7 +92,7 @@ function Pagamento() {
   }, [charge?.paymentId, timer.left, paymentStatus]);
 
   useEffect(() => {
-    if (!charge?.orderId) return;
+    if (previewPaidRef.current || !charge?.orderId) return;
     let active = true;
     let checking = false;
     let interval: number | undefined;
@@ -116,7 +128,7 @@ function Pagamento() {
   }, [charge?.paymentId]);
 
   useEffect(() => {
-    if (paidAt === null) return;
+    if (paidAt === null || previewPaidRef.current) return;
     const remaining = Math.max(0, 5 * 60 * 1000 - (Date.now() - paidAt));
     const timeout = window.setTimeout(() => {
       window.location.replace("https://www.google.com/");
@@ -125,7 +137,7 @@ function Pagamento() {
   }, [paidAt]);
 
   if (!order.ready) return <div className="app-frame" />;
-  if (paidAt !== null || paymentStatus === "paid") {
+  if (previewPaid || paidAt !== null || paymentStatus === "paid") {
     return (
       <div className="payment-confirmation min-h-screen bg-white px-5 py-12 text-center text-[#202124]">
         <style>{`
