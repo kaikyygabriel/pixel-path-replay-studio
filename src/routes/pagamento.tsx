@@ -143,8 +143,13 @@ function Pagamento() {
         <style>{`
           @keyframes confirmation-truck-drive {
             0%, 8% { transform: translateX(0); }
-            58%, 70% { transform: translateX(108px); }
+            58%, 70% { transform: translateX(176px); }
             100% { transform: translateX(0); }
+          }
+          @keyframes confirmation-route-progress {
+            0%, 8% { transform: scaleX(0); }
+            58%, 70% { transform: scaleX(1); }
+            100% { transform: scaleX(0); }
           }
           @keyframes confirmation-smoke {
             0% { opacity: 0; transform: translate(0, 0) scale(.65); }
@@ -157,11 +162,13 @@ function Pagamento() {
             100% { opacity: 1; transform: scale(1) rotate(0); }
           }
           .confirmation-truck { animation: confirmation-truck-drive 4.2s ease-in-out infinite; }
+          .confirmation-route-fill { transform: scaleX(0); transform-origin: left center; animation: confirmation-route-progress 4.2s ease-in-out infinite; }
           .confirmation-smoke { animation: confirmation-smoke 1.05s ease-out infinite; }
           .confirmation-smoke-delay { animation-delay: .36s; }
           .confirmation-check { animation: confirmation-check-enter .65s cubic-bezier(.2,.8,.2,1) both; }
           @media (prefers-reduced-motion: reduce) {
-            .confirmation-truck, .confirmation-smoke, .confirmation-smoke-delay, .confirmation-check { animation: none; }
+            .confirmation-truck, .confirmation-smoke, .confirmation-smoke-delay, .confirmation-check, .confirmation-route-fill { animation: none; }
+            .confirmation-route-fill { transform: scaleX(1); }
           }
         `}</style>
         <div className="mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-md flex-col items-center justify-center">
@@ -173,13 +180,18 @@ function Pagamento() {
             Recebemos seu pagamento e seu pedido já está a caminho.
           </p>
 
-          <div className="relative my-10 h-[64px] w-[220px]" aria-label="Entrega a caminho">
-            <House className="absolute right-0 top-2 h-11 w-11 text-[#fe2c55]" strokeWidth={1.8} />
-            <div className="confirmation-truck absolute left-0 top-2 h-11 w-11 text-[#fe2c55]">
+          <div className="relative my-10 h-[100px] w-[220px]" aria-label="Progresso da entrega: do ponto 1 ao ponto 2">
+            <House className="absolute right-0 top-0 h-11 w-11 text-[#25bde5]" strokeWidth={1.8} />
+            <div className="confirmation-truck absolute left-0 top-0 h-11 w-11 text-[#fe2c55]">
               <Truck className="h-11 w-11" strokeWidth={1.8} />
-              <Cloud className="confirmation-smoke absolute -left-3 bottom-0 h-[19px] w-[19px] text-[#a9a9a9]" strokeWidth={2.3} />
-              <Cloud className="confirmation-smoke confirmation-smoke-delay absolute -left-1 bottom-2 h-4 w-4 text-[#b7b7b7]" strokeWidth={2.3} />
+              <Cloud className="confirmation-smoke absolute -left-3 bottom-0 h-[19px] w-[19px] text-[#999]" strokeWidth={2.5} />
+              <Cloud className="confirmation-smoke confirmation-smoke-delay absolute -left-1 bottom-2 h-4 w-4 text-[#aaa]" strokeWidth={2.5} />
             </div>
+            <div className="absolute left-[22px] right-[22px] top-[66px] h-[4px] overflow-hidden rounded-full bg-[#e8e8e8]">
+              <div className="confirmation-route-fill h-full w-full rounded-full bg-gradient-to-r from-[#fe2c55] to-[#25bde5]" />
+            </div>
+            <span className="absolute left-[10px] top-[56px] grid h-6 w-6 place-items-center rounded-full border-2 border-[#fe2c55] bg-white text-[11px] font-extrabold text-[#fe2c55]">1</span>
+            <span className="absolute right-[10px] top-[56px] grid h-6 w-6 place-items-center rounded-full border-2 border-[#25bde5] bg-white text-[11px] font-extrabold text-[#159fc5]">2</span>
           </div>
 
           <div className="w-full rounded-2xl border border-[#f2dce4] bg-[#fff8fb] px-5 py-5 text-left">
