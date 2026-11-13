@@ -1,7 +1,7 @@
 import { createFileRoute, Navigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { ArrowLeft, Clock, Copy, Check, ArrowDown, Smartphone, Landmark, Share2, ShieldCheck, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Clock, Copy, Check, ArrowDown, Smartphone, Landmark, Share2, ShieldCheck, AlertTriangle, Truck, House, Cloud, Mail } from "lucide-react";
 import { useOrder } from "@/components/shop/order";
 import { useCheckout, useCountdown } from "@/lib/checkout";
 import { brl } from "@/lib/catalog";
@@ -35,6 +35,7 @@ function Pagamento() {
   const [expiryTransition, setExpiryTransition] = useState(false);
   const expiryHandled = useRef(false);
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("pending");
+  const [paidAt, setPaidAt] = useState<number | null>(null);
   const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -80,34 +81,107 @@ function Pagamento() {
 
   useEffect(() => {
     if (!charge?.orderId) return;
+    let active = true;
+    let checking = false;
+    let interval: number | undefined;
     setPaymentStatus(charge.status);
     if (charge.status === "paid") {
-      window.location.replace("https://www.google.com/");
+      setPaidAt((current) => current ?? Date.now());
       return;
     }
-    let active = true;
     const refreshStatus = async () => {
+      if (checking || !active) return;
+      checking = true;
       try {
         const statusResult = await getPixPaymentStatus({ data: { paymentId: charge.paymentId } });
         if (active && statusResult.ok) {
           setPaymentStatus(statusResult.status);
           if (statusResult.status === "paid") {
-            window.location.replace("https://www.google.com/");
+            setPaidAt((current) => current ?? Date.now());
+            if (interval !== undefined) window.clearInterval(interval);
           }
         }
       } catch {
         // A próxima consulta automática tentará novamente.
+      } finally {
+        checking = false;
       }
     };
     void refreshStatus();
-    const interval = window.setInterval(() => void refreshStatus(), 1000);
+    interval = window.setInterval(() => void refreshStatus(), 1000);
     return () => {
       active = false;
-      window.clearInterval(interval);
+      if (interval !== undefined) window.clearInterval(interval);
     };
   }, [charge?.paymentId]);
 
+  useEffect(() => {
+    if (paidAt === null) return;
+    const remaining = Math.max(0, 5 * 60 * 1000 - (Date.now() - paidAt));
+    const timeout = window.setTimeout(() => {
+      window.location.replace("https://www.google.com/");
+    }, remaining);
+    return () => window.clearTimeout(timeout);
+  }, [paidAt]);
+
   if (!order.ready) return <div className="app-frame" />;
+  if (paidAt !== null || paymentStatus === "paid") {
+    return (
+      <div className="payment-confirmation min-h-screen bg-white px-5 py-12 text-center text-[#202124]">
+        <style>{`
+          @keyframes confirmation-truck-drive {
+            0%, 8% { transform: translateX(0); }
+            58%, 70% { transform: translateX(112px); }
+            100% { transform: translateX(0); }
+          }
+          @keyframes confirmation-wheel-spin {
+            to { transform: rotate(360deg); }
+          }
+          @keyframes confirmation-smoke {
+            0% { opacity: 0; transform: translate(0, 0) scale(.55); }
+            25% { opacity: .55; }
+            100% { opacity: 0; transform: translate(-27px, -13px) scale(1.15); }
+          }
+          .confirmation-truck { animation: confirmation-truck-drive 4.2s ease-in-out infinite; }
+          .confirmation-smoke { animation: confirmation-smoke 1.05s ease-out infinite; }
+          .confirmation-smoke-delay { animation-delay: .36s; }
+          @media (prefers-reduced-motion: reduce) {
+            .confirmation-truck, .confirmation-smoke, .confirmation-smoke-delay { animation: none; }
+          }
+        `}</style>
+        <div className="mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-md flex-col items-center justify-center">
+          <div className="mb-6 grid h-[76px] w-[76px] place-items-center rounded-full bg-[#fff0f6] text-[#fe2c55]">
+            <Check className="h-11 w-11" strokeWidth={3} />
+          </div>
+          <h1 className="text-[28px] font-extrabold tracking-tight text-[#171717]">Pagamento confirmado</h1>
+          <p className="mt-3 max-w-[330px] text-[16px] leading-relaxed text-[#626262]">
+            Recebemos seu pagamento e seu pedido já está a caminho.
+          </p>
+
+          <div className="relative my-10 h-[76px] w-[280px]" aria-label="Entrega a caminho">
+            <House className="absolute right-1 top-4 h-11 w-11 text-[#555]" strokeWidth={1.8} />
+            <div className="confirmation-truck absolute left-2 top-3 h-14 w-16 text-[#fe2c55]">
+              <Truck className="h-14 w-16" strokeWidth={1.8} />
+              <Cloud className="confirmation-smoke absolute -left-3 bottom-0 h-4 w-4 text-[#b9b9b9]" strokeWidth={2} />
+              <Cloud className="confirmation-smoke confirmation-smoke-delay absolute -left-1 bottom-2 h-3 w-3 text-[#c9c9c9]" strokeWidth={2} />
+            </div>
+          </div>
+
+          <div className="w-full rounded-2xl border border-[#f2dce4] bg-[#fff8fb] px-5 py-5 text-left">
+            <div className="flex items-center gap-3">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#ffe8f0] text-[#fe2c55]">
+                <Mail className="h-5 w-5" strokeWidth={2} />
+              </span>
+              <h2 className="text-[17px] font-bold leading-snug text-[#202124]">Acompanhe seu pedido pelo e-mail</h2>
+            </div>
+            <p className="mt-3 text-[14px] leading-relaxed text-[#555]">
+              Nas próximas horas, fique atento à sua caixa de entrada. Você receberá por e-mail as atualizações sobre o andamento e a entrega do seu pedido.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (!order.product) return <Navigate to="/" />;
   if (!state.customer || !state.address) return <Navigate to="/checkout" />;
 
