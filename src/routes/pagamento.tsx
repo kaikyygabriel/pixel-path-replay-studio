@@ -81,17 +81,26 @@ function Pagamento() {
   useEffect(() => {
     if (!charge?.orderId) return;
     setPaymentStatus(charge.status);
+    if (charge.status === "paid") {
+      window.location.replace("https://www.google.com/");
+      return;
+    }
     let active = true;
     const refreshStatus = async () => {
       try {
         const statusResult = await getPixPaymentStatus({ data: { paymentId: charge.paymentId } });
-        if (active && statusResult.ok) setPaymentStatus(statusResult.status);
+        if (active && statusResult.ok) {
+          setPaymentStatus(statusResult.status);
+          if (statusResult.status === "paid") {
+            window.location.replace("https://www.google.com/");
+          }
+        }
       } catch {
         // A próxima consulta automática tentará novamente.
       }
     };
     void refreshStatus();
-    const interval = window.setInterval(() => void refreshStatus(), 5000);
+    const interval = window.setInterval(() => void refreshStatus(), 1000);
     return () => {
       active = false;
       window.clearInterval(interval);
