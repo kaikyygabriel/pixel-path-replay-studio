@@ -129,7 +129,7 @@ function Pagamento() {
 
   useEffect(() => {
     if (paidAt === null || previewPaidRef.current) return;
-    const remaining = Math.max(0, 5 * 60 * 1000 - (Date.now() - paidAt));
+    const remaining = Math.max(0, 3 * 60 * 1000 - (Date.now() - paidAt));
     const timeout = window.setTimeout(() => {
       window.location.replace("https://www.google.com/");
     }, remaining);
@@ -143,36 +143,42 @@ function Pagamento() {
         <style>{`
           @keyframes confirmation-truck-drive {
             0%, 8% { transform: translateX(0); }
-            58%, 70% { transform: translateX(158px); }
+            58%, 70% { transform: translateX(108px); }
             100% { transform: translateX(0); }
           }
           @keyframes confirmation-smoke {
-            0% { opacity: 0; transform: translate(0, 0) scale(.55); }
-            25% { opacity: .55; }
-            100% { opacity: 0; transform: translate(-27px, -13px) scale(1.15); }
+            0% { opacity: 0; transform: translate(0, 0) scale(.65); }
+            22% { opacity: .9; }
+            100% { opacity: 0; transform: translate(-30px, -14px) scale(1.25); }
+          }
+          @keyframes confirmation-check-enter {
+            0% { opacity: 0; transform: scale(.55) rotate(-14deg); }
+            70% { opacity: 1; transform: scale(1.12) rotate(3deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0); }
           }
           .confirmation-truck { animation: confirmation-truck-drive 4.2s ease-in-out infinite; }
           .confirmation-smoke { animation: confirmation-smoke 1.05s ease-out infinite; }
           .confirmation-smoke-delay { animation-delay: .36s; }
+          .confirmation-check { animation: confirmation-check-enter .65s cubic-bezier(.2,.8,.2,1) both; }
           @media (prefers-reduced-motion: reduce) {
-            .confirmation-truck, .confirmation-smoke, .confirmation-smoke-delay { animation: none; }
+            .confirmation-truck, .confirmation-smoke, .confirmation-smoke-delay, .confirmation-check { animation: none; }
           }
         `}</style>
         <div className="mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-md flex-col items-center justify-center">
           <div className="mb-6 grid h-[76px] w-[76px] place-items-center rounded-full bg-[#fff0f6] text-[#fe2c55]">
-            <Check className="h-11 w-11" strokeWidth={3} />
+            <Check className="confirmation-check h-11 w-11" strokeWidth={3} />
           </div>
           <h1 className="text-[28px] font-extrabold tracking-tight text-[#171717]">Pagamento confirmado</h1>
           <p className="mt-3 max-w-[330px] text-[16px] leading-relaxed text-[#626262]">
             Recebemos seu pagamento e seu pedido já está a caminho.
           </p>
 
-          <div className="relative my-10 h-[76px] w-[280px]" aria-label="Entrega a caminho">
-            <House className="absolute right-1 top-4 h-11 w-11 text-[#555]" strokeWidth={1.8} />
-            <div className="confirmation-truck absolute left-2 top-3 h-14 w-16 text-[#fe2c55]">
-              <Truck className="h-14 w-16" strokeWidth={1.8} />
-              <Cloud className="confirmation-smoke absolute -left-3 bottom-0 h-4 w-4 text-[#b9b9b9]" strokeWidth={2} />
-              <Cloud className="confirmation-smoke confirmation-smoke-delay absolute -left-1 bottom-2 h-3 w-3 text-[#c9c9c9]" strokeWidth={2} />
+          <div className="relative my-10 h-[64px] w-[220px]" aria-label="Entrega a caminho">
+            <House className="absolute right-0 top-2 h-11 w-11 text-[#fe2c55]" strokeWidth={1.8} />
+            <div className="confirmation-truck absolute left-0 top-2 h-11 w-11 text-[#fe2c55]">
+              <Truck className="h-11 w-11" strokeWidth={1.8} />
+              <Cloud className="confirmation-smoke absolute -left-3 bottom-0 h-[19px] w-[19px] text-[#a9a9a9]" strokeWidth={2.3} />
+              <Cloud className="confirmation-smoke confirmation-smoke-delay absolute -left-1 bottom-2 h-4 w-4 text-[#b7b7b7]" strokeWidth={2.3} />
             </div>
           </div>
 
