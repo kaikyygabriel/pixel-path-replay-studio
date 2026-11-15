@@ -9,7 +9,7 @@ import { TopBar, SiteFooter, Verified } from "@/components/shop/chrome";
 import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
 import { CartAddButton } from "@/components/shop/cart-add-button";
-import { formatEstimatedDelivery } from "@/lib/delivery";
+import { formatEstimatedDeliveryRange } from "@/lib/delivery";
 import { ProductRecommendations } from "@/components/shop/product-recommendations";
 import { FlashIcon, ReviewMediaRating } from "@/components/shop/product-presentation";
 
@@ -1250,16 +1250,18 @@ function ProductPage() {
         </>
       )}
 
-      <div className="mt-5 flex items-center justify-between border-y border-border px-4 py-3">
-        <div>
-          <div className="flex items-center gap-2 text-[13px]">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-teal-soft text-teal-ink ring-1 ring-teal-ink/10"><Truck className="h-4 w-4" /></span>
-            <span className="rounded-full bg-teal-soft px-3 py-1 font-bold tracking-tight text-teal-ink">Frete grátis</span>
-            <span className="text-muted-foreground line-through">R$ 26,20</span>
+      <div className="mt-5 flex w-full items-center gap-4 border-y border-[#f1f1f1] bg-white px-4 py-5 sm:gap-5 sm:px-6">
+        <Truck aria-hidden="true" className="h-9 w-9 shrink-0 text-[#171717] sm:h-10 sm:w-10" strokeWidth={2.1} />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-[21px] font-normal leading-tight tracking-[-0.025em] text-[#16877f] sm:text-[27px]">Frete grátis</span>
+            <span className="text-[20px] font-normal leading-tight tracking-[-0.02em] text-[#666] line-through decoration-[1.5px] sm:text-[25px]">{brl(p.shippingOriginal)}</span>
           </div>
-          <div className="mt-1 text-[14.5px] font-bold capitalize">Receba até {formatEstimatedDelivery()}</div>
+          <div className="mt-1.5 text-[19px] font-normal leading-tight tracking-[-0.025em] text-[#171717] sm:text-[24px]">
+            Receba até {formatEstimatedDeliveryRange()}
+          </div>
         </div>
-        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+        <ChevronRight aria-hidden="true" className="h-7 w-7 shrink-0 text-[#858585] sm:h-8 sm:w-8" strokeWidth={1.8} />
       </div>
 
       <button onClick={() => setProtect(true)} className="mx-4 mt-4 block w-[calc(100%-2rem)] rounded-2xl border border-border p-3.5 text-left">
