@@ -1369,21 +1369,76 @@ function ProductPage() {
       )}
 
       {protect && (
-        <Sheet title="Proteção do cliente" onClose={() => setProtect(false)}>
-          <div className="space-y-4 py-4">
-            {[
-              { I: RotateCcw, t: "Devolução gratuita", d: "Devolução sem custo em até 7 dias após o recebimento, conforme o Código de Defesa do Consumidor." },
-              { I: Wallet, t: "Proteção e reembolso", d: "Se o pedido não chegar ou vier diferente do anunciado, você recebe o valor de volta." },
-              { I: Lock, t: "Pagamento seguro", d: "Pagamento via PIX com dados protegidos por criptografia." },
-              { I: Clock, t: "Garantia de pontualidade", d: "Acompanhe seu pedido do envio até a entrega no prazo informado." },
-            ].map(({ I, t, d }) => (
-              <div key={t} className="flex gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-secondary"><I className="h-4.5 w-4.5 text-gold" /></span>
-                <div><div className="text-[15px] font-bold">{t}</div><p className="text-[13.5px] leading-snug text-muted-foreground">{d}</p></div>
+        <div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/45 sm:items-center sm:p-5" onClick={() => setProtect(false)}>
+          <section role="dialog" aria-modal="true" aria-label="Proteção do cliente" className="relative max-h-[96dvh] w-full max-w-[560px] overflow-y-auto rounded-t-[22px] bg-white pb-safe shadow-2xl sm:max-h-[90dvh] sm:rounded-[22px]" onClick={(event) => event.stopPropagation()}>
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#f3e9d8] via-[#fffdf9] to-white px-6 pb-7 pt-10 sm:px-9">
+              <div className="pointer-events-none absolute -right-5 -top-5 h-64 w-52 rounded-[48%] border border-[#d9c8a8]/20" />
+              <div className="pointer-events-none absolute -right-1 top-1 h-56 w-44 rounded-[48%] border border-[#d9c8a8]/25" />
+              <div className="pointer-events-none absolute right-5 top-5 grid h-52 w-40 place-items-center rounded-[48%] border border-[#d9c8a8]/30 bg-[#eadfc9]/20 text-[#fffaf0]">
+                <ShieldCheck className="h-24 w-24 opacity-80" strokeWidth={1.5} />
               </div>
-            ))}
-          </div>
-        </Sheet>
+              <button aria-label="Fechar proteção do cliente" onClick={() => setProtect(false)} className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full text-black transition-colors hover:bg-black/5">
+                <X className="h-8 w-8" strokeWidth={2.5} />
+              </button>
+              <h2 className="relative z-[1] text-[27px] font-extrabold tracking-tight text-[#87500d] sm:text-[32px]">Proteção do cliente</h2>
+            </div>
+            <div className="space-y-7 px-6 pb-8 pt-2 sm:px-9">
+              <section>
+                <div className="flex items-center gap-3 text-[#89530f]">
+                  <RotateCcw className="h-8 w-8 shrink-0 fill-[#89530f] text-[#89530f]" strokeWidth={2.2} />
+                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Devoluções gratuitas em 30 dias</h3>
+                </div>
+                <p className="ml-[44px] mt-2 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">Devolução gratuita em até 30 dias após o recebimento do seu produto. Os Termos e Condições se aplicam.</p>
+                <a href="https://www.tiktok.com/legal/page/row/return-policy/pt-BR" target="_blank" rel="noreferrer" className="ml-[44px] mt-3 inline-block text-[15px] text-[#32649b] sm:text-[16px]">Saiba como solicitar um reembolso</a>
+              </section>
+
+              <section>
+                <div className="flex items-center gap-3 text-[#89530f]">
+                  <Wallet className="h-8 w-8 shrink-0 fill-[#89530f] text-white" strokeWidth={2.1} />
+                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Pagamento seguro</h3>
+                </div>
+                <div className="ml-[44px] mt-2 space-y-3 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">
+                  <p>Para garantir a segurança, as informações do seu cartão são criptografadas e protegidas contra acesso não autorizado.</p>
+                  <p>O TikTok Shop não vende, aluga ou cede suas informações pessoais a terceiros para fins de marketing.</p>
+                  <p>Aceitamos pagamento de:</p>
+                  <div className="flex flex-wrap items-center gap-2" aria-label="Métodos de pagamento aceitos">
+                    {[
+                      { src: "/logo mastercard png.png", alt: "Mastercard", cls: "h-[44px] w-[62px]" },
+                      { src: "/logo visa png.png", alt: "Visa", cls: "h-[44px] w-[62px]" },
+                      { src: "/logo elo png.png", alt: "Elo", cls: "h-[44px] w-[62px]" },
+                      { src: "/logo american express png.png", alt: "American Express", cls: "h-[44px] w-[62px]" },
+                      { src: "/logo boleto png.png", alt: "Boleto", cls: "h-[44px] w-[62px]" },
+                      { src: "/images-removebg-preview.png", alt: "Pix", cls: "h-[44px] w-[62px]" },
+                    ].map((logo) => <span key={logo.alt} className="grid h-[50px] w-[68px] place-items-center rounded-lg bg-[#f5f5f5] p-1"><img src={logo.src} alt={logo.alt} loading="lazy" className={logo.cls + " max-w-full object-contain"} /></span>)}
+                    <span className="flex h-[50px] items-center gap-1 rounded-lg border border-[#e5e5e5] px-2 text-[13px] font-semibold text-[#333]"><img src="/google logo png.webp" alt="" loading="lazy" className="h-6 w-6 object-contain" />Pay</span>
+                  </div>
+                  <p>Certificações de segurança:</p>
+                  <div className="flex items-center gap-3">
+                    <img src="/mastercardcode png.png" alt="Mastercard SecureCode" loading="lazy" className="h-[54px] w-[76px] rounded-lg bg-[#f5f5f5] object-contain p-1" />
+                    <img src="/verified by visa png.png" alt="Verified by Visa" loading="lazy" className="h-[54px] w-[76px] rounded-lg bg-[#f5f5f5] object-contain p-1" />
+                  </div>
+                  <p>Para obter informações sobre como o TikTok Shop usa seus dados pessoais, consulte nossa <a href="https://www.tiktok.com/legal/page/row/privacy-policy/pt-BR" target="_blank" rel="noreferrer" className="text-[#32649b]">Privacy Policy</a>.</p>
+                </div>
+              </section>
+
+              <section>
+                <div className="flex items-center gap-3 text-[#89530f]">
+                  <Wallet className="h-8 w-8 shrink-0 fill-[#89530f] text-white" strokeWidth={2.1} />
+                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Reembolso se algo der errado</h3>
+                </div>
+                <p className="ml-[44px] mt-2 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">Se o seu pedido for perdido ou danificado durante o transporte antes de chegar, reembolsaremos automaticamente o seu dinheiro. Você não precisa fazer nada.</p>
+              </section>
+
+              <section>
+                <div className="flex items-center gap-3 text-[#89530f]">
+                  <Clock className="h-8 w-8 shrink-0 text-[#89530f]" strokeWidth={2.2} />
+                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Se o seu pedido não for enviado no prazo</h3>
+                </div>
+                <p className="ml-[44px] mt-2 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">Você não precisa fazer nada. Se ele não for despachado em até 7 dias úteis, cancelaremos o seu pedido e reembolsaremos automaticamente o seu dinheiro.</p>
+              </section>
+            </div>
+          </section>
+        </div>
       )}
 
       {added && (
