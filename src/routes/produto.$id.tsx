@@ -1266,7 +1266,7 @@ function ProductPage() {
       </button>
       {deliveryOpen && (
         <div className="fixed inset-0 z-[90] flex items-end justify-center bg-black/45 px-0 sm:items-center sm:px-4" onClick={() => setDeliveryOpen(false)}>
-          <section role="dialog" aria-modal="true" aria-labelledby="delivery-details-title" className="w-full max-w-[480px] rounded-t-2xl bg-white p-4 pb-safe shadow-2xl sm:rounded-2xl" onClick={(event) => event.stopPropagation()}>
+          <section role="dialog" aria-modal="true" aria-labelledby="delivery-details-title" className="w-full max-w-[480px] rounded-t-2xl bg-white p-4 pb-[calc(env(safe-area-inset-bottom)+24px)] shadow-2xl sm:rounded-2xl" onClick={(event) => event.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
               <h2 id="delivery-details-title" className="text-[17px] font-bold text-[#171717]">Informações de entrega</h2>
               <button type="button" onClick={() => setDeliveryOpen(false)} aria-label="Fechar" className="grid h-8 w-8 place-items-center rounded-full text-[#666]"><X className="h-5 w-5" /></button>
