@@ -1,5 +1,5 @@
 import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
-import { MapPin, Truck, Package, ShieldCheck } from "lucide-react";
+import { MapPin, Truck, ChevronRight, ShieldCheck } from "lucide-react";
 import { PageHeader } from "@/components/shop/chrome";
 import { BottomBar, ItemCard, LockNote, OrderSummary, Protections, Section, useOrder } from "@/components/shop/order";
 import { PixIcon } from "@/components/shop/pix-icon";
@@ -63,21 +63,17 @@ function Resumo() {
         <span className="text-muted-foreground">Forma de pagamento</span>
         <span className="flex items-center gap-1 font-bold"><PixIcon className="h-4 w-4" />PIX</span>
       </div>
-      <div className="border-y border-border bg-background px-3.5 py-3">
-        <div className="rounded-lg bg-teal-soft px-3 py-3 text-[13px]">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex min-w-0 items-center gap-2 text-teal-ink">
-              <Truck className="h-4 w-4 shrink-0" />
-              <span className="shrink-0 font-bold">Frete grátis</span>
-              <span className="min-w-0 text-teal-ink/80">· com rastreio · Entrega estimada</span>
+      <div className="border-y border-border bg-background px-3.5 py-2.5">
+        <div className="flex min-w-0 items-center gap-3">
+          <Truck className="h-6 w-6 shrink-0 text-foreground" strokeWidth={2} />
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-baseline gap-x-1.5">
+              <span className="text-[15px] font-normal leading-tight text-teal-ink">Frete grátis</span>
+              <s className="text-[13px] leading-tight text-muted-foreground">R$ 26,60</s>
             </div>
-            <s className="shrink-0 whitespace-nowrap text-[12px] text-muted-foreground">R$ 26,60</s>
+            <p className="mt-0.5 text-[13px] leading-snug text-foreground">Receba até {formatEstimatedDelivery()}</p>
           </div>
-          <p className="mt-1.5 pl-6 text-[13px] capitalize text-foreground">Chega {formatEstimatedDelivery()} via Correios (SEDEX)</p>
-        </div>
-        <div className="mt-2 flex items-center gap-2 px-1 text-[12px] text-teal-ink">
-          <Package className="h-4 w-4 shrink-0" />
-          <span>Embalagem reforçada com proteção anti-impacto</span>
+          <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
         </div>
       </div>
       <OrderSummary order={order} />
