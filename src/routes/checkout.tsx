@@ -26,13 +26,14 @@ export const Route = createFileRoute("/checkout")({
 
 function Checkout() {
   const order = useOrder();
-  const { state } = useCheckout();
+  const { state, ready: checkoutReady } = useCheckout();
   const navigate = useNavigate();
   const [step, setStep] = useState<0 | 1 | 2>(0);
   const [couponOpen, setCouponOpen] = useState(false);
 
-  if (!order.ready) return <div className="app-frame" />;
+  if (!order.ready || !checkoutReady) return <div className="app-frame" />;
   if (!order.product) return <Navigate to="/" />;
+  if (state.address && state.customer) return <Navigate to="/resumo" replace />;
 
   return (
     <div className="app-frame page-enter bg-surface pb-[150px]">
@@ -60,10 +61,17 @@ function Checkout() {
           </button>
         }
       />
-      <div className="-mt-1 mb-2 bg-background px-3.5 pb-3">
-        <div className="flex items-center justify-between rounded-lg bg-teal-soft px-3 py-3 text-[13px]">
-          <span className="capitalize">Receba até {formatEstimatedDelivery()}</span>
-          <span className="flex items-center gap-1.5"><s className="text-muted-foreground">R$ 26,20</s><b>Frete grátis</b></span>
+      <div className="-mt-1 mb-2 border-y border-border bg-background px-3.5 py-2.5">
+        <div className="flex min-w-0 items-center gap-3">
+          <Truck className="h-6 w-6 shrink-0 text-foreground" strokeWidth={2} />
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-baseline gap-x-1.5">
+              <span className="text-[15px] font-normal leading-tight text-teal-ink">Frete grátis</span>
+              <s className="text-[13px] leading-tight text-muted-foreground">R$ 26,60</s>
+            </div>
+            <p className="mt-0.5 text-[13px] leading-snug text-foreground">Receba até {formatEstimatedDelivery()}</p>
+          </div>
+          <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
         </div>
       </div>
       <Section className="px-3.5 py-4">
