@@ -225,7 +225,7 @@ function StorePage() {
       <div key={`${catalogView}-${activeCategory}`} className={catalogView === "home" ? "relative pb-9" : "catalog-grid-enter px-3.5 pb-9"}>
         {catalogView === "home" && canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface to-transparent" />}
         {catalogView === "home" && canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
-        <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className={catalogView === "home" ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "grid grid-cols-2 items-start gap-3"}>
+        <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className={catalogView === "home" ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "grid grid-cols-2 items-stretch gap-3"}>
           {homeShelfProducts.map((p, index) => (
             <ProductCard key={p.id} product={p} priority={index < 2} className={catalogView === "home" ? `w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
