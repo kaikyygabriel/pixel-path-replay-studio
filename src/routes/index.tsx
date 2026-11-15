@@ -223,7 +223,7 @@ function StorePage() {
           </div>
           <div className="flex shrink-0 items-center gap-2.5">
             <span className="text-[12px] text-muted-foreground">{visibleProducts.length} {visibleProducts.length === 1 ? "produto" : "produtos"}</span>
-            {catalogView === "home" && <button type="button" onClick={() => openCatalogView(activeCategory, "all")} className="text-[13px] font-bold text-[#FE2C55] active:opacity-70">Ver todos</button>}
+
           </div>
         </div>
       </div>
@@ -234,6 +234,13 @@ function StorePage() {
           {homeShelfProducts.map((p, index) => (
             <ProductCard key={p.id} product={p} priority={index < 2} className={catalogView === "home" ? `w-[calc((100vw-2.5rem)/2)] max-w-[220px] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
+          {catalogView === "home" && visibleProducts.length > 0 && (
+            <button type="button" onClick={() => openCatalogView(activeCategory, "all")} className="flex min-h-[190px] w-[min(28vw,112px)] shrink-0 snap-start flex-col items-center justify-center gap-2 px-1 text-center text-[#FE2C55] transition-opacity active:opacity-60">
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
+              <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
+              <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
+            </button>
+          )}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
               <h3 className="text-[16px] font-bold">{activeCategory === "Natal" ? "Novidades de Natal em breve" : "Nenhum produto encontrado"}</h3>
