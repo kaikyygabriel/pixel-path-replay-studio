@@ -808,6 +808,14 @@ export const products: Product[] = [
 
 ];
 
+// Give every catalog item its own stable flash-sale countdown.
+for (const product of products) {
+  product.flashOffer ??= {
+    minDurationSeconds: 45 * 60,
+    maxDurationSeconds: 2 * 60 * 60,
+  };
+}
+
 export const getProduct = (id: string) => products.find((p) => p.id === id);
 
 export const brl = (cents: number) =>
