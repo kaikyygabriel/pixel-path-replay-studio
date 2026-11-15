@@ -63,7 +63,7 @@ const mondialVariants: Variant[] = (["127V", "220V"] as const).flatMap((voltage)
   { id: `mondial-l99-${voltage.toLowerCase()}-vermelho`, line: voltage, color: "Vermelho", description: `Liquidificador Mondial Turbo Power L-99 FB · 550W · ${voltage} · Vermelho`, price: 4985, original: 17290, pieces: 1, image: "/products/liquidificador-mondial-l99-fb/variants/liquidificador-mondial-vermelho.webp" },
 ]);
 
-export export const products: Product[] = [
+export const products: Product[] = [
   {
     id: "jogo-toalhas-karsten",
     title: "Jogo de Toalhas Karsten · 4 Peças · Bosco e Provence",
