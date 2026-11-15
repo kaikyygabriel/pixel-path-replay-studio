@@ -1255,7 +1255,7 @@ function ProductPage() {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline gap-x-2">
             <span className="text-[21px] font-normal leading-tight tracking-[-0.025em] text-[#16877f] sm:text-[27px]">Frete grátis</span>
-            <span className="text-[20px] font-normal leading-tight tracking-[-0.02em] text-[#666] line-through decoration-[1.5px] sm:text-[25px]">{brl(p.shippingOriginal)}</span>
+            <span className="text-[20px] font-normal leading-tight tracking-[-0.02em] text-[#666] line-through decoration-[1.5px] sm:text-[25px]">R$ 6,02</span>
           </div>
           <div className="mt-1.5 text-[19px] font-normal leading-tight tracking-[-0.025em] text-[#171717] sm:text-[24px]">
             Receba até {formatEstimatedDeliveryRange()}
