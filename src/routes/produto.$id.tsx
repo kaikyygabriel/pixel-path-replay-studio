@@ -3,9 +3,9 @@ import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-ro
 import { useLayoutEffect, useRef, useState } from "react";
 import {
   ChevronLeft, ChevronRight, ChevronDown, Bookmark, Truck, ShieldCheck, Check, Store,
-  ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Lock, Clock,
+  ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Clock,
 } from "lucide-react";
-import { TopBar, SiteFooter, Verified, Sheet } from "@/components/shop/chrome";
+import { TopBar, SiteFooter, Verified } from "@/components/shop/chrome";
 import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
 import { CartAddButton } from "@/components/shop/cart-add-button";
