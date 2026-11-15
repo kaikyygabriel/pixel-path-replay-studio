@@ -47,3 +47,16 @@ export function formatEstimatedDelivery(now = new Date()): string {
     timeZone: "UTC", weekday: "long", day: "numeric", month: "long",
   }).format(getEstimatedDeliveryDate(now));
 }
+export function formatEstimatedDeliveryRange(now = new Date()): string {
+  const start = getEstimatedDeliveryDate(now);
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 4);
+  const format = (date: Date) => {
+    const parts = new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "UTC", weekday: "short", day: "numeric", month: "short",
+    }).formatToParts(date);
+    const value = (type: Intl.DateTimeFormatPartTypes) => parts.find((part) => part.type === type)?.value ?? "";
+    return `${value("weekday")}, ${value("day")} de ${value("month").replace(".", "")}`;
+  };
+  return `${format(start)}–${format(end)}`;
+}
