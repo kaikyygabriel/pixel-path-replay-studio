@@ -9,7 +9,7 @@ import { TopBar, SiteFooter, Verified } from "@/components/shop/chrome";
 import { getProduct, store, brl, discountPct, unitPrice, type Variant } from "@/lib/catalog";
 import { useCheckout, useOfferEnd, addToCart, type CartItem } from "@/lib/checkout";
 import { CartAddButton } from "@/components/shop/cart-add-button";
-import { formatEstimatedDeliveryRange } from "@/lib/delivery";
+import { formatEstimatedDelivery, formatEstimatedDeliveryRange } from "@/lib/delivery";
 import { ProductRecommendations } from "@/components/shop/product-recommendations";
 import { FlashIcon, ReviewMediaRating } from "@/components/shop/product-presentation";
 
