@@ -782,6 +782,30 @@ export const products: Product[] = [
     sold: "100+",
   },
 
+  {
+    id: "grand-theft-auto-vi-ps5",
+    title: "Grand Theft Auto VI — PlayStation 5",
+    cardTitle: "Grand Theft Auto VI · PS5",
+    checkoutTitle: "Grand Theft Auto VI para PlayStation 5",
+    category: "Natal · Games · Presentes · Recomendados · 25.12",
+    price: 28990,
+    original: 44990,
+    shippingOriginal: 2620,
+    image: "/products/grand-theft-auto-vi-ps5/gallery/gta-vi-carrossel-1.png",
+    gallery: [
+      "/products/grand-theft-auto-vi-ps5/gallery/gta-vi-carrossel-1.png",
+      "/products/grand-theft-auto-vi-ps5/gallery/gta-vi-carrossel-2.png",
+      "/products/grand-theft-auto-vi-ps5/gallery/gta-vi-carrossel-3.png",
+      "/products/grand-theft-auto-vi-ps5/gallery/gta-vi-carrossel-4.png",
+      "/products/grand-theft-auto-vi-ps5/gallery/gta-vi-carrossel-5.png"
+    ],
+    variants: [],
+    description: "Grand Theft Auto VI para PlayStation 5.\n\n**Pré-venda:** garanta sua compra antes do lançamento. Os envios dos pedidos em pré-venda ficam condicionados ao cronograma de lançamento do fornecedor e começarão assim que o produto for disponibilizado.\n\n**Importante:** a caixa não contém disco físico. O produto será disponibilizado por meio de um código para download, que permitirá o pré-carregamento do jogo.\n\n**História:** Vice City, EUA. Jason e Lucia sempre souberam que tudo estava contra eles. Mas, depois que um serviço simples dá errado, eles vão parar no lado mais sombrio do lugar mais ensolarado dos Estados Unidos, em meio a uma conspiração criminosa que se estende por todo o estado de Leonida. Para saírem dessa vivos, serão forçados a depender um do outro mais do que nunca.\n\n**Especificações**\n- Plataforma: PlayStation 5\n- Publisher: Take-Two\n- Espaço em disco: mínimo não informado\n- Gênero: Ação\n- Quantidade de jogadores: 1 jogador\n- Idioma: áudio em inglês e legendas em português\n- Classificação indicativa: 18 anos — violência, conteúdo sexual e drogas lícitas\n- Ano de lançamento informado: 2026\n\n**Conteúdo da embalagem:** 1 jogo Grand Theft Auto VI para PlayStation 5, fornecido por código de download.\n**Garantia:** 12 meses contra defeito de fabricação.",
+    rating: 5.0,
+    reviews: null,
+    sold: "1.500+",
+  },
+
 ];
 
 export const getProduct = (id: string) => products.find((p) => p.id === id);

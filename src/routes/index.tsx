@@ -92,7 +92,11 @@ function StorePage() {
   const visibleProducts = searchedProducts.filter(categoryFilters.find((c) => c.label === activeCategory)?.match ?? (() => true)).sort((a, b) => salesCount(b.sold) - salesCount(a.sold));
   const homeFeaturedProducts = HOME_FEATURED_IDS.map((id) => products.find((product) => product.id === id)).filter((product): product is Product => Boolean(product));
   const homeFeaturedIdSet = new Set(homeFeaturedProducts.map((product) => product.id));
-  const homeNatalProducts = products.filter((product) => hasCategory(product, "Natal") && !homeFeaturedIdSet.has(product.id)).sort((a, b) => salesCount(b.sold) - salesCount(a.sold));
+  const homeNatalProducts = products.filter((product) => hasCategory(product, "Natal") && (!homeFeaturedIdSet.has(product.id) || product.id === "playstation-5-slim-1tb")).sort((a, b) => {
+    if (a.id === "playstation-5-slim-1tb") return -1;
+    if (b.id === "playstation-5-slim-1tb") return 1;
+    return salesCount(b.sold) - salesCount(a.sold);
+  });
   const homeNatalIdSet = new Set(homeNatalProducts.map((product) => product.id));
   const homeBestSellerProducts = products.filter((product) => hasCategory(product, "Mais vendidos") && !homeFeaturedIdSet.has(product.id) && !homeNatalIdSet.has(product.id)).sort((a, b) => salesCount(b.sold) - salesCount(a.sold));
   const homeShelfProducts = catalogView === "home" && activeCategory === "Todos" ? homeFeaturedProducts : visibleProducts;

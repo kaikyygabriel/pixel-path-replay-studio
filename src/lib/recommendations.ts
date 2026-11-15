@@ -150,8 +150,10 @@ export const relatedProductIds: Record<string, string[]> = {
     "kit-24-bolas-natalinas-5cm",
     "smartwatch-t900-s10-ultra-pro"
   ],
-  "dualsense-ps5-branco": ["playstation-5-slim-1tb", "controle-sem-fio-xbox-branco", "smart-tv-tcl-55p8k-qled-4k", "jbl-boombox-4"],
+  "dualsense-ps5-branco": ["grand-theft-auto-vi-ps5", "playstation-5-slim-1tb", "controle-sem-fio-xbox-branco", "smart-tv-tcl-55p8k-qled-4k", "jbl-boombox-4"],
+  "grand-theft-auto-vi-ps5": ["playstation-5-slim-1tb", "dualsense-ps5-branco", "smart-tv-tcl-55p8k-qled-4k", "jbl-boombox-4"],
   "playstation-5-slim-1tb": [
+    "grand-theft-auto-vi-ps5",
     "dualsense-ps5-branco",
     "smart-tv-tcl-55p8k-qled-4k",
     "jbl-boombox-4",

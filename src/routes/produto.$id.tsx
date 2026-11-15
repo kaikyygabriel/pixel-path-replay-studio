@@ -153,6 +153,7 @@ function ProductPage() {
   const isProjector = p.id === "projetor-hy300-duoseg";
   const isPS5 = p.id === "playstation-5-slim-1tb";
   const isDualSenseController = p.id === "dualsense-ps5-branco";
+  const isGtaVI = p.id === "grand-theft-auto-vi-ps5";
 
 
   const isChandonReserve = p.id === "espumante-chandon-reserve-brut-750ml";
@@ -272,6 +273,21 @@ function ProductPage() {
     { id: "jbl-boombox-review-15", src: "/products/jbl-boombox-4/reviews/avaliacao-jbl-boombox-15.png" }
   ] : [];
 
+  const gtaVIReviewPhotos = isGtaVI ? [
+    { id: "gta-vi-review-1", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-1.png" },
+    { id: "gta-vi-review-2", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-2.png" },
+    { id: "gta-vi-review-3", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-3.png" },
+    { id: "gta-vi-review-4", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-4.png" },
+    { id: "gta-vi-review-5", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-5.png" },
+    { id: "gta-vi-review-6", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-6.png" },
+    { id: "gta-vi-review-7", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-7.png" },
+    { id: "gta-vi-review-8", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-8.png" },
+    { id: "gta-vi-review-9", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-9.png" },
+    { id: "gta-vi-review-10", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-10.png" },
+    { id: "gta-vi-review-11", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-11.png" },
+    { id: "gta-vi-review-12", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-12.png" },
+    { id: "gta-vi-review-13", src: "/products/grand-theft-auto-vi-ps5/reviews/avaliacao-gta-vi-13.png" }
+  ] : [];
   const ps5ReviewPhotos = isPS5 ? [
     { id: "ps5-review-1", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-1.png" },
     { id: "ps5-review-2", src: "/products/playstation-5-slim-1tb/reviews/avaliacao-ps5-2.png" },
@@ -505,7 +521,16 @@ function ProductPage() {
   ] : [];
   const isPurifierElectrolux = p.id === "purificador-electrolux-pa26g";
   const purifierReviewPhotos = isPurifierElectrolux ? [{ id: "purifier-review-1", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-1.webp" }, { id: "purifier-review-2", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-2.webp" }, { id: "purifier-review-3", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-3.webp" }, { id: "purifier-review-4", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-4.webp" }, { id: "purifier-review-5", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-5.webp" }, { id: "purifier-review-6", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-6.webp" }, { id: "purifier-review-7", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-7.webp" }, { id: "purifier-review-8", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-8.webp" }, { id: "purifier-review-9", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-9.webp" }, { id: "purifier-review-10", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-10.webp" }, { id: "purifier-review-11", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-11.webp" }, { id: "purifier-review-12", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-12.webp" }, { id: "purifier-review-13", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-13.webp" }, { id: "purifier-review-14", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-14.webp" }, { id: "purifier-review-15", src: "/products/purificador-electrolux-pa26g/reviews/avaliacao-purificador-15.webp" }] : [];
-  const demoReviews: DemoReview[] = isDualSenseController ? [
+  const demoReviews: DemoReview[] = isGtaVI ? [
+    ...gtaVIReviewPhotos.map((photo, i) => ({
+      id: photo.id,
+      name: ["Mariana S.","Rafael M.","Camila R.","João P.","Ana C.","Lucas F.","Fernanda L.","Bruno A.","Patrícia G.","Diego R.","Aline M.","Thiago B.","Renata C."][i] ?? "Cliente",
+      date: ["há 2 dias","há 4 dias","há 6 dias","há 1 semana","há 9 dias","há 11 dias","há 13 dias","há 16 dias","há 18 dias","há 3 dias","há 5 dias","há 8 dias","há 12 dias"][i] ?? "há alguns dias",
+      rating: 5,
+      text: ["Vice City está incrível nos detalhes. A ambientação chama atenção desde o começo.","Gostei muito da proposta da história e dos personagens Jason e Lucia.","A expectativa para explorar Leonida está enorme. Visual muito bonito.","Curti bastante o material e a apresentação do jogo.","A pré-venda chegou conforme informado. Agora é aguardar a disponibilização.","Vice City tem muitos detalhes e a arte ficou muito bonita.","Gostei da ideia de acompanhar os dois protagonistas na história.","Jogo muito aguardado. As imagens e a ambientação estão impressionantes.","Informações do produto bem claras e compra realizada sem complicação.","Estou ansioso para explorar o mapa e conhecer a história completa.","Gostei de saber que terá legendas em português.","Produto conforme a descrição da pré-venda. Tudo certo com o pedido.","Expectativa alta para jogar no PS5 quando for disponibilizado."][i] ?? "",
+      media: photo.src,
+    })),
+  ] : isDualSenseController ? [
     ...dualSenseReviewPhotos.map((photo, i) => ({
       id: photo.id,
       name: ["Mariana S.", "Rafael M.", "Camila R.", "João P.", "Ana C.", "Lucas F.", "Fernanda L.", "Bruno A.", "Patrícia G.", "Diego R."][i] ?? "Cliente",
