@@ -2,7 +2,7 @@ import { formatSales } from "@/lib/sales";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
-import { brl, discountPct, type Product } from "@/lib/catalog";
+import { brl, discountPct, products, type Product } from "@/lib/catalog";
 import flashIconAsset from "@/assets/flash-lightning-original.png.asset.json";
 
 type FlashTimerState = { deadline: number; cycle: number };
@@ -106,13 +106,10 @@ export function FlashOfferBadge({ product, className = "" }: { product: Product;
 }
 
 function showFlashBadgeOnCard(product: Product): boolean {
-  // Stable per product: the mix never changes on refresh or between visits.
-  let hash = 2166136261;
-  for (const char of product.id) {
-    hash ^= char.charCodeAt(0);
-    hash = Math.imul(hash, 16777619);
-  }
-  return (hash >>> 0) % 2 === 0;
+  // Spread flash-sale cards through the catalog instead of clustering them.
+  // A fixed catalog position keeps the distribution stable on refresh/navigation.
+  const position = products.findIndex((item) => item.id === product.id);
+  return position >= 0 && position % 3 === 1;
 }
 
 export function ProductBadges({ product, price = product.price, original = product.original }: { product: Product; price?: number; original?: number }) {
