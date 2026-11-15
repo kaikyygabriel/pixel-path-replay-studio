@@ -219,15 +219,18 @@ function StorePage() {
             <span className="h-4 w-1 rounded-full bg-primary" />
             <h3 className="text-[17px] font-extrabold">{catalogView === "all" ? (activeCategory === "Todos" ? "Todos os produtos" : activeCategory) : activeCategory === "Natal" ? "Especial de Natal" : activeCategory === "Recomendados" ? "Recomendados para você" : activeCategory === "Todos" ? "Todos os produtos" : activeCategory}</h3>
           </div>
-          <span className="text-[12px] text-muted-foreground">{visibleProducts.length} {visibleProducts.length === 1 ? "produto" : "produtos"}</span>
+          <div className="flex shrink-0 items-center gap-2.5">
+            <span className="text-[12px] text-muted-foreground">{visibleProducts.length} {visibleProducts.length === 1 ? "produto" : "produtos"}</span>
+            {catalogView === "home" && <button type="button" onClick={() => openCatalogView(activeCategory, "all")} className="text-[13px] font-bold text-[#FE2C55] active:opacity-70">Ver todos</button>}
+          </div>
         </div>
       </div>
       <div key={`${catalogView}-${activeCategory}`} className={catalogView === "home" ? "relative pb-9" : "catalog-grid-enter px-3.5 pb-9"}>
-        {catalogView === "home" && canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface to-transparent" />}
-        {catalogView === "home" && canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />}
+        {catalogView === "home" && canScrollLeft && <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-7 bg-gradient-to-r from-surface/65 via-surface/25 to-transparent" />}
+        {catalogView === "home" && canScrollRight && visibleProducts.length > 1 && <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface/65 via-surface/25 to-transparent" />}
         <div data-shelf ref={shelfRef} onScroll={updateShelfEdges} className={catalogView === "home" ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pr-3.5 pb-2 pl-0 [scroll-padding-left:14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "grid grid-cols-2 items-stretch gap-3"}>
           {homeShelfProducts.map((p, index) => (
-            <ProductCard key={p.id} product={p} priority={index < 2} className={catalogView === "home" ? `w-[min(44vw,190px)] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
+            <ProductCard key={p.id} product={p} priority={index < 2} className={catalogView === "home" ? `w-[calc((100vw-2.5rem)/2)] max-w-[220px] shrink-0 snap-start ${index === 0 ? "ml-3.5" : ""}` : "w-full"} />
           ))}
           {visibleProducts.length === 0 && (
             <div className="w-full rounded-xl border border-dashed border-border bg-card px-5 py-9 text-center">
@@ -253,14 +256,14 @@ function StorePage() {
             </div>
             <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {homeNatalProducts.map((p) => (
-                <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
+                <ProductCard key={p.id} product={p} className="w-[calc((100vw-2.5rem)/2)] max-w-[220px] shrink-0 snap-start" />
               ))}
               <button type="button" onClick={() => openCatalogView("Natal", "category")} className="flex min-h-[190px] w-[min(28vw,112px)] shrink-0 snap-start flex-col items-center justify-center gap-2 px-1 text-center text-[#FE2C55] transition-opacity active:opacity-60">
                 <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Produtos de Natal</span>
               </button>
-            </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
+            </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface/65 via-surface/25 to-transparent" />
             </div>
           </div>
           <div className="px-3.5 pb-9">
@@ -270,14 +273,14 @@ function StorePage() {
             </div>
             <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {homeBestSellerProducts.map((p) => (
-                <ProductCard key={p.id} product={p} className="w-[min(44vw,190px)] shrink-0 snap-start" />
+                <ProductCard key={p.id} product={p} className="w-[calc((100vw-2.5rem)/2)] max-w-[220px] shrink-0 snap-start" />
               ))}
               <button type="button" onClick={() => openCatalogView("Todos", "all")} className="flex min-h-[190px] w-[min(28vw,112px)] shrink-0 snap-start flex-col items-center justify-center gap-2 px-1 text-center text-[#FE2C55] transition-opacity active:opacity-60">
                 <span className="grid h-10 w-10 place-items-center rounded-full border border-[#FE2C55]/20 bg-[#FE2C55]/15 text-[#FE2C55]"><ChevronRight className="h-5 w-5" /></span>
                 <span className="text-[14px] font-bold text-[#FE2C55]">Ver todos</span>
                 <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
               </button>
-            </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface to-transparent" />
+            </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-8 bg-gradient-to-l from-surface/65 via-surface/25 to-transparent" />
             </div>
           </div>
         </>
