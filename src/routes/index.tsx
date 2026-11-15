@@ -244,8 +244,8 @@ function StorePage() {
         </div>
         {catalogView === "home" && visibleProducts.length > 1 && (
           <div className="mt-2 flex justify-end gap-2 px-3.5">
-            <button type="button" aria-label="Produtos anteriores" onClick={() => shelfRef.current?.scrollBy({left:-220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronLeft className="h-4 w-4" /></button>
-            <button type="button" aria-label="Próximos produtos" onClick={() => shelfRef.current?.scrollBy({left:220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronRight className="h-4 w-4" /></button>
+            <button type="button" aria-label="Produtos anteriores" onClick={() => shelfRef.current?.scrollBy({left:-220,behavior:"smooth"})} className="relative z-20 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d8d8d8] bg-white text-[#222] shadow-sm opacity-100 hover:bg-[#f7f7f7] active:scale-95"><ChevronLeft className="h-4 w-4" /></button>
+            <button type="button" aria-label="Próximos produtos" onClick={() => shelfRef.current?.scrollBy({left:220,behavior:"smooth"})} className="relative z-20 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d8d8d8] bg-white text-[#222] shadow-sm opacity-100 hover:bg-[#f7f7f7] active:scale-95"><ChevronRight className="h-4 w-4" /></button>
           </div>
         )}
       </div>
@@ -268,8 +268,8 @@ function StorePage() {
             </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-surface via-surface/75 to-transparent" />
             </div>
             <div className="mt-2 flex justify-end gap-2">
-              <button type="button" aria-label="Produtos de Natal anteriores" onClick={() => natalShelfRef.current?.scrollBy({ left: -220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronLeft className="h-4 w-4" /></button>
-              <button type="button" aria-label="Próximos produtos de Natal" onClick={() => natalShelfRef.current?.scrollBy({ left: 220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronRight className="h-4 w-4" /></button>
+              <button type="button" aria-label="Produtos de Natal anteriores" onClick={() => natalShelfRef.current?.scrollBy({ left: -220, behavior: "smooth" })} className="relative z-20 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d8d8d8] bg-white text-[#222] shadow-sm opacity-100 hover:bg-[#f7f7f7] active:scale-95"><ChevronLeft className="h-4 w-4" /></button>
+              <button type="button" aria-label="Próximos produtos de Natal" onClick={() => natalShelfRef.current?.scrollBy({ left: 220, behavior: "smooth" })} className="relative z-20 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d8d8d8] bg-white text-[#222] shadow-sm opacity-100 hover:bg-[#f7f7f7] active:scale-95"><ChevronRight className="h-4 w-4" /></button>
             </div>
           </div>
           <div className="px-3.5 pb-9">
@@ -289,8 +289,8 @@ function StorePage() {
             </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-surface via-surface/75 to-transparent" />
             </div>
             <div className="mt-2 flex justify-end gap-2">
-              <button type="button" aria-label="Mais vendidos anteriores" onClick={() => bestSellerShelfRef.current?.scrollBy({ left: -220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronLeft className="h-4 w-4" /></button>
-              <button type="button" aria-label="Próximos mais vendidos" onClick={() => bestSellerShelfRef.current?.scrollBy({ left: 220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronRight className="h-4 w-4" /></button>
+              <button type="button" aria-label="Mais vendidos anteriores" onClick={() => bestSellerShelfRef.current?.scrollBy({ left: -220, behavior: "smooth" })} className="relative z-20 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d8d8d8] bg-white text-[#222] shadow-sm opacity-100 hover:bg-[#f7f7f7] active:scale-95"><ChevronLeft className="h-4 w-4" /></button>
+              <button type="button" aria-label="Próximos mais vendidos" onClick={() => bestSellerShelfRef.current?.scrollBy({ left: 220, behavior: "smooth" })} className="relative z-20 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d8d8d8] bg-white text-[#222] shadow-sm opacity-100 hover:bg-[#f7f7f7] active:scale-95"><ChevronRight className="h-4 w-4" /></button>
             </div>
           </div>
         </>
