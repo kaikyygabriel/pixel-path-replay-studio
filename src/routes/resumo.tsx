@@ -71,7 +71,7 @@ function Resumo() {
               <span className="shrink-0 font-bold">Frete grátis</span>
               <span className="min-w-0 text-teal-ink/80">· com rastreio · Entrega estimada</span>
             </div>
-            <s className="shrink-0 whitespace-nowrap text-[12px] text-muted-foreground">R$ 26,20</s>
+            <s className="shrink-0 whitespace-nowrap text-[12px] text-muted-foreground">R$ 26,60</s>
           </div>
           <p className="mt-1.5 pl-6 text-[13px] capitalize text-foreground">Chega {formatEstimatedDelivery()} via Correios (SEDEX)</p>
         </div>
