@@ -679,7 +679,7 @@ export const products: Product[] = [
     description: "O Jogo de Facas Plenus Tramontina com 9 peças reúne opções versáteis para facilitar o preparo das refeições e os diferentes cortes do dia a dia. Com visual clássico e cabos pretos, o conjunto combina com diversos estilos de cozinha e também é uma ótima escolha para churrascos e encontros com a família e os amigos.\n\nAs lâminas são produzidas em aço inox e recebem tratamento térmico, característica que contribui para a resistência e a qualidade do corte. Os cabos em polipropileno oferecem uma pegada prática para o uso cotidiano.\n\n**Características do produto**\n- Marca: Tramontina\n- Linha: Plenus\n- Quantidade: 9 peças\n- Lâminas em aço inox com tratamento térmico\n- Cabos em polipropileno na cor preta\n- Conjunto indicado para diferentes tipos de cortes e preparos\n\n**Dimensões e peso do produto na embalagem**\n- Altura: 42,7 cm\n- Largura: 2,2 cm\n- Comprimento: 44,5 cm\n- Peso: 725 g",
     rating: 4.9,
     reviews: null,
-    sold: "100",
+    sold: "100+",
   },
   {
     id: "camera-intelbras-im5-plus",
@@ -731,7 +731,7 @@ export const products: Product[] = [
     description: "Renove a cama com um jogo de lençol casal padrão de visual delicado e toque macio. Confeccionado em micropercal 100% poliéster, com indicação de 400 fios, o conjunto combina praticidade para o dia a dia com um acabamento em ponto palito que acrescenta um detalhe elegante ao enxoval.\n\nO tecido de poliéster é fácil de cuidar, seca com praticidade e oferece boa resistência ao uso frequente. O lençol com elástico em toda a volta ajuda a manter a peça ajustada ao colchão, enquanto as duas fronhas completam a composição.\n\n**O conjunto contém 3 peças**\n- 1 lençol de baixo com elástico em toda a volta\n- 2 fronhas de 50 × 70 cm com acabamento em ponto palito\n\n**Medidas e composição**\n- Indicado para colchão casal padrão de até 1,58 m × 1,98 m × 30 cm de altura\n- Tecido: micropercal\n- Composição: 100% poliéster\n- Informação de tecido: 400 fios\n- Cores disponíveis: bege, verde, cinza e rosa\n\n**Atenção:** confira as medidas do colchão antes da compra para garantir o ajuste adequado.",
     rating: 5.0,
     reviews: null,
-    sold: "200",
+    sold: "200+",
   },
 
 
