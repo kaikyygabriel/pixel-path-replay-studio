@@ -1341,7 +1341,7 @@ function ProductPage() {
             {review.media && <img src={review.media} alt="Foto enviada junto à avaliação do produto" loading="lazy" decoding="async" width={600} height={450} className="aspect-[4/3] w-full bg-surface object-cover" />}
             <div className="flex flex-col p-2.5">
               <div className="flex items-center gap-2">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-secondary text-[11px] font-bold">{review.name.split(" ").map((part) => part[0]).slice(0,2).join("")}</span>
                 <div className="min-w-0"><div className="truncate text-[12px] font-semibold">{review.name}</div><div className="text-[10px] text-muted-foreground">{review.date}</div></div>
               </div>
               {review.rating > 0 && <div className="mt-2"><ReviewStars rating={review.rating} size="h-3 w-3" /></div>}
@@ -1358,7 +1358,7 @@ function ProductPage() {
 
       {showAllReviewMedia && (
         <div className="fixed inset-0 z-[70] flex items-end justify-center bg-overlay sm:items-center" onClick={() => setShowAllReviewMedia(false)}>
-          <div role="dialog" aria-modal="true" aria-label="Fotos e vídeos das avaliações" className="relative max-h-[90dvh] w-full max-w-[560px] overflow-y-auto rounded-t-3xl bg-background p-4 sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
+          <div role="dialog" aria-modal="true" aria-label="Fotos e vídeos das avaliações" className="relative max-h-[90dvh] w-full max-w-[480px] overflow-y-auto rounded-t-3xl bg-background p-4 sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between gap-3">
               <div><h2 className="text-[18px] font-extrabold">Fotos e vídeos das avaliações</h2><p className="text-[12px] text-muted-foreground">{reviewMedia.length} mídias</p></div>
               <button aria-label="Fechar galeria" onClick={() => setShowAllReviewMedia(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-secondary"><X className="h-5 w-5" /></button>
@@ -1370,71 +1370,71 @@ function ProductPage() {
 
       {protect && (
         <div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/45 sm:items-center sm:p-5" onClick={() => setProtect(false)}>
-          <section role="dialog" aria-modal="true" aria-label="Proteção do cliente" className="relative max-h-[96dvh] w-full max-w-[560px] overflow-y-auto rounded-t-[22px] bg-white pb-safe shadow-2xl sm:max-h-[90dvh] sm:rounded-[22px]" onClick={(event) => event.stopPropagation()}>
-            <div className="relative overflow-hidden bg-gradient-to-br from-[#f3e9d8] via-[#fffdf9] to-white px-6 pb-7 pt-10 sm:px-9">
-              <div className="pointer-events-none absolute -right-5 -top-5 h-64 w-52 rounded-[48%] border border-[#d9c8a8]/20" />
-              <div className="pointer-events-none absolute -right-1 top-1 h-56 w-44 rounded-[48%] border border-[#d9c8a8]/25" />
-              <div className="pointer-events-none absolute right-5 top-5 grid h-52 w-40 place-items-center rounded-[48%] border border-[#d9c8a8]/30 bg-[#eadfc9]/20 text-[#fffaf0]">
-                <ShieldCheck className="h-24 w-24 opacity-80" strokeWidth={1.5} />
+          <section role="dialog" aria-modal="true" aria-label="Proteção do cliente" className="relative max-h-[92dvh] w-full max-w-[480px] overflow-y-auto rounded-t-[18px] bg-white pb-safe shadow-2xl sm:max-h-[90dvh] sm:rounded-[18px]" onClick={(event) => event.stopPropagation()}>
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#f3e9d8] via-[#fffdf9] to-white px-5 pb-4 pt-7 sm:px-6">
+              <div className="pointer-events-none absolute -right-5 -top-5 h-48 w-40 rounded-[48%] border border-[#d9c8a8]/20" />
+              <div className="pointer-events-none absolute -right-1 top-1 h-40 w-32 rounded-[48%] border border-[#d9c8a8]/25" />
+              <div className="pointer-events-none absolute right-5 top-5 grid h-40 w-32 place-items-center rounded-[48%] border border-[#d9c8a8]/30 bg-[#eadfc9]/20 text-[#fffaf0]">
+                <ShieldCheck className="h-16 w-16 opacity-80" strokeWidth={1.5} />
               </div>
-              <button aria-label="Fechar proteção do cliente" onClick={() => setProtect(false)} className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full text-black transition-colors hover:bg-black/5">
-                <X className="h-8 w-8" strokeWidth={2.5} />
+              <button aria-label="Fechar proteção do cliente" onClick={() => setProtect(false)} className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full text-black transition-colors hover:bg-black/5">
+                <X className="h-6 w-6" strokeWidth={2.5} />
               </button>
-              <h2 className="relative z-[1] text-[27px] font-extrabold tracking-tight text-[#87500d] sm:text-[32px]">Proteção do cliente</h2>
+              <h2 className="relative z-[1] text-[23px] font-extrabold tracking-tight text-[#87500d] sm:text-[25px]">Proteção do cliente</h2>
             </div>
-            <div className="space-y-7 px-6 pb-8 pt-2 sm:px-9">
+            <div className="space-y-5 px-5 pb-6 pt-1 sm:px-6">
               <section>
-                <div className="flex items-center gap-3 text-[#89530f]">
-                  <RotateCcw className="h-8 w-8 shrink-0 fill-[#89530f] text-[#89530f]" strokeWidth={2.2} />
-                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Devoluções gratuitas em 30 dias</h3>
+                <div className="flex items-center gap-2.5 text-[#89530f]">
+                  <RotateCcw className="h-6 w-6 shrink-0 fill-[#89530f] text-[#89530f]" strokeWidth={2.2} />
+                  <h3 className="text-[16px] font-semibold leading-tight sm:text-[17px]">Devoluções gratuitas em 30 dias</h3>
                 </div>
-                <p className="ml-[44px] mt-2 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">Devolução gratuita em até 30 dias após o recebimento do seu produto. Os Termos e Condições se aplicam.</p>
-                <a href="https://www.tiktok.com/legal/page/row/return-policy/pt-BR" target="_blank" rel="noreferrer" className="ml-[44px] mt-3 inline-block text-[15px] text-[#32649b] sm:text-[16px]">Saiba como solicitar um reembolso</a>
+                <p className="ml-[34px] mt-1.5 text-[13px] leading-[1.4] text-[#171717] sm:text-[14px]">Devolução gratuita em até 30 dias após o recebimento do seu produto. Os Termos e Condições se aplicam.</p>
+                <a href="https://www.tiktok.com/legal/page/row/return-policy/pt-BR" target="_blank" rel="noreferrer" className="ml-[34px] mt-2 inline-block text-[13px] text-[#32649b] sm:text-[14px]">Saiba como solicitar um reembolso</a>
               </section>
 
               <section>
-                <div className="flex items-center gap-3 text-[#89530f]">
-                  <Wallet className="h-8 w-8 shrink-0 fill-[#89530f] text-white" strokeWidth={2.1} />
-                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Pagamento seguro</h3>
+                <div className="flex items-center gap-2.5 text-[#89530f]">
+                  <Wallet className="h-6 w-6 shrink-0 fill-[#89530f] text-white" strokeWidth={2.1} />
+                  <h3 className="text-[16px] font-semibold leading-tight sm:text-[17px]">Pagamento seguro</h3>
                 </div>
-                <div className="ml-[44px] mt-2 space-y-3 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">
+                <div className="ml-[34px] mt-1.5 space-y-2.5 text-[13px] leading-[1.4] text-[#171717] sm:text-[14px]">
                   <p>Para garantir a segurança, as informações do seu cartão são criptografadas e protegidas contra acesso não autorizado.</p>
                   <p>O TikTok Shop não vende, aluga ou cede suas informações pessoais a terceiros para fins de marketing.</p>
                   <p>Aceitamos pagamento de:</p>
                   <div className="flex flex-wrap items-center gap-2" aria-label="Métodos de pagamento aceitos">
                     {[
-                      { src: "/logo mastercard png.png", alt: "Mastercard", cls: "h-[44px] w-[62px]" },
-                      { src: "/logo visa png.png", alt: "Visa", cls: "h-[44px] w-[62px]" },
-                      { src: "/logo elo png.png", alt: "Elo", cls: "h-[44px] w-[62px]" },
-                      { src: "/logo american express png.png", alt: "American Express", cls: "h-[44px] w-[62px]" },
-                      { src: "/logo boleto png.png", alt: "Boleto", cls: "h-[44px] w-[62px]" },
-                      { src: "/images-removebg-preview.png", alt: "Pix", cls: "h-[44px] w-[62px]" },
-                    ].map((logo) => <span key={logo.alt} className="grid h-[50px] w-[68px] place-items-center rounded-lg bg-[#f5f5f5] p-1"><img src={logo.src} alt={logo.alt} loading="lazy" className={logo.cls + " max-w-full object-contain"} /></span>)}
-                    <span className="flex h-[50px] items-center gap-1 rounded-lg border border-[#e5e5e5] px-2 text-[13px] font-semibold text-[#333]"><img src="/google logo png.webp" alt="" loading="lazy" className="h-6 w-6 object-contain" />Pay</span>
+                      { src: "/logo mastercard png.png", alt: "Mastercard", cls: "h-[34px] w-[48px]" },
+                      { src: "/logo visa png.png", alt: "Visa", cls: "h-[34px] w-[48px]" },
+                      { src: "/logo elo png.png", alt: "Elo", cls: "h-[34px] w-[48px]" },
+                      { src: "/logo american express png.png", alt: "American Express", cls: "h-[34px] w-[48px]" },
+                      { src: "/logo boleto png.png", alt: "Boleto", cls: "h-[34px] w-[48px]" },
+                      { src: "/images-removebg-preview.png", alt: "Pix", cls: "h-[34px] w-[48px]" },
+                    ].map((logo) => <span key={logo.alt} className="grid h-[40px] w-[54px] place-items-center rounded-lg bg-[#f5f5f5] p-1"><img src={logo.src} alt={logo.alt} loading="lazy" className={logo.cls + " max-w-full object-contain"} /></span>)}
+                    <span className="flex h-[40px] items-center gap-1 rounded-lg border border-[#e5e5e5] px-2 text-[13px] font-semibold text-[#333]"><img src="/google logo png.webp" alt="" loading="lazy" className="h-5 w-5 object-contain" />Pay</span>
                   </div>
                   <p>Certificações de segurança:</p>
-                  <div className="flex items-center gap-3">
-                    <img src="/mastercardcode png.png" alt="Mastercard SecureCode" loading="lazy" className="h-[54px] w-[76px] rounded-lg bg-[#f5f5f5] object-contain p-1" />
-                    <img src="/verified by visa png.png" alt="Verified by Visa" loading="lazy" className="h-[54px] w-[76px] rounded-lg bg-[#f5f5f5] object-contain p-1" />
+                  <div className="flex items-center gap-2">
+                    <img src="/mastercardcode png.png" alt="Mastercard SecureCode" loading="lazy" className="h-[42px] w-[60px] rounded-lg bg-[#f5f5f5] object-contain p-1" />
+                    <img src="/verified by visa png.png" alt="Verified by Visa" loading="lazy" className="h-[42px] w-[60px] rounded-lg bg-[#f5f5f5] object-contain p-1" />
                   </div>
                   <p>Para obter informações sobre como o TikTok Shop usa seus dados pessoais, consulte nossa <a href="https://www.tiktok.com/legal/page/row/privacy-policy/pt-BR" target="_blank" rel="noreferrer" className="text-[#32649b]">Privacy Policy</a>.</p>
                 </div>
               </section>
 
               <section>
-                <div className="flex items-center gap-3 text-[#89530f]">
-                  <Wallet className="h-8 w-8 shrink-0 fill-[#89530f] text-white" strokeWidth={2.1} />
-                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Reembolso se algo der errado</h3>
+                <div className="flex items-center gap-2.5 text-[#89530f]">
+                  <Wallet className="h-6 w-6 shrink-0 fill-[#89530f] text-white" strokeWidth={2.1} />
+                  <h3 className="text-[16px] font-semibold leading-tight sm:text-[17px]">Reembolso se algo der errado</h3>
                 </div>
-                <p className="ml-[44px] mt-2 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">Se o seu pedido for perdido ou danificado durante o transporte antes de chegar, reembolsaremos automaticamente o seu dinheiro. Você não precisa fazer nada.</p>
+                <p className="ml-[34px] mt-1.5 text-[13px] leading-[1.4] text-[#171717] sm:text-[14px]">Se o seu pedido for perdido ou danificado durante o transporte antes de chegar, reembolsaremos automaticamente o seu dinheiro. Você não precisa fazer nada.</p>
               </section>
 
               <section>
-                <div className="flex items-center gap-3 text-[#89530f]">
-                  <Clock className="h-8 w-8 shrink-0 text-[#89530f]" strokeWidth={2.2} />
-                  <h3 className="text-[19px] font-semibold leading-tight sm:text-[21px]">Se o seu pedido não for enviado no prazo</h3>
+                <div className="flex items-center gap-2.5 text-[#89530f]">
+                  <Clock className="h-6 w-6 shrink-0 text-[#89530f]" strokeWidth={2.2} />
+                  <h3 className="text-[16px] font-semibold leading-tight sm:text-[17px]">Se o seu pedido não for enviado no prazo</h3>
                 </div>
-                <p className="ml-[44px] mt-2 text-[15px] leading-[1.45] text-[#171717] sm:text-[16px]">Você não precisa fazer nada. Se ele não for despachado em até 7 dias úteis, cancelaremos o seu pedido e reembolsaremos automaticamente o seu dinheiro.</p>
+                <p className="ml-[34px] mt-1.5 text-[13px] leading-[1.4] text-[#171717] sm:text-[14px]">Você não precisa fazer nada. Se ele não for despachado em até 7 dias úteis, cancelaremos o seu pedido e reembolsaremos automaticamente o seu dinheiro.</p>
               </section>
             </div>
           </section>
