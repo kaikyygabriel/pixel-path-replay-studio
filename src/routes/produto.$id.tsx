@@ -1250,18 +1250,18 @@ function ProductPage() {
         </>
       )}
 
-      <div className="mt-5 flex w-full items-center gap-4 border-y border-[#f1f1f1] bg-white px-4 py-5 sm:gap-5 sm:px-6">
-        <Truck aria-hidden="true" className="h-9 w-9 shrink-0 text-[#171717] sm:h-10 sm:w-10" strokeWidth={2.1} />
+      <div className="mt-3 flex w-full items-center gap-3 border-y border-[#f1f1f1] bg-white px-3 py-3 sm:mt-4 sm:gap-4 sm:px-4 sm:py-3.5">
+        <Truck aria-hidden="true" className="h-7 w-7 shrink-0 text-[#171717] sm:h-8 sm:w-8" strokeWidth={2} />
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-baseline gap-x-2">
-            <span className="text-[21px] font-normal leading-tight tracking-[-0.025em] text-[#16877f] sm:text-[27px]">Frete grátis</span>
-            <span className="text-[20px] font-normal leading-tight tracking-[-0.02em] text-[#666] line-through decoration-[1.5px] sm:text-[25px]">R$ 6,02</span>
+          <div className="flex flex-wrap items-baseline gap-x-1.5 sm:gap-x-2">
+            <span className="text-[16px] font-normal leading-tight tracking-[-0.02em] text-[#16877f] sm:text-[18px]">Frete grátis</span>
+            <span className="text-[15px] font-normal leading-tight tracking-[-0.015em] text-[#666] line-through decoration-[1px] sm:text-[17px]">R$ 26,60</span>
           </div>
-          <div className="mt-1.5 text-[19px] font-normal leading-tight tracking-[-0.025em] text-[#171717] sm:text-[24px]">
+          <div className="mt-1 text-[14px] font-normal leading-snug tracking-[-0.015em] text-[#171717] sm:text-[16px]">
             Receba até {formatEstimatedDeliveryRange()}
           </div>
         </div>
-        <ChevronRight aria-hidden="true" className="h-7 w-7 shrink-0 text-[#858585] sm:h-8 sm:w-8" strokeWidth={1.8} />
+        <ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0 text-[#858585] sm:h-6 sm:w-6" strokeWidth={1.8} />
       </div>
 
       <button onClick={() => setProtect(true)} className="mx-4 mt-4 block w-[calc(100%-2rem)] rounded-2xl border border-border p-3.5 text-left">
