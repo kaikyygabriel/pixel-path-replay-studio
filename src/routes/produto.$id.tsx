@@ -2,7 +2,7 @@ import { formatSales } from "@/lib/sales";
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useLayoutEffect, useRef, useState } from "react";
 import {
-  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Truck, ShieldCheck, Check, Store,
+  ChevronLeft, ChevronRight, ChevronDown, Bookmark, Truck, ShieldCheck, Check, Store, Package,
   ShoppingCart, X, Plus, Minus, Star, RotateCcw, Wallet, Clock,
 } from "lucide-react";
 import { TopBar, SiteFooter, Verified } from "@/components/shop/chrome";
@@ -135,6 +135,7 @@ function ProductPage() {
   }, [p.id]);
   const [added, setAdded] = useState(false);
   const [protect, setProtect] = useState(false);
+  const [deliveryOpen, setDeliveryOpen] = useState(false);
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
   const [visibleReviews, setVisibleReviews] = useState(3);
   const [showAllReviewMedia, setShowAllReviewMedia] = useState(false);
@@ -1250,19 +1251,44 @@ function ProductPage() {
         </>
       )}
 
-      <div className="mt-3 flex w-full items-center gap-3 border-y border-[#f1f1f1] bg-white px-3 py-3 sm:mt-4 sm:gap-4 sm:px-4 sm:py-3.5">
+      <button type="button" onClick={() => setDeliveryOpen(true)} aria-label="Ver informações sobre a entrega" className="mt-3 flex w-full items-center gap-3 border-y border-[#f1f1f1] bg-white px-3 py-3 text-left sm:mt-4 sm:gap-4 sm:px-4 sm:py-3.5">
         <Truck aria-hidden="true" className="h-7 w-7 shrink-0 text-[#171717] sm:h-8 sm:w-8" strokeWidth={2} />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-baseline gap-x-1.5 sm:gap-x-2">
+        <span className="min-w-0 flex-1">
+          <span className="flex flex-wrap items-baseline gap-x-1.5 sm:gap-x-2">
             <span className="text-[16px] font-normal leading-tight tracking-[-0.02em] text-[#16877f] sm:text-[18px]">Frete grátis</span>
             <span className="text-[15px] font-normal leading-tight tracking-[-0.015em] text-[#666] line-through decoration-[1px] sm:text-[17px]">R$ 26,60</span>
-          </div>
-          <div className="mt-1 text-[14px] font-normal leading-snug tracking-[-0.015em] text-[#171717] sm:text-[16px]">
+          </span>
+          <span className="mt-1 block text-[14px] font-normal leading-snug tracking-[-0.015em] text-[#171717] sm:text-[16px]">
             Receba até {formatEstimatedDeliveryRange()}
-          </div>
-        </div>
+          </span>
+        </span>
         <ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0 text-[#858585] sm:h-6 sm:w-6" strokeWidth={1.8} />
-      </div>
+      </button>
+      {deliveryOpen && (
+        <div className="fixed inset-0 z-[90] flex items-end justify-center bg-black/45 px-0 sm:items-center sm:px-4" onClick={() => setDeliveryOpen(false)}>
+          <section role="dialog" aria-modal="true" aria-labelledby="delivery-details-title" className="w-full max-w-[480px] rounded-t-2xl bg-white p-4 pb-safe shadow-2xl sm:rounded-2xl" onClick={(event) => event.stopPropagation()}>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 id="delivery-details-title" className="text-[17px] font-bold text-[#171717]">Informações de entrega</h2>
+              <button type="button" onClick={() => setDeliveryOpen(false)} aria-label="Fechar" className="grid h-8 w-8 place-items-center rounded-full text-[#666]"><X className="h-5 w-5" /></button>
+            </div>
+            <div className="rounded-lg bg-[#e5f6f4] px-3 py-3 text-[13px]">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2 text-[#087e78]">
+                  <Truck className="h-4 w-4 shrink-0" />
+                  <span className="shrink-0 font-bold">Frete grátis</span>
+                  <span className="min-w-0 text-[#087e78]/80">· com rastreio · Entrega estimada</span>
+                </div>
+                <s className="shrink-0 whitespace-nowrap text-[12px] text-[#666]">R$ 26,60</s>
+              </div>
+              <p className="mt-1.5 pl-6 text-[13px] capitalize text-[#171717]">Chega {formatEstimatedDelivery()} via Correios (SEDEX)</p>
+            </div>
+            <div className="mt-3 flex items-center gap-2 px-1 text-[12px] text-[#087e78]">
+              <Package className="h-4 w-4 shrink-0" />
+              <span>Embalagem reforçada com proteção anti-impacto</span>
+            </div>
+          </section>
+        </div>
+      )}
 
       <button onClick={() => setProtect(true)} className="mx-4 mt-4 block w-[calc(100%-2rem)] rounded-2xl border border-border p-3.5 text-left">
         <div className="flex items-center justify-between text-[15.5px] font-bold">
