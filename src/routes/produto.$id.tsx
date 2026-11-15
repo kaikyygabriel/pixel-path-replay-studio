@@ -1401,16 +1401,16 @@ function ProductPage() {
                   <p>Para garantir a segurança, as informações do seu cartão são criptografadas e protegidas contra acesso não autorizado.</p>
                   <p>O TikTok Shop não vende, aluga ou cede suas informações pessoais a terceiros para fins de marketing.</p>
                   <p>Aceitamos pagamento de:</p>
-                  <div className="flex flex-wrap items-center gap-2" aria-label="Métodos de pagamento aceitos">
+                  <div className="flex flex-nowrap items-center gap-1" aria-label="Métodos de pagamento aceitos">
                     {[
-                      { src: "/logo mastercard png.png", alt: "Mastercard", cls: "h-[34px] w-[48px]" },
-                      { src: "/logo visa png.png", alt: "Visa", cls: "h-[34px] w-[48px]" },
-                      { src: "/logo elo png.png", alt: "Elo", cls: "h-[34px] w-[48px]" },
-                      { src: "/logo american express png.png", alt: "American Express", cls: "h-[34px] w-[48px]" },
-                      { src: "/logo boleto png.png", alt: "Boleto", cls: "h-[34px] w-[48px]" },
-                      { src: "/images-removebg-preview.png", alt: "Pix", cls: "h-[34px] w-[48px]" },
-                    ].map((logo) => <span key={logo.alt} className="grid h-[40px] w-[54px] place-items-center rounded-lg bg-[#f5f5f5] p-1"><img src={logo.src} alt={logo.alt} loading="lazy" className={logo.cls + " max-w-full object-contain"} /></span>)}
-                    <span className="flex h-[40px] items-center gap-1 rounded-lg border border-[#e5e5e5] px-2 text-[13px] font-semibold text-[#333]"><img src="/google logo png.webp" alt="" loading="lazy" className="h-5 w-5 object-contain" />Pay</span>
+                      { src: "/logo mastercard png.png", alt: "Mastercard" },
+                      { src: "/logo visa png.png", alt: "Visa" },
+                      { src: "/logo elo png.png", alt: "Elo" },
+                      { src: "/logo american express png.png", alt: "American Express" },
+                      { src: "/logo boleto png.png", alt: "Boleto" },
+                      { src: "/images-removebg-preview.png", alt: "Pix" },
+                    ].map((logo) => <span key={logo.alt} className="grid h-[36px] min-w-0 flex-1 place-items-center rounded-md bg-[#f5f5f5] p-1"><img src={logo.src} alt={logo.alt} loading="lazy" className="h-[28px] w-full object-contain" /></span>)}
+                    <span className="flex h-[36px] min-w-0 flex-1 items-center justify-center gap-0.5 rounded-md border border-[#e5e5e5] px-1 text-[10px] font-semibold text-[#333]"><img src="/google logo png.webp" alt="" loading="lazy" className="h-3.5 w-3.5 shrink-0 object-contain" />Pay</span>
                   </div>
                   <p>Certificações de segurança:</p>
                   <div className="flex items-center gap-2">
