@@ -134,7 +134,7 @@ export function ProductMetrics({ product }: { product: Product }) {
   </div>;
 }
 export function ProductCard({ product, className = "", children, priority = false }: { product: Product; className?: string; children?: ReactNode; priority?: boolean }) {
-  return <article data-product-card={product.id} data-cart-product={product.id} className={`relative flex min-w-0 flex-col rounded-lg bg-card p-2.5 pb-3 ${className}`}>
+  return <article data-product-card={product.id} data-cart-product={product.id} className={`relative flex h-full min-w-0 flex-col rounded-lg bg-card p-2.5 pb-3 ${className}`}>
     <Link to="/produto/$id" params={{ id: product.id }} preload="intent" className="block focus-visible:outline-2 focus-visible:outline-ring">
       <div className="relative"><img src={product.image} alt={product.title} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : "low"} decoding="async" width={600} height={600} className="aspect-square w-full object-contain" />{/natal/i.test(product.category) && <span className="absolute right-1 top-1 rounded-md bg-primary px-1.5 py-0.5 text-[10px] font-extrabold text-primary-foreground">25.12</span>}</div>
       <h3 className="mt-1.5 line-clamp-2 min-h-10 text-[14px] leading-snug">{product.cardTitle}</h3>
