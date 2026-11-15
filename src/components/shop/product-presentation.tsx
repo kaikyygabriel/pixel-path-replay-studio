@@ -105,9 +105,19 @@ export function FlashOfferBadge({ product, className = "" }: { product: Product;
   </div>;
 }
 
+function showFlashBadgeOnCard(product: Product): boolean {
+  // Stable per product: the mix never changes on refresh or between visits.
+  let hash = 2166136261;
+  for (const char of product.id) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0) % 2 === 0;
+}
+
 export function ProductBadges({ product, price = product.price, original = product.original }: { product: Product; price?: number; original?: number }) {
   const shipping = <span className="inline-flex min-h-6 shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-teal-soft px-1.5 py-1 text-[10px] font-semibold leading-none text-teal-ink">Frete grátis</span>;
-  if (product.flashOffer) {
+  if (product.flashOffer && showFlashBadgeOnCard(product)) {
     return <div className="mt-1.5 flex flex-wrap items-center gap-1">
       <FlashOfferBadge product={product} className="shrink-0" />
       {shipping}
