@@ -57,6 +57,8 @@ function StorePage() {
   const [quickVoltage, setQuickVoltage] = useState<string | null>(null);
   const [quickColor, setQuickColor] = useState<string | null>(null);
   const shelfRef = useRef<HTMLDivElement>(null);
+  const natalShelfRef = useRef<HTMLDivElement>(null);
+  const bestSellerShelfRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const shelfFrame = useRef<number | null>(null);
@@ -254,7 +256,7 @@ function StorePage() {
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
             </div>
-            <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="relative"><div data-shelf ref={natalShelfRef} className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {homeNatalProducts.map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[calc((100vw-2.5rem)/2)] max-w-[220px] shrink-0 snap-start" />
               ))}
@@ -265,13 +267,17 @@ function StorePage() {
               </button>
             </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-surface via-surface/75 to-transparent" />
             </div>
+            <div className="mt-2 flex justify-end gap-2">
+              <button type="button" aria-label="Produtos de Natal anteriores" onClick={() => natalShelfRef.current?.scrollBy({ left: -220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronLeft className="h-4 w-4" /></button>
+              <button type="button" aria-label="Próximos produtos de Natal" onClick={() => natalShelfRef.current?.scrollBy({ left: 220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronRight className="h-4 w-4" /></button>
+            </div>
           </div>
           <div className="px-3.5 pb-9">
             <div className="mb-3 flex items-center gap-2">
               <span className="h-4 w-1 rounded-full bg-primary" />
               <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
             </div>
-            <div className="relative"><div data-shelf className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="relative"><div data-shelf ref={bestSellerShelfRef} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {homeBestSellerProducts.map((p) => (
                 <ProductCard key={p.id} product={p} className="w-[calc((100vw-2.5rem)/2)] max-w-[220px] shrink-0 snap-start" />
               ))}
@@ -281,6 +287,10 @@ function StorePage() {
                 <span className="text-[11px] text-muted-foreground">Todos os produtos</span>
               </button>
             </div><div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-surface via-surface/75 to-transparent" />
+            </div>
+            <div className="mt-2 flex justify-end gap-2">
+              <button type="button" aria-label="Mais vendidos anteriores" onClick={() => bestSellerShelfRef.current?.scrollBy({ left: -220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronLeft className="h-4 w-4" /></button>
+              <button type="button" aria-label="Próximos mais vendidos" onClick={() => bestSellerShelfRef.current?.scrollBy({ left: 220, behavior: "smooth" })} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronRight className="h-4 w-4" /></button>
             </div>
           </div>
         </>
