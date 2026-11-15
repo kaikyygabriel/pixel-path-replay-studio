@@ -7,7 +7,7 @@ import flashIconAsset from "@/assets/flash-lightning-original.png.asset.json";
 
 type FlashTimerState = { deadline: number; cycle: number };
 const flashTimerMemory = new Map<string, FlashTimerState>();
-const flashTimerKey = (productId: string) => `multi-achadinhos:flash-offer:${productId}:v1`;
+const flashTimerKey = (productId: string) => `multi-achadinhos:flash-offer:${productId}:v2`;
 
 function hashFlashSeed(value: string) {
   let hash = 2166136261;
@@ -43,10 +43,13 @@ function getFlashDeadline(product: Product, now: number): number | null {
   if (saved && saved.deadline > now) return saved.deadline;
 
   const cycle = saved ? saved.cycle + 1 : 0;
-  // Vary active offers widely between products while keeping each product's timer stable.
-  const minSeconds = Math.max(60, Math.floor(offer.minDurationSeconds ?? 43 * 60));
-  const maxSeconds = Math.max(minSeconds, Math.floor(offer.maxDurationSeconds ?? (6 * 60 * 60 + 40 * 60)));
-  const durationSeconds = minSeconds + (hashFlashSeed(`${product.id}:${cycle}`) % (maxSeconds - minSeconds + 1));
+  // Pick a varied, natural-looking duration for each product and cycle.
+  const durationOptions = [45, 60, 80, 100, 120].map((minutes) => minutes * 60);
+  const configuredMin = Math.max(1, Math.floor((offer.minDurationSeconds ?? 45 * 60) / 60));
+  const configuredMax = Math.max(configuredMin, Math.floor((offer.maxDurationSeconds ?? 120 * 60) / 60));
+  const availableDurations = durationOptions.filter((seconds) => seconds >= configuredMin * 60 && seconds <= configuredMax * 60);
+  const choices = availableDurations.length > 0 ? availableDurations : [configuredMin * 60, configuredMax * 60];
+  const durationSeconds = choices[hashFlashSeed(`${product.id}:${cycle}`) % choices.length];
   const next = { deadline: now + durationSeconds * 1000, cycle };
   flashTimerMemory.set(key, next);
   try {
