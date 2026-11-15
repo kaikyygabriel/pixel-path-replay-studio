@@ -244,8 +244,8 @@ function StorePage() {
         </div>
         {catalogView === "home" && visibleProducts.length > 1 && (
           <div className="mt-2 flex justify-end gap-2 px-3.5">
-            <button type="button" aria-label="Produtos anteriores" disabled={!canScrollLeft} onClick={() => shelfRef.current?.scrollBy({left:-220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card disabled:opacity-30"><ChevronLeft className="h-4 w-4" /></button>
-            <button type="button" aria-label="Próximos produtos" disabled={!canScrollRight} onClick={() => shelfRef.current?.scrollBy({left:220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card disabled:opacity-30"><ChevronRight className="h-4 w-4" /></button>
+            <button type="button" aria-label="Produtos anteriores" onClick={() => shelfRef.current?.scrollBy({left:-220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronLeft className="h-4 w-4" /></button>
+            <button type="button" aria-label="Próximos produtos" onClick={() => shelfRef.current?.scrollBy({left:220,behavior:"smooth"})} className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card"><ChevronRight className="h-4 w-4" /></button>
           </div>
         )}
       </div>
