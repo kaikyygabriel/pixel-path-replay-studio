@@ -90,50 +90,10 @@
   --flash-soft: oklch(0.97 0.018 38);
 }
 
-.flash-offer-badge {
-  display: inline-flex;
-  width: fit-content;
-  max-width: 100%;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 3px;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.25;
-}
-.flash-offer-label {
-  display: inline-flex;
-  min-width: 0;
-  max-width: 100%;
-  align-items: center;
-  gap: 4px;
-  background: var(--flash-label);
-  color: var(--primary-foreground);
-  padding: 4px 7px;
-  border: 1px solid color-mix(in oklch, var(--flash-label), black 8%);
-  border-radius: 6px;
-  white-space: nowrap;
-}
-.flash-offer-label svg, .flash-offer-label img {
-  display: block;
-  height: 1.25em;
-  width: auto;
-  flex: 0 0 auto;
-  object-fit: contain;
-}
-.flash-offer-time {
-  display: inline-flex;
-  align-items: center;
-  width: 100%;
-  min-height: 22px;
-  color: var(--flash-label);
-  background: var(--flash-soft);
-  padding: 3px 7px;
-  border: 1px solid color-mix(in oklch, var(--flash-label), transparent 82%);
-  border-radius: 6px;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.01em;
-}
+.flash-offer-badge { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; font-size: 11px; font-weight: 700; line-height: 1.5; }
+.flash-offer-label { display: inline-flex; align-items: center; gap: 2px; background: var(--flash-label); color: var(--primary-foreground); padding: 2px 4px; border-radius: 4px 0 0 4px; }
+.flash-offer-label svg, .flash-offer-label img { display: block; height: 1.6em; width: auto; flex: 0 0 auto; object-fit: contain; }
+.flash-offer-time { color: var(--flash-label); background: var(--flash-soft); padding: 2px 4px; border-radius: 0 4px 4px 0; }
 
 @layer base {
   * {
