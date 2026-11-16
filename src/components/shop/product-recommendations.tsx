@@ -16,9 +16,9 @@ export function ProductRecommendations({ productId }: { productId: string }) {
   const visibleRecommendations = recommendations.slice(0, visibleCount);
 
   return (
-    <section aria-label="Você também pode gostar" className="border-t-8 border-surface bg-surface px-4 py-5">
+    <section aria-label="Você também pode gostar" className="border-t-8 border-surface bg-surface px-3.5 py-5">
       <h2 className="mb-4 text-[19px] font-extrabold">Você também pode gostar</h2>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 items-stretch gap-3">
         {visibleRecommendations.map((product) => <ProductCard key={product.id} product={product} />)}
       </div>
       {visibleCount < recommendations.length && (
