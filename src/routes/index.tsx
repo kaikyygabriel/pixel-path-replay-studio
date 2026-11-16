@@ -259,9 +259,12 @@ function StorePage() {
       {catalogView === "home" && activeCategory === "Todos" && (
         <>
           <div className="px-3.5 pb-9">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="h-4 w-1 rounded-full bg-primary" />
-              <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-2">
+                <span className="h-4 w-1 rounded-full bg-primary" />
+                <h3 className="text-[17px] font-extrabold">Especial <span className="text-[#FE2C55]">25.12</span></h3>
+              </div>
+              <button type="button" onClick={() => openCatalogView("Natal", "category")} className="shrink-0 text-[13px] font-bold leading-none text-[#FE2C55] active:opacity-70">Ver todos</button>
             </div>
             <div className="relative"><div data-shelf ref={natalShelfRef} className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-0 pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {homeNatalProducts.map((p) => (
@@ -280,9 +283,12 @@ function StorePage() {
             </div>
           </div>
           <div className="px-3.5 pb-9">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="h-4 w-1 rounded-full bg-primary" />
-              <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-2">
+                <span className="h-4 w-1 rounded-full bg-primary" />
+                <h3 className="text-[17px] font-extrabold">Mais vendidos</h3>
+              </div>
+              <button type="button" onClick={() => openCatalogView("Todos", "all")} className="shrink-0 text-[13px] font-bold leading-none text-[#FE2C55] active:opacity-70">Ver todos</button>
             </div>
             <div className="relative"><div data-shelf ref={bestSellerShelfRef} className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {homeBestSellerProducts.map((p) => (
